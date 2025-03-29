@@ -191,7 +191,8 @@
       "post": "Error al cargar el artículo",
       "postNotFound": "Artículo no encontrado",
       "search": "Error al buscar artículos"
-    }
+    },
+    "views": "Vistas"
   },
   "admin": {
     "login": {

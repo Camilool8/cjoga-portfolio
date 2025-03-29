@@ -202,7 +202,8 @@
       "post": "Failed to load blog post",
       "postNotFound": "Blog post not found",
       "search": "Failed to search blog posts"
-    }
+    },
+    "views": "Views"
   },
   "admin": {
     "login": {
