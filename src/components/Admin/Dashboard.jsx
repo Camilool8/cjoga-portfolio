@@ -15,6 +15,7 @@ function Dashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [publishLoading, setPublishLoading] = useState(null);
 
   // Fetch blog posts
   useEffect(() => {
@@ -42,6 +43,34 @@ function Dashboard() {
       navigate("/admin/login");
     } catch (error) {
       console.error("Error signing out:", error);
+    }
+  };
+
+  // Handle publish/unpublish
+  const handleTogglePublish = async (postId, publishStatus) => {
+    try {
+      setPublishLoading(postId);
+
+      // Call the API to update post status
+      await blogApi.updatePostStatus(postId, publishStatus);
+
+      // Update the post in the local state
+      setPosts(
+        posts.map((post) => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              published: publishStatus,
+            };
+          }
+          return post;
+        })
+      );
+    } catch (err) {
+      console.error("Error updating post status:", err);
+      setError("Failed to update post status");
+    } finally {
+      setPublishLoading(null);
     }
   };
 
@@ -182,7 +211,23 @@ function Dashboard() {
                               ? t("admin.dashboard.published")
                               : t("admin.dashboard.draft")}
                           </span>
+
+                          <button
+                            onClick={() =>
+                              handleTogglePublish(post.id, !post.published)
+                            }
+                            className={`ml-2 text-xs px-2 py-1 rounded ${
+                              post.published
+                                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+                                : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                            }`}
+                          >
+                            {post.published
+                              ? t("admin.dashboard.unpublish", "Unpublish")
+                              : t("admin.dashboard.publish", "Publish")}
+                          </button>
                         </td>
+
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-light-text-secondary dark:text-dark-text-secondary">
                           {formatDate(post.published_at)}
                         </td>

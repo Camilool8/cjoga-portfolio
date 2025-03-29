@@ -192,9 +192,9 @@
       "postNotFound": "Artículo no encontrado",
       "search": "Error al buscar artículos"
     },
-    "views": {
-      "defaultValue": "vistas"
-    }
+    "views": "{{count}} vistas",
+    "publish": "Publicar",
+    "unpublish": "Despublicar"
   },
   "admin": {
     "login": {
@@ -233,7 +233,9 @@
       "confirmDeleteMessage": "Esta acción no se puede deshacer. ¿Estás seguro de que deseas eliminar este artículo?",
       "cancel": "Cancelar",
       "errorFetchingPosts": "Error al cargar artículos",
-      "errorDeletingPost": "Error al eliminar artículo"
+      "errorDeletingPost": "Error al eliminar artículo",
+      "publish": "Publicar",
+      "unpublish": "Despublicar"
     },
     "postEditor": {
       "newPost": "Nuevo Artículo",

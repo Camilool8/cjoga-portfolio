@@ -351,15 +351,17 @@ function BlogPost() {
                       {formatDate(post.published_at)}
                     </span>
 
-                    <span className="flex items-center mb-2">
+                    <span className="flex items-center mr-4 mb-2">
                       <FaClock className="mr-1" />
                       {t("blog.readingTime", { minutes: post.reading_time })}
                     </span>
 
                     <span className="flex items-center mb-2">
                       <FaEye className="mr-1" />
-                      {post.views || 0}{" "}
-                      {t("blog.views", { defaultValue: "views" })}
+                      {t("blog.views", {
+                        count: post.views || 0,
+                        defaultValue: "{{count}} views",
+                      })}
                     </span>
                   </div>
 

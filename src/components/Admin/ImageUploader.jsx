@@ -49,8 +49,21 @@ function ImageUploader({ onImageUploaded }) {
       setUploading(true);
       setError("");
 
+      // Create a FormData object to send the file
+      const formData = new FormData();
+      formData.append("image", file);
+
+      console.log(
+        "Sending upload request with file:",
+        file.name,
+        file.type,
+        file.size
+      );
+
       // Upload the file
       const result = await blogApi.uploadImage(file);
+
+      console.log("Upload result:", result);
 
       // Call the callback with the image URL
       onImageUploaded(result.url);

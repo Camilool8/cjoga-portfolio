@@ -386,7 +386,7 @@ router.put("/admin/posts/:id", authenticateAdmin, async (req, res) => {
       content,
       excerpt: excerpt || title.substring(0, 160),
       cover_image,
-      published: published || false,
+      published: published !== undefined ? published : false,
       updated_at: new Date().toISOString(),
       tags: tags || [],
       seo_title: seo_title || title,
@@ -484,7 +484,7 @@ router.patch("/admin/posts/:id/status", authenticateAdmin, async (req, res) => {
   }
 });
 
-// Upload an image to Supabase Storage
+// Upload an image to Supabase Storage (for admin only)
 router.post(
   "/admin/upload",
   authenticateAdmin,
@@ -501,26 +501,43 @@ router.post(
         mimetype: req.file.mimetype,
       });
 
-      // Generate a unique filename
+      // Generate a unique filename with the original extension
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      const ext = path.extname(req.file.originalname || ".jpg").toLowerCase();
-      const filename = `blog-${uniqueSuffix}${ext}`;
+      const fileExt = path
+        .extname(req.file.originalname || ".jpg")
+        .toLowerCase();
+      const filename = `blog-${uniqueSuffix}${fileExt}`;
+
+      const BUCKET_NAME = "cjoga-portfolio-images";
+
+      // Debug log
+      console.log(
+        "Uploading to bucket:",
+        BUCKET_NAME,
+        "with filename:",
+        filename
+      );
 
       // Upload file to Supabase Storage
       const { data, error } = await req.supabase.storage
-        .from("cjoga-portfolio-images")
+        .from(BUCKET_NAME)
         .upload(`blog/${filename}`, req.file.buffer, {
           contentType: req.file.mimetype,
           cacheControl: "3600",
           upsert: false,
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase storage upload error:", error);
+        throw error;
+      }
 
       // Get the public URL for the uploaded file
       const { data: publicUrlData } = req.supabase.storage
-        .from("cjoga-portfolio-images")
+        .from(BUCKET_NAME)
         .getPublicUrl(`blog/${filename}`);
+
+      console.log("Upload successful, public URL:", publicUrlData);
 
       logger.info("Image uploaded successfully", {
         filename,
@@ -531,8 +548,11 @@ router.post(
         filename: filename,
       });
     } catch (error) {
+      console.error("Detailed upload error:", error);
       logger.error("Error uploading image:", error);
-      res.status(500).json({ error: "Failed to upload image" });
+      res
+        .status(500)
+        .json({ error: "Failed to upload image", details: error.message });
     }
   }
 );

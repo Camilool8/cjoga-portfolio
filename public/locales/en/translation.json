@@ -203,9 +203,9 @@
       "postNotFound": "Blog post not found",
       "search": "Failed to search blog posts"
     },
-    "views": {
-      "defaultValue": "views"
-    }
+    "views": "{{count}} views",
+    "publish": "Publish",
+    "unpublish": "Unpublish"
   },
   "admin": {
     "login": {
@@ -244,7 +244,9 @@
       "confirmDeleteMessage": "This action cannot be undone. Are you sure you want to delete this post?",
       "cancel": "Cancel",
       "errorFetchingPosts": "Failed to load blog posts",
-      "errorDeletingPost": "Failed to delete post"
+      "errorDeletingPost": "Failed to delete post",
+      "publish": "Publish",
+      "unpublish": "Unpublish"
     },
     "postEditor": {
       "newPost": "New Blog Post",

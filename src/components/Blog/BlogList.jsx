@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link, useSearchParams } from "react-router-dom";
 import { FaCalendarAlt, FaClock, FaTag } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 function BlogList({ posts }) {
   const { t, i18n } = useTranslation();

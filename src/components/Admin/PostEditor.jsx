@@ -121,16 +121,18 @@ function PostEditor() {
       setError("");
       setSuccess("");
 
+      console.log("Submitting post with published status:", published);
+
       const postData = {
         title,
         slug,
         content,
-        excerpt: excerpt || title, // Use title as excerpt if not provided
+        excerpt: excerpt || title,
         cover_image: coverImage,
         published,
         tags,
-        seo_title: seoTitle || title, // Use title as SEO title if not provided
-        seo_description: seoDescription || excerpt || title.substring(0, 160), // Use excerpt or title as SEO description if not provided
+        seo_title: seoTitle || title,
+        seo_description: seoDescription || excerpt || title.substring(0, 160),
         seo_keywords: seoKeywords
           .split(",")
           .map((k) => k.trim())
@@ -138,10 +140,12 @@ function PostEditor() {
       };
 
       if (isEditMode) {
-        await blogApi.updatePost(id, postData);
+        const result = await blogApi.updatePost(id, postData);
+        console.log("Update response:", result);
         setSuccess(t("admin.postEditor.postUpdated"));
       } else {
-        await blogApi.createPost(postData);
+        const result = await blogApi.createPost(postData);
+        console.log("Create response:", result);
         setSuccess(t("admin.postEditor.postCreated"));
 
         // Redirect to dashboard after a short delay
@@ -342,7 +346,10 @@ function PostEditor() {
                         </div>
                       ) : (
                         <ImageUploader
-                          onImageUploaded={(url) => setCoverImage(url)}
+                          onImageUploaded={(url) => {
+                            console.log("Image uploaded, setting URL:", url);
+                            setCoverImage(url);
+                          }}
                         />
                       )}
 

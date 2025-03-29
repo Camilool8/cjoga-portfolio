@@ -126,6 +126,8 @@ const blogApi = {
   // Upload an image for a blog post
   uploadImage: async (file) => {
     try {
+      console.log("Starting image upload in blogApi", file.name);
+
       // Create a FormData object to send the file
       const formData = new FormData();
       formData.append("image", file);
@@ -136,15 +138,21 @@ const blogApi = {
         "Content-Type": "multipart/form-data",
       };
 
+      console.log("Sending request with headers:", headers);
+
       const response = await axios.post(
         `${API_URL}/blog/admin/upload`,
         formData,
         { headers }
       );
 
+      console.log("Upload response:", response.data);
       return response.data;
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error(
+        "Detailed upload error in API:",
+        error.response?.data || error.message
+      );
       throw error;
     }
   },
