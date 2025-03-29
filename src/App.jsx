@@ -1,5 +1,7 @@
+// src/App.jsx - Updated with Admin Routes
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -8,6 +10,13 @@ import Projects from "./components/Projects";
 import Certifications from "./components/Certifications";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import BlogPage from "./components/Blog/BlogPage";
+import BlogPost from "./components/Blog/BlogPost";
+import BlogSearchResults from "./components/Blog/BlogSearchResults";
+import LoginPage from "./components/Admin/LoginPage";
+import Dashboard from "./components/Admin/Dashboard";
+import PostEditor from "./components/Admin/PostEditor";
+import ProtectedRoute from "./components/Admin/ProtectedRoute";
 import PrintButton from "./components/PrintButton";
 import BackgroundAnimation from "./components/BackgroundAnimation";
 import useSystemTheme from "./hooks/useSystemTheme";
@@ -47,7 +56,8 @@ function App() {
     i18n.changeLanguage(language);
   }, [language, i18n]);
 
-  return (
+  // Main Layout Component
+  const MainLayout = ({ children }) => (
     <div
       className={`min-h-screen transition-colors duration-300 ${
         theme === "dark"
@@ -56,26 +66,119 @@ function App() {
       }`}
     >
       <BackgroundAnimation theme={theme} />
-
       <Header
         theme={theme}
         setTheme={setTheme}
         language={language}
         setLanguage={setLanguage}
       />
-
-      <div ref={contentRef}>
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Certifications />
-        <Contact />
-        <Footer />
-      </div>
-
+      <div ref={contentRef}>{children}</div>
+      <Footer />
       <PrintButton />
     </div>
+  );
+
+  // Admin Layout Component (no footer or print button)
+  const AdminLayout = ({ children }) => (
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        theme === "dark"
+          ? "bg-dark-primary text-dark-text-primary"
+          : "bg-light-primary text-light-text-primary"
+      }`}
+    >
+      {children}
+    </div>
+  );
+
+  // Home Component
+  const Home = () => (
+    <>
+      <Hero />
+      <About />
+      <Experience />
+      <Projects />
+      <Certifications />
+      <Contact />
+    </>
+  );
+
+  return (
+    <Router>
+      <Routes>
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <Home />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/blog"
+          element={
+            <MainLayout>
+              <BlogPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/blog/search"
+          element={
+            <MainLayout>
+              <BlogSearchResults />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/blog/:slug"
+          element={
+            <MainLayout>
+              <BlogPost />
+            </MainLayout>
+          }
+        />
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin/login"
+          element={
+            <AdminLayout>
+              <LoginPage />
+            </AdminLayout>
+          }
+        />
+
+        {/* Protected Admin Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminLayout>
+                <Dashboard />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/posts/new"
+            element={
+              <AdminLayout>
+                <PostEditor />
+              </AdminLayout>
+            }
+          />
+          <Route
+            path="/admin/posts/edit/:id"
+            element={
+              <AdminLayout>
+                <PostEditor />
+              </AdminLayout>
+            }
+          />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 

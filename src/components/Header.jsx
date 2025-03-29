@@ -1,10 +1,13 @@
+// src/components/Header.jsx
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Link, useLocation } from "react-router-dom";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { IoLanguage } from "react-icons/io5";
 
 function Header({ theme, setTheme, language, setLanguage }) {
   const { t } = useTranslation();
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
@@ -30,6 +33,54 @@ function Header({ theme, setTheme, language, setLanguage }) {
     setLanguageMenuOpen(false);
   };
 
+  // Check if we're on the home page
+  const isHomePage = location.pathname === "/";
+
+  // Create a navigation item - either Link or anchor depending on if it's on home page
+  const NavItem = ({ section, number, text }) => {
+    if (isHomePage) {
+      return (
+        <a
+          href={`#${section}`}
+          className={`relative ${
+            theme === "dark"
+              ? "text-dark-text-primary hover:text-dark-accent"
+              : "text-light-text-primary hover:text-light-accent"
+          } transition-colors`}
+        >
+          <span
+            className={`font-mono text-sm ${
+              theme === "dark" ? "text-dark-accent" : "text-light-accent"
+            }`}
+          >
+            {number}.{" "}
+          </span>
+          {text}
+        </a>
+      );
+    } else {
+      return (
+        <Link
+          to={`/#${section}`}
+          className={`relative ${
+            theme === "dark"
+              ? "text-dark-text-primary hover:text-dark-accent"
+              : "text-light-text-primary hover:text-light-accent"
+          } transition-colors`}
+        >
+          <span
+            className={`font-mono text-sm ${
+              theme === "dark" ? "text-dark-accent" : "text-light-accent"
+            }`}
+          >
+            {number}.{" "}
+          </span>
+          {text}
+        </Link>
+      );
+    }
+  };
+
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -45,105 +96,52 @@ function Header({ theme, setTheme, language, setLanguage }) {
       <div className="container mx-auto px-4 py-4">
         <nav className="flex justify-between items-center">
           {/* Logo */}
-          <a
-            href="#"
+          <Link
+            to="/"
             className={`text-2xl font-bold ${
               theme === "dark" ? "text-dark-accent" : "text-light-accent"
             }`}
           >
             CJ
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center">
             <ul className="flex space-x-8">
               <li>
-                <a
-                  href="#about"
-                  className={`relative ${
-                    theme === "dark"
-                      ? "text-dark-text-primary hover:text-dark-accent"
-                      : "text-light-text-primary hover:text-light-accent"
-                  } transition-colors`}
-                >
-                  <span
-                    className={`font-mono text-sm ${
-                      theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
-                    }`}
-                  >
-                    01.{" "}
-                  </span>
-                  {t("header.about")}
-                </a>
+                <NavItem section="about" number="01" text={t("header.about")} />
               </li>
               <li>
-                <a
-                  href="#experience"
-                  className={`relative ${
-                    theme === "dark"
-                      ? "text-dark-text-primary hover:text-dark-accent"
-                      : "text-light-text-primary hover:text-light-accent"
-                  } transition-colors`}
-                >
-                  <span
-                    className={`font-mono text-sm ${
-                      theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
-                    }`}
-                  >
-                    02.{" "}
-                  </span>
-                  {t("header.experience")}
-                </a>
+                <NavItem
+                  section="experience"
+                  number="02"
+                  text={t("header.experience")}
+                />
               </li>
               <li>
-                <a
-                  href="#projects"
-                  className={`relative ${
-                    theme === "dark"
-                      ? "text-dark-text-primary hover:text-dark-accent"
-                      : "text-light-text-primary hover:text-light-accent"
-                  } transition-colors`}
-                >
-                  <span
-                    className={`font-mono text-sm ${
-                      theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
-                    }`}
-                  >
-                    03.{" "}
-                  </span>
-                  {t("header.projects")}
-                </a>
+                <NavItem
+                  section="projects"
+                  number="03"
+                  text={t("header.projects")}
+                />
               </li>
               <li>
-                <a
-                  href="#certifications"
-                  className={`relative ${
-                    theme === "dark"
-                      ? "text-dark-text-primary hover:text-dark-accent"
-                      : "text-light-text-primary hover:text-light-accent"
-                  } transition-colors`}
-                >
-                  <span
-                    className={`font-mono text-sm ${
-                      theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
-                    }`}
-                  >
-                    04.{" "}
-                  </span>
-                  {t("header.certifications")}
-                </a>
+                <NavItem
+                  section="certifications"
+                  number="04"
+                  text={t("header.certifications")}
+                />
               </li>
               <li>
-                <a
-                  href="#contact"
+                <NavItem
+                  section="contact"
+                  number="05"
+                  text={t("header.contact")}
+                />
+              </li>
+              <li>
+                <Link
+                  to="/blog"
                   className={`relative ${
                     theme === "dark"
                       ? "text-dark-text-primary hover:text-dark-accent"
@@ -157,10 +155,10 @@ function Header({ theme, setTheme, language, setLanguage }) {
                         : "text-light-accent"
                     }`}
                   >
-                    05.{" "}
+                    06.{" "}
                   </span>
-                  {t("header.contact")}
-                </a>
+                  {t("header.blog")}
+                </Link>
               </li>
             </ul>
 
@@ -387,12 +385,225 @@ function Header({ theme, setTheme, language, setLanguage }) {
       >
         <div
           className={`h-full w-full flex flex-col ${
-            theme === "dark" ? "bg-dark-secondary" : "bg-light-secondary"
+            theme === "dark"
+              ? isScrolled
+                ? "bg-dark-secondary/95 backdrop-blur-md"
+                : "bg-dark-secondary"
+              : isScrolled
+              ? "bg-light-secondary/95 backdrop-blur-md"
+              : "bg-light-secondary"
           } transition-all duration-300 shadow-lg`}
         >
           <nav className="p-6 flex flex-col space-y-6">
-            <a
-              href="#about"
+            {isHomePage ? (
+              <>
+                <a
+                  href="#about"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    01.{" "}
+                  </span>
+                  {t("header.about")}
+                </a>
+                <a
+                  href="#experience"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    02.{" "}
+                  </span>
+                  {t("header.experience")}
+                </a>
+                <a
+                  href="#projects"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    03.{" "}
+                  </span>
+                  {t("header.projects")}
+                </a>
+                <a
+                  href="#certifications"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    04.{" "}
+                  </span>
+                  {t("header.certifications")}
+                </a>
+                <a
+                  href="#contact"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    05.{" "}
+                  </span>
+                  {t("header.contact")}
+                </a>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/#about"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    01.{" "}
+                  </span>
+                  {t("header.about")}
+                </Link>
+                <Link
+                  to="/#experience"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    02.{" "}
+                  </span>
+                  {t("header.experience")}
+                </Link>
+                <Link
+                  to="/#projects"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    03.{" "}
+                  </span>
+                  {t("header.projects")}
+                </Link>
+                <Link
+                  to="/#certifications"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    04.{" "}
+                  </span>
+                  {t("header.certifications")}
+                </Link>
+                <Link
+                  to="/#contact"
+                  className={`text-lg ${
+                    theme === "dark"
+                      ? "text-dark-text-primary"
+                      : "text-light-text-primary"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span
+                    className={`font-mono text-sm ${
+                      theme === "dark"
+                        ? "text-dark-accent"
+                        : "text-light-accent"
+                    }`}
+                  >
+                    05.{" "}
+                  </span>
+                  {t("header.contact")}
+                </Link>
+              </>
+            )}
+            <Link
+              to="/blog"
               className={`text-lg ${
                 theme === "dark"
                   ? "text-dark-text-primary"
@@ -405,82 +616,10 @@ function Header({ theme, setTheme, language, setLanguage }) {
                   theme === "dark" ? "text-dark-accent" : "text-light-accent"
                 }`}
               >
-                01.{" "}
+                06.{" "}
               </span>
-              {t("header.about")}
-            </a>
-            <a
-              href="#experience"
-              className={`text-lg ${
-                theme === "dark"
-                  ? "text-dark-text-primary"
-                  : "text-light-text-primary"
-              }`}
-              onClick={() => setMenuOpen(false)}
-            >
-              <span
-                className={`font-mono text-sm ${
-                  theme === "dark" ? "text-dark-accent" : "text-light-accent"
-                }`}
-              >
-                02.{" "}
-              </span>
-              {t("header.experience")}
-            </a>
-            <a
-              href="#projects"
-              className={`text-lg ${
-                theme === "dark"
-                  ? "text-dark-text-primary"
-                  : "text-light-text-primary"
-              }`}
-              onClick={() => setMenuOpen(false)}
-            >
-              <span
-                className={`font-mono text-sm ${
-                  theme === "dark" ? "text-dark-accent" : "text-light-accent"
-                }`}
-              >
-                03.{" "}
-              </span>
-              {t("header.projects")}
-            </a>
-            <a
-              href="#certifications"
-              className={`text-lg ${
-                theme === "dark"
-                  ? "text-dark-text-primary"
-                  : "text-light-text-primary"
-              }`}
-              onClick={() => setMenuOpen(false)}
-            >
-              <span
-                className={`font-mono text-sm ${
-                  theme === "dark" ? "text-dark-accent" : "text-light-accent"
-                }`}
-              >
-                04.{" "}
-              </span>
-              {t("header.certifications")}
-            </a>
-            <a
-              href="#contact"
-              className={`text-lg ${
-                theme === "dark"
-                  ? "text-dark-text-primary"
-                  : "text-light-text-primary"
-              }`}
-              onClick={() => setMenuOpen(false)}
-            >
-              <span
-                className={`font-mono text-sm ${
-                  theme === "dark" ? "text-dark-accent" : "text-light-accent"
-                }`}
-              >
-                05.{" "}
-              </span>
-              {t("header.contact")}
-            </a>
+              {t("header.blog")}
+            </Link>
           </nav>
         </div>
       </div>

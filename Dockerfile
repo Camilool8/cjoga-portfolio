@@ -1,39 +1,40 @@
-# Build stage
-FROM --platform=$BUILDPLATFORM node:20-alpine as build
+# Build stage for the React frontend
+FROM node:20-alpine AS frontend-build
+
+# Set working directory for frontend build
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy frontend source code
+COPY . .
+
+# Build the React app
+RUN npm run build
+
+# Build stage for the final image with both frontend and backend
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy the built frontend from the first stage
+COPY --from=frontend-build /app/dist ./dist
+
+# Copy server files
+COPY server ./server
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Install production dependencies only
+RUN npm ci --only=production
 
-# Copy all files
-COPY . .
+# Set environment to production
+ENV NODE_ENV=production
 
-# Create fonts directory to avoid build warnings
-RUN mkdir -p public/fonts
+# Expose port
+EXPOSE 3000
 
-# Build the app
-RUN npm run build
-
-# Production stage - explicitly set platform to ensure compatibility
-FROM --platform=$TARGETPLATFORM nginx:alpine
-
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy built files from build stage to nginx serve directory
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Add healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the unified server
+CMD ["node", "server/index.js"]
