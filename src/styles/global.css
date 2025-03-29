@@ -1,0 +1,160 @@
+@import "./print.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Fonts */
+@font-face {
+  font-family: "Calibre";
+  src: url("/fonts/Calibre-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Calibre";
+  src: url("/fonts/Calibre-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Calibre";
+  src: url("/fonts/Calibre-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Mono";
+  src: url("/fonts/SFMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-light-primary text-light-text-primary dark:bg-dark-primary dark:text-dark-text-primary;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Calibre", "Inter", "San Francisco", "SF Pro Text", -apple-system,
+    system-ui, sans-serif;
+}
+
+/* Section Styles */
+section {
+  @apply py-16 md:py-24;
+}
+
+.section-inner {
+  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Section Titles */
+.section-title {
+  @apply flex items-center relative mb-10 w-full text-2xl sm:text-3xl font-semibold;
+  white-space: nowrap;
+}
+
+.section-title .number {
+  @apply mr-2 text-light-accent dark:text-dark-accent font-mono text-lg sm:text-xl font-normal;
+}
+
+.section-title::after {
+  content: "";
+  @apply block relative w-40 sm:w-60 h-px ml-4 bg-light-accent dark:bg-dark-accent;
+}
+
+/* Links */
+a {
+  @apply text-light-accent dark:text-dark-accent;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* Buttons */
+.cta-button {
+  @apply inline-block bg-transparent text-light-accent dark:text-dark-accent border border-light-accent dark:border-dark-accent rounded px-4 py-3 text-sm font-mono leading-none;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.cta-button:hover {
+  @apply bg-light-accent/10 dark:bg-dark-accent/10 transform -translate-y-1;
+}
+
+/* Skills List */
+.skills-list {
+  @apply grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-2 mt-4;
+}
+
+.skills-list li {
+  @apply relative pl-6 text-light-text-secondary dark:text-dark-text-secondary font-mono text-sm;
+}
+
+.skills-list li::before {
+  content: "▹";
+  @apply absolute left-0 text-light-accent dark:text-dark-accent;
+}
+
+/* Job Description Lists */
+.job-description ul {
+  @apply pl-0 mt-4;
+}
+
+.job-description li {
+  @apply relative pl-6 mb-2 text-light-text-secondary dark:text-dark-text-secondary;
+}
+
+.job-description li::before {
+  content: "▹";
+  @apply absolute left-0 text-light-accent dark:text-dark-accent;
+}
+
+/* Technology Icons */
+.tech-icon {
+  @apply inline-block mr-2 align-middle;
+}
+
+/* Animation Utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.delay-1 {
+  animation-delay: 0.1s;
+}
+.delay-2 {
+  animation-delay: 0.2s;
+}
+.delay-3 {
+  animation-delay: 0.3s;
+}
+.delay-4 {
+  animation-delay: 0.4s;
+}
+.delay-5 {
+  animation-delay: 0.5s;
+}
+
+/* Hide elements only in print mode */
+.print-only {
+  display: none;
+}

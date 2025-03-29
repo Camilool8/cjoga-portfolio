@@ -1,0 +1,193 @@
+/* Print Styles - Professional CV Layout */
+
+/* Only show the professional CV component when printing */
+@media print {
+  /* Hide website content */
+  #root > div > *:not(.professional-cv) {
+    display: none !important;
+  }
+
+  /* Show the professional CV */
+  .professional-cv {
+    display: block !important;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.3;
+    color: #000;
+    background-color: #fff;
+  }
+
+  /* Reset styles for printing */
+  * {
+    background-color: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Make sure content fits on a single page */
+  .cv-section {
+    margin-bottom: 0.4cm;
+    page-break-inside: avoid;
+  }
+
+  /* CV Header */
+  .cv-header {
+    text-align: center;
+    margin-bottom: 0.4cm;
+    border-bottom: 1pt solid #000;
+    padding-bottom: 0.2cm;
+  }
+
+  .cv-header h1 {
+    font-size: 16pt;
+    margin: 0 0 0.1cm 0;
+    font-weight: bold;
+  }
+
+  .cv-header h2 {
+    font-size: 12pt;
+    margin: 0 0 0.2cm 0;
+    font-weight: normal;
+  }
+
+  .cv-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 0.7cm;
+    row-gap: 0.1cm;
+    font-size: 9pt;
+  }
+
+  /* Section Headings */
+  .cv-section-title {
+    font-size: 11pt;
+    text-transform: uppercase;
+    margin: 0 0 0.2cm 0;
+    padding-bottom: 0.05cm;
+    border-bottom: 0.5pt solid #000;
+    font-weight: bold;
+  }
+
+  /* Skills Section */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 0.3cm;
+    row-gap: 0.1cm;
+  }
+
+  .skill-category-title {
+    font-size: 10pt;
+    font-weight: bold;
+    margin: 0 0 0.1cm 0;
+  }
+
+  .skill-category ul {
+    margin: 0 0 0.2cm 0;
+    padding-left: 0.3cm;
+  }
+
+  .skill-category li {
+    margin-bottom: 0.05cm;
+    font-size: 9pt;
+  }
+
+  /* Experience Section */
+  .cv-job {
+    margin-bottom: 0.3cm;
+  }
+
+  .job-header h3 {
+    font-size: 10pt;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .job-period {
+    font-style: italic;
+    font-size: 9pt;
+    margin-bottom: 0.1cm;
+  }
+
+  .job-responsibilities {
+    margin: 0.1cm 0 0 0;
+    padding-left: 0.3cm;
+  }
+
+  .job-responsibilities li {
+    margin-bottom: 0.05cm;
+    font-size: 9pt;
+  }
+
+  /* Projects Section */
+  .cv-project {
+    margin-bottom: 0.2cm;
+  }
+
+  .cv-project h3 {
+    font-size: 10pt;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .cv-project p {
+    margin: 0 0 0.05cm 0;
+    font-size: 9pt;
+  }
+
+  .project-tech {
+    font-size: 8pt;
+    font-style: italic;
+  }
+
+  /* Certifications Section */
+  .cv-certifications {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.1cm 0.3cm;
+  }
+
+  .cert-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9pt;
+  }
+
+  .cert-row span:first-child {
+    font-weight: bold;
+  }
+
+  .cert-row span:last-child {
+    font-style: italic;
+  }
+
+  /* General print settings */
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
+  }
+}
+
+/* When in print-mode class (via JS) */
+body.print-mode .professional-cv {
+  display: block !important;
+}
+
+body.print-mode header,
+body.print-mode .theme-toggle,
+body.print-mode .language-selector,
+body.print-mode .print-button,
+body.print-mode footer,
+body.print-mode canvas,
+body.print-mode #background-animation {
+  display: none !important;
+}

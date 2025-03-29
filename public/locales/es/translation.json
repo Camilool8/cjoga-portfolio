@@ -1,0 +1,188 @@
+{
+  "header": {
+    "about": "Sobre Mí",
+    "experience": "Experiencia",
+    "projects": "Proyectos",
+    "certifications": "Certificaciones",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "greeting": "Hola, mi nombre es",
+    "title": "José Camilo Joga Guerrero.",
+    "subtitle": "Construyo soluciones automatizadas en la nube.",
+    "description": "Soy un ingeniero DevOps y de Cloud especializado en construir y optimizar infraestructura a través de automatización, CI/CD, Infraestructura como Código y entornos de nube híbrida. Actualmente enfocado en agilizar despliegues y gestión de infraestructura para soluciones empresariales.",
+    "cta": {
+      "work": "Ver Mi Trabajo",
+      "contact": "Contáctame"
+    }
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "paragraph1": "¡Hola! Soy José Camilo (por favor dígame Camilo), un ingeniero en Ciencias de la Computación graduado en Santo Domingo con pasión por las prácticas DevOps y tecnologías cloud. Me especializo en crear soluciones de infraestructura eficientes, escalables y automatizadas.",
+    "paragraph2": "Mi experiencia se centra en automatizar despliegues, implementar canales robustos de CI/CD y gestionar infraestructura como código en entornos de nube híbrida. Disfruto optimizando operaciones y flujos de trabajo para ayudar a los equipos a entregar software de manera más eficiente.",
+    "skills": "Estas son algunas de las tecnologías con las que he estado trabajando recientemente:"
+  },
+  "skills": {
+    "aws": "AWS Cloud",
+    "azure": "Azure Cloud",
+    "terraform": "Terraform",
+    "ansible": "Ansible",
+    "kubernetes": "Kubernetes",
+    "eks": "Amazon EKS",
+    "aks": "Azure AKS",
+    "docker": "Docker",
+    "gitlab": "GitLab CI",
+    "azureDevops": "Azure DevOps",
+    "jenkins": "Jenkins",
+    "argo": "ArgoCD & Kustomize",
+    "dynatrace": "Dynatrace",
+    "powershell": "PowerShell"
+  },
+  "experience": {
+    "title": "Dónde he trabajado",
+    "arroyo": {
+      "title": "Ingeniero DevOps",
+      "company": "Arroyo Consulting",
+      "period": "Marzo 2025 - Presente",
+      "responsibilities": [
+        "Gestionar y optimizar clusters de Kubernetes (EKS, AKS) para diversas aplicaciones",
+        "Optimización costos en la nube implementando mejores prácticas de gestión de recursos",
+        "Gestionar grandes proyectos de aplicaciones con impacto global"
+      ]
+    },
+    "flBetances": {
+      "title": "Ingeniero DevOps Intermedio",
+      "company": "FL Betances & Asociados",
+      "period": "Junio 2024 - Presente",
+      "responsibilities": [
+        "Implementar estrategias de migración a la nube para clientes moviéndose a AWS y Azure",
+        "Desarrollar automatización de infraestructura usando Terraform y PowerShell",
+        "Crear y mantener aplicaciones containerizadas usando Docker y Kubernetes",
+        "Diseñar e implementar pipelines de CI/CD usando Azure DevOps y GitLab CI para clientes empresariales"
+      ]
+    },
+    "shadowSoft": {
+      "title": "Consultor DevOps",
+      "company": "Shadow-Soft",
+      "period": "Julio 2022 - Presente",
+      "responsibilities": [
+        "Proveer servicios de consultoría para clientes implementando prácticas DevOps",
+        "Construír pipelines de CI/CD usando Jenkins y GitLab",
+        "Implementar soluciones de orquestación de contenedores con Kubernetes",
+        "Capacitar equipos de clientes en metodologías y herramientas DevOps",
+        "Implementar soluciones de Infraestructura como Código con Terraform y Ansible para entornos multi-nube",
+        "Crear y mantener soluciones de monitoreo usando Dynatrace para sistemas críticos en producción"
+      ]
+    }
+  },
+  "projects": {
+    "title": "Lo Que He Construido",
+    "cicd": {
+      "title": "Pipeline CI/CD Multi-Entorno",
+      "description": "Diseñé e implementé un canal CI/CD integral usando GitLab CI que soportaba entornos de desarrollo, pruebas y producción con pruebas automatizadas, despliegue y capacidades de rollback.",
+      "tech": ["GitLab CI", "Kubernetes", "ArgoCD", "Kustomize"]
+    },
+    "iac": {
+      "title": "Infraestructura como Código para Multi-Nube",
+      "description": "Creé un código base modular en Terraform para gestionar recursos de AWS y Azure, incluyendo redes, cómputo, almacenamiento y componentes de seguridad, con enfoque en reusabilidad y mantenibilidad.",
+      "tech": ["Terraform", "AWS", "Azure", "PowerShell"]
+    },
+    "monitoring": {
+      "title": "Solución de Monitoreo para Kubernetes",
+      "description": "Implementé una solución integral de monitoreo para clústeres Kubernetes usando Dynatrace, con dashboards personalizados, alertas y remediación automatizada para escenarios comunes de fallo.",
+      "tech": ["Kubernetes", "Dynatrace", "Grafana", "Prometheus"]
+    },
+    "infrastructure": {
+      "title": "Despliegue Automatizado de Infraestructura",
+      "description": "Desarrollé playbooks y roles de Ansible para automatizar el despliegue y configuración de servidores de aplicaciones, bases de datos y componentes de red en múltiples entornos.",
+      "tech": ["Ansible", "AWS", "Linux", "PostgreSQL"]
+    },
+    "portal": {
+      "title": "Portal DevOps Interno",
+      "description": "Creé un portal web usando Vue.js que proporcionaba una interfaz unificada para desplegar aplicaciones, gestionar infraestructura y visualizar métricas de monitoreo entre equipos de desarrollo.",
+      "tech": ["Vue.js", "Node.js", "Docker", "REST APIs"]
+    },
+    "containerization": {
+      "title": "Migración a Contenedores",
+      "description": "Lideré la migración de aplicaciones heredadas a entornos containerizados usando Docker y Kubernetes, incluyendo el desarrollo de imágenes de contenedores optimizadas y configuraciones de orquestación.",
+      "tech": ["Docker", "Kubernetes", "Helm", "Jenkins"]
+    }
+  },
+  "certifications": {
+    "title": "Certificaciones",
+    "rhcsa": {
+      "name": "Red Hat Certified System Administrator (RHCSA)",
+      "issuer": "Red Hat",
+      "date": "2024"
+    },
+    "rhce": {
+      "name": "Red Hat Certified Engineer (RHCE)",
+      "issuer": "Red Hat",
+      "date": "2024"
+    },
+    "dynatrace": {
+      "name": "Dynatrace Associate",
+      "issuer": "Dynatrace",
+      "date": "2023"
+    },
+    "gitlabMigration": {
+      "name": "GitLab Migration Specialist",
+      "issuer": "GitLab",
+      "date": "2022"
+    },
+    "gitlabServices": {
+      "name": "GitLab Services Engineer Professional",
+      "issuer": "GitLab",
+      "date": "2022"
+    },
+    "gitlabCicd": {
+      "name": "GitLab CI/CD Associate",
+      "issuer": "GitLab",
+      "date": "2021"
+    },
+    "gitlabImplementation": {
+      "name": "GitLab Implementation Services Specialist",
+      "issuer": "GitLab",
+      "date": "2022"
+    },
+    "partner": {
+      "name": "Accredited Partner Technical Engineer",
+      "issuer": "Technology Partners",
+      "date": "2023"
+    }
+  },
+  "contact": {
+    "subtitle": "¿Qué Sigue?",
+    "title": "Contáctame",
+    "text": "Actualmente estoy buscando nuevas oportunidades y mi bandeja de entrada siempre está abierta. Ya sea que tengas una pregunta o simplemente quieras saludar, ¡haré todo lo posible por responderte!",
+    "cta": "Enviar Mensaje"
+  },
+  "cv": {
+    "summary": "RESUMEN PROFESIONAL",
+    "skills": "HABILIDADES TÉCNICAS",
+    "cloud-platforms": "Plataformas Cloud",
+    "infrastructure": "Infraestructura",
+    "cicd": "CI/CD y DevOps",
+    "monitoring": "Monitoreo y Scripting",
+    "experience": "EXPERIENCIA PROFESIONAL",
+    "projects": "PROYECTOS CLAVE",
+    "certifications": "CERTIFICACIONES"
+  },
+  "footer": {
+    "text1": "Jose Camilo Joga Guerrero",
+    "text2": "Ingeniero DevOps y Cloud",
+    "copyright": "Diseñado y Construido por Jose Camilo Joga Guerrero © 2025"
+  },
+  "print": {
+    "button": "Descargar CV",
+    "phone": "Teléfono: +1 (809) 881-7982"
+  },
+  "theme": {
+    "dark": "Modo Oscuro",
+    "light": "Modo Claro"
+  },
+  "language": {
+    "en": "Inglés",
+    "es": "Español"
+  }
+}
