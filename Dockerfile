@@ -1,5 +1,5 @@
 # Build stage
-FROM node:20-alpine as build
+FROM --platform=$BUILDPLATFORM node:20-alpine as build
 
 # Set working directory
 WORKDIR /app
@@ -19,8 +19,8 @@ RUN mkdir -p public/fonts
 # Build the app
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine
+# Production stage - explicitly set platform to ensure compatibility
+FROM --platform=$TARGETPLATFORM nginx:alpine
 
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf

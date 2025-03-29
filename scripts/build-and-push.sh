@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Configuration - change these variables as needed
+# Configuration
 IMAGE_NAME="cjoga/portfolio"
 IMAGE_TAG=$(date +"%Y%m%d-%H%M%S")
 LATEST_TAG="latest"
