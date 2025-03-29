@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: portfolio-deploy
-  namespace: default
+  namespace: web-development
   labels:
     app: portfolio
 spec:
@@ -21,6 +21,19 @@ spec:
         - name: portfolio-container
           image: cjoga/portfolio:latest
           imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "80"
+            - name: VITE_SUPABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secrets
+                  key: supabase-url
+            - name: VITE_SUPABASE_ANON_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secrets
+                  key: supabase-anon-key
           ports:
             - containerPort: 80
               name: http
@@ -33,15 +46,15 @@ spec:
               memory: "256Mi"
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/health
               port: http
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 30
           readinessProbe:
             httpGet:
-              path: /
+              path: /api/health
               port: http
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
             periodSeconds: 10
 ---
 # 2. Service to expose the Portfolio Deployment internally
@@ -49,7 +62,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: portfolio-svc
-  namespace: default
+  namespace: web-development
 spec:
   selector:
     app: portfolio
@@ -64,7 +77,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: portfolio-public-ingress
-  namespace: default
+  namespace: web-development
 spec:
   entryPoints:
     - web

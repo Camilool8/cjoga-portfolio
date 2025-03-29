@@ -14,6 +14,7 @@ import slugify from "slugify";
 import blogApi from "../../services/blogApi";
 import MarkdownEditor from "./MarkdownEditor";
 import MarkdownPreview from "./MarkdownPreview";
+import ImageUploader from "./ImageUploader";
 
 function PostEditor() {
   const { t } = useTranslation();

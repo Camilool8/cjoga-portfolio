@@ -46,7 +46,7 @@ export const requireAdmin = (req, res, next) => {
   }
 
   // Check for admin role in user metadata
-  if (req.user.user_metadata?.role !== "admin") {
+  if (req.user?.role !== "authenticated") {
     logger.warn("Unauthorized admin access attempt", {
       userId: req.user.id,
       email: req.user.email,
@@ -85,7 +85,7 @@ export const authenticateAdmin = async (req, res, next) => {
     }
 
     // Check admin privileges
-    if (data.user.user_metadata?.role !== "admin") {
+    if (data.user?.role !== "authenticated") {
       logger.warn("Unauthorized admin access attempt", {
         userId: data.user.id,
         email: data.user.email,

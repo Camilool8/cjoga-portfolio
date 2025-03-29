@@ -1,27 +1,60 @@
-import { Link } from "react-scroll";
+import React from "react";
+import { motion } from "framer-motion";
 
 export default function TableOfContents({ items }) {
+  const scrollToHeading = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, x: -20 },
+    show: { opacity: 1, x: 0 },
+  };
+
   return (
     <nav className="toc">
-      <ul className="space-y-2">
+      <motion.ul
+        className="space-y-2"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
         {items.map((item, index) => (
-          <li
+          <motion.li
             key={index}
-            className={`pl-${(item.level - 2) * 4}`}
+            className="toc-item"
             style={{ paddingLeft: `${(item.level - 2) * 1}rem` }}
+            variants={item}
           >
-            <Link
-              to={item.id}
-              smooth={true}
-              duration={500}
-              offset={-100}
-              className="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent cursor-pointer transition-colors"
+            <button
+              onClick={() => scrollToHeading(item.id)}
+              className="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent cursor-pointer transition-colors text-left w-full"
             >
               {item.text}
-            </Link>
-          </li>
+            </button>
+          </motion.li>
         ))}
-      </ul>
+      </motion.ul>
     </nav>
   );
 }

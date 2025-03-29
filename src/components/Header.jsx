@@ -142,6 +142,9 @@ function Header({ theme, setTheme, language, setLanguage }) {
               <li>
                 <Link
                   to="/blog"
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }
                   className={`relative ${
                     theme === "dark"
                       ? "text-dark-text-primary hover:text-dark-accent"
@@ -385,13 +388,7 @@ function Header({ theme, setTheme, language, setLanguage }) {
       >
         <div
           className={`h-full w-full flex flex-col ${
-            theme === "dark"
-              ? isScrolled
-                ? "bg-dark-secondary/95 backdrop-blur-md"
-                : "bg-dark-secondary"
-              : isScrolled
-              ? "bg-light-secondary/95 backdrop-blur-md"
-              : "bg-light-secondary"
+            theme === "dark" ? "bg-dark-secondary" : "bg-light-secondary"
           } transition-all duration-300 shadow-lg`}
         >
           <nav className="p-6 flex flex-col space-y-6">
@@ -604,12 +601,12 @@ function Header({ theme, setTheme, language, setLanguage }) {
             )}
             <Link
               to="/blog"
-              className={`text-lg ${
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className={`relative ${
                 theme === "dark"
-                  ? "text-dark-text-primary"
-                  : "text-light-text-primary"
-              }`}
-              onClick={() => setMenuOpen(false)}
+                  ? "text-dark-text-primary hover:text-dark-accent"
+                  : "text-light-text-primary hover:text-light-accent"
+              } transition-colors`}
             >
               <span
                 className={`font-mono text-sm ${

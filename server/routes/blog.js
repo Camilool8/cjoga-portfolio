@@ -4,6 +4,7 @@ import { marked } from "marked";
 import slugify from "slugify";
 import multer from "multer";
 import path from "path";
+import Prism from "prismjs";
 import { authenticateAdmin } from "../middleware/auth.js";
 import logger from "../utils/logger.js";
 
@@ -96,6 +97,20 @@ router.get("/posts/:slug", async (req, res) => {
       }
       throw error;
     }
+
+    marked.setOptions({
+      highlight: function (code, lang) {
+        if (Prism.languages[lang]) {
+          return Prism.highlight(code, Prism.languages[lang], lang);
+        } else {
+          return code;
+        }
+      },
+      gfm: true, // GitHub Flavored Markdown
+      breaks: true, // Convert line breaks to <br>
+      headerIds: true, // Add IDs to headers
+      mangle: false, // Don't mangle email addresses
+    });
 
     // Parse markdown content to HTML
     post.html_content = marked.parse(post.content);

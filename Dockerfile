@@ -32,9 +32,11 @@ RUN npm ci --only=production
 
 # Set environment to production
 ENV NODE_ENV=production
+# Explicitly set port to 80 for Kubernetes compatibility
+ENV PORT=80
 
-# Expose port
-EXPOSE 3000
+# Expose port 80
+EXPOSE 80
 
 # Start the unified server
 CMD ["node", "server/index.js"]

@@ -24,10 +24,13 @@ function BlogList({ posts }) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {posts.map((post) => (
-        <article
+    <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {posts.map((post, index) => (
+        <motion.article
           key={post.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
           className="bg-light-secondary dark:bg-dark-secondary rounded-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 flex flex-col h-full"
         >
           {/* Cover Image */}
@@ -94,9 +97,9 @@ function BlogList({ posts }) {
               {t("blog.readMore")} →
             </Link>
           </div>
-        </article>
+        </motion.article>
       ))}
-    </div>
+    </motion.div>
   );
 }
 

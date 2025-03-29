@@ -61,7 +61,7 @@ router.get("/user", authenticate, async (req, res) => {
       user: {
         id,
         email,
-        role: user_metadata?.role || "user",
+        role: user?.role || "user",
       },
     });
   } catch (error) {
@@ -73,7 +73,7 @@ router.get("/user", authenticate, async (req, res) => {
 // Check if user is admin
 router.get("/admin", authenticate, async (req, res) => {
   try {
-    const isAdmin = req.user.user_metadata?.role === "admin";
+    const isAdmin = req.user?.role === "authenticated";
     res.json({ isAdmin });
   } catch (error) {
     logger.error("Admin check error:", error);
