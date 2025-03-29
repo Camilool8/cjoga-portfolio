@@ -13,6 +13,9 @@ RUN npm ci
 # Copy all files
 COPY . .
 
+# Create fonts directory to avoid build warnings
+RUN mkdir -p public/fonts
+
 # Build the app
 RUN npm run build
 

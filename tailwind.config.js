@@ -28,15 +28,15 @@ export default {
       },
       fontFamily: {
         sans: [
-          "Calibre",
           "Inter",
+          "Calibre",
           "San Francisco",
           "SF Pro Text",
           "-apple-system",
           "system-ui",
           "sans-serif",
         ],
-        mono: ["SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", "monospace"],
+        mono: ["Fira Mono", "SF Mono", "monospace"],
       },
       boxShadow: {
         "custom-light": "0 10px 30px -15px rgba(0, 0, 0, 0.1)",
