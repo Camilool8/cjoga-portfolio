@@ -192,7 +192,9 @@
       "postNotFound": "Artículo no encontrado",
       "search": "Error al buscar artículos"
     },
-    "views": "Vistas"
+    "views": {
+      "defaultValue": "vistas"
+    }
   },
   "admin": {
     "login": {
