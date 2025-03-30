@@ -19,6 +19,7 @@ import BlogSidebar from "./BlogSidebar";
 import TableOfContents from "./TableOfContents";
 import RelatedPosts from "./RelatedPosts";
 import blogApi from "../../services/blogApi";
+import SimpleMarkdownRenderer from "../Utils/SimpleMarkdownRenderer";
 
 function BlogPost() {
   const { slug } = useParams();
@@ -391,10 +392,13 @@ function BlogPost() {
                   )}
 
                   {/* Content */}
-                  <div
-                    ref={contentRef}
-                    className="prose prose-lg dark:prose-invert max-w-none prose-a:text-light-accent dark:prose-a:text-dark-accent prose-img:rounded-md prose-headings:scroll-mt-24"
-                    dangerouslySetInnerHTML={{ __html: post.html_content }}
+                  <SimpleMarkdownRenderer
+                    content={post.content}
+                    onHeadingsExtracted={(items) => {
+                      tocItems.current = items;
+                      setTocReady(true);
+                    }}
+                    className="prose prose-lg dark:prose-invert"
                   />
 
                   {/* Share buttons */}
