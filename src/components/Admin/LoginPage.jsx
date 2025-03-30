@@ -128,7 +128,7 @@ function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full bg-light-accent dark:bg-dark-accent text-white py-2 px-4 rounded-md font-medium transition-colors ${
+              className={`w-full bg-light-accent dark:bg-dark-accent text-dark-primary py-2 px-4 rounded-md font-medium transition-colors ${
                 loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
               }`}
             >

@@ -40,7 +40,10 @@ function ImageUploader({ onImageUploaded }) {
     }
 
     // Validate file type
-    if (!file.type.startsWith("image/")) {
+    if (
+      !file.mimetype?.startsWith("image/") &&
+      !file.type?.startsWith("image/")
+    ) {
       setError(t("admin.imageUploader.invalidFileType"));
       return;
     }
@@ -48,10 +51,6 @@ function ImageUploader({ onImageUploaded }) {
     try {
       setUploading(true);
       setError("");
-
-      // Create a FormData object to send the file
-      const formData = new FormData();
-      formData.append("image", file);
 
       console.log(
         "Sending upload request with file:",
@@ -70,7 +69,9 @@ function ImageUploader({ onImageUploaded }) {
 
       // Reset the form
       setPreview(null);
-      fileInputRef.current.value = "";
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } catch (err) {
       console.error("Error uploading image:", err);
       setError(t("admin.imageUploader.uploadError"));
@@ -81,14 +82,16 @@ function ImageUploader({ onImageUploaded }) {
 
   const cancelUpload = () => {
     setPreview(null);
-    fileInputRef.current.value = "";
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
     setError("");
   };
 
   return (
     <div className="image-uploader">
       {error && (
-        <div className="bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 p-2 rounded-md mb-2 text-sm">
+        <div className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-200 p-2 rounded-md mb-2 text-sm">
           {error}
         </div>
       )}
@@ -105,7 +108,7 @@ function ImageUploader({ onImageUploaded }) {
             <button
               type="button"
               onClick={cancelUpload}
-              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+              className="absolute top-1 right-1 bg-red-500 dark:bg-red-600 text-white rounded-full p-1 hover:bg-red-600 dark:hover:bg-red-700"
               title={t("admin.imageUploader.cancel")}
             >
               <FaTimes size={12} />
@@ -124,7 +127,7 @@ function ImageUploader({ onImageUploaded }) {
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               disabled={uploading}
             />
-            <div className="flex items-center px-4 py-2 bg-light-primary dark:bg-dark-primary border-2 border-dashed border-light-secondary dark:border-dark-secondary rounded-l-md text-light-text-secondary dark:text-dark-text-secondary">
+            <div className="flex items-center px-4 py-2 bg-light-primary dark:bg-gray-700 border-2 border-dashed border-light-secondary dark:border-gray-500 rounded-l-md text-light-text-secondary dark:text-gray-300">
               <FaImage className="mr-2" />
               <span className="truncate">
                 {preview
@@ -141,8 +144,8 @@ function ImageUploader({ onImageUploaded }) {
             disabled={!preview || uploading}
             className={`px-4 py-2 rounded-r-md ${
               !preview || uploading
-                ? "bg-gray-400 dark:bg-gray-700 cursor-not-allowed"
-                : "bg-light-accent dark:bg-dark-accent text-white hover:opacity-90"
+                ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed text-gray-200"
+                : "bg-light-accent dark:bg-teal-600 text-white hover:bg-light-accent/90 dark:hover:bg-teal-500"
             } flex items-center transition-colors`}
           >
             {uploading ? (
@@ -178,7 +181,7 @@ function ImageUploader({ onImageUploaded }) {
           </button>
         </div>
 
-        <p className="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+        <p className="text-xs text-light-text-secondary dark:text-gray-400">
           {t("admin.imageUploader.supportedFormats")}
         </p>
       </div>

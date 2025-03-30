@@ -28,7 +28,6 @@ function BlogPost() {
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showTooltip, setShowTooltip] = useState(false);
   const contentRef = useRef(null);
   const tocItems = useRef([]);
   const [tocReady, setTocReady] = useState(false);

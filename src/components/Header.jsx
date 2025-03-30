@@ -86,8 +86,8 @@ function Header({ theme, setTheme, language, setLanguage }) {
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
           ? theme === "dark"
-            ? "bg-dark-secondary/95 shadow-custom-dark backdrop-blur-md"
-            : "bg-light-secondary/95 shadow-custom-light backdrop-blur-md"
+            ? "bg-dark-secondary/95 shadow-custom-dark"
+            : "bg-light-secondary/95 shadow-custom-light"
           : theme === "dark"
           ? "bg-dark-primary"
           : "bg-light-primary"
@@ -380,246 +380,246 @@ function Header({ theme, setTheme, language, setLanguage }) {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={`fixed inset-0 z-40 ${
-          menuOpen ? "block" : "hidden"
-        } md:hidden`}
-        style={{ top: "70px" }}
-      >
-        <div
-          className={`h-full w-full flex flex-col ${
-            theme === "dark" ? "bg-dark-secondary" : "bg-light-secondary"
-          } transition-all duration-300 shadow-lg`}
-        >
-          <nav className="p-6 flex flex-col space-y-6">
-            {isHomePage ? (
-              <>
-                <a
-                  href="#about"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+      {menuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden" style={{ top: "70px" }}>
+          <div
+            className={`h-full w-full flex flex-col ${
+              theme === "dark" ? "bg-dark-secondary" : "bg-light-secondary"
+            } shadow-lg`}
+          >
+            <nav className="p-6 flex flex-col space-y-6">
+              {isHomePage ? (
+                <>
+                  <a
+                    href="#about"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    01.{" "}
-                  </span>
-                  {t("header.about")}
-                </a>
-                <a
-                  href="#experience"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      01.{" "}
+                    </span>
+                    {t("header.about")}
+                  </a>
+                  <a
+                    href="#experience"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    02.{" "}
-                  </span>
-                  {t("header.experience")}
-                </a>
-                <a
-                  href="#projects"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      02.{" "}
+                    </span>
+                    {t("header.experience")}
+                  </a>
+                  <a
+                    href="#projects"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    03.{" "}
-                  </span>
-                  {t("header.projects")}
-                </a>
-                <a
-                  href="#certifications"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      03.{" "}
+                    </span>
+                    {t("header.projects")}
+                  </a>
+                  <a
+                    href="#certifications"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    04.{" "}
-                  </span>
-                  {t("header.certifications")}
-                </a>
-                <a
-                  href="#contact"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      04.{" "}
+                    </span>
+                    {t("header.certifications")}
+                  </a>
+                  <a
+                    href="#contact"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    05.{" "}
-                  </span>
-                  {t("header.contact")}
-                </a>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/#about"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      05.{" "}
+                    </span>
+                    {t("header.contact")}
+                  </a>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/#about"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    01.{" "}
-                  </span>
-                  {t("header.about")}
-                </Link>
-                <Link
-                  to="/#experience"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      01.{" "}
+                    </span>
+                    {t("header.about")}
+                  </Link>
+                  <Link
+                    to="/#experience"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    02.{" "}
-                  </span>
-                  {t("header.experience")}
-                </Link>
-                <Link
-                  to="/#projects"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      02.{" "}
+                    </span>
+                    {t("header.experience")}
+                  </Link>
+                  <Link
+                    to="/#projects"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    03.{" "}
-                  </span>
-                  {t("header.projects")}
-                </Link>
-                <Link
-                  to="/#certifications"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      03.{" "}
+                    </span>
+                    {t("header.projects")}
+                  </Link>
+                  <Link
+                    to="/#certifications"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    04.{" "}
-                  </span>
-                  {t("header.certifications")}
-                </Link>
-                <Link
-                  to="/#contact"
-                  className={`text-lg ${
-                    theme === "dark"
-                      ? "text-dark-text-primary"
-                      : "text-light-text-primary"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span
-                    className={`font-mono text-sm ${
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      04.{" "}
+                    </span>
+                    {t("header.certifications")}
+                  </Link>
+                  <Link
+                    to="/#contact"
+                    className={`text-lg ${
                       theme === "dark"
-                        ? "text-dark-accent"
-                        : "text-light-accent"
+                        ? "text-dark-text-primary"
+                        : "text-light-text-primary"
                     }`}
+                    onClick={() => setMenuOpen(false)}
                   >
-                    05.{" "}
-                  </span>
-                  {t("header.contact")}
-                </Link>
-              </>
-            )}
-            <Link
-              to="/blog"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className={`relative ${
-                theme === "dark"
-                  ? "text-dark-text-primary hover:text-dark-accent"
-                  : "text-light-text-primary hover:text-light-accent"
-              } transition-colors`}
-            >
-              <span
-                className={`font-mono text-sm ${
-                  theme === "dark" ? "text-dark-accent" : "text-light-accent"
+                    <span
+                      className={`font-mono text-sm ${
+                        theme === "dark"
+                          ? "text-dark-accent"
+                          : "text-light-accent"
+                      }`}
+                    >
+                      05.{" "}
+                    </span>
+                    {t("header.contact")}
+                  </Link>
+                </>
+              )}
+              <Link
+                to="/blog"
+                onClick={() => {
+                  setMenuOpen(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className={`text-lg ${
+                  theme === "dark"
+                    ? "text-dark-text-primary"
+                    : "text-light-text-primary"
                 }`}
               >
-                06.{" "}
-              </span>
-              {t("header.blog")}
-            </Link>
-          </nav>
+                <span
+                  className={`font-mono text-sm ${
+                    theme === "dark" ? "text-dark-accent" : "text-light-accent"
+                  }`}
+                >
+                  06.{" "}
+                </span>
+                {t("header.blog")}
+              </Link>
+            </nav>
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }

@@ -60,7 +60,7 @@ function BlogSidebar() {
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-light-accent dark:bg-dark-accent text-white rounded-r-md hover:opacity-90 transition-opacity"
+            className="px-4 py-2 bg-light-accent dark:bg-dark-accent text-dark-primary rounded-r-md hover:opacity-90 transition-opacity"
             aria-label={t("blog.search")}
           >
             <FaSearch />

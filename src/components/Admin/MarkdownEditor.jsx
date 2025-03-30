@@ -86,7 +86,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
       {/* Toolbar */}
       <div
         className={`flex flex-wrap gap-1 p-2 mb-2 rounded-md ${
-          isDarkMode ? "bg-dark-primary" : "bg-light-primary"
+          isDarkMode ? "bg-gray-700" : "bg-light-primary"
         }`}
       >
         <button
@@ -94,7 +94,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleHeading}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.heading")}
@@ -106,7 +106,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleBold}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.bold")}
@@ -118,7 +118,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleItalic}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.italic")}
@@ -130,7 +130,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleLink}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.link")}
@@ -142,7 +142,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleImage}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.image")}
@@ -154,7 +154,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleUnorderedList}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.bulletList")}
@@ -166,7 +166,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleOrderedList}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.numberedList")}
@@ -178,7 +178,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleQuote}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.blockquote")}
@@ -190,7 +190,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           onClick={handleCode}
           className={`p-2 rounded hover:bg-opacity-20 ${
             isDarkMode
-              ? "hover:bg-gray-700 text-dark-text-primary"
+              ? "hover:bg-gray-600 text-white"
               : "hover:bg-gray-200 text-light-text-primary"
           }`}
           title={t("admin.markdownEditor.codeBlock")}
@@ -206,16 +206,16 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
         onChange={(e) => onChange(e.target.value)}
         className={`w-full h-64 p-4 rounded-md font-mono text-sm resize-y ${
           isDarkMode
-            ? "bg-dark-primary text-dark-text-primary"
+            ? "bg-gray-700 text-white"
             : "bg-light-primary text-light-text-primary"
-        } focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent border-none`}
+        } focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-teal-500 border-none`}
         placeholder={t("admin.markdownEditor.placeholder")}
       />
 
       {/* Markdown syntax helper */}
       <div
         className={`mt-2 text-xs ${
-          isDarkMode ? "text-dark-text-secondary" : "text-light-text-secondary"
+          isDarkMode ? "text-gray-300" : "text-light-text-secondary"
         }`}
       >
         {t("admin.markdownEditor.syntaxGuide")}{" "}
@@ -224,25 +224,25 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
           target="_blank"
           rel="noopener noreferrer"
           className={`${
-            isDarkMode ? "text-dark-accent" : "text-light-accent"
+            isDarkMode ? "text-teal-300" : "text-light-accent"
           } hover:underline`}
         >
           {t("admin.markdownEditor.syntaxGuideLink")}
         </a>
       </div>
 
-      {/* Image Uploader Modal - Add this at the end of your component */}
+      {/* Image Uploader Modal */}
       {showImageUploader && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-light-primary dark:bg-dark-primary p-6 rounded-lg max-w-md w-full">
+          <div className="bg-light-primary dark:bg-gray-800 p-6 rounded-lg max-w-md w-full">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-light-text-primary dark:text-dark-text-primary">
+              <h3 className="text-xl font-semibold text-light-text-primary dark:text-white">
                 {t("admin.markdownEditor.uploadImage")}
               </h3>
               <button
                 type="button"
                 onClick={() => setShowImageUploader(false)}
-                className="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent"
+                className="text-light-text-secondary dark:text-gray-300 hover:text-light-accent dark:hover:text-teal-300"
               >
                 <FaTimes />
               </button>
@@ -259,7 +259,7 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
               <button
                 type="button"
                 onClick={() => setShowImageUploader(false)}
-                className="px-4 py-2 text-light-text-primary dark:text-dark-text-primary bg-light-secondary dark:bg-dark-secondary rounded-md"
+                className="px-4 py-2 text-light-text-primary dark:text-white bg-light-secondary dark:bg-gray-700 rounded-md hover:bg-light-secondary/80 dark:hover:bg-gray-600"
               >
                 {t("admin.markdownEditor.cancel")}
               </button>

@@ -4,14 +4,36 @@ import authService from "./authService";
 const API_URL = "/api";
 
 const blogApi = {
+  // Get auth header with token
+  getAuthHeader: () => {
+    return {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      },
+    };
+  },
+
   // Get all blog posts with pagination
   getPosts: async (page = 1, limit = 6, tag = null) => {
     try {
       const params = { page, limit };
       if (tag) params.tag = tag;
 
-      const response = await axios.get(`${API_URL}/blog/posts`, { params });
-      return response.data;
+      // Check if this is an admin request (has auth token)
+      const token = authService.getToken();
+
+      if (token) {
+        // Admin request - use admin endpoint to get all posts (published and drafts)
+        const response = await axios.get(`${API_URL}/blog/admin/posts`, {
+          params,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        return response.data;
+      } else {
+        // Public request - use public endpoint (published posts only)
+        const response = await axios.get(`${API_URL}/blog/posts`, { params });
+        return response.data;
+      }
     } catch (error) {
       console.error("Error fetching blog posts:", error);
       throw error;
@@ -21,8 +43,33 @@ const blogApi = {
   // Get a single blog post by slug
   getPost: async (slugOrId) => {
     try {
-      const response = await axios.get(`${API_URL}/blog/posts/${slugOrId}`);
-      return response.data;
+      // For admin edit mode (UUID), use admin endpoint
+      if (
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+          slugOrId
+        )
+      ) {
+        const response = await axios.get(
+          `${API_URL}/blog/admin/posts/${slugOrId}`,
+          blogApi.getAuthHeader()
+        );
+
+        // Check if response has the expected structure
+        if (!response.data || !response.data.post) {
+          if (response.data && response.data.id) {
+            return { post: response.data };
+          } else {
+            console.error("Unexpected API response format:", response.data);
+            throw new Error("Invalid response format from API");
+          }
+        }
+
+        return response.data;
+      } else {
+        // Normal public post view
+        const response = await axios.get(`${API_URL}/blog/posts/${slugOrId}`);
+        return response.data;
+      }
     } catch (error) {
       console.error(`Error fetching blog post with slug ${slugOrId}:`, error);
       throw error;
@@ -55,15 +102,6 @@ const blogApi = {
 
   // ADMIN METHODS
 
-  // Get auth header with token
-  getAuthHeader: () => {
-    return {
-      headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
-      },
-    };
-  },
-
   // Create a new blog post
   createPost: async (postData) => {
     try {
@@ -74,7 +112,7 @@ const blogApi = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating blog post:", error);
+      console.error("Error creating blog post:", error.response?.data || error);
       throw error;
     }
   },
@@ -89,7 +127,10 @@ const blogApi = {
       );
       return response.data;
     } catch (error) {
-      console.error(`Error updating blog post with ID ${id}:`, error);
+      console.error(
+        `Error updating blog post with ID ${id}:`,
+        error.response?.data || error
+      );
       throw error;
     }
   },
@@ -126,8 +167,6 @@ const blogApi = {
   // Upload an image for a blog post
   uploadImage: async (file) => {
     try {
-      console.log("Starting image upload in blogApi", file.name);
-
       // Create a FormData object to send the file
       const formData = new FormData();
       formData.append("image", file);
@@ -138,15 +177,12 @@ const blogApi = {
         "Content-Type": "multipart/form-data",
       };
 
-      console.log("Sending request with headers:", headers);
-
       const response = await axios.post(
         `${API_URL}/blog/admin/upload`,
         formData,
         { headers }
       );
 
-      console.log("Upload response:", response.data);
       return response.data;
     } catch (error) {
       console.error(

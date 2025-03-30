@@ -14,7 +14,7 @@ const router = express.Router();
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB file size limit
+    fileSize: 10 * 1024 * 1024, // 10MB file size limit
   },
   fileFilter: function (req, file, cb) {
     // Accept only image files
@@ -211,7 +211,7 @@ router.get("/search", async (req, res) => {
 
 // ADMIN ROUTES
 
-// Get all blog posts for admin (including drafts)
+// Get all blog posts for admin
 router.get("/admin/posts", authenticateAdmin, async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -222,13 +222,16 @@ router.get("/admin/posts", authenticateAdmin, async (req, res) => {
     const { data, error, count } = await req.supabase
       .from("posts")
       .select(
-        "id, title, slug, excerpt, cover_image, published, published_at, views, tags",
+        "id, title, slug, excerpt, cover_image, published, published_at, views, tags, updated_at",
         { count: "exact" }
       )
       .order("updated_at", { ascending: false })
       .range(offset, offset + limit - 1);
 
-    if (error) throw error;
+    if (error) {
+      console.error("Error fetching admin posts:", error);
+      throw error;
+    }
 
     res.json({
       posts: data,
@@ -239,6 +242,121 @@ router.get("/admin/posts", authenticateAdmin, async (req, res) => {
   } catch (error) {
     logger.error("Error fetching admin blog posts:", error);
     res.status(500).json({ error: "Failed to fetch admin blog posts" });
+  }
+});
+
+// Get a single blog post by id
+router.get("/admin/posts/:id", authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    logger.info("Admin fetching blog post", { id });
+
+    const { data: post, error } = await req.supabase
+      .from("posts")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        logger.warn("Post not found", { id });
+        return res.status(404).json({ error: "Post not found" });
+      }
+      throw error;
+    }
+
+    logger.info("Admin post found", { postId: post.id, title: post.title });
+
+    // Always return the post wrapped in a 'post' property
+    res.json({ post });
+  } catch (error) {
+    logger.error("Error fetching admin blog post:", error);
+    res.status(500).json({ error: "Failed to fetch blog post" });
+  }
+});
+
+// Get a single blog post by slug
+router.get("/posts/:slug", async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    logger.info("Fetching blog post", { slug });
+
+    // Check if the slug is a UUID (for admin edit functionality)
+    const isUUID =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        slug
+      );
+
+    let query = req.supabase.from("posts").select("*");
+
+    if (isUUID) {
+      query = query.eq("id", slug);
+      // For admin routes, don't filter by published status
+    } else {
+      query = query.eq("slug", slug).eq("published", true);
+    }
+
+    const { data: post, error } = await query.single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        logger.warn("Post not found", { slug });
+        return res.status(404).json({ error: "Post not found" });
+      }
+      throw error;
+    }
+
+    // Debug log the post data
+    logger.info("Post found", { postId: post.id, title: post.title });
+
+    // Parse markdown content to HTML for published posts
+    if (!isUUID) {
+      marked.setOptions({
+        highlight: function (code, lang) {
+          if (Prism.languages[lang]) {
+            return Prism.highlight(code, Prism.languages[lang], lang);
+          } else {
+            return code;
+          }
+        },
+        gfm: true, // GitHub Flavored Markdown
+        breaks: true, // Convert line breaks to <br>
+        headerIds: true, // Add IDs to headers
+        mangle: false, // Don't mangle email addresses
+      });
+
+      // Parse markdown content to HTML
+      post.html_content = marked.parse(post.content || "");
+
+      // Increment view count for public (non-admin) requests
+      await req.supabase
+        .from("posts")
+        .update({ views: (post.views || 0) + 1 })
+        .eq("id", post.id);
+    }
+
+    // Get related posts based on tags for published posts
+    let relatedPosts = [];
+    if (!isUUID && post.tags && post.tags.length > 0) {
+      const { data: relatedPostsData } = await req.supabase
+        .from("posts")
+        .select("id, title, slug, excerpt, cover_image, published_at")
+        .eq("published", true)
+        .neq("id", post.id)
+        .contains("tags", post.tags)
+        .limit(3);
+
+      relatedPosts = relatedPostsData || [];
+    }
+
+    res.json({
+      post,
+      relatedPosts,
+    });
+  } catch (error) {
+    logger.error("Error fetching blog post:", error);
+    res.status(500).json({ error: "Failed to fetch blog post" });
   }
 });
 
@@ -484,7 +602,6 @@ router.patch("/admin/posts/:id/status", authenticateAdmin, async (req, res) => {
   }
 });
 
-// Upload an image to Supabase Storage (for admin only)
 router.post(
   "/admin/upload",
   authenticateAdmin,
@@ -509,19 +626,12 @@ router.post(
       const filename = `blog-${uniqueSuffix}${fileExt}`;
 
       const BUCKET_NAME = "cjoga-portfolio-images";
-
-      // Debug log
-      console.log(
-        "Uploading to bucket:",
-        BUCKET_NAME,
-        "with filename:",
-        filename
-      );
+      const FILE_PATH = `blog/${filename}`;
 
       // Upload file to Supabase Storage
       const { data, error } = await req.supabase.storage
         .from(BUCKET_NAME)
-        .upload(`blog/${filename}`, req.file.buffer, {
+        .upload(FILE_PATH, req.file.buffer, {
           contentType: req.file.mimetype,
           cacheControl: "3600",
           upsert: false,
@@ -532,17 +642,16 @@ router.post(
         throw error;
       }
 
-      // Get the public URL for the uploaded file
+      // Get the public URL for the uploaded file (works with public buckets)
       const { data: publicUrlData } = req.supabase.storage
         .from(BUCKET_NAME)
-        .getPublicUrl(`blog/${filename}`);
-
-      console.log("Upload successful, public URL:", publicUrlData);
+        .getPublicUrl(FILE_PATH);
 
       logger.info("Image uploaded successfully", {
         filename,
         url: publicUrlData.publicUrl,
       });
+
       res.json({
         url: publicUrlData.publicUrl,
         filename: filename,
