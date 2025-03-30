@@ -5,7 +5,8 @@
     "projects": "Projects",
     "certifications": "Certifications",
     "contact": "Contact",
-    "blog": "Blog"
+    "blog": "Blog",
+    "cv-title": "DevOps & Cloud Engineer"
   },
   "hero": {
     "greeting": "Hi, my name is",

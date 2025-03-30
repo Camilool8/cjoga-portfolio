@@ -41,13 +41,23 @@ const isProduction = NODE_ENV === "production";
 
 // Security middleware
 if (isProduction) {
-  // Set security headers
   app.use(
     helmet({
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+          connectSrc: [
+            "'self'",
+            "https://etyutaeoblbixarewyrv.supabase.co",
+            "data:",
+            "https://cdnjs.cloudflare.com",
+          ],
+          fontSrc: [
+            "'self'",
+            "https://fonts.gstatic.com",
+            "https://cdnjs.cloudflare.com",
+          ],
           styleSrc: [
             "'self'",
             "'unsafe-inline'",
@@ -58,8 +68,6 @@ if (isProduction) {
             "data:",
             "https://etyutaeoblbixarewyrv.supabase.co",
           ],
-          fontSrc: ["'self'", "https://fonts.gstatic.com"],
-          connectSrc: ["'self'", "https://etyutaeoblbixarewyrv.supabase.co"],
         },
       },
     })
