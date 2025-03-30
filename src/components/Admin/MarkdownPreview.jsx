@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import SimpleMarkdownRenderer from "../utils/SimpleMarkdownRenderer";
+import SimpleMarkdownRenderer from "../Utils/SimpleMarkdownRenderer";
 
 export default function MarkdownPreview({ content }) {
   const [tocItems, setTocItems] = useState([]);
