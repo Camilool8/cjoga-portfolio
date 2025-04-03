@@ -44,12 +44,6 @@ spec:
             requests:
               cpu: "0.2"
               memory: "256Mi"
-          livenessProbe:
-            httpGet:
-              path: /api/health
-              port: http
-            initialDelaySeconds: 30
-            periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /api/health
