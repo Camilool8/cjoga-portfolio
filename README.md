@@ -2,7 +2,7 @@
 
 This repository contains the source code for my professional portfolio website, showcasing my experience as a DevOps & Cloud Engineer.
 
-## 🚀 Features
+## Features
 
 - **Responsive Design**: Looks great on all devices
 - **Dark/Light Theme**: Toggle between themes or use system preference
@@ -10,7 +10,7 @@ This repository contains the source code for my professional portfolio website, 
 - **Print-Ready CV**: Generate a professionally formatted PDF resume
 - **Interactive Elements**: Smooth transitions and engaging UI
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **React**: UI components and state management
 - **Vite**: Fast build tooling
@@ -18,7 +18,7 @@ This repository contains the source code for my professional portfolio website, 
 - **i18next**: Internationalization
 - **React Icons**: SVG icons for technologies and interfaces
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 cjoga-portfolio/
@@ -41,7 +41,7 @@ cjoga-portfolio/
 ├── ...configuration files
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -70,22 +70,22 @@ npm run build
 
 This generates a `dist` directory with production-ready files.
 
-## 🌐 Deployment
+## Deployment
 
 The site is deployed to [cjoga.cloud](https://cjoga.cloud) using [your preferred hosting].
 
-## 🔄 Customization
+## Customization
 
 - Edit content in `src/data.js` and translation files
 - Modify themes in `tailwind.config.js`
 - Add your professional photo to replace the placeholder
 
-## 📱 Contact
+## Contact
 
 - LinkedIn: [www.linkedin.com/in/cjoga](https://www.linkedin.com/in/cjoga)
 - Email: [josejoga.opx@gmail.com](mailto:josejoga.opx@gmail.com)
 - GitHub: [github.com/username](https://github.com/username)
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
