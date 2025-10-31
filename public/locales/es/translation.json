@@ -20,7 +20,7 @@
   },
   "about": {
     "title": "Sobre Mí",
-    "paragraph1": "¡Hola! Soy José Camilo (por favor dígame Camilo), un ingeniero en Ciencias de la Computación graduado en Santo Domingo con pasión por las prácticas DevOps y tecnologías cloud. Me especializo en crear soluciones de infraestructura eficientes, escalables y automatizadas.",
+    "paragraph1": "¡Hola! Soy José Camilo (por favor dígame Camilo), un ingeniero en Ciencias de la Computación con pasión por las prácticas DevOps y tecnologías cloud. Me especializo en crear soluciones de infraestructura eficientes, escalables y automatizadas.",
     "paragraph2": "Mi experiencia se centra en automatizar despliegues, implementar canales robustos de CI/CD y gestionar infraestructura como código en entornos de nube híbrida. Disfruto optimizando operaciones y flujos de trabajo para ayudar a los equipos a entregar software de manera más eficiente.",
     "skills": "Estas son algunas de las tecnologías con las que he estado trabajando recientemente:"
   },
@@ -112,6 +112,11 @@
   },
   "certifications": {
     "title": "Certificaciones",
+    "awsSolutionsArchitect": {
+      "name": "AWS Certified Solutions Architect (CSA)",
+      "issuer": "Amazon Web Services",
+      "date": "2025"
+    },
     "rhcsa": {
       "name": "Red Hat Certified System Administrator (RHCSA)",
       "issuer": "Red Hat",

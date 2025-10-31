@@ -11,7 +11,7 @@
   "hero": {
     "greeting": "Hi, my name is",
     "title": "José Camilo Joga Guerrero.",
-    "subtitle": "I build cloud & automation solutions.",
+    "subtitle": "I build automated cloud solutions.",
     "description": "I'm a DevOps & Cloud Engineer specializing in building and optimizing infrastructure through automation, CI/CD, Infrastructure as Code, and hybrid cloud environments. Currently focused on streamlining deployments and infrastructure management for enterprise solutions.",
     "cta": {
       "work": "View My Work",
@@ -20,7 +20,7 @@
   },
   "about": {
     "title": "About Me",
-    "paragraph1": "Hello! I'm Jose Camilo (please call me Camilo), a Computer Science Engineer graduate from Santo Domingo with a passion for DevOps practices and cloud technologies. I specialize in creating efficient, scalable, and automated infrastructure solutions.",
+    "paragraph1": "Hello! I'm Jose Camilo (please call me Camilo), a Computer Science Engineer with a passion for DevOps practices and cloud technologies. I specialize in creating efficient, scalable, and automated infrastructure solutions.",
     "paragraph2": "My expertise lies in automating deployments, implementing robust CI/CD pipelines, and managing infrastructure as code across hybrid cloud environments. I enjoy optimizing operations and workflows to help teams deliver software more efficiently.",
     "skills": "Here are some technologies I've been working with recently:"
   },
@@ -112,6 +112,11 @@
   },
   "certifications": {
     "title": "Certifications",
+    "awsSolutionsArchitect": {
+      "name": "AWS Certified Solutions Architect (CSA)",
+      "issuer": "Amazon Web Services",
+      "date": "2025"
+    },
     "rhcsa": {
       "name": "Red Hat Certified System Administrator (RHCSA)",
       "issuer": "Red Hat",

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { FaRedhat, FaAward } from "react-icons/fa";
+import { FaRedhat, FaAward, FaAws } from "react-icons/fa";
 import { SiDynatrace, SiGitlab } from "react-icons/si";
 
 function Certifications() {
@@ -7,6 +7,7 @@ function Certifications() {
 
   // Certification data keys from translations
   const certifications = [
+    { key: "awsSolutionsArchitect", icon: <FaAws /> },
     { key: "rhcsa", icon: <FaRedhat /> },
     { key: "rhce", icon: <FaRedhat /> },
     { key: "dynatrace", icon: <SiDynatrace /> },

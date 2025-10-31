@@ -48,3 +48,6 @@ public/build/
 # Misc
 .parcel-cache/
 .netlify/
+
+# Claude code
+CLAUDE.md

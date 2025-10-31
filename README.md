@@ -72,7 +72,7 @@ This generates a `dist` directory with production-ready files.
 
 ## Deployment
 
-The site is deployed to [cjoga.cloud](https://cjoga.cloud) using [your preferred hosting].
+The site is deployed to [cjoga.cloud](https://cjoga.cloud).
 
 ## Customization
 
@@ -84,7 +84,7 @@ The site is deployed to [cjoga.cloud](https://cjoga.cloud) using [your preferred
 
 - LinkedIn: [www.linkedin.com/in/cjoga](https://www.linkedin.com/in/cjoga)
 - Email: [josejoga.opx@gmail.com](mailto:josejoga.opx@gmail.com)
-- GitHub: [github.com/username](https://github.com/username)
+- GitHub: [github.com/Camilool8](https://github.com/Camilool8)
 
 ## License
 

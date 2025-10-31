@@ -358,6 +358,15 @@ const ProfessionalPDFCV = () => {
           <View style={styles.certGrid}>
             <View style={styles.certItem}>
               <Text style={styles.certName}>
+                {t("certifications.awsSolutionsArchitect.name")}
+              </Text>
+              <Text style={styles.certIssuer}>
+                {t("certifications.awsSolutionsArchitect.issuer")},{" "}
+                {t("certifications.awsSolutionsArchitect.date")}
+              </Text>
+            </View>
+            <View style={styles.certItem}>
+              <Text style={styles.certName}>
                 {t("certifications.rhcsa.name")}
               </Text>
               <Text style={styles.certIssuer}>
