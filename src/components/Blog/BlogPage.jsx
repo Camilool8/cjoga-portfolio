@@ -1,50 +1,21 @@
-import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import BlogList from "./BlogList";
 import BlogSidebar from "./BlogSidebar";
 import BlogSearch from "./BlogSearch";
 import Pagination from "./Pagination";
-import blogApi from "../../services/blogApi";
+import useBlogPosts from "../../hooks/useBlogPosts";
 
 function BlogPage() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    totalPosts: 0,
-  });
 
   // Get query params
   const page = parseInt(searchParams.get("page") || "1");
   const tag = searchParams.get("tag");
 
-  // Fetch blog posts
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setLoading(true);
-        const data = await blogApi.getPosts(page, 6, tag);
-        setPosts(data.posts);
-        setPagination({
-          currentPage: parseInt(data.currentPage),
-          totalPages: data.totalPages,
-          totalPosts: data.totalPosts,
-        });
-      } catch (err) {
-        console.error("Error fetching posts:", err);
-        setError(t("blog.error.posts"));
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, [page, tag, t]);
+  // Use custom hook for data fetching
+  const { posts, loading, error, pagination } = useBlogPosts(page, 6, tag);
 
   // Handle page change
   const handlePageChange = (newPage) => {

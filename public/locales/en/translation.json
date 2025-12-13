@@ -11,7 +11,12 @@
   "hero": {
     "greeting": "Hi, my name is",
     "title": "José Camilo Joga Guerrero.",
-    "subtitle": "I build automated cloud solutions.",
+    "roles": [
+      "DevOps & Cloud Engineer",
+      "Infrastructure Architect",
+      "Automation Expert",
+      "Kubernetes Specialist"
+    ],
     "description": "I'm a DevOps & Cloud Engineer specializing in building and optimizing infrastructure through automation, CI/CD, Infrastructure as Code, and hybrid cloud environments. Currently focused on streamlining deployments and infrastructure management for enterprise solutions.",
     "cta": {
       "work": "View My Work",
@@ -55,7 +60,7 @@
     "flBetances": {
       "title": "DevOps Intermediate Engineer",
       "company": "FL Betances & Asociados",
-      "period": "June 2024 - Present",
+      "period": "June 2024 - December 2025",
       "responsibilities": [
         "Implement cloud migration strategies for clients moving to AWS and Azure",
         "Develop infrastructure automation using Terraform and PowerShell",

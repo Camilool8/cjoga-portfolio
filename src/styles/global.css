@@ -1,6 +1,6 @@
 @import "./print.css";
 @import "./markdown-code-styles.css";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Mono&family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -65,7 +65,7 @@ section {
 
 /* Section Titles */
 .section-title {
-  @apply flex items-center relative mb-10 w-full text-2xl sm:text-3xl font-semibold;
+  @apply flex items-center relative mb-10 w-full text-2xl sm:text-3xl font-bold font-heading;
   white-space: nowrap;
 }
 
@@ -176,7 +176,7 @@ a {
 .prose h4,
 .prose h5,
 .prose h6 {
-  @apply text-light-text-primary dark:text-dark-text-primary;
+  @apply text-light-text-primary dark:text-dark-text-primary font-heading;
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: 600;

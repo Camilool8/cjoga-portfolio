@@ -11,7 +11,12 @@
   "hero": {
     "greeting": "Hola, mi nombre es",
     "title": "José Camilo Joga Guerrero.",
-    "subtitle": "Construyo soluciones automatizadas en la nube.",
+    "roles": [
+      "Ingeniero DevOps y Cloud",
+      "Arquitecto de Infraestructura",
+      "Experto en Automatización",
+      "Especialista en Kubernetes"
+    ],
     "description": "Soy un ingeniero DevOps y de Cloud especializado en construir y optimizar infraestructura a través de automatización, CI/CD, Infraestructura como Código y entornos de nube híbrida. Actualmente enfocado en agilizar despliegues y gestión de infraestructura para soluciones empresariales.",
     "cta": {
       "work": "Ver Mi Trabajo",
@@ -55,7 +60,7 @@
     "flBetances": {
       "title": "Ingeniero DevOps Intermedio",
       "company": "FL Betances & Asociados",
-      "period": "Junio 2024 - Presente",
+      "period": "Junio 2024 - Diciembre 2025",
       "responsibilities": [
         "Implementar estrategias de migración a la nube para clientes moviéndose a AWS y Azure",
         "Desarrollar automatización de infraestructura usando Terraform y PowerShell",
@@ -111,7 +116,7 @@
     }
   },
   "certifications": {
-    "title": "Certificaciones",
+    "title": "Certifications",
     "awsSolutionsArchitect": {
       "name": "AWS Certified Solutions Architect (CSA)",
       "issuer": "Amazon Web Services",

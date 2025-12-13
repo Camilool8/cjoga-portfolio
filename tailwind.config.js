@@ -36,6 +36,7 @@ export default {
           "system-ui",
           "sans-serif",
         ],
+        heading: ["Space Grotesk", "sans-serif"],
         mono: ["Fira Mono", "SF Mono", "monospace"],
       },
       boxShadow: {
