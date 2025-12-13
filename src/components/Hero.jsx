@@ -83,8 +83,8 @@ function Hero() {
         </h1>
 
         {/* Fixed height container to prevent layout shift */}
-        <div className="h-20 md:h-24 mb-6 flex items-center opacity-0 fade-in delay-2">
-          <h2 className="text-2xl md:text-5xl font-bold font-heading text-light-text-secondary dark:text-dark-text-secondary">
+        <div className="h-20 md:h-24 mb-2 flex items-center opacity-0 fade-in delay-2">
+          <h2 className="text-3xl md:text-5xl font-bold font-heading text-light-text-secondary dark:text-dark-text-secondary">
             <span>{text}</span>
             <span className="animate-cursor text-light-accent dark:text-dark-accent ml-1 font-light">
               |
