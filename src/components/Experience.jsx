@@ -20,7 +20,10 @@ function Experience() {
   );
 
   const companyKeys = ["arroyo", "flBetances", "shadowSoft"];
-  const isActive = (index) => index === 0;
+  const isActive = (key) => {
+    const period = t(`experience.${key}.period`);
+    return /present|presente/i.test(period);
+  };
 
   return (
     <section id="experience">
@@ -83,7 +86,7 @@ function Experience() {
                 }}
               />
 
-              {isActive(index) && (
+              {isActive(key) && (
                 <div
                   className="absolute top-[24px] left-[7px] md:left-[23px] w-[19px] h-[19px] rounded-full z-[1]"
                   style={{
@@ -110,7 +113,7 @@ function Experience() {
                   >
                     {t(`experience.${key}.period`)}
                   </span>
-                  {isActive(index) && (
+                  {isActive(key) && (
                     <span
                       className="flex items-center gap-1.5"
                       style={{

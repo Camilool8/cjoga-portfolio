@@ -207,6 +207,7 @@ loki-0                      1/1     Running   1          30d`,
           position: relative;
           max-width: 52rem;
           margin: 0 auto;
+          overflow: hidden;
         }
 
         .tp-glow {

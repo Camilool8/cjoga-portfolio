@@ -38,12 +38,12 @@ function PrintButton() {
   };
 
   return (
-    <div className="fixed bottom-8 right-6 xl:right-20 z-40 print:hidden">
+    <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 xl:right-20 z-40 print:hidden">
       <button
         ref={buttonRef}
         onClick={handleDownloadPDF}
         disabled={isGenerating}
-        className={`flex items-center py-2 px-4 rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl ${
+        className={`flex items-center justify-center rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl p-3 sm:py-2 sm:px-4 ${
           isGenerating ? "opacity-75 cursor-wait" : ""
         }`}
         style={{
@@ -53,8 +53,8 @@ function PrintButton() {
         }}
         aria-label={t("print.button")}
       >
-        <MdFileDownload className="mr-2 text-lg" />
-        <span className="text-sm font-medium">
+        <MdFileDownload className="text-lg sm:mr-2" />
+        <span className="hidden sm:inline text-sm font-medium">
           {isGenerating
             ? t("print.generating", "Generating...")
             : t("print.button")}
