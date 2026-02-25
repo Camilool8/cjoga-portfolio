@@ -36,6 +36,7 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 const isProduction = NODE_ENV === "production";
 
 if (isProduction) {
+  app.set("trust proxy", 1);
   app.use(
     helmet({
       contentSecurityPolicy: {
