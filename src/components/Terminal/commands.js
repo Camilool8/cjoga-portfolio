@@ -32,7 +32,7 @@ function buildResumeText(t) {
   return `
  +-------------------------------------------------+
  |     Jose Camilo Joga Guerrero                    |
- |     ${t("terminal.messages.resumeLocation") === "Location" ? "DevOps & Cloud Engineer" : "Ingeniero DevOps y Cloud"}                      |
+ |     ${t("terminal.messages.resumeTitle")}                      |
  +-------------------------------------------------+
 
   ${t("terminal.messages.resumeLocation").padEnd(8)} : Santo Domingo, Dominican Republic
@@ -256,6 +256,10 @@ export function resolveClientCommand(input, commandHistory, t) {
     return null;
   }
 
-  // Unknown command -> delegate to server (will return "not found")
-  return null;
+  // Unknown command -> handle client-side with translation
+  const cmd = trimmed.split(" ")[0];
+  return {
+    output: `${t("terminal.messages.commandNotFound", { command: cmd })} ${t("terminal.messages.commandNotFoundHint")}`,
+    type: "error",
+  };
 }

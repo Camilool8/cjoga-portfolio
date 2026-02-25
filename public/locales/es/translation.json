@@ -414,7 +414,11 @@
       "resumeCertifications": "CERTIFICACIONES",
       "resumeSkills": "HABILIDADES",
       "resumeHireTip": "Escribe 'sudo hire-me' para el siguiente paso ;)",
-      "fileNotFound": "No existe el fichero o el directorio"
+      "fileNotFound": "No existe el fichero o el directorio",
+      "commandNotFound": "comando no encontrado: {{command}}.",
+      "commandNotFoundHint": "Escribe 'help' para ver los comandos disponibles.",
+      "rateLimited": "Límite de solicitudes excedido. Espera antes de enviar más comandos.",
+      "resumeTitle": "Ingeniero DevOps y Cloud"
     }
   },
   "footer": {

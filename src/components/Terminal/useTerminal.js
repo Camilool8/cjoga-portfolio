@@ -72,11 +72,14 @@ export default function useTerminal() {
       setIsProcessing(true);
       try {
         const response = await terminalApi.execute(input);
+        const content = response.errorKey
+          ? t(`terminal.messages.${response.errorKey}`)
+          : response.output;
         setHistory((prev) => [
           ...prev,
           {
             type: "output",
-            content: response.output,
+            content,
             outputType: response.type,
           },
         ]);

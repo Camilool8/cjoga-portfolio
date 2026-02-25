@@ -12,14 +12,15 @@ const terminalApi = {
     } catch (error) {
       if (error.response?.status === 429) {
         return {
-          output:
-            "Rate limit exceeded. Please wait before sending more commands.",
+          output: null,
           type: "error",
+          errorKey: "rateLimited",
         };
       }
       return {
-        output: "Connection error. Server may be unavailable.",
+        output: null,
         type: "error",
+        errorKey: "connectionError",
       };
     }
   },
