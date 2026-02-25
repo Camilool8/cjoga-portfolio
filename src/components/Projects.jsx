@@ -1,68 +1,99 @@
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import { FaFolder } from "react-icons/fa";
+import {
+  sectionVariants, itemVariants, cardVariants, viewportConfig,
+} from "../hooks/useMotion";
 
 function Projects() {
   const { t } = useTranslation();
 
-  // Project data from i18n
   const projects = [
-    "cicd",
-    "iac",
-    "monitoring",
-    "infrastructure",
-    "portal",
-    "containerization",
+    "cicd", "iac", "monitoring", "infrastructure", "portal", "containerization",
   ];
 
-  // Get tech stack icons based on name
-  const getTechIcon = (tech) => {
-    return <span className="tech-name">{tech}</span>;
-  };
-
   return (
-    <section id="projects" className="py-20">
+    <section id="projects">
       <div className="section-inner">
-        <h2 className="section-title">
-          <span className="number">03.</span> {t("projects.title")}
-        </h2>
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+        >
+          <motion.div variants={itemVariants}>
+            <span className="section-label">{t("projects.title", "Projects")}</span>
+            <h2 className="section-heading">
+              {t("projects.heading", "Things I've built.")}
+            </h2>
+          </motion.div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 mt-12">
           {projects.map((projectKey, index) => (
-            <div
+            <motion.div
               key={projectKey}
-              className="group bg-light-secondary dark:bg-dark-secondary rounded-md p-6 flex flex-col transform transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:border-t-2 border-transparent hover:border-light-accent dark:hover:border-dark-accent h-full relative overflow-hidden"
-              style={{ animationDelay: `${index * 100}ms` }}
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="project-card flex flex-col rounded-2xl p-6 relative overflow-hidden cursor-default"
+              style={{
+                background: "var(--bg-surface)",
+                border: "1px solid var(--border-subtle)",
+              }}
             >
-              {/* Subtle gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-b from-light-accent/5 to-transparent dark:from-dark-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              {/* Gradient line on top */}
+              <div
+                className="project-gradient absolute top-0 left-0 right-0 h-0.5 transition-opacity duration-400"
+                style={{ background: "var(--gradient-accent)", opacity: 0 }}
+              />
 
-              <div className="flex justify-between items-center mb-6 relative z-10">
-                <FaFolder className="text-light-accent dark:text-dark-accent text-4xl group-hover:scale-110 transition-transform duration-300" />
+              {/* Icon */}
+              <div
+                className="project-icon-wrap w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-[18px] transition-all duration-300"
+                style={{ background: "var(--accent-dim)", color: "var(--accent)" }}
+              >
+                <FaFolder />
               </div>
 
-              <h3 className="text-xl font-semibold mb-2 text-light-text-primary dark:text-dark-text-primary relative z-10 group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors">
+              {/* Title */}
+              <h3
+                className="project-title-text mb-2.5 transition-colors duration-300"
+                style={{
+                  fontFamily: "var(--font-display)", fontSize: "1.05rem",
+                  fontWeight: 700, color: "var(--text-primary)",
+                }}
+              >
                 {t(`projects.${projectKey}.title`)}
               </h3>
 
-              <p className="text-light-text-secondary dark:text-dark-text-secondary mb-6 flex-grow relative z-10">
+              {/* Description */}
+              <p
+                className="mb-[18px] flex-grow"
+                style={{ fontSize: "0.86rem", lineHeight: 1.65, color: "var(--text-secondary)" }}
+              >
                 {t(`projects.${projectKey}.description`)}
               </p>
 
-              <footer className="relative z-10">
-                <ul className="flex flex-wrap mt-2 gap-x-3 gap-y-2">
-                  {t(`projects.${projectKey}.tech`, {
-                    returnObjects: true,
-                  }).map((tech, index) => (
-                    <li
-                      key={index}
-                      className="text-xs font-mono text-light-text-secondary dark:text-dark-text-secondary"
-                    >
-                      {getTechIcon(tech)}
-                    </li>
-                  ))}
-                </ul>
-              </footer>
-            </div>
+              {/* Tech tags */}
+              <div className="flex flex-wrap gap-1.5">
+                {t(`projects.${projectKey}.tech`, { returnObjects: true }).map((tech, i) => (
+                  <span
+                    key={i}
+                    className="tech-tag py-[3px] px-2 rounded-md transition-all duration-200"
+                    style={{
+                      fontFamily: "var(--font-mono)", fontSize: "0.62rem",
+                      background: "var(--bg-elevated)", color: "var(--text-secondary)",
+                      border: "1px solid var(--border-subtle)",
+                    }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>

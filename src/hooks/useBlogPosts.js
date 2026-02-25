@@ -24,7 +24,7 @@ const useBlogPosts = (page = 1, limit = 6, tag = null) => {
         const data = await blogApi.getPosts(page, limit, tag);
         
         if (isMounted) {
-          setPosts(data.posts);
+          setPosts(data.posts || []);
           setPagination({
             currentPage: parseInt(data.currentPage),
             totalPages: data.totalPages,

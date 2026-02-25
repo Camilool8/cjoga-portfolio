@@ -32,31 +32,89 @@ function BlogList({ posts }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
-          className="bg-light-secondary dark:bg-dark-secondary rounded-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 flex flex-col h-full"
+          className="blog-card rounded-xl overflow-hidden flex flex-col h-full group"
+          style={{
+            background: "var(--bg-surface)",
+            border: "1px solid var(--border-subtle)",
+            transition:
+              "transform 0.4s var(--ease-out-expo), border-color 0.4s, box-shadow 0.4s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-6px)";
+            e.currentTarget.style.borderColor = "var(--border-medium)";
+            e.currentTarget.style.boxShadow =
+              "0 12px 40px rgba(0, 0, 0, 0.15)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.borderColor = "var(--border-subtle)";
+            e.currentTarget.style.boxShadow = "none";
+          }}
         >
+          {/* Accent gradient top line */}
+          <div
+            className="h-[2px] w-full opacity-0 group-hover:opacity-100"
+            style={{
+              background: "var(--gradient-accent)",
+              transition: "opacity 0.4s var(--ease-out-expo)",
+            }}
+          />
+
           {/* Cover Image */}
           <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
             <img
               src={post.cover_image || "/images/blog-placeholder.jpg"}
               alt={post.title}
-              className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
+              className="w-full h-48 object-cover"
+              style={{
+                transition: "transform 0.5s var(--ease-out-expo)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
             />
           </Link>
 
           {/* Content */}
           <div className="p-6 flex flex-col flex-grow">
             {/* Title */}
-            <h3 className="text-xl font-semibold mb-2 text-light-text-primary dark:text-dark-text-primary">
+            <h3
+              className="text-xl font-semibold mb-2"
+              style={{
+                fontFamily: "var(--font-display)",
+                color: "var(--text-primary)",
+              }}
+            >
               <Link
                 to={`/blog/${post.slug}`}
-                className="hover:text-light-accent dark:hover:text-dark-accent"
+                className="hover:opacity-80"
+                style={{
+                  color: "var(--text-primary)",
+                  transition: "color 0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--text-primary)";
+                }}
               >
                 {post.title}
               </Link>
             </h3>
 
             {/* Meta */}
-            <div className="flex flex-wrap items-center mb-3 text-sm text-light-text-secondary dark:text-dark-text-secondary">
+            <div
+              className="flex flex-wrap items-center mb-3 text-sm"
+              style={{
+                color: "var(--text-tertiary)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.8rem",
+              }}
+            >
               <span className="flex items-center mr-4 mb-1">
                 <FaCalendarAlt className="mr-1" />
                 {formatDate(post.published_at)}
@@ -69,7 +127,10 @@ function BlogList({ posts }) {
             </div>
 
             {/* Excerpt */}
-            <p className="text-light-text-secondary dark:text-dark-text-secondary mb-4 flex-grow">
+            <p
+              className="mb-4 flex-grow text-sm leading-relaxed"
+              style={{ color: "var(--text-secondary)" }}
+            >
               {post.excerpt}
             </p>
 
@@ -81,7 +142,24 @@ function BlogList({ posts }) {
                     key={index}
                     href="#"
                     onClick={(e) => handleTagClick(tag, e)}
-                    className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-light-primary dark:bg-dark-primary text-light-accent dark:text-dark-accent hover:bg-light-accent/10 dark:hover:bg-dark-accent/10 transition-colors"
+                    className="inline-flex items-center px-2 py-1 rounded-full text-xs"
+                    style={{
+                      background: "var(--accent-dim)",
+                      color: "var(--accent)",
+                      border: "1px solid var(--border-subtle)",
+                      fontFamily: "var(--font-mono)",
+                      transition: "all 0.3s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor =
+                        "var(--border-active)";
+                      e.currentTarget.style.background = "var(--accent-glow)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor =
+                        "var(--border-subtle)";
+                      e.currentTarget.style.background = "var(--accent-dim)";
+                    }}
                   >
                     <FaTag className="mr-1 text-xs" />
                     {tag}
@@ -93,7 +171,18 @@ function BlogList({ posts }) {
             {/* Read More Link */}
             <Link
               to={`/blog/${post.slug}`}
-              className="inline-block mt-4 font-mono text-sm text-light-accent dark:text-dark-accent hover:underline"
+              className="inline-block mt-4 text-sm"
+              style={{
+                fontFamily: "var(--font-mono)",
+                color: "var(--accent)",
+                transition: "opacity 0.3s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = "0.8";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = "1";
+              }}
             >
               {t("blog.readMore")} →
             </Link>

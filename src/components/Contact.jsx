@@ -1,32 +1,86 @@
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
+import { FaEnvelope, FaLinkedinIn, FaGithub } from "react-icons/fa";
+import {
+  sectionVariants, itemVariants, cardVariants, viewportConfig,
+} from "../hooks/useMotion";
 
 function Contact() {
   const { t } = useTranslation();
 
+  const contactLinks = [
+    {
+      href: "mailto:josejoga.opx@gmail.com",
+      icon: <FaEnvelope />,
+      label: "josejoga.opx@gmail.com",
+    },
+    {
+      href: "https://www.linkedin.com/in/cjoga",
+      icon: <FaLinkedinIn />,
+      label: "linkedin.com/in/cjoga",
+      external: true,
+    },
+    {
+      href: "https://github.com/Camilool8",
+      icon: <FaGithub />,
+      label: "github.com/Camilool8",
+      external: true,
+    },
+  ];
+
   return (
-    <section id="contact" className="py-20">
-      <div className="section-inner max-w-3xl mx-auto text-center">
-        <p className="font-mono text-light-accent dark:text-dark-accent text-base mb-4">
-          {t("contact.subtitle")}
-        </p>
+    <section id="contact" style={{ textAlign: "center" }}>
+      <div className="section-inner max-w-3xl mx-auto">
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+        >
+          <motion.div variants={itemVariants}>
+            <span className="section-label">{t("contact.subtitle", "Contact")}</span>
+            <h2
+              className="section-heading"
+              style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)" }}
+            >
+              {t("contact.title")}
+            </h2>
+          </motion.div>
 
-        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-light-text-primary dark:text-dark-text-primary">
-          {t("contact.title")}
-        </h2>
+          <motion.p
+            variants={itemVariants}
+            className="max-w-[500px] mx-auto mb-10"
+            style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7 }}
+          >
+            {t("contact.text")}
+          </motion.p>
+        </motion.div>
 
-        <p className="text-light-text-secondary dark:text-dark-text-secondary mb-12 max-w-xl mx-auto">
-          {t("contact.text")}
-        </p>
-
-        {/* Phone number that only appears in print version */}
+        {/* Phone number for print */}
         <p className="print-only mb-4">{t("print.phone")}</p>
 
-        <a
-          href="mailto:josejoga.opx@gmail.com"
-          className="cta-button inline-block"
-        >
-          {t("contact.cta")}
-        </a>
+        <div className="flex justify-center gap-3 flex-wrap">
+          {contactLinks.map((link, i) => (
+            <motion.a
+              key={link.href}
+              custom={i}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              href={link.href}
+              {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="contact-link inline-flex items-center gap-2 py-3 px-6 rounded-xl transition-all duration-300 no-underline"
+              style={{
+                fontFamily: "var(--font-mono)", fontSize: "0.8rem",
+                color: "var(--text-secondary)", border: "1px solid var(--border-subtle)",
+              }}
+            >
+              {link.icon}
+              <span className="hidden sm:inline">{link.label}</span>
+            </motion.a>
+          ))}
+        </div>
       </div>
     </section>
   );

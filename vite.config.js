@@ -13,6 +13,12 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+    },
   },
   build: {
     outDir: "dist",
@@ -30,6 +36,7 @@ export default defineConfig({
             "i18next-http-backend",
           ],
           "icons-vendor": ["react-icons"],
+          "motion-vendor": ["framer-motion"],
         },
       },
     },
@@ -37,5 +44,5 @@ export default defineConfig({
     assetsInlineLimit: 4096, // 4kb
   },
   // Configure environment variables
-  envPrefix: "APP_",
+  envPrefix: "VITE_",
 });

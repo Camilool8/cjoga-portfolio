@@ -1,111 +1,327 @@
 @import "./print.css";
 @import "./markdown-code-styles.css";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Mono&family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Fonts */
-/* Option 1: Local Fonts (if you have the files) */
-/*
-@font-face {
-  font-family: 'Calibre';
-  src: url('/fonts/Calibre-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+/* ============================================================
+   DESIGN SYSTEM — CSS Custom Properties
+   ============================================================ */
+:root {
+  /* Dark theme defaults */
+  --bg-void: #06080d;
+  --bg-primary: #0b0f1a;
+  --bg-surface: #111827;
+  --bg-elevated: #1a2332;
+  --bg-glass: rgba(17, 24, 37, 0.7);
+  --border-subtle: rgba(100, 255, 218, 0.08);
+  --border-medium: rgba(100, 255, 218, 0.15);
+  --border-active: rgba(100, 255, 218, 0.4);
+  --accent: #64ffda;
+  --accent-dim: rgba(100, 255, 218, 0.15);
+  --accent-glow: rgba(100, 255, 218, 0.06);
+  --accent-secondary: #38bdf8;
+  --accent-warm: #f59e0b;
+  --text-primary: #e2e8f0;
+  --text-secondary: #8892b0;
+  --text-tertiary: #4a5568;
+  --gradient-hero: linear-gradient(135deg, #0b0f1a 0%, #0f172a 40%, #0b1628 100%);
+  --gradient-accent: linear-gradient(135deg, #64ffda, #38bdf8);
+  --particle-color: 100, 255, 218;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@font-face {
-  font-family: 'Calibre';
-  src: url('/fonts/Calibre-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
+[data-theme="light"] {
+  --bg-void: #f1f5f9;
+  --bg-primary: #ffffff;
+  --bg-surface: #f8fafc;
+  --bg-elevated: #e2e8f0;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+  --border-subtle: rgba(2, 132, 199, 0.12);
+  --border-medium: rgba(2, 132, 199, 0.25);
+  --border-active: rgba(2, 132, 199, 0.5);
+  --accent: #0284c7;
+  --accent-dim: rgba(2, 132, 199, 0.1);
+  --accent-glow: rgba(2, 132, 199, 0.08);
+  --accent-secondary: #0ea5e9;
+  --accent-warm: #d97706;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  --gradient-hero: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+  --gradient-accent: linear-gradient(135deg, #0284c7, #0ea5e9);
+  --particle-color: 2, 132, 199;
 }
 
-@font-face {
-  font-family: 'Calibre';
-  src: url('/fonts/Calibre-Semibold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SF Mono';
-  src: url('/fonts/SFMono-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-*/
-
-/* Base Styles */
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
 html {
-  scroll-behavior: smooth;
+  scroll-padding-top: 0;
 }
+
 
 body {
-  @apply bg-light-primary text-light-text-primary dark:bg-dark-primary dark:text-dark-text-primary;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  font-family: "Calibre", "Inter", "San Francisco", "SF Pro Text", -apple-system,
-    system-ui, sans-serif;
+  font-family: var(--font-body);
+  background: var(--bg-void);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-primary);
 }
 
 /* Section Styles */
 section {
   @apply py-16 md:py-24;
+  position: relative;
+  z-index: 2;
+}
+
+/* Portfolio sections — viewport-filling with centered content */
+#about,
+#experience,
+#projects,
+#certifications,
+#blog-preview,
+#contact {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .section-inner {
-  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full;
 }
 
-/* Section Titles */
+/* ============================================================
+   NEW SECTION LABELS & HEADINGS
+   ============================================================ */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.section-label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+/* Legacy section-title (preserved for blog and other components during transition) */
 .section-title {
-  @apply flex items-center relative mb-10 w-full text-2xl sm:text-3xl font-bold font-heading;
+  @apply flex items-center relative mb-10 w-full text-2xl sm:text-3xl font-bold;
+  font-family: var(--font-display);
   white-space: nowrap;
+  color: var(--text-primary);
 }
 
 .section-title .number {
-  @apply mr-2 text-light-accent dark:text-dark-accent font-mono text-lg sm:text-xl font-normal;
+  @apply mr-2 text-lg sm:text-xl font-normal;
+  font-family: var(--font-mono);
+  color: var(--accent);
 }
 
 .section-title::after {
   content: "";
-  @apply block relative w-40 sm:w-60 h-px ml-4 bg-light-accent dark:bg-dark-accent;
+  @apply block relative w-40 sm:w-60 h-px ml-4;
+  background: var(--accent);
 }
 
-/* Links */
-a {
-  @apply text-light-accent dark:text-dark-accent;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s var(--ease-out-expo);
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Buttons */
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--accent-glow);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border-medium);
+}
+
+.btn-outline:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* Legacy cta-button (preserved for blog/admin) */
 .cta-button {
-  @apply inline-block bg-transparent text-light-accent dark:text-dark-accent border border-light-accent dark:border-dark-accent rounded px-4 py-3 text-sm font-mono leading-none;
+  @apply inline-block bg-transparent rounded px-4 py-3 text-sm leading-none;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  border: 1px solid var(--accent);
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .cta-button:hover {
-  @apply bg-light-accent/10 dark:bg-dark-accent/10 transform -translate-y-1;
+  background: var(--accent-dim);
+  transform: translateY(-1px);
 }
 
-/* Skills List */
+/* ============================================================
+   LINKS
+   ============================================================ */
+a {
+  color: var(--accent);
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* ============================================================
+   GLASS MORPHISM UTILITY
+   ============================================================ */
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ============================================================
+   SCROLL REVEAL ANIMATIONS
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+.reveal-d3 { transition-delay: 0.3s; }
+.reveal-d4 { transition-delay: 0.4s; }
+.stagger .reveal { transition-delay: calc(var(--i, 0) * 0.06s); }
+
+/* ============================================================
+   KEYFRAME ANIMATIONS
+   ============================================================ */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes blink-border {
+  0%, 100% { border-color: var(--accent); }
+  50% { border-color: transparent; }
+}
+
+@keyframes hReveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ring-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes scroll-anim {
+  0% { top: -50%; }
+  100% { top: 150%; }
+}
+
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+/* Hide elements only in print mode */
+.print-only { display: none; }
+
+/* ============================================================
+   SKILLS LIST (legacy, used in some components)
+   ============================================================ */
 .skills-list {
   @apply grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-2 mt-4;
 }
 
 .skills-list li {
-  @apply relative pl-6 text-light-text-secondary dark:text-dark-text-secondary font-mono text-sm;
+  @apply relative pl-6 text-sm;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
 }
 
 .skills-list li::before {
   content: "▹";
-  @apply absolute left-0 text-light-accent dark:text-dark-accent;
+  @apply absolute left-0;
+  color: var(--accent);
 }
 
 /* Job Description Lists */
@@ -114,12 +330,14 @@ a {
 }
 
 .job-description li {
-  @apply relative pl-6 mb-2 text-light-text-secondary dark:text-dark-text-secondary;
+  @apply relative pl-6 mb-2;
+  color: var(--text-secondary);
 }
 
 .job-description li::before {
   content: "▹";
-  @apply absolute left-0 text-light-accent dark:text-dark-accent;
+  @apply absolute left-0;
+  color: var(--accent);
 }
 
 /* Technology Icons */
@@ -127,46 +345,11 @@ a {
   @apply inline-block mr-2 align-middle;
 }
 
-/* Animation Utilities */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease forwards;
-}
-
-.delay-1 {
-  animation-delay: 0.1s;
-}
-.delay-2 {
-  animation-delay: 0.2s;
-}
-.delay-3 {
-  animation-delay: 0.3s;
-}
-.delay-4 {
-  animation-delay: 0.4s;
-}
-.delay-5 {
-  animation-delay: 0.5s;
-}
-
-/* Hide elements only in print mode */
-.print-only {
-  display: none;
-}
-
-/* Blog Styles */
+/* ============================================================
+   BLOG PROSE STYLES
+   ============================================================ */
 .prose {
-  @apply text-light-text-primary dark:text-dark-text-primary;
+  color: var(--text-primary);
   max-width: 100%;
 }
 
@@ -176,73 +359,52 @@ a {
 .prose h4,
 .prose h5,
 .prose h6 {
-  @apply text-light-text-primary dark:text-dark-text-primary font-heading;
+  color: var(--text-primary);
+  font-family: var(--font-display);
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: 600;
   line-height: 1.25;
 }
 
-.prose h1 {
-  @apply text-3xl;
-}
-
+.prose h1 { @apply text-3xl; }
 .prose h2 {
   @apply text-2xl;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid;
-  @apply border-light-accent/20 dark:border-dark-accent/20;
+  border-bottom: 1px solid var(--border-subtle);
 }
+.prose h3 { @apply text-xl; }
+.prose h4 { @apply text-lg; }
 
-.prose h3 {
-  @apply text-xl;
-}
+.prose p { margin-top: 1rem; margin-bottom: 1rem; }
 
-.prose h4 {
-  @apply text-lg;
-}
+.prose a { color: var(--accent); text-decoration: none; }
+.prose a:hover { text-decoration: underline; }
 
-.prose p {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.prose a {
-  @apply text-light-accent dark:text-dark-accent;
-  text-decoration: none;
-}
-
-.prose a:hover {
-  text-decoration: underline;
-}
-
-.prose ul,
-.prose ol {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
-}
-
-.prose ul {
-  list-style-type: disc;
-}
-
-.prose ol {
-  list-style-type: decimal;
-}
-
-.prose li {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
+.prose ul, .prose ol { margin-top: 1rem; margin-bottom: 1rem; padding-left: 1.5rem; }
+.prose ul { list-style-type: disc; }
+.prose ol { list-style-type: decimal; }
+.prose li { margin-top: 0.5rem; margin-bottom: 0.5rem; }
 
 .prose blockquote {
-  @apply border-l-4 border-light-accent dark:border-dark-accent pl-4 py-2 my-4 bg-light-secondary/50 dark:bg-dark-secondary/50 rounded-r-md;
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background: var(--bg-surface);
+  border-radius: 0 0.375rem 0.375rem 0;
   font-style: italic;
 }
 
 .prose pre {
-  @apply bg-light-secondary dark:bg-dark-secondary p-4 rounded-md overflow-x-auto my-4;
+  background: var(--bg-surface);
+  padding: 1rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .prose pre code {
@@ -251,24 +413,23 @@ a {
   line-height: 1.7;
 }
 
-.prose img {
-  @apply rounded-md max-w-full my-4 mx-auto;
-}
+.prose img { @apply rounded-md max-w-full my-4 mx-auto; }
 
 .prose hr {
-  @apply my-8 border-t border-light-accent/20 dark:border-dark-accent/20;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-top: 1px solid var(--border-subtle);
 }
 
-.prose table {
-  @apply w-full border-collapse my-6;
-}
-
+.prose table { @apply w-full border-collapse my-6; }
 .prose th {
-  @apply bg-light-secondary dark:bg-dark-secondary border border-light-accent/20 dark:border-dark-accent/20 px-4 py-2 text-left;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  @apply px-4 py-2 text-left;
 }
-
 .prose td {
-  @apply border border-light-accent/20 dark:border-dark-accent/20 px-4 py-2;
+  border: 1px solid var(--border-subtle);
+  @apply px-4 py-2;
 }
 
 /* Line Clamps for Blog Cards */
@@ -286,13 +447,14 @@ a {
   overflow: hidden;
 }
 
-/* PrismJS Syntax Highlighting */
+/* ============================================================
+   PRISM SYNTAX HIGHLIGHTING
+   ============================================================ */
 code[class*="language-"],
 pre[class*="language-"] {
   color: #f8f8f2;
   background: none;
-  font-family: "Fira Mono", Consolas, Monaco, "Andale Mono", "Ubuntu Mono",
-    monospace;
+  font-family: var(--font-mono);
   text-align: left;
   white-space: pre;
   word-spacing: normal;
@@ -303,12 +465,12 @@ pre[class*="language-"] {
   hyphens: none;
 }
 
-/* Code blocks */
 pre[class*="language-"] {
   padding: 1em;
   margin: 0.5em 0;
   overflow: auto;
   border-radius: 0.3em;
+  position: relative;
 }
 
 :not(pre) > code[class*="language-"],
@@ -316,101 +478,36 @@ pre[class*="language-"] {
   background: #282a36;
 }
 
-/* Dark theme code block styling */
 .dark pre[class*="language-"] {
   background: #1a1c25;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Light theme code block styling */
 .light pre[class*="language-"] {
   background: #282a36;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Inline code */
 :not(pre) > code[class*="language-"] {
   padding: 0.1em;
   border-radius: 0.3em;
   white-space: normal;
 }
 
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-  color: #6272a4;
-}
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: #6272a4; }
+.token.punctuation { color: #f8f8f2; }
+.namespace { opacity: 0.7; }
+.token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #ff79c6; }
+.token.boolean, .token.number { color: #bd93f9; }
+.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #50fa7b; }
+.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: #f8f8f2; }
+.token.atrule, .token.attr-value, .token.keyword { color: #ff79c6; }
+.token.function, .token.class-name { color: #8be9fd; }
+.token.regex, .token.important, .token.variable { color: #f1fa8c; }
+.token.important, .token.bold { font-weight: bold; }
+.token.italic { font-style: italic; }
+.token.entity { cursor: help; }
 
-.token.punctuation {
-  color: #f8f8f2;
-}
-
-.namespace {
-  opacity: 0.7;
-}
-
-.token.property,
-.token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: #ff79c6;
-}
-
-.token.boolean,
-.token.number {
-  color: #bd93f9;
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-  color: #50fa7b;
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-  color: #f8f8f2;
-}
-
-.token.atrule,
-.token.attr-value,
-.token.keyword {
-  color: #ff79c6;
-}
-
-.token.function,
-.token.class-name {
-  color: #8be9fd;
-}
-
-.token.regex,
-.token.important,
-.token.variable {
-  color: #f1fa8c;
-}
-
-.token.important,
-.token.bold {
-  font-weight: bold;
-}
-
-.token.italic {
-  font-style: italic;
-}
-
-.token.entity {
-  cursor: help;
-}
-
-/* Add a small icon to indicate language */
 pre[class*="language-"]::before {
   content: attr(data-language);
   position: absolute;
@@ -425,12 +522,7 @@ pre[class*="language-"]::before {
   letter-spacing: 0.05em;
 }
 
-/* Position relative for the language label */
-pre[class*="language-"] {
-  position: relative;
-}
-
-/* Line numbers for code blocks - optional */
+/* Line numbers */
 pre.line-numbers {
   position: relative;
   padding-left: 3.8em;
@@ -451,9 +543,6 @@ pre.line-numbers > code {
   width: 3em;
   letter-spacing: -1px;
   border-right: 1px solid #6272a4;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -470,102 +559,89 @@ pre.line-numbers > code {
   text-align: right;
 }
 
-/* Better text contrast in dark mode */
+/* ============================================================
+   ADMIN PANEL DARK MODE OVERRIDES
+   (Preserved — these use .dark class selectors for admin panel)
+   ============================================================ */
+
 .dark .text-dark-text-primary {
-  color: #f1f5f9 !important; /* Light gray with higher contrast */
+  color: #f1f5f9 !important;
 }
 
 .dark .text-dark-text-secondary {
-  color: #cbd5e1 !important; /* Medium light gray with higher contrast */
+  color: #cbd5e1 !important;
 }
 
-/* Improved contrast for status badges */
 .dark .status-badge-published {
-  background-color: rgba(
-    34,
-    197,
-    94,
-    0.25
-  ) !important; /* Semi-transparent green */
-  color: #dcfce7 !important; /* Extra light green text */
+  background-color: rgba(34, 197, 94, 0.25) !important;
+  color: #dcfce7 !important;
 }
 
 .dark .status-badge-draft {
-  background-color: rgba(
-    245,
-    158,
-    11,
-    0.25
-  ) !important; /* Semi-transparent amber */
-  color: #fef3c7 !important; /* Extra light amber text */
+  background-color: rgba(245, 158, 11, 0.25) !important;
+  color: #fef3c7 !important;
 }
 
-/* Better dark mode button contrast */
 .dark .admin-button {
-  background-color: #1e293b !important; /* Dark slate blue */
-  color: #f8fafc !important; /* Very light gray/blue */
-  border-color: #475569 !important; /* Medium slate */
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
 }
 
 .dark .admin-button:hover {
-  background-color: #334155 !important; /* Slightly lighter dark slate blue */
+  background-color: #334155 !important;
 }
 
-/* Primary action buttons (green/publish) with better contrast */
 .dark .admin-button-primary {
-  background-color: #065f46 !important; /* Dark green */
-  color: #d1fae5 !important; /* Very light green */
+  background-color: #065f46 !important;
+  color: #d1fae5 !important;
 }
 
 .dark .admin-button-primary:hover {
-  background-color: #047857 !important; /* Slightly lighter green */
+  background-color: #047857 !important;
 }
 
-/* Danger action buttons (red/delete) with better contrast */
 .dark .admin-button-danger {
-  background-color: #991b1b !important; /* Dark red */
-  color: #fee2e2 !important; /* Very light red */
+  background-color: #991b1b !important;
+  color: #fee2e2 !important;
 }
 
 .dark .admin-button-danger:hover {
-  background-color: #b91c1c !important; /* Slightly lighter red */
+  background-color: #b91c1c !important;
 }
 
-/* Table improvements for dark mode */
 .dark .admin-table th {
-  color: #f1f5f9 !important; /* Light gray */
-  background-color: #1e293b !important; /* Dark slate blue */
+  color: #f1f5f9 !important;
+  background-color: #1e293b !important;
 }
 
 .dark .admin-table tr {
-  border-color: #334155 !important; /* Medium slate blue */
+  border-color: #334155 !important;
 }
 
 .dark .admin-table tr:hover {
-  background-color: #334155 !important; /* Medium slate blue */
+  background-color: #334155 !important;
 }
 
 .dark .admin-table td {
-  color: #e2e8f0 !important; /* Light gray/blue */
+  color: #e2e8f0 !important;
 }
 
-/* Form controls in dark mode */
 .dark .admin-input,
 .dark .admin-textarea,
 .dark .admin-select {
-  background-color: #1e293b !important; /* Dark slate blue */
-  color: #f8fafc !important; /* Very light gray/blue */
-  border-color: #475569 !important; /* Medium slate */
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
 }
 
 .dark .admin-input:focus,
 .dark .admin-textarea:focus,
 .dark .admin-select:focus {
-  border-color: #0ea5e9 !important; /* Cyan/blue accent */
-  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2) !important; /* Subtle cyan glow */
+  border-color: #0ea5e9 !important;
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2) !important;
 }
 
-/* Specific improvements for status badges in tables */
 .dark td .status-badge {
   padding: 0.25rem 0.5rem;
   border-radius: 0.375rem;
@@ -573,92 +649,176 @@ pre.line-numbers > code {
 }
 
 .dark td .status-badge-published {
-  background-color: #065f46 !important; /* Dark green */
-  color: #d1fae5 !important; /* Very light green */
+  background-color: #065f46 !important;
+  color: #d1fae5 !important;
 }
 
 .dark td .status-badge-draft {
-  background-color: #92400e !important; /* Dark amber */
-  color: #fef3c7 !important; /* Very light amber */
+  background-color: #92400e !important;
+  color: #fef3c7 !important;
 }
 
-/* Action buttons for publish/unpublish in dark mode */
 .dark .publish-button {
-  background-color: #065f46 !important; /* Dark green */
-  color: #d1fae5 !important; /* Very light green */
+  background-color: #065f46 !important;
+  color: #d1fae5 !important;
 }
 
 .dark .unpublish-button {
-  background-color: #92400e !important; /* Dark amber */
-  color: #fef3c7 !important; /* Very light amber */
+  background-color: #92400e !important;
+  color: #fef3c7 !important;
 }
 
-/* Improve modal contrast */
 .dark .admin-modal {
-  background-color: #1e293b !important; /* Dark slate blue */
-  color: #f8fafc !important; /* Very light gray/blue */
-  border: 1px solid #475569 !important; /* Medium slate */
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #475569 !important;
 }
 
 .dark .admin-modal-header {
-  border-bottom-color: #475569 !important; /* Medium slate */
+  border-bottom-color: #475569 !important;
 }
 
 .dark .admin-modal-footer {
-  border-top-color: #475569 !important; /* Medium slate */
+  border-top-color: #475569 !important;
 }
 
-.dark .admin-area a {
-  color: #38bdf8; /* Light blue */
-}
+.dark .admin-area a { color: #38bdf8; }
+.dark .admin-area a:hover { color: #7dd3fc; }
 
-.dark .admin-area a:hover {
-  color: #7dd3fc; /* Lighter blue */
-}
-
-/* Ensure action buttons have good contrast */
 .dark .admin-action-button {
-  background-color: #1e40af !important; /* Dark blue */
+  background-color: #1e40af !important;
   color: white !important;
 }
 
 .dark .admin-action-button:hover {
-  background-color: #2563eb !important; /* Lighter blue */
+  background-color: #2563eb !important;
 }
 
-/* Special case for primary actions */
 .dark .admin-primary-button {
-  background-color: #047857 !important; /* Dark green */
+  background-color: #047857 !important;
   color: white !important;
 }
 
 .dark .admin-primary-button:hover {
-  background-color: #059669 !important; /* Lighter green */
+  background-color: #059669 !important;
 }
 
-/* Add this class to your Dashboard main div */
 .admin-dashboard-container {
-  background-color: #0f172a; /* Dark background */
-  color: #f1f5f9; /* Light text */
+  background-color: #0f172a;
+  color: #f1f5f9;
 }
 
-/* Specific override for the New Post button */
 .dark .new-post-button {
-  background-color: #0d9488 !important; /* Teal-600 */
+  background-color: #0d9488 !important;
   color: white !important;
   display: flex !important;
   align-items: center !important;
 }
 
 .dark .new-post-button:hover {
-  background-color: #14b8a6 !important; /* Teal-500 */
+  background-color: #14b8a6 !important;
 }
 
-/* Fix the contrast for other admin links */
-.dark .admin-navbar a {
-  color: #f8fafc !important; /* Very light gray */
+.dark .admin-navbar a { color: #f8fafc !important; }
+.dark .admin-navbar a:hover { color: #38bdf8 !important; }
+
+/* ============================================================
+   SMOOTH TRANSITIONS FOR NEW DESIGN SYSTEM
+   ============================================================ */
+.glass, .skill-node, .stat-card, .timeline-card, .project-card,
+.cert-card, .cert-group-card, .blog-card, .sidebar-widget, .contact-link {
+  transition: background-color 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
 }
 
-.dark .admin-navbar a:hover {
-  color: #38bdf8 !important; /* Light blue */
+/* ============================================================
+   CSS HOVER STATES (replacing JS DOM manipulation)
+   ============================================================ */
+
+/* Skill nodes */
+.skill-node:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: var(--accent-dim) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+/* Timeline cards */
+.timeline-card:hover {
+  border-color: var(--border-medium) !important;
+  transform: translateX(4px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+}
+
+/* Project cards */
+.project-card {
+  transition: transform 0.4s var(--ease-out-expo), border-color 0.4s, box-shadow 0.4s, background-color 0.4s;
+}
+.project-card:hover {
+  border-color: var(--border-medium) !important;
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+.project-card:hover .project-gradient { opacity: 1 !important; }
+.project-card:hover .project-icon-wrap {
+  background: var(--accent) !important;
+  color: var(--bg-primary) !important;
+}
+.project-card:hover .project-title-text { color: var(--accent) !important; }
+.project-card:hover .tech-tag {
+  border-color: var(--border-medium) !important;
+  color: var(--accent) !important;
+}
+
+/* Blog cards */
+.blog-card {
+  transition: transform 0.4s var(--ease-out-expo), border-color 0.4s, box-shadow 0.4s;
+}
+.blog-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-medium) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+.blog-card:hover .blog-gradient { opacity: 1 !important; }
+.blog-card:hover .blog-title-link { color: var(--accent) !important; }
+.blog-card:hover .blog-cover-img { transform: scale(1.05); }
+
+/* Cert group cards */
+.cert-group-card {
+  transition: transform 0.4s var(--ease-out-expo), border-color 0.4s, box-shadow 0.4s;
+}
+.cert-group-card:hover {
+  border-color: var(--border-medium) !important;
+  transform: translateY(-4px);
+}
+
+/* Contact links */
+.contact-link:hover {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  background: var(--accent-dim) !important;
+  transform: translateY(-2px);
+}
+
+/* Photo grayscale */
+.photo-img:hover {
+  filter: grayscale(0) contrast(1) !important;
+}
+
+/* ============================================================
+   REDUCED MOTION — Accessibility
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-snap-type: none !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

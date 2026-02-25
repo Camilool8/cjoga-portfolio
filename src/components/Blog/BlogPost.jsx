@@ -31,7 +31,7 @@ function BlogPost() {
   const [error, setError] = useState(null);
   const contentRef = useRef(null);
   const tocItems = useRef([]);
-  const [tocReady, setTocReady] = useState(false);
+  const [, setTocReady] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
   // Fetch blog post data
@@ -121,10 +121,17 @@ function BlogPost() {
     }, []);
 
     return (
-      <div className="sticky top-0 left-0 z-50 w-full h-1 bg-gray-200 dark:bg-gray-800">
+      <div
+        className="sticky top-0 left-0 z-50 w-full h-1"
+        style={{ background: "var(--bg-elevated)" }}
+      >
         <div
-          className="h-full bg-light-accent dark:bg-dark-accent transition-all duration-150"
-          style={{ width: `${readingProgress}%` }}
+          className="h-full"
+          style={{
+            background: "var(--gradient-accent)",
+            width: `${readingProgress}%`,
+            transition: "width 0.15s linear",
+          }}
         />
       </div>
     );
@@ -181,10 +188,33 @@ function BlogPost() {
       window.open(shareWindow, "_blank", "width=600,height=400");
     };
 
+    const shareButtonBase = {
+      width: "40px",
+      height: "40px",
+      borderRadius: "12px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "var(--text-primary)",
+      border: "1px solid var(--border-subtle)",
+      background: "var(--bg-elevated)",
+      transition: "all 0.3s var(--ease-out-expo)",
+      cursor: "pointer",
+    };
+
     return (
-      <div className="border-t border-light-accent/20 dark:border-dark-accent/20 mt-8 pt-6">
-        <h3 className="text-lg font-semibold mb-4 flex items-center">
-          <span className="mr-2">📢</span> {t("blog.sharePost")}
+      <div
+        className="mt-8 pt-6"
+        style={{ borderTop: "1px solid var(--border-subtle)" }}
+      >
+        <h3
+          className="text-lg font-semibold mb-4 flex items-center"
+          style={{
+            fontFamily: "var(--font-display)",
+            color: "var(--text-primary)",
+          }}
+        >
+          {t("blog.sharePost")}
         </h3>
         <motion.div
           className="flex flex-wrap gap-3"
@@ -196,7 +226,17 @@ function BlogPost() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleShare("facebook")}
-            className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-700 transition-colors"
+            style={shareButtonBase}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#1877f2";
+              e.currentTarget.style.color = "#1877f2";
+              e.currentTarget.style.background = "rgba(24, 119, 242, 0.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--border-subtle)";
+              e.currentTarget.style.color = "var(--text-primary)";
+              e.currentTarget.style.background = "var(--bg-elevated)";
+            }}
             aria-label="Share on Facebook"
           >
             <FaFacebookF />
@@ -206,7 +246,17 @@ function BlogPost() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleShare("twitter")}
-            className="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center text-white hover:bg-blue-500 transition-colors"
+            style={shareButtonBase}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#1da1f2";
+              e.currentTarget.style.color = "#1da1f2";
+              e.currentTarget.style.background = "rgba(29, 161, 242, 0.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--border-subtle)";
+              e.currentTarget.style.color = "var(--text-primary)";
+              e.currentTarget.style.background = "var(--bg-elevated)";
+            }}
             aria-label="Share on Twitter"
           >
             <FaTwitter />
@@ -216,7 +266,17 @@ function BlogPost() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleShare("linkedin")}
-            className="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
+            style={shareButtonBase}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#0a66c2";
+              e.currentTarget.style.color = "#0a66c2";
+              e.currentTarget.style.background = "rgba(10, 102, 194, 0.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--border-subtle)";
+              e.currentTarget.style.color = "var(--text-primary)";
+              e.currentTarget.style.background = "var(--bg-elevated)";
+            }}
             aria-label="Share on LinkedIn"
           >
             <FaLinkedinIn />
@@ -226,7 +286,17 @@ function BlogPost() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleShare("whatsapp")}
-            className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 transition-colors"
+            style={shareButtonBase}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#25d366";
+              e.currentTarget.style.color = "#25d366";
+              e.currentTarget.style.background = "rgba(37, 211, 102, 0.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--border-subtle)";
+              e.currentTarget.style.color = "var(--text-primary)";
+              e.currentTarget.style.background = "var(--bg-elevated)";
+            }}
             aria-label="Share on WhatsApp"
           >
             <FaWhatsapp />
@@ -236,7 +306,17 @@ function BlogPost() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleShare("reddit")}
-            className="w-10 h-10 rounded-full bg-orange-600 flex items-center justify-center text-white hover:bg-orange-700 transition-colors"
+            style={shareButtonBase}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#ff4500";
+              e.currentTarget.style.color = "#ff4500";
+              e.currentTarget.style.background = "rgba(255, 69, 0, 0.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--border-subtle)";
+              e.currentTarget.style.color = "var(--text-primary)";
+              e.currentTarget.style.background = "var(--bg-elevated)";
+            }}
             aria-label="Share on Reddit"
           >
             <FaReddit />
@@ -247,7 +327,17 @@ function BlogPost() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleShare("copy")}
-              className="w-10 h-10 rounded-full bg-gray-500 dark:bg-gray-700 flex items-center justify-center text-white hover:bg-gray-600 dark:hover:bg-gray-800 transition-colors"
+              style={shareButtonBase}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "var(--accent)";
+                e.currentTarget.style.color = "var(--accent)";
+                e.currentTarget.style.background = "var(--accent-dim)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--border-subtle)";
+                e.currentTarget.style.color = "var(--text-primary)";
+                e.currentTarget.style.background = "var(--bg-elevated)";
+              }}
               aria-label="Copy link"
             >
               <FaLink />
@@ -258,9 +348,15 @@ function BlogPost() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1.5 bg-light-accent dark:bg-dark-accent text-white text-xs rounded-lg whitespace-nowrap shadow-lg"
+                  className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1.5 text-xs rounded-lg whitespace-nowrap"
+                  style={{
+                    background: "var(--accent)",
+                    color: "var(--bg-primary)",
+                    fontFamily: "var(--font-mono)",
+                    boxShadow: "0 4px 20px var(--accent-glow)",
+                  }}
                 >
-                  {t("blog.linkCopied")} ✓
+                  {t("blog.linkCopied")}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -275,7 +371,15 @@ function BlogPost() {
       <section className="py-20">
         <div className="section-inner">
           <div className="flex justify-center items-center min-h-[60vh]">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-light-accent dark:border-dark-accent"></div>
+            <div
+              className="animate-spin rounded-full h-12 w-12"
+              style={{
+                borderTop: "2px solid var(--accent)",
+                borderBottom: "2px solid var(--accent)",
+                borderLeft: "2px solid transparent",
+                borderRight: "2px solid transparent",
+              }}
+            />
           </div>
         </div>
       </section>
@@ -286,12 +390,19 @@ function BlogPost() {
     return (
       <section className="py-20">
         <div className="section-inner">
-          <div className="bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 p-4 rounded-md mb-4">
+          <div
+            className="p-4 rounded-lg mb-4"
+            style={{
+              background: "rgba(239, 68, 68, 0.1)",
+              color: "#f87171",
+              border: "1px solid rgba(239, 68, 68, 0.2)",
+            }}
+          >
             {error || t("blog.error.postNotFound")}
           </div>
           <button
             onClick={() => navigate("/blog")}
-            className="cta-button flex items-center"
+            className="btn btn-outline flex items-center"
           >
             <FaArrowLeft className="mr-2" />
             {t("blog.backToBlog")}
@@ -310,7 +421,18 @@ function BlogPost() {
           <div className="mb-8">
             <Link
               to="/blog"
-              className="inline-flex items-center font-mono text-sm text-light-accent dark:text-dark-accent hover:underline"
+              className="inline-flex items-center text-sm"
+              style={{
+                fontFamily: "var(--font-mono)",
+                color: "var(--accent)",
+                transition: "opacity 0.3s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = "0.8";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = "1";
+              }}
             >
               <FaArrowLeft className="mr-2" />
               {t("blog.backToBlog")}
@@ -324,7 +446,12 @@ function BlogPost() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="bg-light-secondary dark:bg-dark-secondary rounded-md overflow-hidden shadow-custom-light dark:shadow-custom-dark"
+                className="rounded-xl overflow-hidden"
+                style={{
+                  background: "var(--bg-surface)",
+                  border: "1px solid var(--border-subtle)",
+                  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                }}
               >
                 {/* Cover Image */}
                 {post.cover_image && (
@@ -340,12 +467,27 @@ function BlogPost() {
                 {/* Content */}
                 <div className="p-6 md:p-8">
                   {/* Title */}
-                  <h1 className="text-3xl md:text-4xl font-bold mb-4 text-light-text-primary dark:text-dark-text-primary">
+                  <h1
+                    className="text-3xl md:text-4xl font-bold mb-4"
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      color: "var(--text-primary)",
+                      lineHeight: 1.15,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
                     {post.title}
                   </h1>
 
                   {/* Meta */}
-                  <div className="flex flex-wrap items-center mb-6 text-sm text-light-text-secondary dark:text-dark-text-secondary">
+                  <div
+                    className="flex flex-wrap items-center mb-6 text-sm"
+                    style={{
+                      color: "var(--text-tertiary)",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.8rem",
+                    }}
+                  >
                     <span className="flex items-center mr-4 mb-2">
                       <FaCalendarAlt className="mr-1" />
                       {formatDate(post.published_at)}
@@ -372,7 +514,22 @@ function BlogPost() {
                         <Link
                           key={index}
                           to={`/blog?tag=${tag}`}
-                          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-light-primary dark:bg-dark-primary text-light-accent dark:text-dark-accent hover:bg-light-accent/10 dark:hover:bg-dark-accent/10 transition-colors"
+                          className="inline-flex items-center px-3 py-1 rounded-full text-xs"
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            background: "var(--accent-dim)",
+                            color: "var(--accent)",
+                            border: "1px solid var(--border-subtle)",
+                            transition: "all 0.3s",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.borderColor =
+                              "var(--border-active)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.borderColor =
+                              "var(--border-subtle)";
+                          }}
                         >
                           <FaTag className="mr-1 text-xs" />
                           {tag}
@@ -383,8 +540,20 @@ function BlogPost() {
 
                   {/* Table of Contents */}
                   {tocItems.current.length > 0 && (
-                    <div className="my-6 p-4 bg-light-primary dark:bg-dark-primary rounded-md">
-                      <h3 className="text-lg font-semibold mb-3 text-light-text-primary dark:text-dark-text-primary">
+                    <div
+                      className="my-6 p-4 rounded-xl"
+                      style={{
+                        background: "var(--bg-elevated)",
+                        border: "1px solid var(--border-subtle)",
+                      }}
+                    >
+                      <h3
+                        className="text-lg font-semibold mb-3"
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          color: "var(--text-primary)",
+                        }}
+                      >
                         {t("blog.tableOfContents")}
                       </h3>
                       <TableOfContents items={tocItems.current} />
@@ -409,7 +578,13 @@ function BlogPost() {
               {/* Related Posts */}
               {relatedPosts.length > 0 && (
                 <div className="mt-12">
-                  <h2 className="text-2xl font-semibold mb-6">
+                  <h2
+                    className="text-2xl font-semibold mb-6"
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      color: "var(--text-primary)",
+                    }}
+                  >
                     {t("blog.relatedPosts")}
                   </h2>
                   <RelatedPosts posts={relatedPosts} />

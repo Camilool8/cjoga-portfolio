@@ -21,13 +21,24 @@
     "cta": {
       "work": "View My Work",
       "contact": "Get In Touch"
+    },
+    "status": {
+      "operational": "systems operational",
+      "certs": "10 certs active",
+      "opportunities": "open to opportunities"
     }
   },
   "about": {
-    "title": "About Me",
+    "title": "About",
+    "heading": "Building systems that scale.",
     "paragraph1": "Hello! I'm Jose Camilo (please call me Camilo), a Computer Science Engineer with a passion for DevOps practices and cloud technologies. I specialize in creating efficient, scalable, and automated infrastructure solutions.",
     "paragraph2": "My expertise lies in automating deployments, implementing robust CI/CD pipelines, and managing infrastructure as code across hybrid cloud environments. I enjoy optimizing operations and workflows to help teams deliver software more efficiently.",
-    "skills": "Here are some technologies I've been working with recently:"
+    "skills": "Here are some technologies I've been working with recently:",
+    "stats": {
+      "years": "Years Exp",
+      "certs": "Certs",
+      "clouds": "Clouds"
+    }
   },
   "skills": {
     "aws": "AWS Cloud",
@@ -46,7 +57,8 @@
     "powershell": "PowerShell"
   },
   "experience": {
-    "title": "Where I've Worked",
+    "title": "Experience",
+    "heading": "Where I've worked.",
     "arroyo": {
       "title": "DevOps Engineer",
       "company": "Arroyo Consulting",
@@ -83,7 +95,8 @@
     }
   },
   "projects": {
-    "title": "Things I've Built",
+    "title": "Projects",
+    "heading": "Things I've built.",
     "cicd": {
       "title": "Multi-Environment CI/CD Pipeline",
       "description": "Designed and implemented a comprehensive CI/CD pipeline using GitLab CI that supported development, staging, and production environments with automated testing, deployment, and rollback capabilities.",
@@ -117,10 +130,16 @@
   },
   "certifications": {
     "title": "Certifications",
+    "heading": "Credentials & certs.",
     "awsSolutionsArchitect": {
       "name": "AWS Certified Solutions Architect (CSA)",
       "issuer": "Amazon Web Services",
       "date": "2025"
+    },
+    "hcta": {
+      "name": "HashiCorp Certified Terraform Associate (004)",
+      "issuer": "HashiCorp",
+      "date": "2026"
     },
     "rhcsa": {
       "name": "Red Hat Certified System Administrator (RHCSA)",
@@ -214,6 +233,8 @@
       "postNotFound": "Blog post not found",
       "search": "Failed to search blog posts"
     },
+    "previewTitle": "Blog",
+    "previewHeading": "Latest from the blog.",
     "views": "{{count}} views",
     "publish": "Publish",
     "unpublish": "Unpublish"

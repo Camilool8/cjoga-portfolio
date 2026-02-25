@@ -1,138 +1,181 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import {
+  sectionVariants, itemVariants, cardVariants,
+  SPRING_CONFIG, viewportConfig,
+} from "../hooks/useMotion";
 
 function Experience() {
-  const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState("arroyo");
-  const [companies, setCompanies] = useState([]);
-  const tabsContainerRef = useRef(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
+  const { t } = useTranslation();
+  const timelineRef = useRef(null);
 
-  // Dynamically get company list from translations
-  useEffect(() => {
-    // This generates the company list from the translation keys
-    const companyKeys = ["arroyo", "flBetances", "shadowSoft"];
-    const companyList = companyKeys.map((key) => ({
-      id: key,
-      name: t(`experience.${key}.company`),
-    }));
-    setCompanies(companyList);
+  // Timeline draw: line grows as section scrolls into view
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 0.8", "end 0.3"],
+  });
+  const lineScale = useSpring(
+    useTransform(scrollYProgress, [0, 1], [0, 1]),
+    { stiffness: 40, damping: 25, mass: 1 }
+  );
 
-    // Set first company as active if none selected
-    if (!activeTab && companyList.length > 0) {
-      setActiveTab(companyList[0].id);
-    }
-  }, [t, i18n.language]);
-
-  // Handle scroll arrows visibility
-  const handleScroll = () => {
-    if (tabsContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = tabsContainerRef.current;
-      setShowLeftArrow(scrollLeft > 0);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 5); // 5px buffer
-    }
-  };
-
-  useEffect(() => {
-    const container = tabsContainerRef.current;
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-      // Check initial state
-      handleScroll();
-      
-      // Also check on resize
-      window.addEventListener("resize", handleScroll);
-    }
-    return () => {
-      if (container) {
-        container.removeEventListener("scroll", handleScroll);
-      }
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, [companies]); // Re-run when companies load
+  const companyKeys = ["arroyo", "flBetances", "shadowSoft"];
+  const isActive = (index) => index === 0;
 
   return (
-    <section id="experience" className="py-20">
+    <section id="experience">
       <div className="section-inner">
-        <h2 className="section-title">
-          <span className="number">02.</span> {t("experience.title")}
-        </h2>
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+        >
+          <motion.div variants={itemVariants}>
+            <span className="section-label">{t("experience.title", "Experience")}</span>
+            <h2 className="section-heading">
+              {t("experience.heading", "Where I've worked.")}
+            </h2>
+          </motion.div>
+        </motion.div>
 
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Company tabs - vertical on desktop, horizontal on mobile */}
-          <div className="relative md:min-w-[200px]">
-            {/* Scroll Indicators (Mobile Only) */}
-            <div className={`md:hidden absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-light-primary dark:from-dark-primary to-transparent z-10 pointer-events-none transition-opacity duration-300 ${showLeftArrow ? 'opacity-100' : 'opacity-0'}`} />
-            <div className={`md:hidden absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-light-primary dark:from-dark-primary to-transparent z-10 pointer-events-none transition-opacity duration-300 ${showRightArrow ? 'opacity-100' : 'opacity-0'}`} />
-            
-            <div 
-              ref={tabsContainerRef}
-              className="flex overflow-x-auto md:flex-col border-b md:border-b-0 md:border-l border-light-accent/20 dark:border-dark-accent/20 scrollbar-hide pb-2 md:pb-0"
+        {/* Timeline */}
+        <div ref={timelineRef} className="relative mt-12">
+          {/* Timeline line — draws itself via scaleY */}
+          <motion.div
+            className="absolute top-0 bottom-0 hidden md:block"
+            style={{
+              left: "32px",
+              width: "1px",
+              background: "linear-gradient(to bottom, transparent, var(--border-medium) 10%, var(--border-medium) 90%, transparent)",
+              scaleY: lineScale,
+              transformOrigin: "top",
+            }}
+          />
+          <motion.div
+            className="absolute top-0 bottom-0 md:hidden"
+            style={{
+              left: "16px",
+              width: "1px",
+              background: "linear-gradient(to bottom, transparent, var(--border-medium) 10%, var(--border-medium) 90%, transparent)",
+              scaleY: lineScale,
+              transformOrigin: "top",
+            }}
+          />
+
+          {companyKeys.map((key, index) => (
+            <motion.div
+              key={key}
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="relative mb-10 pl-11 md:pl-[72px]"
             >
-              {companies.map((company) => (
-                <button
-                  key={company.id}
-                  onClick={() => setActiveTab(company.id)}
-                  className={`px-4 py-3 text-left font-mono text-sm whitespace-nowrap transition-all duration-300 flex-shrink-0
-                    ${
-                      activeTab === company.id
-                        ? "text-light-accent dark:text-dark-accent border-light-accent dark:border-dark-accent"
-                        : "text-light-text-secondary dark:text-dark-text-secondary hover:bg-light-secondary dark:hover:bg-dark-secondary"
-                    }
-                    ${
-                      activeTab === company.id
-                        ? "border-b-2 md:border-b-0 md:border-l-2"
-                        : "border-b-0 md:border-l-0"
-                    }`}
-                >
-                  {company.name}
-                </button>
-              ))}
-            </div>
-            {/* Helper text for mobile */}
-            <div className="md:hidden text-center mt-2 text-xs text-light-text-secondary/50 dark:text-dark-text-secondary/50 font-mono">
-              ← {t("common.swipe", "Swipe")} →
-            </div>
-          </div>
+              {/* Timeline dot — scales in */}
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", ...SPRING_CONFIG, delay: index * 0.15 }}
+                className="absolute top-7 left-[11px] md:left-[27px] w-[11px] h-[11px] rounded-full z-[2]"
+                style={{
+                  background: "var(--bg-primary)",
+                  border: "2px solid var(--accent)",
+                }}
+              />
 
-          {/* Job details with fixed height */}
-          <div className="py-2 px-1 md:px-6 flex-1">
-            <div className="min-h-[350px] relative">
-              {companies.map((company) => (
+              {/* Pulse ring for active entry */}
+              {isActive(index) && (
                 <div
-                  key={company.id}
-                  className={`job absolute top-0 left-0 w-full transition-opacity duration-300 ${
-                    activeTab === company.id
-                      ? "opacity-100 z-10"
-                      : "opacity-0 z-0"
-                  }`}
+                  className="absolute top-[24px] left-[7px] md:left-[23px] w-[19px] h-[19px] rounded-full z-[1]"
                   style={{
-                    pointerEvents: activeTab === company.id ? "auto" : "none",
+                    border: "1px solid var(--accent)",
+                    animation: "ring-pulse 2s ease-out infinite",
+                  }}
+                />
+              )}
+
+              {/* Card */}
+              <div
+                className="timeline-card rounded-2xl p-6 md:p-7 transition-all duration-400"
+                style={{
+                  background: "var(--bg-surface)",
+                  border: "1px solid var(--border-subtle)",
+                }}
+              >
+                {/* Meta row */}
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+                  <span
+                    className="py-1 px-2.5 rounded-md"
+                    style={{
+                      fontFamily: "var(--font-mono)", fontSize: "0.72rem",
+                      color: "var(--accent)", background: "var(--accent-dim)",
+                    }}
+                  >
+                    {t(`experience.${key}.period`)}
+                  </span>
+                  {isActive(index) && (
+                    <span
+                      className="flex items-center gap-1.5"
+                      style={{
+                        fontFamily: "var(--font-mono)", fontSize: "0.65rem",
+                        color: "#22c55e", letterSpacing: "0.05em", textTransform: "uppercase",
+                      }}
+                    >
+                      <span
+                        className="w-[5px] h-[5px] rounded-full"
+                        style={{ background: "#22c55e", boxShadow: "0 0 6px #22c55e" }}
+                      />
+                      ACTIVE
+                    </span>
+                  )}
+                </div>
+
+                {/* Role & company */}
+                <h3
+                  className="mb-0.5"
+                  style={{
+                    fontFamily: "var(--font-display)", fontSize: "1.2rem",
+                    fontWeight: 700, color: "var(--text-primary)",
                   }}
                 >
-                  <h3 className="text-xl font-semibold mb-1">
-                    {t(`experience.${company.id}.title`)}{" "}
-                    <span className="text-light-accent dark:text-dark-accent">
-                      @ {t(`experience.${company.id}.company`)}
-                    </span>
-                  </h3>
-                  <p className="font-mono text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4">
-                    {t(`experience.${company.id}.period`)}
-                  </p>
-                  <div className="job-description">
-                    <ul>
-                      {t(`experience.${company.id}.responsibilities`, {
-                        returnObjects: true,
-                      }).map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                  {t(`experience.${key}.title`)}
+                </h3>
+                <p
+                  className="mb-4"
+                  style={{ fontSize: "1rem", color: "var(--accent)", fontWeight: 500 }}
+                >
+                  {t(`experience.${key}.company`)}
+                </p>
+
+                {/* Responsibilities */}
+                <ul className="list-none p-0">
+                  {t(`experience.${key}.responsibilities`, { returnObjects: true }).map(
+                    (item, i) => (
+                      <li
+                        key={i}
+                        className="relative pl-5 mb-2.5"
+                        style={{
+                          fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: 1.6,
+                        }}
+                      >
+                        <span
+                          className="absolute left-0"
+                          style={{ color: "var(--accent)", fontWeight: 700, fontSize: "1.1rem", lineHeight: 1.5 }}
+                        >
+                          ›
+                        </span>
+                        {item}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

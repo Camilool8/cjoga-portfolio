@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { FaChevronDown } from "react-icons/fa";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 function Hero() {
   const { t } = useTranslation();
@@ -8,130 +8,187 @@ function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [delta, setDelta] = useState(100);
-  const [scrollOpacity, setScrollOpacity] = useState(1);
 
-  // Get roles from translation
+  const heroRef = useRef(null);
+
+  // Scroll-driven departure: fade out + lift as user scrolls past
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 25, mass: 1 });
+  const heroOpacity = useTransform(smoothProgress, [0, 0.8], [1, 0]);
+  const heroY = useTransform(smoothProgress, [0, 0.8], [0, -60]);
+  const gridY = useTransform(smoothProgress, [0, 1], [0, -20]);
+
   const roles = t("hero.roles", { returnObjects: true });
-  const textArray = [...(Array.isArray(roles) ? roles : [])];
+  const textArray = useMemo(
+    () => [...(Array.isArray(roles) ? roles : [])],
+    [roles]
+  );
+  const period = 2000;
 
-  const period = 2000; // Time to wait before deleting
-
-  // Handle typing effect
   useEffect(() => {
-    let ticker = setInterval(() => {
-      tick();
-    }, delta);
+    const tick = () => {
+      const i = roleIndex % textArray.length;
+      const fullText = textArray[i];
+      let nextDelta = 100 - Math.random() * 50;
 
+      if (isDeleting) {
+        setText(fullText.substring(0, text.length - 1));
+        nextDelta = 50;
+      } else {
+        setText(fullText.substring(0, text.length + 1));
+      }
+      setDelta(nextDelta);
+
+      if (!isDeleting && text === fullText) {
+        setIsDeleting(true);
+        setDelta(period);
+      } else if (isDeleting && text === "") {
+        setIsDeleting(false);
+        setRoleIndex(roleIndex + 1);
+        setDelta(500);
+      }
+    };
+
+    const ticker = setInterval(tick, delta);
     return () => clearInterval(ticker);
   }, [text, delta, isDeleting, roleIndex, textArray]);
 
-  const tick = () => {
-    const i = roleIndex % textArray.length;
-    const fullText = textArray[i];
-
-    // Add some randomness to typing speed for "human" feel
-    let nextDelta = 100 - Math.random() * 50;
-
-    if (isDeleting) {
-      setText(fullText.substring(0, text.length - 1));
-      nextDelta = 50; // Consistent speed for deleting
-    } else {
-      setText(fullText.substring(0, text.length + 1));
-    }
-
-    setDelta(nextDelta);
-
-    if (!isDeleting && text === fullText) {
-      setIsDeleting(true);
-      setDelta(period);
-    } else if (isDeleting && text === "") {
-      setIsDeleting(false);
-      setRoleIndex(roleIndex + 1);
-      setDelta(500);
-    }
-  };
-
-  // Handle scroll opacity for the arrow
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      // Fade out within the first 300px
-      const newOpacity = Math.max(0, 1 - scrollY / 300);
-      setScrollOpacity(newOpacity);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <section
+      ref={heroRef}
       id="hero"
       className="min-h-screen flex flex-col justify-center relative overflow-hidden"
+      style={{ background: "var(--gradient-hero)", padding: "100px 0 60px" }}
     >
-      {/* Dynamic Background Blob - Made slower and more subtle */}
-      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-light-accent/5 dark:bg-dark-accent/5 blur-[120px] animate-blob" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-500/5 dark:bg-blue-900/5 blur-[120px] animate-blob animation-delay-4000" />
+      {/* Grid overlay with parallax */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          y: gridY,
+          backgroundImage: "linear-gradient(var(--border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+          maskImage: "radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 100%)",
+          opacity: 0.4,
+        }}
+      />
 
-      <div className="section-inner relative z-10">
-        <p className="font-mono text-light-accent dark:text-dark-accent text-base md:text-lg mb-4 opacity-0 fade-in">
-          {t("hero.greeting")}
+      {/* Content wrapper with scroll-driven fade */}
+      <motion.div
+        className="section-inner relative z-10"
+        style={{ opacity: heroOpacity, y: heroY }}
+      >
+        {/* Terminal greeting */}
+        <p
+          className="mb-5"
+          style={{
+            fontFamily: "var(--font-mono)", fontSize: "0.85rem", color: "var(--accent)",
+            opacity: 0, animation: "hReveal 0.6s 0.3s var(--ease-out-expo) forwards",
+          }}
+        >
+          <span style={{ color: "var(--accent)" }}>~/camilo</span> $ whoami
+          <span
+            className="inline-block ml-0.5 align-text-bottom"
+            style={{ width: "8px", height: "1.1em", background: "var(--accent)", animation: "blink 1s step-end infinite" }}
+          />
         </p>
 
-        <h1 className="text-4xl md:text-7xl font-bold font-heading mb-4 text-light-text-primary dark:text-dark-text-primary opacity-0 fade-in delay-1">
-          {t("hero.title")}
+        {/* Name with gradient */}
+        <h1
+          style={{
+            fontFamily: "var(--font-display)", fontSize: "clamp(2.8rem, 8vw, 5.5rem)",
+            fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em", marginBottom: "8px",
+            opacity: 0, animation: "hReveal 0.8s 0.5s var(--ease-out-expo) forwards",
+          }}
+        >
+          José Camilo<br />
+          <span
+            style={{
+              background: "var(--gradient-accent)", WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent", backgroundClip: "text",
+            }}
+          >
+            Joga Guerrero.
+          </span>
         </h1>
 
-        {/* Fixed height container to prevent layout shift */}
-        <div className="h-20 md:h-24 mb-2 flex items-center opacity-0 fade-in delay-2">
-          <h2 className="text-3xl md:text-5xl font-bold font-heading text-light-text-secondary dark:text-dark-text-secondary">
-            <span>{text}</span>
-            <span className="animate-cursor text-light-accent dark:text-dark-accent ml-1 font-light">
-              |
-            </span>
-          </h2>
+        {/* Typed role */}
+        <div
+          className="min-h-[1.4em]"
+          style={{
+            fontFamily: "var(--font-display)", fontSize: "clamp(1.2rem, 3.5vw, 2.2rem)",
+            fontWeight: 600, color: "var(--text-secondary)", marginBottom: "28px",
+            opacity: 0, animation: "hReveal 0.8s 0.7s var(--ease-out-expo) forwards",
+          }}
+        >
+          <span style={{ borderRight: "2px solid var(--accent)", paddingRight: "4px", animation: "blink-border 1s step-end infinite" }}>
+            {text}
+          </span>
         </div>
 
-        <p className="max-w-xl text-lg text-light-text-secondary dark:text-dark-text-secondary mb-12 opacity-0 fade-in delay-3">
+        {/* Description */}
+        <p
+          className="max-w-[560px]"
+          style={{
+            fontSize: "1.05rem", lineHeight: 1.7, color: "var(--text-secondary)", marginBottom: "40px",
+            opacity: 0, animation: "hReveal 0.8s 0.9s var(--ease-out-expo) forwards",
+          }}
+        >
           {t("hero.description")}
         </p>
 
-        <div className="flex flex-wrap gap-4 opacity-0 fade-in delay-4">
-          <a href="#projects" className="cta-button">
-            {t("hero.cta.work")}
-          </a>
-          <a href="#contact" className="cta-button">
-            {t("hero.cta.contact")}
-          </a>
-        </div>
-      </div>
-
-      {/* Scroll Indicator with Scroll-based Opacity */}
-      <div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        style={{ opacity: scrollOpacity }}
-      >
-        <a
-          href="#about"
-          aria-label="Scroll down"
-          className="flex flex-col items-center animate-bounce text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+        {/* CTA Buttons */}
+        <div
+          className="flex gap-4 flex-wrap"
+          style={{ opacity: 0, animation: "hReveal 0.8s 1.1s var(--ease-out-expo) forwards" }}
         >
-          <span className="text-xs font-mono mb-2 hidden md:block opacity-70">
-            Scroll
-          </span>
-          <FaChevronDown className="text-xl" />
-        </a>
-      </div>
+          <a href="#projects" className="btn btn-primary">{t("hero.cta.work")}</a>
+          <a href="#contact" className="btn btn-outline">{t("hero.cta.contact")}</a>
+        </div>
 
-      <style>{`
-        @keyframes cursor-blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-        .animate-cursor {
-          animation: cursor-blink 1s step-end infinite;
-        }
-      `}</style>
+        {/* Status bar */}
+        <div
+          className="flex items-center gap-5 mt-[60px] pt-8 flex-wrap"
+          style={{
+            borderTop: "1px solid var(--border-subtle)",
+            opacity: 0, animation: "hReveal 0.8s 1.4s var(--ease-out-expo) forwards",
+          }}
+        >
+          <div className="flex items-center gap-2" style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--text-tertiary)" }}>
+            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#22c55e", boxShadow: "0 0 6px #22c55e" }} />
+            <span>{t("hero.status.operational", "systems operational")}</span>
+          </div>
+          <div className="flex items-center gap-2" style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--text-tertiary)" }}>
+            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#22c55e", boxShadow: "0 0 6px #22c55e" }} />
+            <span>{t("hero.status.certs", "10 certs active")}</span>
+          </div>
+          <div className="flex items-center gap-2" style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--text-tertiary)" }}>
+            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "var(--accent-warm)", boxShadow: "0 0 6px var(--accent-warm)" }} />
+            <span>{t("hero.status.opportunities", "open to opportunities")}</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <a
+        href="#about"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 cursor-pointer z-10"
+        style={{ opacity: 0, animation: "hReveal 0.8s 1.8s var(--ease-out-expo) forwards", textDecoration: "none" }}
+        onClick={(e) => {
+          e.preventDefault();
+          document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+        }}
+      >
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+          scroll
+        </span>
+        <div className="relative overflow-hidden" style={{ width: "1px", height: "40px", background: "var(--border-medium)" }}>
+          <div className="absolute w-full" style={{ height: "50%", background: "var(--accent)", animation: "scroll-anim 2s ease-in-out infinite" }} />
+        </div>
+      </a>
     </section>
   );
 }

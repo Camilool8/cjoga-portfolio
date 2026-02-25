@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
+import NavigationBar from "./components/NavigationBar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Experience from "./components/Experience";
@@ -17,14 +17,21 @@ import LoginPage from "./components/Admin/LoginPage";
 import Dashboard from "./components/Admin/Dashboard";
 import PostEditor from "./components/Admin/PostEditor";
 import ProtectedRoute from "./components/Admin/ProtectedRoute";
+import BlogPreview from "./components/Blog/BlogPreview";
+import SectionDivider from "./components/SectionDivider";
 import PrintButton from "./components/PrintButton";
 import BackgroundAnimation from "./components/BackgroundAnimation";
+import CursorGlow from "./components/CursorGlow";
+import ScrollProgress from "./components/ScrollProgress";
+import SideElements from "./components/SideElements";
 import useSystemTheme from "./hooks/useSystemTheme";
+import useScrollReveal from "./hooks/useScrollReveal";
 import "./styles/global.css";
 
 function App() {
   const { i18n } = useTranslation();
   const systemTheme = useSystemTheme();
+  useScrollReveal();
   const [theme, setTheme] = useState(() => {
     // Get saved theme from localStorage or use system preference
     return localStorage.getItem("theme") || systemTheme;
@@ -45,8 +52,10 @@ function App() {
 
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
+      document.documentElement.setAttribute("data-theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      document.documentElement.setAttribute("data-theme", "light");
     }
   }, [theme]);
 
@@ -59,20 +68,20 @@ function App() {
   // Main Layout Component
   const MainLayout = ({ children }) => (
     <div
-      className={`min-h-screen transition-colors duration-300 ${
-        theme === "dark"
-          ? "bg-dark-primary text-dark-text-primary"
-          : "bg-light-primary text-light-text-primary"
-      }`}
+      className="min-h-screen transition-colors duration-300"
+      style={{ background: "var(--bg-void)", color: "var(--text-primary)" }}
     >
       <BackgroundAnimation theme={theme} />
-      <Header
+      <CursorGlow />
+      <ScrollProgress />
+      <NavigationBar
         theme={theme}
         setTheme={setTheme}
         language={language}
         setLanguage={setLanguage}
       />
-      <div ref={contentRef}>{children}</div>
+      <SideElements />
+      <div ref={contentRef} className="relative z-[2]">{children}</div>
       <Footer />
       <PrintButton />
     </div>
@@ -95,10 +104,17 @@ function App() {
   const Home = () => (
     <>
       <Hero />
+      <SectionDivider />
       <About />
+      <SectionDivider />
       <Experience />
+      <SectionDivider />
       <Projects />
+      <SectionDivider />
       <Certifications />
+      <SectionDivider />
+      <BlogPreview />
+      <SectionDivider />
       <Contact />
     </>
   );

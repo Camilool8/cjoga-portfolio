@@ -9,20 +9,17 @@ function PrintButton() {
   const buttonRef = useRef(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Handle download PDF
   const handleDownloadPDF = async () => {
     if (isGenerating) return;
 
     try {
       setIsGenerating(true);
 
-      // Create the PDF document
       const pdfDoc = <ProfessionalPDFCV />;
       const asPdf = pdf();
       asPdf.updateContainer(pdfDoc);
       const blob = await asPdf.toBlob();
 
-      // Create download link
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -31,7 +28,6 @@ function PrintButton() {
       link.click();
       document.body.removeChild(link);
 
-      // Clean up
       setTimeout(() => URL.revokeObjectURL(url), 100);
     } catch (error) {
       console.error("Failed to generate PDF:", error);
@@ -42,18 +38,23 @@ function PrintButton() {
   };
 
   return (
-    <div className="fixed bottom-8 right-8 z-40 print:hidden">
+    <div className="fixed bottom-8 right-6 xl:right-20 z-40 print:hidden">
       <button
         ref={buttonRef}
         onClick={handleDownloadPDF}
         disabled={isGenerating}
-        className={`flex items-center bg-dark-accent text-dark-primary dark:bg-dark-accent dark:text-dark-primary px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ${
+        className={`flex items-center py-2 px-4 rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl ${
           isGenerating ? "opacity-75 cursor-wait" : ""
         }`}
+        style={{
+          background: "var(--accent)",
+          color: "var(--bg-primary)",
+          fontFamily: "var(--font-mono)",
+        }}
         aria-label={t("print.button")}
       >
         <MdFileDownload className="mr-2 text-lg" />
-        <span className="font-mono text-sm">
+        <span className="text-sm font-medium">
           {isGenerating
             ? t("print.generating", "Generating...")
             : t("print.button")}

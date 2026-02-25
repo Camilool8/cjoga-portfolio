@@ -28,9 +28,11 @@ function BlogPage() {
   return (
     <section id="blog" className="py-20">
       <div className="section-inner">
-        <h2 className="section-title">
-          <span className="number">06.</span> {t("blog.title")}
-        </h2>
+        {/* Section label + heading */}
+        <div className="mb-10">
+          <span className="section-label">{t("blog.title")}</span>
+          <h2 className="section-heading">{t("blog.title")}</h2>
+        </div>
 
         {/* Search bar */}
         <div className="mb-8">
@@ -42,18 +44,39 @@ function BlogPage() {
           <div className="lg:col-span-3">
             {loading ? (
               <div className="flex justify-center items-center min-h-[400px]">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-light-accent dark:border-dark-accent"></div>
+                <div
+                  className="animate-spin rounded-full h-12 w-12"
+                  style={{
+                    borderTop: "2px solid var(--accent)",
+                    borderBottom: "2px solid var(--accent)",
+                    borderLeft: "2px solid transparent",
+                    borderRight: "2px solid transparent",
+                  }}
+                />
               </div>
             ) : error ? (
-              <div className="bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 p-4 rounded-md">
+              <div
+                className="p-4 rounded-lg"
+                style={{
+                  background: "rgba(239, 68, 68, 0.1)",
+                  color: "#f87171",
+                  border: "1px solid rgba(239, 68, 68, 0.2)",
+                }}
+              >
                 {error}
               </div>
             ) : posts.length === 0 ? (
               <div className="text-center py-12">
-                <h3 className="text-xl font-semibold mb-2">
+                <h3
+                  className="text-xl font-semibold mb-2"
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    color: "var(--text-primary)",
+                  }}
+                >
                   {tag ? t("blog.noPostsWithTag", { tag }) : t("blog.noPosts")}
                 </h3>
-                <p className="text-light-text-secondary dark:text-dark-text-secondary">
+                <p style={{ color: "var(--text-secondary)" }}>
                   {t("blog.tryDifferentSearch")}
                 </p>
               </div>
@@ -62,10 +85,22 @@ function BlogPage() {
                 {/* Tag filter indicator */}
                 {tag && (
                   <div className="mb-6">
-                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-light-secondary dark:bg-dark-secondary text-sm">
+                    <div
+                      className="inline-flex items-center px-3 py-1 rounded-full text-sm"
+                      style={{
+                        background: "var(--accent-dim)",
+                        color: "var(--text-primary)",
+                        border: "1px solid var(--border-subtle)",
+                      }}
+                    >
                       <span className="mr-2">
                         {t("blog.filterByTag")}:{" "}
-                        <span className="font-semibold">{tag}</span>
+                        <span
+                          className="font-semibold"
+                          style={{ color: "var(--accent)" }}
+                        >
+                          {tag}
+                        </span>
                       </span>
                       <button
                         onClick={() => {
@@ -74,7 +109,8 @@ function BlogPage() {
                           params.set("page", "1");
                           setSearchParams(params);
                         }}
-                        className="text-light-accent dark:text-dark-accent hover:opacity-80"
+                        className="hover:opacity-80"
+                        style={{ color: "var(--accent)" }}
                         aria-label={t("blog.clearFilter")}
                       >
                         ✕
