@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 export default function TableOfContents({ items }) {
   const [activeId, setActiveId] = useState(null);
 
-  // Track active heading via Intersection Observer
   useEffect(() => {
     const headingElements = items
       .map((item) => document.getElementById(item.id))
@@ -76,7 +75,6 @@ export default function TableOfContents({ items }) {
               style={{ paddingLeft: `${(tocItem.level - 2) * 1}rem` }}
               variants={item}
             >
-              {/* Active indicator bar */}
               {isActive && (
                 <motion.div
                   layoutId="toc-active-indicator"

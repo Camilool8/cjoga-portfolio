@@ -22,7 +22,6 @@ function PostEditor() {
   const { id } = useParams();
   const isEditMode = id !== undefined;
 
-  // Form state
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [content, setContent] = useState("");
@@ -35,7 +34,6 @@ function PostEditor() {
   const [seoDescription, setSeoDescription] = useState("");
   const [seoKeywords, setSeoKeywords] = useState("");
 
-  // UI state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -43,7 +41,6 @@ function PostEditor() {
   const [isTouched, setIsTouched] = useState(false);
   const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
 
-  // Load post data if in edit mode
   useEffect(() => {
     if (isEditMode) {
       const fetchPost = async () => {
@@ -75,7 +72,6 @@ function PostEditor() {
     }
   }, [id, isEditMode, t]);
 
-  // Auto-generate slug from title if not manually edited
   useEffect(() => {
     if (title && !isSlugManuallyEdited) {
       setSlug(
@@ -88,13 +84,11 @@ function PostEditor() {
     }
   }, [title, isSlugManuallyEdited]);
 
-  // Handle slug change
   const handleSlugChange = (e) => {
     setIsSlugManuallyEdited(true);
     setSlug(e.target.value);
   };
 
-  // Handle adding a tag
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
       setTags([...tags, newTag.trim()]);
@@ -102,12 +96,10 @@ function PostEditor() {
     }
   };
 
-  // Handle removing a tag
   const handleRemoveTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -120,8 +112,6 @@ function PostEditor() {
       setLoading(true);
       setError("");
       setSuccess("");
-
-      console.log("Submitting post with published status:", published);
 
       const postData = {
         title,
@@ -140,15 +130,12 @@ function PostEditor() {
       };
 
       if (isEditMode) {
-        const result = await blogApi.updatePost(id, postData);
-        console.log("Update response:", result);
+        await blogApi.updatePost(id, postData);
         setSuccess(t("admin.postEditor.postUpdated"));
       } else {
-        const result = await blogApi.createPost(postData);
-        console.log("Create response:", result);
+        await blogApi.createPost(postData);
         setSuccess(t("admin.postEditor.postCreated"));
 
-        // Redirect to dashboard after a short delay
         setTimeout(() => {
           navigate("/admin/dashboard");
         }, 1500);
@@ -167,7 +154,6 @@ function PostEditor() {
     }
   };
 
-  // Confirm before leaving if there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (isTouched) {
@@ -183,7 +169,6 @@ function PostEditor() {
     };
   }, [isTouched, t]);
 
-  // Mark form as touched when any field changes
   useEffect(() => {
     if (title || content || excerpt || coverImage || tags.length > 0) {
       setIsTouched(true);
@@ -239,21 +224,18 @@ function PostEditor() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Main editor */}
             <div
               className={`${
                 showPreview ? "lg:col-span-1" : "lg:col-span-2"
               } space-y-6`}
             >
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Basic Info */}
                 <div className="bg-light-secondary dark:bg-gray-800 rounded-lg p-6">
                   <h2 className="text-lg font-semibold mb-4 text-light-text-primary dark:text-white">
                     {t("admin.postEditor.basicInfo")}
                   </h2>
 
                   <div className="space-y-4">
-                    {/* Title */}
                     <div>
                       <label
                         htmlFor="title"
@@ -272,7 +254,6 @@ function PostEditor() {
                       />
                     </div>
 
-                    {/* Slug */}
                     <div>
                       <label
                         htmlFor="slug"
@@ -294,7 +275,6 @@ function PostEditor() {
                       </p>
                     </div>
 
-                    {/* Excerpt */}
                     <div>
                       <label
                         htmlFor="excerpt"
@@ -315,7 +295,6 @@ function PostEditor() {
                       </p>
                     </div>
 
-                    {/* Cover Image */}
                     <div>
                       <label
                         htmlFor="coverImage"
@@ -347,7 +326,6 @@ function PostEditor() {
                       ) : (
                         <ImageUploader
                           onImageUploaded={(url) => {
-                            console.log("Image uploaded, setting URL:", url);
                             setCoverImage(url);
                           }}
                         />
@@ -358,7 +336,6 @@ function PostEditor() {
                       </p>
                     </div>
 
-                    {/* Tags */}
                     <div>
                       <label
                         htmlFor="tags"
@@ -409,7 +386,6 @@ function PostEditor() {
                       </div>
                     </div>
 
-                    {/* Published Status */}
                     <div className="flex items-center">
                       <input
                         id="published"
@@ -428,7 +404,6 @@ function PostEditor() {
                   </div>
                 </div>
 
-                {/* Markdown Editor */}
                 <div className="bg-light-secondary dark:bg-gray-800 rounded-lg p-6">
                   <h2 className="text-lg font-semibold mb-4 text-light-text-primary dark:text-white">
                     {t("admin.postEditor.content")} *
@@ -445,14 +420,12 @@ function PostEditor() {
                   />
                 </div>
 
-                {/* SEO Settings */}
                 <div className="bg-light-secondary dark:bg-gray-800 rounded-lg p-6">
                   <h2 className="text-lg font-semibold mb-4 text-light-text-primary dark:text-white">
                     {t("admin.postEditor.seoSettings")}
                   </h2>
 
                   <div className="space-y-4">
-                    {/* SEO Title */}
                     <div>
                       <label
                         htmlFor="seoTitle"
@@ -470,7 +443,6 @@ function PostEditor() {
                       />
                     </div>
 
-                    {/* SEO Description */}
                     <div>
                       <label
                         htmlFor="seoDescription"
@@ -493,7 +465,6 @@ function PostEditor() {
                       </p>
                     </div>
 
-                    {/* SEO Keywords */}
                     <div>
                       <label
                         htmlFor="seoKeywords"
@@ -518,7 +489,6 @@ function PostEditor() {
                   </div>
                 </div>
 
-                {/* Save Button */}
                 <div className="flex justify-end">
                   <button
                     type="submit"
@@ -566,7 +536,6 @@ function PostEditor() {
               </form>
             </div>
 
-            {/* Preview pane */}
             {showPreview && (
               <div className="lg:col-span-2">
                 <div className="bg-light-secondary dark:bg-gray-800 rounded-lg p-6 sticky top-24">

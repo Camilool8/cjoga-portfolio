@@ -24,7 +24,6 @@ function Dashboard() {
 
         const data = await blogApi.getPosts(currentPage, 10);
 
-        // This should contain both published and draft posts
         setPosts(data.posts || []);
         setTotalPages(data.totalPages || 1);
       } catch (err) {
@@ -38,7 +37,6 @@ function Dashboard() {
     fetchPosts();
   }, [currentPage, t]);
 
-  // Handle sign out
   const handleSignOut = async () => {
     try {
       await authService.signOut();
@@ -48,15 +46,12 @@ function Dashboard() {
     }
   };
 
-  // Handle publish/unpublish
   const handleTogglePublish = async (postId, publishStatus) => {
     try {
       setPublishLoading(postId);
 
-      // Call the API to update post status
       const response = await blogApi.updatePostStatus(postId, publishStatus);
 
-      // Update the post in the local state with all the updated fields from the server
       if (response && response.post) {
         setPosts(
           posts.map((post) => {
@@ -67,7 +62,6 @@ function Dashboard() {
           })
         );
       } else {
-        // Fallback to simpler update if response format is unexpected
         setPosts(
           posts.map((post) => {
             if (post.id === postId) {
@@ -94,7 +88,6 @@ function Dashboard() {
     }
   };
 
-  // Handle delete confirmation
   const handleDeleteConfirm = async (postId) => {
     if (!postId) return;
 
@@ -102,12 +95,10 @@ function Dashboard() {
       setDeleteLoading(true);
       await blogApi.deletePost(postId);
 
-      // Refresh posts after delete
       const data = await blogApi.getPosts(currentPage, 10);
       setPosts(data.posts || []);
       setTotalPages(data.totalPages || 1);
 
-      // If we deleted the last post on a page, go to previous page
       if (posts.length === 1 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
       }
@@ -121,7 +112,6 @@ function Dashboard() {
     }
   };
 
-  // Format date helper
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
 
@@ -292,7 +282,6 @@ function Dashboard() {
                         </td>
 
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-light-text-secondary dark:text-gray-300">
-                          {/* Show updated_at for drafts, published_at for published posts */}
                           {post.published
                             ? formatDate(post.published_at)
                             : formatDate(post.updated_at) + " (updated)"}
@@ -331,7 +320,6 @@ function Dashboard() {
               </div>
             </div>
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex justify-center mt-6">
                 <nav className="inline-flex rounded-md shadow-sm">
@@ -377,7 +365,6 @@ function Dashboard() {
         )}
       </div>
 
-      {/* Delete Confirmation Modal */}
       {confirmDelete && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-light-primary dark:bg-dark-primary p-6 rounded-lg max-w-md w-full">

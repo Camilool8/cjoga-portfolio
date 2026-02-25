@@ -4,7 +4,6 @@ import authService from "./authService";
 const API_URL = "/api";
 
 const blogApi = {
-  // Get auth header with token
   getAuthHeader: () => {
     return {
       headers: {
@@ -13,24 +12,20 @@ const blogApi = {
     };
   },
 
-  // Get all blog posts with pagination
   getPosts: async (page = 1, limit = 6, tag = null) => {
     try {
       const params = { page, limit };
       if (tag) params.tag = tag;
 
-      // Check if this is an admin request (has auth token)
       const token = authService.getToken();
 
       if (token) {
-        // Admin request - use admin endpoint to get all posts (published and drafts)
         const response = await axios.get(`${API_URL}/blog/admin/posts`, {
           params,
           headers: { Authorization: `Bearer ${token}` },
         });
         return response.data;
       } else {
-        // Public request - use public endpoint (published posts only)
         const response = await axios.get(`${API_URL}/blog/posts`, { params });
         return response.data;
       }
@@ -40,10 +35,8 @@ const blogApi = {
     }
   },
 
-  // Get a single blog post by slug
   getPost: async (slugOrId) => {
     try {
-      // For admin edit mode (UUID), use admin endpoint
       if (
         /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
           slugOrId
@@ -54,7 +47,6 @@ const blogApi = {
           blogApi.getAuthHeader()
         );
 
-        // Check if response has the expected structure
         if (!response.data || !response.data.post) {
           if (response.data && response.data.id) {
             return { post: response.data };
@@ -66,7 +58,6 @@ const blogApi = {
 
         return response.data;
       } else {
-        // Normal public post view
         const response = await axios.get(`${API_URL}/blog/posts/${slugOrId}`);
         return response.data;
       }
@@ -76,7 +67,6 @@ const blogApi = {
     }
   },
 
-  // Get all tags
   getTags: async () => {
     try {
       const response = await axios.get(`${API_URL}/blog/tags`);
@@ -87,7 +77,6 @@ const blogApi = {
     }
   },
 
-  // Search blog posts
   searchPosts: async (query) => {
     try {
       const response = await axios.get(`${API_URL}/blog/search`, {
@@ -100,9 +89,6 @@ const blogApi = {
     }
   },
 
-  // ADMIN METHODS
-
-  // Create a new blog post
   createPost: async (postData) => {
     try {
       const response = await axios.post(
@@ -117,7 +103,6 @@ const blogApi = {
     }
   },
 
-  // Update an existing blog post
   updatePost: async (id, postData) => {
     try {
       const response = await axios.put(
@@ -135,7 +120,6 @@ const blogApi = {
     }
   },
 
-  // Delete a blog post
   deletePost: async (id) => {
     try {
       const response = await axios.delete(
@@ -149,7 +133,6 @@ const blogApi = {
     }
   },
 
-  // Update post status (publish/unpublish)
   updatePostStatus: async (id, published) => {
     try {
       const response = await axios.patch(
@@ -164,14 +147,11 @@ const blogApi = {
     }
   },
 
-  // Upload an image for a blog post
   uploadImage: async (file) => {
     try {
-      // Create a FormData object to send the file
       const formData = new FormData();
       formData.append("image", file);
 
-      // Get auth header
       const headers = {
         ...blogApi.getAuthHeader().headers,
         "Content-Type": "multipart/form-data",
@@ -186,7 +166,7 @@ const blogApi = {
       return response.data;
     } catch (error) {
       console.error(
-        "Detailed upload error in API:",
+        "Upload error:",
         error.response?.data || error.message
       );
       throw error;

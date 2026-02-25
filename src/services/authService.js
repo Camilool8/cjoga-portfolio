@@ -3,17 +3,14 @@ import axios from "axios";
 const authService = {
   _token: null,
 
-  // Helper to get auth headers
   getAuthHeader() {
     return this._token ? { Authorization: `Bearer ${this._token}` } : {};
   },
 
-  // Sign in with email and password
   signIn: async (email, password) => {
     try {
       const response = await axios.post("/api/auth/login", { email, password });
 
-      // Store token
       const session = response.data.session;
       if (session?.access_token) {
         authService._token = session.access_token;
@@ -30,7 +27,6 @@ const authService = {
     }
   },
 
-  // Sign out
   signOut: async () => {
     try {
       await axios.post(
@@ -41,7 +37,6 @@ const authService = {
         }
       );
 
-      // Clear token
       authService._token = null;
       sessionStorage.removeItem("auth_token");
     } catch (error) {
@@ -53,10 +48,8 @@ const authService = {
     }
   },
 
-  // Get the current user
   getCurrentUser: async () => {
     try {
-      // Try to get token from memory or sessionStorage
       if (!authService._token) {
         authService._token = sessionStorage.getItem("auth_token");
         if (!authService._token) return null;
@@ -78,10 +71,8 @@ const authService = {
     }
   },
 
-  // Check if the user is authenticated and an admin
   isAdmin: async () => {
     try {
-      // Try to get token from memory or sessionStorage
       if (!authService._token) {
         authService._token = sessionStorage.getItem("auth_token");
         if (!authService._token) return false;
@@ -101,7 +92,6 @@ const authService = {
     }
   },
 
-  // Get the current session token
   getToken: () => {
     if (!authService._token) {
       authService._token = sessionStorage.getItem("auth_token");
@@ -109,17 +99,13 @@ const authService = {
     return authService._token;
   },
 
-  // Initialize - call this when your app loads
   init: async () => {
-    // Try to restore token from sessionStorage
     const token = sessionStorage.getItem("auth_token");
     if (token) {
       authService._token = token;
-      // Validate the token
       try {
         await authService.getCurrentUser();
       } catch (error) {
-        // Token is invalid, clear it
         authService._token = null;
         sessionStorage.removeItem("auth_token");
       }
@@ -127,7 +113,6 @@ const authService = {
   },
 };
 
-// Initialize auth service
 authService.init();
 
 export default authService;

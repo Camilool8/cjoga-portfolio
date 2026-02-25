@@ -1,11 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: "class", // Keep class-based dark mode for admin panel backward compatibility
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        // Legacy light/dark tokens (preserved for admin panel)
         light: {
           primary: "#ffffff",
           secondary: "#f3f4f6",
@@ -24,7 +23,6 @@ export default {
             secondary: "#8892b0",
           },
         },
-        // New design system tokens (CSS variable-based)
         void: "var(--bg-void)",
         surface: "var(--bg-surface)",
         elevated: "var(--bg-elevated)",

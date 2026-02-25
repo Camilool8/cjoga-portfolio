@@ -44,13 +44,11 @@ function Projects() {
                 border: "1px solid var(--border-subtle)",
               }}
             >
-              {/* Gradient line on top */}
               <div
                 className="project-gradient absolute top-0 left-0 right-0 h-0.5 transition-opacity duration-400"
                 style={{ background: "var(--gradient-accent)", opacity: 0 }}
               />
 
-              {/* Icon */}
               <div
                 className="project-icon-wrap w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-[18px] transition-all duration-300"
                 style={{ background: "var(--accent-dim)", color: "var(--accent)" }}
@@ -58,7 +56,6 @@ function Projects() {
                 <FaFolder />
               </div>
 
-              {/* Title */}
               <h3
                 className="project-title-text mb-2.5 transition-colors duration-300"
                 style={{
@@ -69,7 +66,6 @@ function Projects() {
                 {t(`projects.${projectKey}.title`)}
               </h3>
 
-              {/* Description */}
               <p
                 className="mb-[18px] flex-grow"
                 style={{ fontSize: "0.86rem", lineHeight: 1.65, color: "var(--text-secondary)" }}
@@ -77,7 +73,6 @@ function Projects() {
                 {t(`projects.${projectKey}.description`)}
               </p>
 
-              {/* Tech tags */}
               <div className="flex flex-wrap gap-1.5">
                 {t(`projects.${projectKey}.tech`, { returnObjects: true }).map((tech, i) => (
                   <span

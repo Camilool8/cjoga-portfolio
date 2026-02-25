@@ -24,7 +24,6 @@ function ProtectedRoute() {
   }, []);
 
   if (loading) {
-    // Show loading state while checking authentication
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-light-accent dark:border-dark-accent"></div>
@@ -32,12 +31,10 @@ function ProtectedRoute() {
     );
   }
 
-  // If not an admin, redirect to login page with the return path
   if (!isAdmin) {
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
-  // If authenticated and admin, render the child routes
   return <Outlet />;
 }
 

@@ -37,7 +37,6 @@ export default function RelatedPosts({ posts }) {
             e.currentTarget.style.boxShadow = "none";
           }}
         >
-          {/* Accent gradient top line */}
           <div
             className="h-[2px] w-full opacity-0 group-hover:opacity-100"
             style={{
@@ -46,7 +45,6 @@ export default function RelatedPosts({ posts }) {
             }}
           />
 
-          {/* Cover Image */}
           <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
             <img
               src={post.cover_image || "/images/blog-placeholder.jpg"}
@@ -64,7 +62,6 @@ export default function RelatedPosts({ posts }) {
             />
           </Link>
 
-          {/* Content */}
           <div className="p-4">
             <h3
               className="text-base font-semibold mb-1 line-clamp-2"

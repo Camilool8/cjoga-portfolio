@@ -11,7 +11,6 @@ function Hero() {
 
   const heroRef = useRef(null);
 
-  // Scroll-driven departure: fade out + lift as user scrolls past
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -63,7 +62,6 @@ function Hero() {
       className="min-h-screen flex flex-col justify-center relative overflow-hidden"
       style={{ background: "var(--gradient-hero)", padding: "100px 0 60px" }}
     >
-      {/* Grid overlay with parallax */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -76,12 +74,10 @@ function Hero() {
         }}
       />
 
-      {/* Content wrapper with scroll-driven fade */}
       <motion.div
         className="section-inner relative z-10"
         style={{ opacity: heroOpacity, y: heroY }}
       >
-        {/* Terminal greeting */}
         <p
           className="mb-5"
           style={{
@@ -96,7 +92,6 @@ function Hero() {
           />
         </p>
 
-        {/* Name with gradient */}
         <h1
           style={{
             fontFamily: "var(--font-display)", fontSize: "clamp(2.8rem, 8vw, 5.5rem)",
@@ -104,7 +99,7 @@ function Hero() {
             opacity: 0, animation: "hReveal 0.8s 0.5s var(--ease-out-expo) forwards",
           }}
         >
-          José Camilo<br />
+          Jose Camilo<br />
           <span
             style={{
               background: "var(--gradient-accent)", WebkitBackgroundClip: "text",
@@ -115,7 +110,6 @@ function Hero() {
           </span>
         </h1>
 
-        {/* Typed role */}
         <div
           className="min-h-[1.4em]"
           style={{
@@ -129,7 +123,6 @@ function Hero() {
           </span>
         </div>
 
-        {/* Description */}
         <p
           className="max-w-[560px]"
           style={{
@@ -140,7 +133,6 @@ function Hero() {
           {t("hero.description")}
         </p>
 
-        {/* CTA Buttons */}
         <div
           className="flex gap-4 flex-wrap"
           style={{ opacity: 0, animation: "hReveal 0.8s 1.1s var(--ease-out-expo) forwards" }}
@@ -149,7 +141,6 @@ function Hero() {
           <a href="#contact" className="btn btn-outline">{t("hero.cta.contact")}</a>
         </div>
 
-        {/* Status bar */}
         <div
           className="flex items-center gap-5 mt-[60px] pt-8 flex-wrap"
           style={{
@@ -172,7 +163,6 @@ function Hero() {
         </div>
       </motion.div>
 
-      {/* Scroll indicator */}
       <a
         href="#about"
         className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 cursor-pointer z-10"

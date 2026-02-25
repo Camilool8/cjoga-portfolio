@@ -17,7 +17,6 @@ export default function SectionDivider() {
       className="relative h-24 md:h-32 flex items-center justify-center overflow-hidden pointer-events-none"
       style={{ zIndex: 2 }}
     >
-      {/* Expanding gradient line */}
       <motion.div
         className="h-px"
         style={{
@@ -26,7 +25,6 @@ export default function SectionDivider() {
           background: "var(--gradient-accent)",
         }}
       />
-      {/* Center dot */}
       <motion.div
         className="absolute w-1 h-1 rounded-full"
         style={{

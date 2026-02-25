@@ -17,6 +17,7 @@ spec:
       labels:
         app: portfolio
     spec:
+      serviceAccountName: terminal-readonly
       containers:
         - name: portfolio-container
           image: cjoga/portfolio:latest

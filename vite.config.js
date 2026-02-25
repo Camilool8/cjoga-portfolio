@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -24,7 +23,6 @@ export default defineConfig({
     outDir: "dist",
     minify: "terser",
     sourcemap: false,
-    // Configure chunking strategy
     rollupOptions: {
       output: {
         manualChunks: {
@@ -40,9 +38,7 @@ export default defineConfig({
         },
       },
     },
-    // Optimize images on build
-    assetsInlineLimit: 4096, // 4kb
+    assetsInlineLimit: 4096,
   },
-  // Configure environment variables
   envPrefix: "VITE_",
 });

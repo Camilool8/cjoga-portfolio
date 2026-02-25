@@ -10,7 +10,6 @@ import {
 } from "@react-pdf/renderer";
 import { cvMetadata } from "../data";
 
-// Register fonts
 Font.register({
   family: "Roboto",
   fonts: [
@@ -29,7 +28,6 @@ Font.register({
   ],
 });
 
-// Create styles
 const styles = StyleSheet.create({
   page: {
     padding: 30,
@@ -153,14 +151,12 @@ const styles = StyleSheet.create({
   },
 });
 
-// Create Document Component
 const ProfessionalPDFCV = () => {
   const { t } = useTranslation();
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.name}>{cvMetadata.name}</Text>
           <Text style={styles.title}>
@@ -174,7 +170,6 @@ const ProfessionalPDFCV = () => {
           </View>
         </View>
 
-        {/* Professional Summary */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             {t("cv.summary", "PROFESSIONAL SUMMARY")}
@@ -182,13 +177,11 @@ const ProfessionalPDFCV = () => {
           <Text style={styles.paragraph}>{t("hero.description")}</Text>
         </View>
 
-        {/* Technical Skills */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             {t("cv.skills", "TECHNICAL SKILLS")}
           </Text>
           <View style={styles.skillsGrid}>
-            {/* Cloud Platforms */}
             <View style={styles.skillCategory}>
               <Text style={styles.skillCategoryTitle}>
                 {t("cv.cloud-platforms", "Cloud Platforms")}
@@ -199,7 +192,6 @@ const ProfessionalPDFCV = () => {
               </View>
             </View>
 
-            {/* Infrastructure */}
             <View style={styles.skillCategory}>
               <Text style={styles.skillCategoryTitle}>
                 {t("cv.infrastructure", "Infrastructure")}
@@ -212,7 +204,6 @@ const ProfessionalPDFCV = () => {
               </View>
             </View>
 
-            {/* CI/CD & DevOps */}
             <View style={styles.skillCategory}>
               <Text style={styles.skillCategoryTitle}>
                 {t("cv.cicd", "CI/CD & DevOps")}
@@ -227,7 +218,6 @@ const ProfessionalPDFCV = () => {
               </View>
             </View>
 
-            {/* Monitoring & Scripting */}
             <View style={styles.skillCategory}>
               <Text style={styles.skillCategoryTitle}>
                 {t("cv.monitoring", "Monitoring & Scripting")}
@@ -240,13 +230,11 @@ const ProfessionalPDFCV = () => {
           </View>
         </View>
 
-        {/* Professional Experience */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             {t("cv.experience", "PROFESSIONAL EXPERIENCE")}
           </Text>
 
-          {/* Arroyo Consulting */}
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
               {t("experience.arroyo.title")}, {t("experience.arroyo.company")}
@@ -265,7 +253,6 @@ const ProfessionalPDFCV = () => {
             </View>
           </View>
 
-          {/* FL Betances */}
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
               {t("experience.flBetances.title")},{" "}
@@ -285,7 +272,6 @@ const ProfessionalPDFCV = () => {
             </View>
           </View>
 
-          {/* Shadow-Soft */}
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
               {t("experience.shadowSoft.title")},{" "}
@@ -306,13 +292,11 @@ const ProfessionalPDFCV = () => {
           </View>
         </View>
 
-        {/* Key Projects */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             {t("cv.projects", "KEY PROJECTS")}
           </Text>
 
-          {/* Project 1 */}
           <View style={styles.project}>
             <Text style={styles.projectTitle}>{t("projects.cicd.title")}</Text>
             <Text style={styles.projectDescription}>
@@ -323,7 +307,6 @@ const ProfessionalPDFCV = () => {
             </Text>
           </View>
 
-          {/* Project 2 */}
           <View style={styles.project}>
             <Text style={styles.projectTitle}>{t("projects.iac.title")}</Text>
             <Text style={styles.projectDescription}>
@@ -334,7 +317,6 @@ const ProfessionalPDFCV = () => {
             </Text>
           </View>
 
-          {/* Project 3 */}
           <View style={styles.project}>
             <Text style={styles.projectTitle}>
               {t("projects.monitoring.title")}
@@ -350,7 +332,6 @@ const ProfessionalPDFCV = () => {
           </View>
         </View>
 
-        {/* Certifications */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             {t("cv.certifications", "CERTIFICATIONS")}

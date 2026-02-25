@@ -16,7 +16,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
 
   const isHomePage = location.pathname === "/";
 
-  // Handle scroll: show/hide nav + scrolled state
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
     setIsScrolled(currentScrollY > 50);
@@ -34,13 +33,11 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMenuOpen(false);
     setLanguageMenuOpen(false);
   }, [location]);
 
-  // Close language menu on click outside
   useEffect(() => {
     if (!languageMenuOpen) return;
     const handleClick = (e) => {
@@ -52,7 +49,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
     return () => document.removeEventListener("click", handleClick);
   }, [languageMenuOpen]);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -90,12 +86,11 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
     );
   };
 
-  // Check if a section is roughly in view (for active state on home page)
   const isBlogActive = location.pathname.startsWith("/blog");
+  const isTerminalActive = location.pathname.startsWith("/terminal");
 
   return (
     <>
-      {/* Floating Pill Navigation */}
       <nav
         className={`fixed top-4 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-0.5 py-1.5 px-2 glass rounded-2xl transition-all duration-500 max-w-[calc(100vw-32px)] ${
           isScrolled ? "shadow-lg" : ""
@@ -104,7 +99,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           borderColor: isScrolled ? "var(--border-medium)" : "var(--border-subtle)",
         }}
       >
-        {/* Logo */}
         <Link
           to="/"
           className="font-mono font-bold text-sm px-3 py-2 no-underline"
@@ -113,7 +107,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           CJ
         </Link>
 
-        {/* Desktop Nav Links */}
         <div className="hidden lg:flex items-center gap-0.5">
           {navItems.map(({ section, label }) => (
             <NavLink key={section} section={section} label={label} />
@@ -125,11 +118,16 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           >
             {t("header.blog")}
           </Link>
+          <Link
+            to="/terminal"
+            className={`nav-pill-link ${isTerminalActive ? "nav-pill-active" : ""}`}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            {t("header.terminal")}
+          </Link>
         </div>
 
-        {/* Controls */}
         <div className="flex items-center gap-1 ml-1 pl-2" style={{ borderLeft: "1px solid var(--border-subtle)" }}>
-          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             aria-label={theme === "dark" ? t("theme.light") : t("theme.dark")}
@@ -138,7 +136,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
             {theme === "dark" ? <FiSun size={16} /> : <FiMoon size={16} />}
           </button>
 
-          {/* Language Toggle */}
           <div className="relative" ref={langRef}>
             <button
               onClick={(e) => {
@@ -172,7 +169,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
             )}
           </div>
 
-          {/* Mobile Menu Toggle — Animated Hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -188,7 +184,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
         </div>
       </nav>
 
-      {/* Mobile Menu — Slide-in Panel */}
       <div
         className={`mobile-nav-backdrop ${menuOpen ? "is-open" : ""}`}
         onClick={() => setMenuOpen(false)}
@@ -198,7 +193,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
         className={`mobile-nav-panel ${menuOpen ? "is-open" : ""}`}
         aria-hidden={!menuOpen}
       >
-        {/* Panel header */}
         <div className="mobile-nav-header">
           <span className="font-mono text-xs tracking-widest uppercase" style={{ color: "var(--text-tertiary)" }}>
             {t("header.navigation", "Navigation")}
@@ -206,7 +200,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           <div className="mobile-nav-header-line" />
         </div>
 
-        {/* Navigation links */}
         <nav className="mobile-nav-links">
           {navItems.map(({ section, label }, i) => (
             <NavLink
@@ -237,12 +230,24 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
             </span>
             <span className="mobile-nav-label">{t("header.blog")}</span>
           </Link>
+          <Link
+            to="/terminal"
+            className={`mobile-nav-item ${isTerminalActive ? "is-active" : ""}`}
+            onClick={() => {
+              setMenuOpen(false);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            style={{ "--i": navItems.length + 1 }}
+          >
+            <span className="mobile-nav-num">
+              {String(navItems.length + 2).padStart(2, "0")}.
+            </span>
+            <span className="mobile-nav-label">{t("header.terminal")}</span>
+          </Link>
         </nav>
 
-        {/* Divider */}
         <div className="mobile-nav-divider" />
 
-        {/* Theme + Language controls in mobile */}
         <div className="mobile-nav-controls">
           <button onClick={toggleTheme} className="mobile-nav-control-btn">
             {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
@@ -257,7 +262,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           </button>
         </div>
 
-        {/* Footer branding */}
         <div className="mobile-nav-footer">
           <a
             href={`mailto:${socialLinks.email}`}
@@ -272,7 +276,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
       </aside>
 
       <style>{`
-        /* ── Desktop nav pill links ── */
         .nav-pill-link {
           font-family: var(--font-mono);
           font-size: 0.7rem;
@@ -290,7 +293,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           background: var(--accent-dim);
         }
 
-        /* ── Nav control buttons (theme, lang, hamburger) ── */
         .nav-control-btn {
           width: 36px;
           height: 36px;
@@ -309,7 +311,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           background: var(--accent-dim);
         }
 
-        /* ── Animated Hamburger ── */
         @media (min-width: 1024px) {
           .mobile-hamburger {
             display: none !important;
@@ -346,7 +347,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           transform: translateY(-6.25px) rotate(-45deg);
         }
 
-        /* ── Mobile nav backdrop ── */
         .mobile-nav-backdrop {
           position: fixed;
           inset: 0;
@@ -369,7 +369,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           }
         }
 
-        /* ── Mobile nav slide-in panel ── */
         .mobile-nav-panel {
           position: fixed;
           top: 0;
@@ -390,7 +389,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
         .mobile-nav-panel.is-open {
           transform: translateX(0);
         }
-        /* Subtle gradient accent at top of panel */
         .mobile-nav-panel::before {
           content: '';
           position: absolute;
@@ -406,7 +404,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           pointer-events: none;
         }
 
-        /* ── Panel header ── */
         .mobile-nav-header {
           display: flex;
           align-items: center;
@@ -420,7 +417,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           background: var(--border-subtle);
         }
 
-        /* ── Navigation items ── */
         .mobile-nav-links {
           display: flex;
           flex-direction: column;
@@ -468,14 +464,12 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           letter-spacing: -0.01em;
         }
 
-        /* ── Divider ── */
         .mobile-nav-divider {
           height: 1px;
           background: var(--border-subtle);
           margin: 20px 0;
         }
 
-        /* ── Theme/language controls in mobile ── */
         .mobile-nav-controls {
           display: flex;
           flex-direction: column;
@@ -503,13 +497,11 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           color: var(--accent);
         }
 
-        /* ── Footer branding ── */
         .mobile-nav-footer {
           margin-top: auto;
           padding-top: 20px;
         }
 
-        /* ── Language dropdown ── */
         .lang-option {
           display: block;
           width: 100%;

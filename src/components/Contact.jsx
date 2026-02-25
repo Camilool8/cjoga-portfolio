@@ -56,7 +56,6 @@ function Contact() {
           </motion.p>
         </motion.div>
 
-        {/* Phone number for print */}
         <p className="print-only mb-4">{t("print.phone")}</p>
 
         <div className="flex justify-center gap-3 flex-wrap">

@@ -15,13 +15,11 @@ import "prismjs/components/prism-json";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-docker";
 import "prismjs/components/prism-powershell";
-import "prismjs/components/prism-hcl"; // For Terraform
+import "prismjs/components/prism-hcl";
 
-// Code Block Component
 const CodeBlock = ({ code, language }) => {
   const [copied, setCopied] = useState(false);
 
-  // Map common language aliases
   const languageMap = {
     js: "javascript",
     ts: "typescript",
@@ -39,7 +37,6 @@ const CodeBlock = ({ code, language }) => {
     mappedLang.charAt(0).toUpperCase() + mappedLang.slice(1);
 
   useEffect(() => {
-    // Apply Prism highlighting after the component renders
     Prism.highlightAll();
   }, []);
 
@@ -82,7 +79,6 @@ const CodeBlock = ({ code, language }) => {
   );
 };
 
-// This approach parses the markdown and directly returns JSX elements
 const SimpleMarkdownRenderer = ({
   content,
   className = "",
@@ -91,14 +87,12 @@ const SimpleMarkdownRenderer = ({
   const [parsedElements, setParsedElements] = useState([]);
   const headingsExtracted = useRef(false);
 
-  // Extract headings and parse markdown to JSX elements
   useEffect(() => {
     if (!content) {
       setParsedElements([]);
       return;
     }
 
-    // Extract headings for TOC if callback is provided
     if (onHeadingsExtracted && !headingsExtracted.current) {
       const headingRegex = /^(#{2,6})\s+(.+)$/gm;
       const headings = [];
@@ -116,16 +110,13 @@ const SimpleMarkdownRenderer = ({
         headings.push({ id, text, level });
       }
 
-      // Only call the callback once, not during each render
       onHeadingsExtracted(headings);
       headingsExtracted.current = true;
     }
 
-    // Split content by code blocks
     const segments = content.split(/(```[a-zA-Z0-9]*\n[\s\S]*?\n```)/g);
 
     const elements = segments.map((segment, index) => {
-      // Check if this segment is a code block
       const codeMatch = segment.match(/```([a-zA-Z0-9]*)\n([\s\S]*?)\n```/);
 
       if (codeMatch) {
@@ -136,18 +127,14 @@ const SimpleMarkdownRenderer = ({
         );
       }
 
-      // For non-code segments, render as regular markdown
       const renderer = new marked.Renderer();
 
-      // Customize the renderer as needed
       renderer.code = (code, lang) => {
-        // For inline code blocks that are not triple-backtick blocks
         return `<pre><code class="language-${
           lang || "plaintext"
         }">${code}</code></pre>`;
       };
 
-      // Ensure IDs are added to headings
       renderer.heading = (text, level, raw) => {
         const id = raw
           .toLowerCase()
@@ -183,12 +170,10 @@ const SimpleMarkdownRenderer = ({
     setParsedElements(elements);
   }, [content, onHeadingsExtracted]);
 
-  // Apply syntax highlighting after render
   useEffect(() => {
     Prism.highlightAll();
   }, [parsedElements]);
 
-  // Reset headings extraction flag when content changes
   useEffect(() => {
     headingsExtracted.current = false;
   }, [content]);

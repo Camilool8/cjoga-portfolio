@@ -18,20 +18,16 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
   const { t } = useTranslation();
   const textareaRef = useRef(null);
 
-  // Add this state for the image uploader modal
   const [showImageUploader, setShowImageUploader] = useState(false);
 
-  // Set theme for any internal styling
   const isDarkMode = theme === "dark";
 
-  // Focus textarea when component mounts
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.focus();
     }
   }, []);
 
-  // Insert markdown syntax at cursor position
   const insertMarkdown = (before, after = "") => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -46,14 +42,12 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
     const newValue = textBefore + before + selectedText + after + textAfter;
     onChange(newValue);
 
-    // Set cursor position after inserted text
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(start + before.length, end + before.length);
     }, 0);
   };
 
-  // Toolbar button click handlers
   const handleBold = () => insertMarkdown("**", "**");
   const handleItalic = () => insertMarkdown("*", "*");
   const handleHeading = () => insertMarkdown("## ");
@@ -64,7 +58,6 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
     }
   };
 
-  // Replace your existing handleImage function with this one:
   const handleImage = () => {
     setShowImageUploader(true);
   };
@@ -83,7 +76,6 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
 
   return (
     <div className="markdown-editor">
-      {/* Toolbar */}
       <div
         className={`flex flex-wrap gap-1 p-2 mb-2 rounded-md ${
           isDarkMode ? "bg-gray-700" : "bg-light-primary"
@@ -199,7 +191,6 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
         </button>
       </div>
 
-      {/* Editor */}
       <textarea
         ref={textareaRef}
         value={value}
@@ -212,7 +203,6 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
         placeholder={t("admin.markdownEditor.placeholder")}
       />
 
-      {/* Markdown syntax helper */}
       <div
         className={`mt-2 text-xs ${
           isDarkMode ? "text-gray-300" : "text-light-text-secondary"
@@ -231,7 +221,6 @@ export default function MarkdownEditor({ value, onChange, theme = "light" }) {
         </a>
       </div>
 
-      {/* Image Uploader Modal */}
       {showImageUploader && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-light-primary dark:bg-gray-800 p-6 rounded-lg max-w-md w-full">

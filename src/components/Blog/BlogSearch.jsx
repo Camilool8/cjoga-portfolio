@@ -8,7 +8,6 @@ export default function BlogSearch() {
   const navigate = useNavigate();
   const location = useLocation();
   const [query, setQuery] = useState(() => {
-    // Get initial query from URL if on search page
     if (location.pathname === "/blog/search") {
       const urlParams = new URLSearchParams(location.search);
       return urlParams.get("q") || "";

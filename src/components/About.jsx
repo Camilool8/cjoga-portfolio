@@ -38,7 +38,6 @@ function About() {
       <div className="section-inner">
         <div className="grid grid-cols-1 gap-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-start">
-            {/* Text content */}
             <div>
               <motion.div
                 variants={sectionVariants}
@@ -62,7 +61,6 @@ function About() {
                   </p>
                 </motion.div>
 
-                {/* Skills grid */}
                 <motion.div variants={itemVariants} className="mt-8">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {skills.map((skill, i) => (
@@ -91,7 +89,6 @@ function About() {
               </motion.div>
             </div>
 
-            {/* Photo + stats */}
             <motion.div
               ref={photoRef}
               variants={sectionVariants}
@@ -121,7 +118,6 @@ function About() {
                     style={{ filter: "grayscale(0.8) contrast(1.05)" }}
                     loading="lazy"
                   />
-                  {/* Corner brackets */}
                   <div
                     className="absolute top-[-1px] left-[-1px] w-10 h-10 z-10"
                     style={{ borderTop: "2px solid var(--accent)", borderLeft: "2px solid var(--accent)", borderRadius: "16px 0 0 0" }}
@@ -133,7 +129,6 @@ function About() {
                 </div>
               </motion.div>
 
-              {/* Stats */}
               <div className="grid grid-cols-3 gap-2.5 mt-3.5">
                 {[
                   { number: "4+", label: t("about.stats.years", "Years Exp") },

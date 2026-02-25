@@ -34,7 +34,6 @@ function BlogPost() {
   const [, setTocReady] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
-  // Fetch blog post data
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -43,16 +42,13 @@ function BlogPost() {
         setPost(post);
         setRelatedPosts(relatedPosts);
 
-        // Process the HTML content to add IDs to headings
         setTimeout(() => {
           if (contentRef.current) {
             const content = contentRef.current;
 
-            // Add IDs to all headings if they don't have one already
             const headings = content.querySelectorAll("h2, h3, h4");
             headings.forEach((heading) => {
               if (!heading.id) {
-                // Create a slug from the heading text
                 const id = heading.textContent
                   .toLowerCase()
                   .replace(/[^\w\s-]/g, "")
@@ -63,7 +59,6 @@ function BlogPost() {
               }
             });
 
-            // Build TOC data from headings
             const tocData = Array.from(headings).map((heading) => ({
               id: heading.id,
               text: heading.textContent,
@@ -71,10 +66,9 @@ function BlogPost() {
             }));
 
             tocItems.current = tocData;
-            // Force a re-render to update the TOC
             setTocReady(true);
           }
-        }, 100); // Small delay to ensure content is rendered
+        }, 100);
       } catch (err) {
         console.error("Error fetching post:", err);
         setError(t("blog.error.post"));
@@ -96,7 +90,6 @@ function BlogPost() {
     }).format(date);
   };
 
-  // Reading progress bar
   const ReadingProgressBar = () => {
     const [readingProgress, setReadingProgress] = useState(0);
 
@@ -137,13 +130,11 @@ function BlogPost() {
     );
   };
 
-  // Generate share URL
   useEffect(() => {
     const shareUrl = typeof window !== "undefined" ? window.location.href : "";
     setShareUrl(shareUrl);
   }, []);
 
-  // Share functionality
   const SocialShareButtons = ({ title, url }) => {
     const [showTooltip, setShowTooltip] = useState(false);
 
@@ -417,7 +408,6 @@ function BlogPost() {
       <ReadingProgressBar />
       <section id="blog-post" className="py-20">
         <div className="section-inner">
-          {/* Back button */}
           <div className="mb-8">
             <Link
               to="/blog"
@@ -440,7 +430,6 @@ function BlogPost() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Main content */}
             <div className="lg:col-span-3">
               <motion.article
                 initial={{ opacity: 0, y: 20 }}
@@ -453,7 +442,6 @@ function BlogPost() {
                   boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
                 }}
               >
-                {/* Cover Image */}
                 {post.cover_image && (
                   <div className="w-full">
                     <img
@@ -464,9 +452,7 @@ function BlogPost() {
                   </div>
                 )}
 
-                {/* Content */}
                 <div className="p-6 md:p-8">
-                  {/* Title */}
                   <h1
                     className="text-3xl md:text-4xl font-bold mb-4"
                     style={{
@@ -479,7 +465,6 @@ function BlogPost() {
                     {post.title}
                   </h1>
 
-                  {/* Meta */}
                   <div
                     className="flex flex-wrap items-center mb-6 text-sm"
                     style={{
@@ -507,7 +492,6 @@ function BlogPost() {
                     </span>
                   </div>
 
-                  {/* Tags */}
                   {post.tags && post.tags.length > 0 && (
                     <div className="flex flex-wrap mb-6 gap-2">
                       {post.tags.map((tag, index) => (
@@ -538,7 +522,6 @@ function BlogPost() {
                     </div>
                   )}
 
-                  {/* Table of Contents */}
                   {tocItems.current.length > 0 && (
                     <div
                       className="my-6 p-4 rounded-xl"
@@ -560,7 +543,6 @@ function BlogPost() {
                     </div>
                   )}
 
-                  {/* Content */}
                   <SimpleMarkdownRenderer
                     content={post.content}
                     onHeadingsExtracted={(items) => {
@@ -570,12 +552,10 @@ function BlogPost() {
                     className="prose prose-lg dark:prose-invert"
                   />
 
-                  {/* Share buttons */}
                   <SocialShareButtons title={post.title} url={shareUrl || ""} />
                 </div>
               </motion.article>
 
-              {/* Related Posts */}
               {relatedPosts.length > 0 && (
                 <div className="mt-12">
                   <h2
@@ -592,7 +572,6 @@ function BlogPost() {
               )}
             </div>
 
-            {/* Sidebar */}
             <div className="lg:col-span-1">
               <BlogSidebar />
             </div>

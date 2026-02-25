@@ -10,7 +10,6 @@ function Experience() {
   const { t } = useTranslation();
   const timelineRef = useRef(null);
 
-  // Timeline draw: line grows as section scrolls into view
   const { scrollYProgress } = useScroll({
     target: timelineRef,
     offset: ["start 0.8", "end 0.3"],
@@ -40,9 +39,7 @@ function Experience() {
           </motion.div>
         </motion.div>
 
-        {/* Timeline */}
         <div ref={timelineRef} className="relative mt-12">
-          {/* Timeline line — draws itself via scaleY */}
           <motion.div
             className="absolute top-0 bottom-0 hidden md:block"
             style={{
@@ -74,7 +71,6 @@ function Experience() {
               viewport={{ once: true }}
               className="relative mb-10 pl-11 md:pl-[72px]"
             >
-              {/* Timeline dot — scales in */}
               <motion.div
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
@@ -87,7 +83,6 @@ function Experience() {
                 }}
               />
 
-              {/* Pulse ring for active entry */}
               {isActive(index) && (
                 <div
                   className="absolute top-[24px] left-[7px] md:left-[23px] w-[19px] h-[19px] rounded-full z-[1]"
@@ -98,7 +93,6 @@ function Experience() {
                 />
               )}
 
-              {/* Card */}
               <div
                 className="timeline-card rounded-2xl p-6 md:p-7 transition-all duration-400"
                 style={{
@@ -106,7 +100,6 @@ function Experience() {
                   border: "1px solid var(--border-subtle)",
                 }}
               >
-                {/* Meta row */}
                 <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
                   <span
                     className="py-1 px-2.5 rounded-md"
@@ -134,7 +127,6 @@ function Experience() {
                   )}
                 </div>
 
-                {/* Role & company */}
                 <h3
                   className="mb-0.5"
                   style={{
@@ -151,7 +143,6 @@ function Experience() {
                   {t(`experience.${key}.company`)}
                 </p>
 
-                {/* Responsibilities */}
                 <ul className="list-none p-0">
                   {t(`experience.${key}.responsibilities`, { returnObjects: true }).map(
                     (item, i) => (

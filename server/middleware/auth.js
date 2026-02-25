@@ -1,24 +1,17 @@
 import logger from "../utils/logger.js";
 
-/**
- * Middleware to authenticate all requests
- * Checks for valid JWT in Authorization header
- */
 export const authenticate = async (req, res, next) => {
   try {
-    // Check if Supabase client is available
     if (!req.supabase) {
       logger.error("Supabase client not available in auth middleware");
       return res.status(500).json({ error: "Server configuration error" });
     }
 
-    // Get Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "Authentication required" });
     }
 
-    // Extract and verify token
     const token = authHeader.split(" ")[1];
     const { data, error } = await req.supabase.auth.getUser(token);
 
@@ -27,7 +20,6 @@ export const authenticate = async (req, res, next) => {
       return res.status(401).json({ error: "Invalid authentication token" });
     }
 
-    // Add user to request
     req.user = data.user;
     next();
   } catch (error) {
@@ -36,16 +28,11 @@ export const authenticate = async (req, res, next) => {
   }
 };
 
-/**
- * Middleware to verify admin privileges
- * Must be used after authenticate middleware
- */
 export const requireAdmin = (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ error: "Authentication required" });
   }
 
-  // Check for admin role in user metadata
   if (req.user?.role !== "authenticated") {
     logger.warn("Unauthorized admin access attempt", {
       userId: req.user.id,
@@ -57,25 +44,18 @@ export const requireAdmin = (req, res, next) => {
   next();
 };
 
-/**
- * Combined middleware for admin routes
- * Handles both authentication and admin role verification
- */
 export const authenticateAdmin = async (req, res, next) => {
   try {
-    // Check if Supabase client is available
     if (!req.supabase) {
       logger.error("Supabase client not available in admin auth middleware");
       return res.status(500).json({ error: "Server configuration error" });
     }
 
-    // Get Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "Authentication required" });
     }
 
-    // Extract and verify token
     const token = authHeader.split(" ")[1];
     const { data, error } = await req.supabase.auth.getUser(token);
 
@@ -84,7 +64,6 @@ export const authenticateAdmin = async (req, res, next) => {
       return res.status(401).json({ error: "Invalid authentication token" });
     }
 
-    // Check admin privileges
     if (data.user?.role !== "authenticated") {
       logger.warn("Unauthorized admin access attempt", {
         userId: data.user.id,
@@ -95,7 +74,6 @@ export const authenticateAdmin = async (req, res, next) => {
         .json({ error: "Administrator privileges required" });
     }
 
-    // Add user to request
     req.user = data.user;
     next();
   } catch (error) {

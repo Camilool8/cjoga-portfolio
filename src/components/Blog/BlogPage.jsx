@@ -10,14 +10,11 @@ function BlogPage() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Get query params
   const page = parseInt(searchParams.get("page") || "1");
   const tag = searchParams.get("tag");
 
-  // Use custom hook for data fetching
   const { posts, loading, error, pagination } = useBlogPosts(page, 6, tag);
 
-  // Handle page change
   const handlePageChange = (newPage) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", newPage.toString());
@@ -28,19 +25,16 @@ function BlogPage() {
   return (
     <section id="blog" className="py-20">
       <div className="section-inner">
-        {/* Section label + heading */}
         <div className="mb-10">
           <span className="section-label">{t("blog.title")}</span>
           <h2 className="section-heading">{t("blog.title")}</h2>
         </div>
 
-        {/* Search bar */}
         <div className="mb-8">
           <BlogSearch />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Main content */}
           <div className="lg:col-span-3">
             {loading ? (
               <div className="flex justify-center items-center min-h-[400px]">
@@ -82,7 +76,6 @@ function BlogPage() {
               </div>
             ) : (
               <>
-                {/* Tag filter indicator */}
                 {tag && (
                   <div className="mb-6">
                     <div
@@ -119,10 +112,8 @@ function BlogPage() {
                   </div>
                 )}
 
-                {/* Blog posts grid */}
                 <BlogList posts={posts} />
 
-                {/* Pagination */}
                 {pagination.totalPages > 1 && (
                   <div className="mt-12">
                     <Pagination
@@ -136,7 +127,6 @@ function BlogPage() {
             )}
           </div>
 
-          {/* Sidebar */}
           <div className="lg:col-span-1">
             <BlogSidebar />
           </div>

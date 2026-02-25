@@ -51,7 +51,6 @@ function BlogList({ posts }) {
             e.currentTarget.style.boxShadow = "none";
           }}
         >
-          {/* Accent gradient top line */}
           <div
             className="h-[2px] w-full opacity-0 group-hover:opacity-100"
             style={{
@@ -60,7 +59,6 @@ function BlogList({ posts }) {
             }}
           />
 
-          {/* Cover Image */}
           <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
             <img
               src={post.cover_image || "/images/blog-placeholder.jpg"}
@@ -78,9 +76,7 @@ function BlogList({ posts }) {
             />
           </Link>
 
-          {/* Content */}
           <div className="p-6 flex flex-col flex-grow">
-            {/* Title */}
             <h3
               className="text-xl font-semibold mb-2"
               style={{
@@ -106,7 +102,6 @@ function BlogList({ posts }) {
               </Link>
             </h3>
 
-            {/* Meta */}
             <div
               className="flex flex-wrap items-center mb-3 text-sm"
               style={{
@@ -126,7 +121,6 @@ function BlogList({ posts }) {
               </span>
             </div>
 
-            {/* Excerpt */}
             <p
               className="mb-4 flex-grow text-sm leading-relaxed"
               style={{ color: "var(--text-secondary)" }}
@@ -134,7 +128,6 @@ function BlogList({ posts }) {
               {post.excerpt}
             </p>
 
-            {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap mt-2 gap-2">
                 {post.tags.map((tag, index) => (
@@ -168,7 +161,6 @@ function BlogList({ posts }) {
               </div>
             )}
 
-            {/* Read More Link */}
             <Link
               to={`/blog/${post.slug}`}
               className="inline-block mt-4 text-sm"

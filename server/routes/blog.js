@@ -1,4 +1,3 @@
-// server/routes/blog.js - Blog routes
 import express from "express";
 import { marked } from "marked";
 import slugify from "slugify";
@@ -10,14 +9,12 @@ import logger from "../utils/logger.js";
 
 const router = express.Router();
 
-// Configure multer for memory storage (not disk storage)
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB file size limit
+    fileSize: 10 * 1024 * 1024,
   },
   fileFilter: function (req, file, cb) {
-    // Accept only image files
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);
     } else {
@@ -26,9 +23,6 @@ const upload = multer({
   },
 });
 
-// PUBLIC ROUTES
-
-// Get all blog posts (with pagination)
 router.get("/posts", async (req, res) => {
   try {
     const { page = 1, limit = 10, tag } = req.query;
@@ -46,7 +40,6 @@ router.get("/posts", async (req, res) => {
       .order("published_at", { ascending: false })
       .range(offset, offset + limit - 1);
 
-    // Filter by tag if provided
     if (tag) {
       query = query.contains("tags", [tag]);
     }
@@ -67,14 +60,12 @@ router.get("/posts", async (req, res) => {
   }
 });
 
-// Get a single blog post by slug
 router.get("/posts/:slug", async (req, res) => {
   try {
     const { slug } = req.params;
 
     logger.info("Fetching blog post", { slug });
 
-    // Check if the slug is a UUID (for admin edit functionality)
     const isUUID =
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
         slug
@@ -106,16 +97,14 @@ router.get("/posts/:slug", async (req, res) => {
           return code;
         }
       },
-      gfm: true, // GitHub Flavored Markdown
-      breaks: true, // Convert line breaks to <br>
-      headerIds: true, // Add IDs to headers
-      mangle: false, // Don't mangle email addresses
+      gfm: true,
+      breaks: true,
+      headerIds: true,
+      mangle: false,
     });
 
-    // Parse markdown content to HTML
     post.html_content = marked.parse(post.content);
 
-    // Increment view count for public (non-admin) requests
     if (!isUUID) {
       await req.supabase
         .from("posts")
@@ -123,7 +112,6 @@ router.get("/posts/:slug", async (req, res) => {
         .eq("id", post.id);
     }
 
-    // Get related posts based on tags
     const { data: relatedPosts } = await req.supabase
       .from("posts")
       .select("id, title, slug, excerpt, cover_image, published_at")
@@ -142,7 +130,6 @@ router.get("/posts/:slug", async (req, res) => {
   }
 });
 
-// Get all tags with post counts
 router.get("/tags", async (req, res) => {
   try {
     logger.info("Fetching blog tags");
@@ -154,7 +141,6 @@ router.get("/tags", async (req, res) => {
 
     if (error) throw error;
 
-    // Count occurrences of each tag
     const tagCounts = {};
     posts.forEach((post) => {
       if (post.tags && Array.isArray(post.tags)) {
@@ -164,13 +150,12 @@ router.get("/tags", async (req, res) => {
       }
     });
 
-    // Format for response
     const tags = Object.keys(tagCounts)
       .map((tag) => ({
         name: tag,
         count: tagCounts[tag],
       }))
-      .sort((a, b) => b.count - a.count); // Sort by popularity
+      .sort((a, b) => b.count - a.count);
 
     res.json({ tags });
   } catch (error) {
@@ -179,7 +164,6 @@ router.get("/tags", async (req, res) => {
   }
 });
 
-// Search blog posts
 router.get("/search", async (req, res) => {
   try {
     const { query } = req.query;
@@ -209,9 +193,6 @@ router.get("/search", async (req, res) => {
   }
 });
 
-// ADMIN ROUTES
-
-// Get all blog posts for admin
 router.get("/admin/posts", authenticateAdmin, async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -228,10 +209,7 @@ router.get("/admin/posts", authenticateAdmin, async (req, res) => {
       .order("updated_at", { ascending: false })
       .range(offset, offset + limit - 1);
 
-    if (error) {
-      console.error("Error fetching admin posts:", error);
-      throw error;
-    }
+    if (error) throw error;
 
     res.json({
       posts: data,
@@ -245,7 +223,6 @@ router.get("/admin/posts", authenticateAdmin, async (req, res) => {
   }
 });
 
-// Get a single blog post by id
 router.get("/admin/posts/:id", authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
@@ -267,7 +244,6 @@ router.get("/admin/posts/:id", authenticateAdmin, async (req, res) => {
 
     logger.info("Admin post found", { postId: post.id, title: post.title });
 
-    // Always return the post wrapped in a 'post' property
     res.json({ post });
   } catch (error) {
     logger.error("Error fetching admin blog post:", error);
@@ -275,14 +251,12 @@ router.get("/admin/posts/:id", authenticateAdmin, async (req, res) => {
   }
 });
 
-// Get a single blog post by slug
 router.get("/posts/:slug", async (req, res) => {
   try {
     const { slug } = req.params;
 
     logger.info("Fetching blog post", { slug });
 
-    // Check if the slug is a UUID (for admin edit functionality)
     const isUUID =
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
         slug
@@ -292,7 +266,6 @@ router.get("/posts/:slug", async (req, res) => {
 
     if (isUUID) {
       query = query.eq("id", slug);
-      // For admin routes, don't filter by published status
     } else {
       query = query.eq("slug", slug).eq("published", true);
     }
@@ -307,10 +280,8 @@ router.get("/posts/:slug", async (req, res) => {
       throw error;
     }
 
-    // Debug log the post data
     logger.info("Post found", { postId: post.id, title: post.title });
 
-    // Parse markdown content to HTML for published posts
     if (!isUUID) {
       marked.setOptions({
         highlight: function (code, lang) {
@@ -320,23 +291,20 @@ router.get("/posts/:slug", async (req, res) => {
             return code;
           }
         },
-        gfm: true, // GitHub Flavored Markdown
-        breaks: true, // Convert line breaks to <br>
-        headerIds: true, // Add IDs to headers
-        mangle: false, // Don't mangle email addresses
+        gfm: true,
+        breaks: true,
+        headerIds: true,
+        mangle: false,
       });
 
-      // Parse markdown content to HTML
       post.html_content = marked.parse(post.content || "");
 
-      // Increment view count for public (non-admin) requests
       await req.supabase
         .from("posts")
         .update({ views: (post.views || 0) + 1 })
         .eq("id", post.id);
     }
 
-    // Get related posts based on tags for published posts
     let relatedPosts = [];
     if (!isUUID && post.tags && post.tags.length > 0) {
       const { data: relatedPostsData } = await req.supabase
@@ -360,7 +328,6 @@ router.get("/posts/:slug", async (req, res) => {
   }
 });
 
-// Create a new blog post
 router.post("/admin/posts", authenticateAdmin, async (req, res) => {
   try {
     const {
@@ -376,14 +343,12 @@ router.post("/admin/posts", authenticateAdmin, async (req, res) => {
       seo_keywords,
     } = req.body;
 
-    // Validate required fields
     if (!title || !content) {
       return res.status(400).json({ error: "Title and content are required" });
     }
 
     logger.info("Creating new blog post", { title });
 
-    // Generate a slug if not provided
     let slug = requestedSlug;
     if (!slug) {
       slug = slugify(title, {
@@ -393,7 +358,6 @@ router.post("/admin/posts", authenticateAdmin, async (req, res) => {
       });
     }
 
-    // Check if slug already exists
     const { data: existingPost, error: slugCheckError } = await req.supabase
       .from("posts")
       .select("id")
@@ -402,12 +366,10 @@ router.post("/admin/posts", authenticateAdmin, async (req, res) => {
 
     if (slugCheckError) throw slugCheckError;
 
-    // If slug exists, append a timestamp to make it unique
     if (existingPost) {
       slug = `${slug}-${Date.now()}`;
     }
 
-    // Insert new post
     const { data, error } = await req.supabase
       .from("posts")
       .insert({
@@ -439,7 +401,6 @@ router.post("/admin/posts", authenticateAdmin, async (req, res) => {
   }
 });
 
-// Update an existing blog post
 router.put("/admin/posts/:id", authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
@@ -456,14 +417,12 @@ router.put("/admin/posts/:id", authenticateAdmin, async (req, res) => {
       seo_keywords,
     } = req.body;
 
-    // Validate required fields
     if (!title || !content) {
       return res.status(400).json({ error: "Title and content are required" });
     }
 
     logger.info("Updating blog post", { id, title });
 
-    // Generate a slug if not provided
     let slug = requestedSlug;
     if (!slug) {
       slug = slugify(title, {
@@ -473,7 +432,6 @@ router.put("/admin/posts/:id", authenticateAdmin, async (req, res) => {
       });
     }
 
-    // Check if slug already exists (excluding the current post)
     const { data: existingPost, error: slugCheckError } = await req.supabase
       .from("posts")
       .select("id")
@@ -483,12 +441,10 @@ router.put("/admin/posts/:id", authenticateAdmin, async (req, res) => {
 
     if (slugCheckError) throw slugCheckError;
 
-    // If slug exists, append a timestamp to make it unique
     if (existingPost) {
       slug = `${slug}-${Date.now()}`;
     }
 
-    // Get current post to check publication status
     const { data: currentPost, error: currentPostError } = await req.supabase
       .from("posts")
       .select("published")
@@ -497,7 +453,6 @@ router.put("/admin/posts/:id", authenticateAdmin, async (req, res) => {
 
     if (currentPostError) throw currentPostError;
 
-    // Update published_at only if post is being published for the first time
     const updateData = {
       title,
       slug,
@@ -512,12 +467,10 @@ router.put("/admin/posts/:id", authenticateAdmin, async (req, res) => {
       seo_keywords: seo_keywords || [],
     };
 
-    // If post wasn't published before but is being published now, set published_at
     if (!currentPost.published && published) {
       updateData.published_at = new Date().toISOString();
     }
 
-    // Update post
     const { data, error } = await req.supabase
       .from("posts")
       .update(updateData)
@@ -535,7 +488,6 @@ router.put("/admin/posts/:id", authenticateAdmin, async (req, res) => {
   }
 });
 
-// Delete a blog post
 router.delete("/admin/posts/:id", authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
@@ -554,7 +506,6 @@ router.delete("/admin/posts/:id", authenticateAdmin, async (req, res) => {
   }
 });
 
-// Update post status (publish/unpublish)
 router.patch("/admin/posts/:id/status", authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
@@ -566,7 +517,6 @@ router.patch("/admin/posts/:id/status", authenticateAdmin, async (req, res) => {
 
     logger.info("Updating blog post status", { id, published });
 
-    // Get current post to check publication status
     const { data: currentPost, error: currentPostError } = await req.supabase
       .from("posts")
       .select("published")
@@ -580,7 +530,6 @@ router.patch("/admin/posts/:id/status", authenticateAdmin, async (req, res) => {
       updated_at: new Date().toISOString(),
     };
 
-    // If post wasn't published before but is being published now, set published_at
     if (!currentPost.published && published) {
       updateData.published_at = new Date().toISOString();
     }
@@ -618,7 +567,6 @@ router.post(
         mimetype: req.file.mimetype,
       });
 
-      // Generate a unique filename with the original extension
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
       const fileExt = path
         .extname(req.file.originalname || ".jpg")
@@ -628,7 +576,6 @@ router.post(
       const BUCKET_NAME = "cjoga-portfolio-images";
       const FILE_PATH = `blog/${filename}`;
 
-      // Upload file to Supabase Storage
       const { data, error } = await req.supabase.storage
         .from(BUCKET_NAME)
         .upload(FILE_PATH, req.file.buffer, {
@@ -638,11 +585,10 @@ router.post(
         });
 
       if (error) {
-        console.error("Supabase storage upload error:", error);
+        logger.error("Supabase storage upload error:", error);
         throw error;
       }
 
-      // Get the public URL for the uploaded file (works with public buckets)
       const { data: publicUrlData } = req.supabase.storage
         .from(BUCKET_NAME)
         .getPublicUrl(FILE_PATH);
@@ -657,7 +603,6 @@ router.post(
         filename: filename,
       });
     } catch (error) {
-      console.error("Detailed upload error:", error);
       logger.error("Error uploading image:", error);
       res
         .status(500)

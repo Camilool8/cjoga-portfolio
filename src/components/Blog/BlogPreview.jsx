@@ -43,7 +43,6 @@ export default function BlogPreview() {
   return (
     <section id="blog-preview" className="py-16 md:py-24 relative z-10">
       <div className="section-inner">
-        {/* Section label + heading */}
         <motion.div
           variants={sectionVariants}
           initial="hidden"
@@ -61,7 +60,6 @@ export default function BlogPreview() {
           </motion.div>
         </motion.div>
 
-        {/* Loading state */}
         {loading ? (
           <div className="flex justify-center items-center min-h-[200px]">
             <div
@@ -76,7 +74,6 @@ export default function BlogPreview() {
           </div>
         ) : (
           <>
-            {/* Posts grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {posts.map((post, index) => (
                 <motion.article
@@ -92,7 +89,6 @@ export default function BlogPreview() {
                     border: "1px solid var(--border-subtle)",
                   }}
                 >
-                  {/* Accent gradient top line */}
                   <div
                     className="blog-gradient h-[2px] w-full opacity-0 group-hover:opacity-100"
                     style={{
@@ -101,7 +97,6 @@ export default function BlogPreview() {
                     }}
                   />
 
-                  {/* Cover Image */}
                   <Link
                     to={`/blog/${post.slug}`}
                     className="block overflow-hidden"
@@ -114,9 +109,7 @@ export default function BlogPreview() {
                     />
                   </Link>
 
-                  {/* Content */}
                   <div className="p-5 flex flex-col flex-grow">
-                    {/* Title */}
                     <h3
                       className="text-lg font-semibold mb-2 line-clamp-2"
                       style={{
@@ -133,7 +126,6 @@ export default function BlogPreview() {
                       </Link>
                     </h3>
 
-                    {/* Meta */}
                     <div
                       className="flex flex-wrap items-center mb-3"
                       style={{
@@ -156,7 +148,6 @@ export default function BlogPreview() {
                       )}
                     </div>
 
-                    {/* Excerpt */}
                     <p
                       className="text-sm leading-relaxed flex-grow line-clamp-3"
                       style={{ color: "var(--text-secondary)" }}
@@ -164,7 +155,6 @@ export default function BlogPreview() {
                       {post.excerpt}
                     </p>
 
-                    {/* Tags */}
                     {post.tags && post.tags.length > 0 && (
                       <div className="flex flex-wrap mt-3 gap-1.5">
                         {post.tags.slice(0, 3).map((tag, tagIndex) => (
@@ -189,7 +179,6 @@ export default function BlogPreview() {
                       </div>
                     )}
 
-                    {/* Read More */}
                     <Link
                       to={`/blog/${post.slug}`}
                       className="inline-block mt-4 text-sm transition-opacity duration-300 hover:opacity-80"
@@ -206,7 +195,6 @@ export default function BlogPreview() {
               ))}
             </div>
 
-            {/* View All Posts link */}
             <motion.div
               variants={itemVariants}
               initial="hidden"

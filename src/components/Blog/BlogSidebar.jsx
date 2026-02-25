@@ -11,17 +11,14 @@ function BlogSidebar() {
   const [tagsLoading, setTagsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Get active tag from URL
   const activeTag = searchParams.get("tag");
 
-  // Fetch tags
   useEffect(() => {
     const fetchTags = async () => {
       try {
         setTagsLoading(true);
         const data = await blogApi.getTags();
 
-        // Sort by count (descending)
         const sortedTags = (data?.tags || []).sort((a, b) => b.count - a.count);
 
         setTags(sortedTags);
@@ -35,7 +32,6 @@ function BlogSidebar() {
     fetchTags();
   }, []);
 
-  // Handle search form submission
   const handleSearch = (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
@@ -43,7 +39,6 @@ function BlogSidebar() {
     window.location.href = `/blog/search?q=${encodeURIComponent(searchQuery)}`;
   };
 
-  // Glass widget base styles
   const widgetStyle = {
     background: "var(--bg-glass)",
     backdropFilter: "blur(20px) saturate(1.5)",
@@ -64,7 +59,6 @@ function BlogSidebar() {
 
   return (
     <aside className="space-y-6">
-      {/* Search widget */}
       <div style={widgetStyle} className="sidebar-widget">
         <h3 style={widgetHeadingStyle}>{t("blog.search")}</h3>
         <form onSubmit={handleSearch} className="flex">
@@ -110,7 +104,6 @@ function BlogSidebar() {
         </form>
       </div>
 
-      {/* Tags widget */}
       <div style={widgetStyle} className="sidebar-widget">
         <h3 style={widgetHeadingStyle}>{t("blog.tags")}</h3>
 
@@ -178,7 +171,6 @@ function BlogSidebar() {
         )}
       </div>
 
-      {/* About widget */}
       <div style={widgetStyle} className="sidebar-widget">
         <h3 style={widgetHeadingStyle}>{t("blog.about")}</h3>
         <p

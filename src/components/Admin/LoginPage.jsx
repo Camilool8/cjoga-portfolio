@@ -14,7 +14,6 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Get the page the user was trying to access
   const from = location.state?.from?.pathname || "/admin/dashboard";
 
   const handleSubmit = async (e) => {
@@ -31,7 +30,6 @@ function LoginPage() {
 
       await authService.signIn(email, password);
 
-      // Check if user is admin
       const isAdmin = await authService.isAdmin();
 
       if (!isAdmin) {
@@ -41,7 +39,6 @@ function LoginPage() {
         return;
       }
 
-      // Redirect to the page they were trying to access
       navigate(from, { replace: true });
     } catch (error) {
       setError(

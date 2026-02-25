@@ -1,5 +1,5 @@
 # Build stage for the React frontend
-FROM node:20-alpine AS frontend-build
+FROM node:24-alpine AS frontend-build
 
 # Set working directory for frontend build
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # Build stage for the final image with both frontend and backend
-FROM node:20-alpine
+FROM node:24-alpine
 
 # Set working directory
 WORKDIR /app

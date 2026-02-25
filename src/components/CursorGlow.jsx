@@ -7,7 +7,6 @@ function CursorGlow() {
     const glow = glowRef.current;
     if (!glow) return;
 
-    // Hide on touch devices
     const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) {
       glow.style.display = "none";

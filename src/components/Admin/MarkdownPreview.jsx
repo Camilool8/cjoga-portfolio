@@ -4,12 +4,10 @@ import SimpleMarkdownRenderer from "../Utils/SimpleMarkdownRenderer";
 export default function MarkdownPreview({ content }) {
   const [tocItems, setTocItems] = useState([]);
 
-  // Use useCallback to avoid creating a new function on each render
   const handleHeadingsExtracted = useCallback((headings) => {
     setTocItems(headings);
   }, []);
 
-  // Render the table of contents if we have headings
   const renderTableOfContents = () => {
     if (!tocItems || tocItems.length === 0) return null;
 
@@ -40,10 +38,8 @@ export default function MarkdownPreview({ content }) {
 
   return (
     <div className="markdown-preview">
-      {/* Display the table of contents if available */}
       {tocItems.length > 0 && renderTableOfContents()}
 
-      {/* Render the markdown content */}
       <div className="markdown-content-wrapper">
         <SimpleMarkdownRenderer
           content={content}

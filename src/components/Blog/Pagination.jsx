@@ -4,7 +4,6 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
   const { t } = useTranslation();
 
-  // Generate page numbers to display
   const getPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;
@@ -14,7 +13,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         pages.push(i);
       }
     } else {
-      // Always show first page
       pages.push(1);
 
       let start = Math.max(2, currentPage - 1);
@@ -40,7 +38,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         pages.push("...");
       }
 
-      // Always show last page
       pages.push(totalPages);
     }
 
@@ -85,7 +82,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       className="flex items-center justify-center gap-2"
       aria-label={t("blog.pagination", { defaultValue: "Pagination" })}
     >
-      {/* Previous button */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -107,7 +103,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         <FaChevronLeft size={12} />
       </button>
 
-      {/* Page numbers */}
       {pages.map((page, index) =>
         page === "..." ? (
           <span
@@ -146,7 +141,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         )
       )}
 
-      {/* Next button */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}

@@ -1,4 +1,3 @@
-// src/App.jsx - Updated with Admin Routes
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -24,6 +23,8 @@ import BackgroundAnimation from "./components/BackgroundAnimation";
 import CursorGlow from "./components/CursorGlow";
 import ScrollProgress from "./components/ScrollProgress";
 import SideElements from "./components/SideElements";
+import Terminal from "./components/Terminal/Terminal";
+import TerminalPromo from "./components/Terminal/TerminalPromo";
 import useSystemTheme from "./hooks/useSystemTheme";
 import useScrollReveal from "./hooks/useScrollReveal";
 import "./styles/global.css";
@@ -33,11 +34,9 @@ function App() {
   const systemTheme = useSystemTheme();
   useScrollReveal();
   const [theme, setTheme] = useState(() => {
-    // Get saved theme from localStorage or use system preference
     return localStorage.getItem("theme") || systemTheme;
   });
   const [language, setLanguage] = useState(() => {
-    // Get saved language from localStorage or use browser preference
     return (
       localStorage.getItem("language") ||
       navigator.language.split("-")[0] ||
@@ -46,7 +45,6 @@ function App() {
   });
   const contentRef = useRef(null);
 
-  // Handle theme changes and save to localStorage
   useEffect(() => {
     localStorage.setItem("theme", theme);
 
@@ -59,13 +57,11 @@ function App() {
     }
   }, [theme]);
 
-  // Handle language changes and save to localStorage
   useEffect(() => {
     localStorage.setItem("language", language);
     i18n.changeLanguage(language);
   }, [language, i18n]);
 
-  // Main Layout Component
   const MainLayout = ({ children }) => (
     <div
       className="min-h-screen transition-colors duration-300"
@@ -87,7 +83,6 @@ function App() {
     </div>
   );
 
-  // Admin Layout Component (no footer or print button)
   const AdminLayout = ({ children }) => (
     <div
       className={`min-h-screen transition-colors duration-300 ${
@@ -100,7 +95,6 @@ function App() {
     </div>
   );
 
-  // Home Component
   const Home = () => (
     <>
       <Hero />
@@ -115,6 +109,8 @@ function App() {
       <SectionDivider />
       <BlogPreview />
       <SectionDivider />
+      <TerminalPromo />
+      <SectionDivider />
       <Contact />
     </>
   );
@@ -122,7 +118,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Routes */}
         <Route
           path="/"
           element={
@@ -155,8 +150,15 @@ function App() {
             </MainLayout>
           }
         />
+        <Route
+          path="/terminal"
+          element={
+            <MainLayout>
+              <Terminal />
+            </MainLayout>
+          }
+        />
 
-        {/* Admin Routes */}
         <Route
           path="/admin/login"
           element={
@@ -166,7 +168,6 @@ function App() {
           }
         />
 
-        {/* Protected Admin Routes */}
         <Route element={<ProtectedRoute />}>
           <Route
             path="/admin/dashboard"

@@ -4,17 +4,14 @@ import logger from "../utils/logger.js";
 
 const router = express.Router();
 
-// Login route
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate inputs
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
 
-    // Attempt login with Supabase
     const { data, error } = await req.supabase.auth.signInWithPassword({
       email,
       password,
@@ -33,7 +30,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Logout route
 router.post("/logout", authenticate, async (req, res) => {
   try {
     const { error } = await req.supabase.auth.signOut();
@@ -50,11 +46,8 @@ router.post("/logout", authenticate, async (req, res) => {
   }
 });
 
-// Get user data route
 router.get("/user", authenticate, async (req, res) => {
   try {
-    // User data is already in req.user from authenticate middleware
-    // Remove sensitive data
     const { email, id, user_metadata } = req.user;
 
     res.json({
@@ -70,7 +63,6 @@ router.get("/user", authenticate, async (req, res) => {
   }
 });
 
-// Check if user is admin
 router.get("/admin", authenticate, async (req, res) => {
   try {
     const isAdmin = req.user?.role === "authenticated";
@@ -81,7 +73,6 @@ router.get("/admin", authenticate, async (req, res) => {
   }
 });
 
-// Password reset request
 router.post("/reset-password", async (req, res) => {
   try {
     const { email } = req.body;
@@ -108,7 +99,6 @@ router.post("/reset-password", async (req, res) => {
     res.json({ success: true, message: "Password reset email sent" });
   } catch (error) {
     logger.error("Password reset error:", error);
-    // Don't reveal if the email exists or not for security
     res.json({
       success: true,
       message:
@@ -117,7 +107,6 @@ router.post("/reset-password", async (req, res) => {
   }
 });
 
-// Update password after reset
 router.post("/update-password", authenticate, async (req, res) => {
   try {
     const { password } = req.body;

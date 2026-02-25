@@ -25,7 +25,6 @@ function SideElements() {
 
   return (
     <>
-      {/* Left: Social Icons */}
       <div
         className="hidden xl:flex flex-col items-center"
         style={{ ...sideStyle, left: "28px" }}
@@ -82,7 +81,6 @@ function SideElements() {
         <div style={lineStyle} />
       </div>
 
-      {/* Right: Email */}
       <div
         className="hidden xl:flex flex-col items-center"
         style={{ ...sideStyle, right: "28px" }}

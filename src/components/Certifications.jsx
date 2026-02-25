@@ -51,7 +51,7 @@ const certGroups = [
     vendor: "Technology Partners",
     vendorShort: "Partner",
     icon: FaAward,
-    color: null, // uses accent
+    color: null,
     certs: [{ key: "partner" }],
   },
 ];
@@ -77,7 +77,6 @@ function Certifications() {
             </h2>
           </motion.div>
 
-          {/* Count badge */}
           <motion.div variants={itemVariants} className="mb-10">
             <span
               className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full"
@@ -99,7 +98,6 @@ function Certifications() {
           </motion.div>
         </motion.div>
 
-        {/* Vendor group grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {certGroups.map((group, groupIndex) => {
             const Icon = group.icon;
@@ -125,7 +123,6 @@ function Certifications() {
                   boxShadow: `0 8px 30px ${group.color ? group.color + "18" : "rgba(100,255,218,0.08)"}`,
                 }}
               >
-                {/* Vendor header */}
                 <div className="flex items-center gap-3 mb-4">
                   <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
@@ -167,7 +164,6 @@ function Certifications() {
                   </div>
                 </div>
 
-                {/* Cert list */}
                 <div className={`${isWide ? "grid grid-cols-1 sm:grid-cols-2 gap-x-6" : ""}`}>
                   {group.certs.map((cert, certIndex) => (
                     <div

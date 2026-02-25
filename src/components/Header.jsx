@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
@@ -12,7 +11,6 @@ function Header({ theme, setTheme, language, setLanguage }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
-  // Handle scroll event to add shadow to header
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -22,21 +20,17 @@ function Header({ theme, setTheme, language, setLanguage }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Toggle theme between light and dark
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  // Set language and close language menu
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
     setLanguageMenuOpen(false);
   };
 
-  // Check if we're on the home page
   const isHomePage = location.pathname === "/";
 
-  // Create a navigation item - either Link or anchor depending on if it's on home page
   const NavItem = ({ section, number, text }) => {
     if (isHomePage) {
       return (
@@ -95,7 +89,6 @@ function Header({ theme, setTheme, language, setLanguage }) {
     >
       <div className="container mx-auto px-4 py-4">
         <nav className="flex justify-between items-center">
-          {/* Logo */}
           <Link
             to="/"
             className={`text-2xl font-bold ${
@@ -105,7 +98,6 @@ function Header({ theme, setTheme, language, setLanguage }) {
             CJ
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center">
             <ul className="flex space-x-8">
               <li>
@@ -165,9 +157,7 @@ function Header({ theme, setTheme, language, setLanguage }) {
               </li>
             </ul>
 
-            {/* Theme Toggle and Language Selector */}
             <div className="ml-8 flex items-center space-x-4">
-              {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
                 aria-label={
@@ -186,7 +176,6 @@ function Header({ theme, setTheme, language, setLanguage }) {
                 )}
               </button>
 
-              {/* Language Selector */}
               <div className="relative">
                 <button
                   onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
@@ -255,9 +244,7 @@ function Header({ theme, setTheme, language, setLanguage }) {
             </div>
           </div>
 
-          {/* Mobile Navigation Toggle */}
           <div className="flex items-center space-x-4 md:hidden">
-            {/* Theme Toggle (Mobile) */}
             <button
               onClick={toggleTheme}
               aria-label={theme === "dark" ? t("theme.light") : t("theme.dark")}
@@ -274,7 +261,6 @@ function Header({ theme, setTheme, language, setLanguage }) {
               )}
             </button>
 
-            {/* Language Selector (Mobile) */}
             <div className="relative">
               <button
                 onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
@@ -339,7 +325,6 @@ function Header({ theme, setTheme, language, setLanguage }) {
               )}
             </div>
 
-            {/* Hamburger Menu */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className={`p-2 rounded-md ${
@@ -379,7 +364,6 @@ function Header({ theme, setTheme, language, setLanguage }) {
         </nav>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="fixed inset-0 z-40 md:hidden" style={{ top: "70px" }}>
           <div

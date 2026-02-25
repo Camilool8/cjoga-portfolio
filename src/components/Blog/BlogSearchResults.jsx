@@ -12,7 +12,6 @@ export default function BlogSearchResults() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Search for blog posts
   useEffect(() => {
     if (!query) {
       setResults([]);
@@ -48,7 +47,6 @@ export default function BlogSearchResults() {
   return (
     <section id="blog-search" className="py-20">
       <div className="section-inner">
-        {/* Back button */}
         <div className="mb-8">
           <Link
             to="/blog"
@@ -70,7 +68,6 @@ export default function BlogSearchResults() {
           </Link>
         </div>
 
-        {/* Search heading */}
         <div className="mb-8">
           <h1
             className="text-3xl font-bold mb-2"
@@ -98,7 +95,6 @@ export default function BlogSearchResults() {
           </div>
         </div>
 
-        {/* Results */}
         {loading ? (
           <div className="flex justify-center items-center min-h-[200px]">
             <div

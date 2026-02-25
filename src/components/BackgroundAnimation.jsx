@@ -11,7 +11,6 @@ function BackgroundAnimation({ theme }) {
     let particles = [];
     let animationId;
 
-    // Read particle color from CSS variable
     const getParticleColor = () => {
       const style = getComputedStyle(document.documentElement);
       return style.getPropertyValue("--particle-color").trim() || "100, 255, 218";

@@ -14,14 +14,12 @@ function ImageUploader({ onImageUploaded }) {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Show preview
     const reader = new FileReader();
     reader.onload = (e) => {
       setPreview(e.target.result);
     };
     reader.readAsDataURL(file);
 
-    // Clear error
     setError("");
   };
 
@@ -33,13 +31,11 @@ function ImageUploader({ onImageUploaded }) {
       return;
     }
 
-    // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
       setError(t("admin.imageUploader.fileTooLarge"));
       return;
     }
 
-    // Validate file type
     if (
       !file.mimetype?.startsWith("image/") &&
       !file.type?.startsWith("image/")
@@ -52,22 +48,10 @@ function ImageUploader({ onImageUploaded }) {
       setUploading(true);
       setError("");
 
-      console.log(
-        "Sending upload request with file:",
-        file.name,
-        file.type,
-        file.size
-      );
-
-      // Upload the file
       const result = await blogApi.uploadImage(file);
 
-      console.log("Upload result:", result);
-
-      // Call the callback with the image URL
       onImageUploaded(result.url);
 
-      // Reset the form
       setPreview(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
@@ -97,7 +81,6 @@ function ImageUploader({ onImageUploaded }) {
       )}
 
       <div className="flex flex-col space-y-2">
-        {/* File Preview */}
         {preview && (
           <div className="relative mb-2">
             <img
@@ -116,7 +99,6 @@ function ImageUploader({ onImageUploaded }) {
           </div>
         )}
 
-        {/* File Input */}
         <div className="flex">
           <div className="flex-1 relative">
             <input
@@ -137,7 +119,6 @@ function ImageUploader({ onImageUploaded }) {
             </div>
           </div>
 
-          {/* Upload Button */}
           <button
             type="button"
             onClick={handleUpload}

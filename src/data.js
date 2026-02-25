@@ -1,8 +1,3 @@
-/**
- * Centralized data file for portfolio website
- * This file contains supplementary data that isn't managed by i18n translations
- */
-
 export const socialLinks = {
   linkedin: "https://www.linkedin.com/in/cjoga",
   github: "https://github.com/",
@@ -13,7 +8,6 @@ export const contactInfo = {
   phone: "+1 (809) 881-7982",
 };
 
-// Technology icons mapping - icons are imported in components
 export const techIcons = {
   aws: "FaAws",
   azure: "FaMicrosoft",
@@ -37,7 +31,6 @@ export const techIcons = {
   postgresql: "SiPostgresql",
 };
 
-// SEO metadata
 export const seoMetadata = {
   title: "Jose Camilo Joga Guerrero | DevOps & Cloud Engineer",
   description:
@@ -48,7 +41,6 @@ export const seoMetadata = {
   twitterHandle: "@yourhandle",
 };
 
-// Print CV metadata
 export const cvMetadata = {
   name: "Jose Camilo Joga Guerrero",
   title: "DevOps & Cloud Engineer",
