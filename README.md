@@ -1,91 +1,141 @@
-# Jose Camilo Joga Guerrero - Professional Portfolio
+# cjoga.cloud — Portfolio & Blog
 
-This repository contains the source code for my professional portfolio website, showcasing my experience as a DevOps & Cloud Engineer.
+A full-stack portfolio and blog platform built with React, Express, and Supabase. Deployed on a self-hosted K3s cluster with Traefik ingress.
 
-## Features
-
-- **Responsive Design**: Looks great on all devices
-- **Dark/Light Theme**: Toggle between themes or use system preference
-- **Bilingual Support**: Available in both English and Spanish
-- **Print-Ready CV**: Generate a professionally formatted PDF resume
-- **Interactive Elements**: Smooth transitions and engaging UI
+**Live site**: [cjoga.cloud](https://cjoga.cloud)
 
 ## Tech Stack
 
-- **React**: UI components and state management
-- **Vite**: Fast build tooling
-- **Tailwind CSS**: Utility-first styling
-- **i18next**: Internationalization
-- **React Icons**: SVG icons for technologies and interfaces
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 18, Vite, Tailwind CSS, Framer Motion |
+| Backend | Express.js, Helmet, rate limiting, compression |
+| Database | Supabase (PostgreSQL) |
+| Internationalization | i18next (English / Spanish) |
+| PDF Generation | @react-pdf/renderer |
+| Blog Rendering | marked + DOMPurify + Prism syntax highlighting |
+| Infrastructure | Docker (multi-stage), Kubernetes (K3s), Traefik |
+
+## Features
+
+- **Dark / Light theme** with system preference detection
+- **Bilingual** — full English and Spanish support via i18next
+- **Integrated blog** — Markdown-based posts with search, pagination, table of contents, tags, and related posts
+- **Admin panel** — Authenticated CRUD for blog management (Supabase Auth + JWT)
+- **Print-ready CV** — PDF generation from portfolio data
+- **Responsive** — Mobile-first design across all viewports
+- **Animated UI** — Scroll progress, background animation, cursor glow, section transitions
 
 ## Project Structure
 
 ```
-cjoga-portfolio/
-├── public/
-│   ├── favicon.ico
-│   ├── locales/
-│   │   ├── en/
-│   │   │   └── translation.json
-│   │   └── es/
-│   │       └── translation.json
-│   └── robots.txt
 ├── src/
 │   ├── components/
+│   │   ├── Admin/              # Dashboard, PostEditor, LoginPage, ProtectedRoute
+│   │   ├── Blog/               # BlogPage, BlogPost, BlogList, BlogSearch, TableOfContents
+│   │   ├── Terminal/            # Interactive terminal component
+│   │   ├── Utils/              # SimpleMarkdownRenderer
+│   │   ├── Hero.jsx            # Landing section
+│   │   ├── About.jsx           # Bio section
+│   │   ├── Experience.jsx      # Work history
+│   │   ├── Projects.jsx        # Project showcase
+│   │   ├── Certifications.jsx  # Professional certifications
+│   │   ├── Contact.jsx         # Contact form / links
+│   │   └── ...                 # Header, Footer, NavigationBar, BackgroundAnimation, etc.
 │   ├── hooks/
-│   ├── styles/
+│   │   └── useSystemTheme.js
 │   ├── utils/
+│   │   └── i18n.js
+│   ├── data.js                 # Static data (links, icons, metadata)
 │   ├── App.jsx
-│   ├── main.jsx
-│   └── data.js
-├── ...configuration files
+│   └── main.jsx
+├── server/
+│   └── index.js                # Express API + static serving
+├── public/
+│   └── locales/{en,es}/        # Translation files
+├── kubernetes/
+│   └── portfolio.yaml          # Deployment, Service, IngressRoute
+├── Dockerfile                  # Multi-stage build
+└── package.json
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 16+
-- npm or yarn
+- Node.js 24+
+- npm
 
-### Installation
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+VITE_SUPABASE_URL=<your-supabase-project-url>
+VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+PORT=3001
+NODE_ENV=development
+```
+
+### Development
 
 ```bash
-# Clone the repository
-git clone https://github.com/cjoga/portfolio.git
-cd portfolio
-
 # Install dependencies
 npm install
 
-# Start development server
+# Start the Vite dev server (port 3000)
 npm run dev
+
+# Start the Express API server (port 3001)
+npm run server:dev
 ```
 
-### Building for Production
+### Production Build
 
 ```bash
+# Build the frontend
 npm run build
+
+# Start the production server
+npm run start:prod
 ```
 
-This generates a `dist` directory with production-ready files.
+### Docker
 
-## Deployment
+```bash
+# Build
+docker build -t cjoga/portfolio:latest .
 
-The site is deployed to [cjoga.cloud](https://cjoga.cloud).
+# Run
+docker run -p 80:80 --env-file .env cjoga/portfolio:latest
+```
 
-## Customization
+The multi-stage Dockerfile builds the React frontend, then bundles it with the Express server into a minimal Node.js Alpine image serving on port 80.
 
-- Edit content in `src/data.js` and translation files
-- Modify themes in `tailwind.config.js`
-- Add your professional photo to replace the placeholder
+### Kubernetes
 
-## Contact
+```bash
+kubectl apply -f kubernetes/portfolio.yaml
+```
 
-- LinkedIn: [www.linkedin.com/in/cjoga](https://www.linkedin.com/in/cjoga)
-- Email: [josejoga.opx@gmail.com](mailto:josejoga.opx@gmail.com)
-- GitHub: [github.com/Camilool8](https://github.com/Camilool8)
+Deploys with 2 replicas, a ClusterIP service, and a Traefik IngressRoute for `cjoga.cloud`.
 
-## License
+## Routes
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+| Path | Description |
+|------|------------|
+| `/` | Portfolio — Hero, About, Experience, Projects, Certifications, Contact |
+| `/blog` | Blog listing with search and pagination |
+| `/blog/:slug` | Individual post with TOC and related posts |
+| `/admin/login` | Admin authentication |
+| `/admin/dashboard` | Blog post management (protected) |
+| `/admin/posts/new` | Create post (protected) |
+| `/admin/posts/edit/:id` | Edit post (protected) |
+
+## Author
+
+**Jose Camilo Joga Guerrero** — DevOps & Cloud Engineer
+
+- [LinkedIn](https://www.linkedin.com/in/cjoga)
+- [GitHub](https://github.com/Camilool8)
+- [josejoga.opx@gmail.com](mailto:josejoga.opx@gmail.com)
