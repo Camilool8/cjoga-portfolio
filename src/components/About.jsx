@@ -103,7 +103,7 @@ function About() {
               >
                 <div
                   style={{
-                    aspectRatio: "4/5",
+                    aspectRatio: "1/1",
                     background: "var(--bg-surface)",
                     border: "1px solid var(--border-subtle)",
                     borderRadius: "1rem",
@@ -114,7 +114,7 @@ function About() {
                   <img
                     src="/images/og-image.webp"
                     alt="Jose Camilo Joga Guerrero"
-                    className="photo-img w-full h-full object-cover transition-[filter] duration-500"
+                    className="photo-img w-full h-full object-cover object-top transition-[filter] duration-500"
                     style={{ filter: "grayscale(0.8) contrast(1.05)" }}
                     loading="lazy"
                   />

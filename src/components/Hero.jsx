@@ -94,16 +94,17 @@ function Hero() {
 
         <h1
           style={{
-            fontFamily: "var(--font-display)", fontSize: "clamp(2.8rem, 8vw, 5.5rem)",
-            fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em", marginBottom: "8px",
+            fontFamily: "var(--font-display)", fontSize: "clamp(2rem, 5.5vw, 3.8rem)",
+            fontWeight: 800, lineHeight: 1, letterSpacing: "-0.04em", marginBottom: "8px",
             opacity: 0, animation: "hReveal 0.8s 0.5s var(--ease-out-expo) forwards",
           }}
         >
-          Jose Camilo<br />
+          Jose Camilo{" "}
           <span
             style={{
               background: "var(--gradient-accent)", WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent", backgroundClip: "text",
+              whiteSpace: "nowrap",
             }}
           >
             Joga Guerrero.
