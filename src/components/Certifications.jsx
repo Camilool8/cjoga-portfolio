@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { FaRedhat, FaAward, FaAws } from "react-icons/fa";
+import { FaRedhat, FaAward, FaAws, FaExternalLinkAlt } from "react-icons/fa";
 import { SiDynatrace, SiGitlab, SiTerraform } from "react-icons/si";
 import {
   sectionVariants, itemVariants, cardVariants, viewportConfig,
@@ -12,28 +12,31 @@ const certGroups = [
     vendorShort: "AWS",
     icon: FaAws,
     color: "#ff9900",
-    certs: [{ key: "awsSolutionsArchitect" }],
+    certs: [{ key: "awsSolutionsArchitect", link: "https://www.credly.com/badges/4a977479-db27-4850-8962-d038b062a7d2" }],
   },
   {
     vendor: "HashiCorp",
     vendorShort: "HashiCorp",
     icon: SiTerraform,
     color: "#7f4dff",
-    certs: [{ key: "hcta" }],
+    certs: [{ key: "hcta", link: "https://www.credly.com/badges/9f285077-46e9-431d-88f3-e4107546d668" }],
   },
   {
     vendor: "Red Hat",
     vendorShort: "Red Hat",
     icon: FaRedhat,
     color: "#ee0000",
-    certs: [{ key: "rhcsa" }, { key: "rhce" }],
+    certs: [
+      { key: "rhcsa", link: "https://www.credly.com/badges/3d2d03bb-5108-41da-81ad-6e47c80e3eed" },
+      { key: "rhce", link: "https://www.credly.com/badges/2ba3ac77-f45d-4cfa-a286-7d27d379f429" },
+    ],
   },
   {
     vendor: "Dynatrace",
     vendorShort: "Dynatrace",
     icon: SiDynatrace,
     color: "#73be28",
-    certs: [{ key: "dynatrace" }],
+    certs: [{ key: "dynatrace", link: "https://www.credly.com/badges/2239d2e7-c0f8-4ee0-8e04-2429d0c774bc" }],
   },
   {
     vendor: "GitLab",
@@ -41,10 +44,10 @@ const certGroups = [
     icon: SiGitlab,
     color: "#fc6d26",
     certs: [
-      { key: "gitlabMigration" },
-      { key: "gitlabServices" },
-      { key: "gitlabCicd" },
-      { key: "gitlabImplementation" },
+      { key: "gitlabMigration", link: "https://www.credly.com/badges/5a3d21a3-c24a-496c-88d4-5eac982c9cd3" },
+      { key: "gitlabServices", link: "https://www.credly.com/badges/4a4a52c6-56b1-4518-acef-24f772434e5e" },
+      { key: "gitlabCicd", link: "https://www.credly.com/badges/518a6de5-bae5-432f-9d90-0800eba2d4b5" },
+      { key: "gitlabImplementation", link: "https://www.credly.com/badges/585b9001-7570-4e30-99d5-5f043534cf2a" },
     ],
   },
   {
@@ -52,7 +55,7 @@ const certGroups = [
     vendorShort: "Partner",
     icon: FaAward,
     color: null,
-    certs: [{ key: "partner" }],
+    certs: [{ key: "partner", link: "https://www.credly.com/badges/209bae19-6dbe-4cc2-8350-28cf4102ec46" }],
   },
 ];
 
@@ -183,7 +186,20 @@ function Certifications() {
                             lineHeight: 1.4,
                           }}
                         >
-                          {t(`certifications.${cert.key}.name`)}
+                          {cert.link ? (
+                            <a
+                              href={cert.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 transition-colors hover:opacity-80"
+                              style={{ color: "inherit", textDecoration: "none" }}
+                            >
+                              {t(`certifications.${cert.key}.name`)}
+                              <FaExternalLinkAlt style={{ fontSize: "0.55rem", opacity: 0.5, flexShrink: 0 }} />
+                            </a>
+                          ) : (
+                            t(`certifications.${cert.key}.name`)
+                          )}
                         </div>
                         <div
                           style={{

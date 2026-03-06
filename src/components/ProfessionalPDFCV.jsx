@@ -348,6 +348,15 @@ const ProfessionalPDFCV = () => {
             </View>
             <View style={styles.certItem}>
               <Text style={styles.certName}>
+                {t("certifications.hcta.name")}
+              </Text>
+              <Text style={styles.certIssuer}>
+                {t("certifications.hcta.issuer")},{" "}
+                {t("certifications.hcta.date")}
+              </Text>
+            </View>
+            <View style={styles.certItem}>
+              <Text style={styles.certName}>
                 {t("certifications.rhcsa.name")}
               </Text>
               <Text style={styles.certIssuer}>
@@ -389,6 +398,24 @@ const ProfessionalPDFCV = () => {
               <Text style={styles.certIssuer}>
                 {t("certifications.gitlabServices.issuer")},{" "}
                 {t("certifications.gitlabServices.date")}
+              </Text>
+            </View>
+            <View style={styles.certItem}>
+              <Text style={styles.certName}>
+                {t("certifications.gitlabMigration.name")}
+              </Text>
+              <Text style={styles.certIssuer}>
+                {t("certifications.gitlabMigration.issuer")},{" "}
+                {t("certifications.gitlabMigration.date")}
+              </Text>
+            </View>
+            <View style={styles.certItem}>
+              <Text style={styles.certName}>
+                {t("certifications.gitlabImplementation.name")}
+              </Text>
+              <Text style={styles.certIssuer}>
+                {t("certifications.gitlabImplementation.issuer")},{" "}
+                {t("certifications.gitlabImplementation.date")}
               </Text>
             </View>
             <View style={styles.certItem}>
