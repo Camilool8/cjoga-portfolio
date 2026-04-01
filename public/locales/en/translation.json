@@ -60,9 +60,9 @@
   "experience": {
     "title": "Experience",
     "heading": "Where I've worked.",
-    "arroyo": {
+    "inspyr": {
       "title": "DevOps Engineer",
-      "company": "Arroyo Consulting",
+      "company": "INSPYR Global Solutions",
       "period": "March 2025 - Present",
       "responsibilities": [
         "Manage and optimize Kubernetes clusters (EKS, AKS) for various applications",
@@ -81,9 +81,9 @@
         "Design and implement CI/CD pipelines using Azure DevOps and GitLab CI for enterprise clients"
       ]
     },
-    "shadowSoft": {
+    "articq": {
       "title": "DevOps Consultant",
-      "company": "Shadow-Soft",
+      "company": "Articq",
       "period": "July 2022 - Present",
       "responsibilities": [
         "Provide consulting services for clients implementing DevOps practices",

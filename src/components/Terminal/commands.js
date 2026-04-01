@@ -42,8 +42,8 @@ function buildResumeText(t) {
 
   ${t("terminal.messages.resumeExperience")}
   ----------
-  Arroyo Consulting    DevOps Engineer       2025 - Present
-  Shadow-Soft          DevOps Consultant     2022 - Present
+  INSPYR Global Solutions    DevOps Engineer       2025 - Present
+  Articq                     DevOps Consultant     2022 - Present
 
   ${t("terminal.messages.resumeCertifications")}
   --------------
@@ -84,21 +84,22 @@ function buildHireMeText(t) {
   return `
  +==========================================+
  |                                          |
- |   ${t("terminal.messages.hireGranted").padEnd(37)}|
+ |   ${t("terminal.messages.hireGranted").padEnd(37)}  |
  |                                          |
- |   ${t("terminal.messages.hireCta").padEnd(37)}|
+ |   ${t("terminal.messages.hireCta").padEnd(37)}  |
  |                                          |
  |   Email    : josejoga.opx@gmail.com      |
  |   LinkedIn : linkedin.com/in/cjoga       |
  |   Web      : cjoga.cloud                 |
  |                                          |
- |   ${t("terminal.messages.hireStatus").padEnd(37)}|
+ |   ${t("terminal.messages.hireStatus").padEnd(37)}  |
  |                                          |
  +==========================================+
 `;
 }
 
-const LS_OUTPUT = "resume.txt  projects/  certifications/  blog/  .secret-plans";
+const LS_OUTPUT =
+  "resume.txt  projects/  certifications/  blog/  .secret-plans";
 
 function buildLsLaOutput() {
   const now = new Date();
@@ -184,7 +185,8 @@ const CLIENT_COMMANDS = {
     type: "error",
   }),
   id: () => ({
-    output: "uid=1000(visitor) gid=1000(guests) groups=1000(guests),27(curious-people)",
+    output:
+      "uid=1000(visitor) gid=1000(guests) groups=1000(guests),27(curious-people)",
     type: "success",
   }),
   uptime: () => ({
@@ -211,7 +213,8 @@ export function resolveClientCommand(input, commandHistory, t) {
 
   // History command
   if (normalized === "history") {
-    if (commandHistory.length === 0) return { output: t("terminal.messages.noHistory"), type: "info" };
+    if (commandHistory.length === 0)
+      return { output: t("terminal.messages.noHistory"), type: "info" };
     const output = commandHistory
       .map((cmd, i) => `  ${String(i + 1).padStart(4)}  ${cmd}`)
       .join("\n");

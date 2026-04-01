@@ -237,13 +237,13 @@ const ProfessionalPDFCV = () => {
 
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
-              {t("experience.arroyo.title")}, {t("experience.arroyo.company")}
+              {t("experience.inspyr.title")}, {t("experience.inspyr.company")}
             </Text>
             <Text style={styles.jobPeriod}>
-              {t("experience.arroyo.period")}
+              {t("experience.inspyr.period")}
             </Text>
             <View style={styles.jobResponsibilities}>
-              {t("experience.arroyo.responsibilities", {
+              {t("experience.inspyr.responsibilities", {
                 returnObjects: true,
               }).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
@@ -274,14 +274,13 @@ const ProfessionalPDFCV = () => {
 
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
-              {t("experience.shadowSoft.title")},{" "}
-              {t("experience.shadowSoft.company")}
+              {t("experience.articq.title")}, {t("experience.articq.company")}
             </Text>
             <Text style={styles.jobPeriod}>
-              {t("experience.shadowSoft.period")}
+              {t("experience.articq.period")}
             </Text>
             <View style={styles.jobResponsibilities}>
-              {t("experience.shadowSoft.responsibilities", {
+              {t("experience.articq.responsibilities", {
                 returnObjects: true,
               }).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
@@ -326,7 +325,7 @@ const ProfessionalPDFCV = () => {
             </Text>
             <Text style={styles.projectTech}>
               {t("projects.monitoring.tech", { returnObjects: true }).join(
-                ", "
+                ", ",
               )}
             </Text>
           </View>

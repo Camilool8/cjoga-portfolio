@@ -26,40 +26,44 @@ export default function TerminalPromo() {
   const isInView = useInView(containerRef, { once: false, amount: 0.4 });
   const animationRef = useRef(null);
 
-  const demoSequence = useMemo(() => [
-    {
-      command: "kubectl get nodes",
-      output: `NAME             STATUS   ROLES                  AGE    VERSION
+  const demoSequence = useMemo(
+    () => [
+      {
+        command: "kubectl get nodes",
+        output: `NAME             STATUS   ROLES                  AGE    VERSION
 k3s-master-01    Ready    control-plane,master   180d   v1.28.4+k3s1
 k3s-worker-01    Ready    worker                 180d   v1.28.4+k3s1
 k3s-worker-02    Ready    worker                 90d    v1.28.4+k3s1`,
-    },
-    {
-      command: "kubectl get pods -n monitoring",
-      output: `NAME                        READY   STATUS    RESTARTS   AGE
+      },
+      {
+        command: "kubectl get pods -n monitoring",
+        output: `NAME                        READY   STATUS    RESTARTS   AGE
 prometheus-server-0         1/1     Running   0          30d
-grafana-5d4f8c7b9-kx2mt    1/1     Running   0          30d
+grafana-5d4f8c7b9-kx2mt     1/1     Running   0          30d
 loki-0                      1/1     Running   1          30d`,
-    },
-    {
-      command: "sudo hire-me",
-      output: ` +==========================================+
+      },
+      {
+        command: "sudo hire-me",
+        output: ` +==========================================+
  |                                          |
- |   ${t("terminal.messages.hireGranted").padEnd(37)}|
+ |   ${t("terminal.messages.hireGranted").padEnd(37)}  |
  |                                          |
- |   ${t("terminal.messages.hireCta").padEnd(37)}|
+ |   ${t("terminal.messages.hireCta").padEnd(37)}  |
  |                                          |
  |   Email    : josejoga.opx@gmail.com      |
  |   LinkedIn : linkedin.com/in/cjoga       |
  |   Web      : cjoga.cloud                 |
  |                                          |
  +==========================================+`,
-    },
-  ], [t]);
+      },
+    ],
+    [t],
+  );
 
-  const sleep = (ms) => new Promise((r) => {
-    animationRef.current = setTimeout(r, ms);
-  });
+  const sleep = (ms) =>
+    new Promise((r) => {
+      animationRef.current = setTimeout(r, ms);
+    });
 
   const runSequence = useCallback(async () => {
     setIsAnimating(true);

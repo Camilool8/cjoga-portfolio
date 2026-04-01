@@ -136,13 +136,21 @@ app.use((err, req, res, next) => {
 
 const distPath = path.join(__dirname, "../dist");
 if (fs.existsSync(distPath)) {
+  // index: false prevents express.static from serving index.html directly,
+  // so it won't inherit the 1y cache. Hashed JS/CSS/image assets still get 1y.
   const staticOptions = isProduction
-    ? { maxAge: "1y", etag: true, lastModified: true }
-    : {};
+    ? { maxAge: "1y", etag: true, lastModified: true, index: false }
+    : { index: false };
 
   app.use(express.static(distPath, staticOptions));
 
+  // Always serve index.html with no-cache so deploys take effect immediately.
   app.get("*", (req, res) => {
+    if (isProduction) {
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+    }
     res.sendFile(path.join(distPath, "index.html"));
   });
 }

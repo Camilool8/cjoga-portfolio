@@ -2,8 +2,11 @@ import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import {
-  sectionVariants, itemVariants, cardVariants,
-  SPRING_CONFIG, viewportConfig,
+  sectionVariants,
+  itemVariants,
+  cardVariants,
+  SPRING_CONFIG,
+  viewportConfig,
 } from "../hooks/useMotion";
 
 function Experience() {
@@ -14,12 +17,13 @@ function Experience() {
     target: timelineRef,
     offset: ["start 0.8", "end 0.3"],
   });
-  const lineScale = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 1]),
-    { stiffness: 40, damping: 25, mass: 1 }
-  );
+  const lineScale = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1]), {
+    stiffness: 40,
+    damping: 25,
+    mass: 1,
+  });
 
-  const companyKeys = ["arroyo", "flBetances", "shadowSoft"];
+  const companyKeys = ["inspyr", "flBetances", "articq"];
   const isActive = (key) => {
     const period = t(`experience.${key}.period`);
     return /present|presente/i.test(period);
@@ -35,7 +39,9 @@ function Experience() {
           viewport={viewportConfig}
         >
           <motion.div variants={itemVariants}>
-            <span className="section-label">{t("experience.title", "Experience")}</span>
+            <span className="section-label">
+              {t("experience.title", "Experience")}
+            </span>
             <h2 className="section-heading">
               {t("experience.heading", "Where I've worked.")}
             </h2>
@@ -48,7 +54,8 @@ function Experience() {
             style={{
               left: "32px",
               width: "1px",
-              background: "linear-gradient(to bottom, transparent, var(--border-medium) 10%, var(--border-medium) 90%, transparent)",
+              background:
+                "linear-gradient(to bottom, transparent, var(--border-medium) 10%, var(--border-medium) 90%, transparent)",
               scaleY: lineScale,
               transformOrigin: "top",
             }}
@@ -58,7 +65,8 @@ function Experience() {
             style={{
               left: "16px",
               width: "1px",
-              background: "linear-gradient(to bottom, transparent, var(--border-medium) 10%, var(--border-medium) 90%, transparent)",
+              background:
+                "linear-gradient(to bottom, transparent, var(--border-medium) 10%, var(--border-medium) 90%, transparent)",
               scaleY: lineScale,
               transformOrigin: "top",
             }}
@@ -78,7 +86,11 @@ function Experience() {
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ type: "spring", ...SPRING_CONFIG, delay: index * 0.15 }}
+                transition={{
+                  type: "spring",
+                  ...SPRING_CONFIG,
+                  delay: index * 0.15,
+                }}
                 className="absolute top-7 left-[11px] md:left-[27px] w-[11px] h-[11px] rounded-full z-[2]"
                 style={{
                   background: "var(--bg-primary)",
@@ -107,8 +119,10 @@ function Experience() {
                   <span
                     className="py-1 px-2.5 rounded-md"
                     style={{
-                      fontFamily: "var(--font-mono)", fontSize: "0.72rem",
-                      color: "var(--accent)", background: "var(--accent-dim)",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.72rem",
+                      color: "var(--accent)",
+                      background: "var(--accent-dim)",
                     }}
                   >
                     {t(`experience.${key}.period`)}
@@ -117,13 +131,19 @@ function Experience() {
                     <span
                       className="flex items-center gap-1.5"
                       style={{
-                        fontFamily: "var(--font-mono)", fontSize: "0.65rem",
-                        color: "#22c55e", letterSpacing: "0.05em", textTransform: "uppercase",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.65rem",
+                        color: "#22c55e",
+                        letterSpacing: "0.05em",
+                        textTransform: "uppercase",
                       }}
                     >
                       <span
                         className="w-[5px] h-[5px] rounded-full"
-                        style={{ background: "#22c55e", boxShadow: "0 0 6px #22c55e" }}
+                        style={{
+                          background: "#22c55e",
+                          boxShadow: "0 0 6px #22c55e",
+                        }}
                       />
                       ACTIVE
                     </span>
@@ -133,39 +153,52 @@ function Experience() {
                 <h3
                   className="mb-0.5"
                   style={{
-                    fontFamily: "var(--font-display)", fontSize: "1.2rem",
-                    fontWeight: 700, color: "var(--text-primary)",
+                    fontFamily: "var(--font-display)",
+                    fontSize: "1.2rem",
+                    fontWeight: 700,
+                    color: "var(--text-primary)",
                   }}
                 >
                   {t(`experience.${key}.title`)}
                 </h3>
                 <p
                   className="mb-4"
-                  style={{ fontSize: "1rem", color: "var(--accent)", fontWeight: 500 }}
+                  style={{
+                    fontSize: "1rem",
+                    color: "var(--accent)",
+                    fontWeight: 500,
+                  }}
                 >
                   {t(`experience.${key}.company`)}
                 </p>
 
                 <ul className="list-none p-0">
-                  {t(`experience.${key}.responsibilities`, { returnObjects: true }).map(
-                    (item, i) => (
-                      <li
-                        key={i}
-                        className="relative pl-5 mb-2.5"
+                  {t(`experience.${key}.responsibilities`, {
+                    returnObjects: true,
+                  }).map((item, i) => (
+                    <li
+                      key={i}
+                      className="relative pl-5 mb-2.5"
+                      style={{
+                        fontSize: "0.9rem",
+                        color: "var(--text-secondary)",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      <span
+                        className="absolute left-0"
                         style={{
-                          fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: 1.6,
+                          color: "var(--accent)",
+                          fontWeight: 700,
+                          fontSize: "1.1rem",
+                          lineHeight: 1.5,
                         }}
                       >
-                        <span
-                          className="absolute left-0"
-                          style={{ color: "var(--accent)", fontWeight: 700, fontSize: "1.1rem", lineHeight: 1.5 }}
-                        >
-                          ›
-                        </span>
-                        {item}
-                      </li>
-                    )
-                  )}
+                        ›
+                      </span>
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </motion.div>
