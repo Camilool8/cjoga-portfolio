@@ -23,7 +23,7 @@ function Experience() {
     mass: 1,
   });
 
-  const companyKeys = ["inspyr", "flBetances", "articq"];
+  const companyKeys = ["inspyr", "flBetances", "arctiq"];
   const isActive = (key) => {
     const period = t(`experience.${key}.period`);
     return /present|presente/i.test(period);

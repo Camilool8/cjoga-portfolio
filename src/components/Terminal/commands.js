@@ -43,7 +43,7 @@ function buildResumeText(t) {
   ${t("terminal.messages.resumeExperience")}
   ----------
   INSPYR Global Solutions    DevOps Engineer       2025 - Present
-  Articq                     DevOps Consultant     2022 - Present
+  Arctiq                     DevOps Consultant     2022 - Present
 
   ${t("terminal.messages.resumeCertifications")}
   --------------

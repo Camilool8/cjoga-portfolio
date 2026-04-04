@@ -274,13 +274,13 @@ const ProfessionalPDFCV = () => {
 
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
-              {t("experience.articq.title")}, {t("experience.articq.company")}
+              {t("experience.arctiq.title")}, {t("experience.arctiq.company")}
             </Text>
             <Text style={styles.jobPeriod}>
-              {t("experience.articq.period")}
+              {t("experience.arctiq.period")}
             </Text>
             <View style={styles.jobResponsibilities}>
-              {t("experience.articq.responsibilities", {
+              {t("experience.arctiq.responsibilities", {
                 returnObjects: true,
               }).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
