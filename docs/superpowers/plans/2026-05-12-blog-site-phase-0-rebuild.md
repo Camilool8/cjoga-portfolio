@@ -12,6 +12,72 @@
 
 **Working directory for every command in this plan:** `blog-site/` (run `cd /Users/cjoga/web-development/cjoga-portfolio/blog-site` first if you've drifted out).
 
+**Branch:** All work happens on `feature/blog-site-handbook-rebuild` (branched from `main`).
+
+---
+
+## Task 0: Commit blog-site/ baseline
+
+**Why:** `blog-site/` is currently untracked in the parent `cjoga-portfolio` repo. Without a tracked baseline, the deletions in Task 1 produce empty commits (you can't `git rm` files that were never tracked). Committing the AI-placeholder state first gives every later task a meaningful diff and preserves history of the rebuild.
+
+**Files:** every file under `blog-site/` (except what `.gitignore` already excludes: `node_modules/`, `build/`, `.docusaurus/`, env files).
+
+- [ ] **Step 1: Verify the gitignore covers junk before staging**
+
+```bash
+cd /Users/cjoga/web-development/cjoga-portfolio
+cat blog-site/.gitignore
+```
+
+Expected: `/node_modules`, `/build`, `.docusaurus`, `.cache-loader`, `.DS_Store`, env files all listed.
+
+- [ ] **Step 2: Confirm we're on the feature branch**
+
+```bash
+git branch --show-current
+```
+
+Expected output: `feature/blog-site-handbook-rebuild`
+
+- [ ] **Step 3: Stage blog-site/ explicitly (avoid sweeping in unrelated changes)**
+
+```bash
+git add blog-site/
+git status --short blog-site/ | head -20
+```
+
+Expected: `A  blog-site/<various files>` for every file under blog-site/ that isn't gitignored. `node_modules/`, `build/`, `.docusaurus/` must NOT appear.
+
+- [ ] **Step 4: Verify nothing ignored snuck in**
+
+```bash
+git status --short blog-site/ | grep -E 'node_modules|build/|\.docusaurus' && echo "PROBLEM" || echo "clean"
+```
+
+Expected output: `clean`
+
+- [ ] **Step 5: Commit the baseline**
+
+```bash
+git commit -m "chore(blog-site): commit Docusaurus baseline (AI-placeholder state)
+
+Captures the current blog-site/ as-is so the upcoming rebuild has a
+tracked starting point. Everything under docs/ is AI-generated
+placeholder content and will be torn out in the next commits per
+docs/superpowers/plans/2026-05-12-blog-site-phase-0-rebuild.md.
+
+Spec: docs/superpowers/specs/2026-05-12-blog-site-handbook-rebuild-design.md"
+```
+
+- [ ] **Step 6: Verify the baseline commit landed**
+
+```bash
+git log --oneline -3
+git status --short blog-site/
+```
+
+Expected: top commit is the baseline. `git status --short blog-site/` shows no entries (everything tracked, nothing dirty).
+
 ---
 
 ## File Structure
