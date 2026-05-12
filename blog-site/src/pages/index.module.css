@@ -127,7 +127,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 140px 1fr auto;
+  grid-template-columns: 1fr auto;
   gap: 1.5rem;
   align-items: baseline;
   padding: 1.5rem 0;
