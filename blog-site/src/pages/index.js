@@ -1,6 +1,7 @@
-// Landing page for cjoga.cloud docs. Deliberately quiet — its job is to
-// say "this is my docs site, dig in" without trying to sell anything or
-// privilege one section over another. All four sections are equal.
+// Landing for blog.cjoga.cloud. Audience-first "start here" index:
+// hiring managers, learners, and homelab-curious readers each see the
+// path that's actually useful to them. Keeps the existing styling
+// (hero, orbs, typographic rows) intact.
 
 import React from "react";
 import Link from "@docusaurus/Link";
@@ -8,40 +9,43 @@ import Layout from "@theme/Layout";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "./index.module.css";
 
-const SECTIONS = [
+const PATHS = [
   {
-    href: "/about/who-i-am",
-    label: "About",
-    description:
-      "Who I am, what I work on, and where I stand on infrastructure decisions.",
+    eyebrow: "If you're hiring",
+    rows: [
+      { to: "/me/who-i-am", label: "Who I am" },
+      { to: "/engineering/work", label: "What I've built" },
+    ],
   },
   {
-    href: "/homelab/overview",
-    label: "Homelab",
-    description:
-      "The K3s cluster behind cjoga.cloud — hardware, networking, deployment, distributed evolution.",
+    eyebrow: "If you're studying",
+    intro:
+      "Honest cert guides — my experience, my tips, and the runbooks I'd hand to a friend.",
+    rows: [{ to: "/learn/rhcsa", label: "RHCSA (EX200) guide" }],
   },
   {
-    href: "/work",
-    label: "Work",
-    description:
-      "Current engagements, client solutions, and the kinds of problems I solve for a living.",
-  },
-  {
-    href: "/certifications/overview",
-    label: "Certifications",
-    description:
-      "Field-tested study notes for the 11 certifications I hold and the ones I'm working toward.",
+    eyebrow: "If you're curious about the lab",
+    rows: [{ to: "/engineering/lab/overview", label: "The K3s setup" }],
   },
 ];
 
-function SectionRow({ section }) {
+function PathBlock({ path }) {
   return (
-    <Link to={section.href} className={styles.row}>
-      <div className={styles.rowLabel}>{section.label}</div>
-      <div className={styles.rowDescription}>{section.description}</div>
-      <div className={styles.rowArrow} aria-hidden="true">→</div>
-    </Link>
+    <section className={styles.pathBlock}>
+      <div className={styles.eyebrow}>
+        <span className={styles.eyebrowDot} aria-hidden="true" />
+        {path.eyebrow}
+      </div>
+      {path.intro ? <p className={styles.pathIntro}>{path.intro}</p> : null}
+      <nav className={styles.sections} aria-label={path.eyebrow}>
+        {path.rows.map((row) => (
+          <Link key={row.to} to={row.to} className={styles.row}>
+            <div className={styles.rowLabel}>{row.label}</div>
+            <div className={styles.rowArrow} aria-hidden="true">→</div>
+          </Link>
+        ))}
+      </nav>
+    </section>
   );
 }
 
@@ -64,24 +68,24 @@ export default function Home() {
             This is where I write things down.
           </h1>
           <p className={styles.lede}>
-            A working handbook — opinions, the homelab that runs{" "}
+            A working handbook — opinions, the K3s lab that runs{" "}
             <code>cjoga.cloud</code>, the consulting work that pays the bills,
-            and the study notes for certifications I'm earning. Nothing here is
-            for sale. Read whatever's useful.
+            and cert guides for the certs I think are worth your time. Nothing
+            here is for sale. Read whatever's useful.
           </p>
         </section>
 
-        <nav className={styles.sections} aria-label="Handbook sections">
-          {SECTIONS.map((section) => (
-            <SectionRow key={section.href} section={section} />
+        <div className={styles.paths}>
+          {PATHS.map((path) => (
+            <PathBlock key={path.eyebrow} path={path} />
           ))}
-        </nav>
+        </div>
 
         <footer className={styles.signoff}>
           <p>
-            New chapters land continuously. If something here is wrong, or you
-            want to talk about the work,{" "}
-            <Link to="/about/who-i-am#how-to-reach-me" className={styles.signoffLink}>
+            New pages land when they're ready, not on a schedule. If something
+            here is wrong, or you want to talk about the work,{" "}
+            <Link to="/me/who-i-am#how-to-reach-me" className={styles.signoffLink}>
               email is the right channel
             </Link>
             .

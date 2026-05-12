@@ -140,22 +140,22 @@ const config = {
         hideOnScroll: false,
         items: [
           {
-            type: "docSidebar",
-            sidebarId: "me",
-            position: "left",
+            to: "/me",
             label: "Me",
+            position: "left",
+            activeBasePath: "/me",
           },
           {
-            type: "docSidebar",
-            sidebarId: "engineering",
-            position: "left",
+            to: "/engineering",
             label: "Engineering",
+            position: "left",
+            activeBasePath: "/engineering",
           },
           {
-            type: "docSidebar",
-            sidebarId: "learn",
-            position: "left",
+            to: "/learn",
             label: "Learn",
+            position: "left",
+            activeBasePath: "/learn",
           },
           {
             href: "https://cjoga.cloud",

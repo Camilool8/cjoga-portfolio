@@ -36,10 +36,6 @@ export default function AuthorCard() {
           <Link to="https://www.linkedin.com/in/cjoga" className={styles.link}>
             LinkedIn
           </Link>
-          <span aria-hidden="true">·</span>
-          <Link to="/rss.xml" className={styles.link}>
-            RSS
-          </Link>
         </div>
       </div>
     </aside>
