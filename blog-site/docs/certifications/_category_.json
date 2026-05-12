@@ -1,0 +1,13 @@
+{
+  "label": "Certifications",
+  "position": 4,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Certification guides",
+    "description": "Field-tested study guides for the certifications I've earned and the ones I'm working toward.",
+    "slug": "/certifications",
+    "keywords": ["certifications", "exam", "study guide", "rhcsa", "kubestronaut"]
+  }
+}

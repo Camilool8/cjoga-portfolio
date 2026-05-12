@@ -1,0 +1,700 @@
+/**
+ * cjoga.cloud / blog — editorial design system.
+ *
+ * Strategy: inherit portfolio brand tokens (colors, fonts, logo), then let
+ * Docusaurus's defaults breathe. We only override what's needed for
+ * editorial rhythm and brand parity — no heavy bespoke layouts.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+/* ─── Brand tokens (kept verbatim from portfolio's global.css) ──────── */
+:root {
+  --bg-void: #06080d;
+  --bg-primary: #0b0f1a;
+  --bg-surface: #111827;
+  --bg-elevated: #1a2332;
+  --bg-glass: rgba(11, 15, 26, 0.72);
+  --border-subtle: rgba(100, 255, 218, 0.08);
+  --border-medium: rgba(100, 255, 218, 0.18);
+  --accent: #64ffda;
+  --accent-dim: rgba(100, 255, 218, 0.12);
+  --accent-glow: rgba(100, 255, 218, 0.18);
+  --accent-secondary: #38bdf8;
+  --accent-warm: #f59e0b;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #475569;
+  --gradient-accent: linear-gradient(135deg, #64ffda, #38bdf8);
+  --font-display: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-theme="light"] {
+  --bg-void: #fafafa;
+  --bg-primary: #ffffff;
+  --bg-surface: #f5f5f5;
+  --bg-elevated: #ebebeb;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --border-subtle: rgba(2, 132, 199, 0.12);
+  --border-medium: rgba(2, 132, 199, 0.25);
+  --accent: #0284c7;
+  --accent-dim: rgba(2, 132, 199, 0.08);
+  --accent-glow: rgba(2, 132, 199, 0.18);
+  --accent-secondary: #0ea5e9;
+  --accent-warm: #d97706;
+  --text-primary: #0a0a0a;
+  --text-secondary: #525252;
+  --text-tertiary: #a3a3a3;
+  --gradient-accent: linear-gradient(135deg, #0284c7, #0ea5e9);
+}
+
+/* ─── Infima overrides — minimal, surgical ──────────────────────────── */
+:root {
+  --ifm-color-primary: #64ffda;
+  --ifm-color-primary-dark: #41ffd0;
+  --ifm-color-primary-darker: #2fffcb;
+  --ifm-color-primary-darkest: #00d9a0;
+  --ifm-color-primary-light: #87ffe4;
+  --ifm-color-primary-lighter: #99ffe9;
+  --ifm-color-primary-lightest: #ccfff2;
+
+  --ifm-background-color: var(--bg-void);
+  --ifm-background-surface-color: var(--bg-surface);
+  --ifm-color-content: var(--text-primary);
+  --ifm-color-content-secondary: var(--text-secondary);
+
+  --ifm-font-family-base: var(--font-body);
+  --ifm-heading-font-family: var(--font-display);
+  --ifm-font-family-monospace: var(--font-mono);
+  --ifm-font-size-base: 17px;
+  --ifm-line-height-base: 1.7;
+  --ifm-heading-line-height: 1.15;
+  --ifm-heading-font-weight: 700;
+  --ifm-h1-font-size: clamp(2.5rem, 6vw, 4rem);
+  --ifm-h2-font-size: clamp(1.8rem, 4vw, 2.5rem);
+  --ifm-h3-font-size: 1.5rem;
+
+  --ifm-spacing-horizontal: 1.5rem;
+  --ifm-container-width: 1200px;
+
+  --ifm-link-color: var(--accent);
+  --ifm-link-hover-color: var(--accent-secondary);
+  --ifm-link-hover-decoration: none;
+
+  --ifm-navbar-background-color: var(--bg-glass);
+  --ifm-navbar-height: 72px;
+  --ifm-navbar-link-color: var(--text-secondary);
+  --ifm-navbar-link-hover-color: var(--accent);
+
+  --ifm-footer-background-color: var(--bg-primary);
+  --ifm-footer-color: var(--text-secondary);
+  --ifm-footer-link-color: var(--text-secondary);
+  --ifm-footer-link-hover-color: var(--accent);
+  --ifm-footer-title-color: var(--text-primary);
+
+  --ifm-code-font-size: 88%;
+  --ifm-code-background: var(--bg-elevated);
+  --ifm-code-color: var(--accent);
+  --ifm-pre-background: var(--bg-surface);
+  --ifm-pre-color: var(--text-primary);
+
+  --docusaurus-highlighted-code-line-bg: rgba(100, 255, 218, 0.08);
+}
+
+[data-theme="light"] {
+  --ifm-color-primary: #0284c7;
+  --ifm-color-primary-dark: #0276b3;
+  --ifm-color-primary-darker: #026fa8;
+  --ifm-color-primary-darkest: #015a89;
+  --ifm-color-primary-light: #1297de;
+  --ifm-color-primary-lighter: #2ba1e1;
+  --ifm-color-primary-lightest: #5db8e9;
+  --docusaurus-highlighted-code-line-bg: rgba(2, 132, 199, 0.1);
+}
+
+/* ─── Body & global polish ─────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-void);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* ─── Container: generous max-width + breathing room ──────────────── */
+.container {
+  --ifm-container-width-xl: 1200px;
+}
+
+main .container {
+  padding-top: 4rem;
+  padding-bottom: 6rem;
+}
+
+@media (max-width: 768px) {
+  main .container {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* ─── Navbar: clean, subtle, no shadow heaviness ───────────────────── */
+.navbar {
+  background: var(--bg-glass);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: none;
+}
+
+.navbar__brand {
+  margin-right: 2rem;
+}
+
+.navbar__title {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.navbar__title::after {
+  content: "/blog";
+  color: var(--accent);
+  margin-left: 0.25rem;
+  font-weight: 500;
+}
+
+.navbar__link {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text-secondary);
+  transition: color 0.2s var(--ease-out);
+}
+
+.navbar__link:hover {
+  color: var(--accent);
+}
+
+/* Portfolio link styled as a subtle pill */
+.navbar-portfolio-link {
+  padding: 6px 12px !important;
+  border-radius: 999px;
+  border: 1px solid var(--border-medium);
+  font-family: var(--font-mono);
+  font-size: 0.75rem !important;
+  transition: all 0.2s var(--ease-out);
+}
+
+.navbar-portfolio-link:hover {
+  background: var(--accent);
+  color: var(--bg-primary) !important;
+  border-color: var(--accent);
+}
+
+/* ─── Footer ───────────────────────────────────────────────────────── */
+.footer {
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-subtle);
+  padding: 4rem 0 3rem;
+}
+
+.footer__title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.footer__item {
+  font-size: 0.9rem;
+}
+
+.footer__copyright {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ─── Code blocks ──────────────────────────────────────────────────── */
+.theme-code-block {
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+  margin: 1.5rem 0;
+}
+
+.prism-code {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* Inline code */
+:not(pre) > code {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--border-subtle);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-weight: 500;
+}
+
+/* ─── Tag pills ────────────────────────────────────────────────────── */
+a[class*="tag_"] {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  transition: all 0.2s var(--ease-out);
+  text-decoration: none;
+}
+
+a[class*="tag_"]:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+  border-color: var(--accent);
+}
+
+/* ─── Blog post detail — editorial typography ──────────────────────── */
+
+/* Container: narrower reading column for blog posts */
+[class*="blogPostPage"] .container,
+.theme-blog-post-page main > .container {
+  max-width: 1200px;
+}
+
+/* Article column gets editorial width */
+article {
+  max-width: 100%;
+}
+
+/* Post title */
+.theme-blog-post-page header h1,
+article > header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+
+/* Meta row: author + date + reading time, generous spacing */
+[class*="blogPostData"],
+.theme-blog-post-page header time,
+.theme-blog-post-page header [class*="authorCol"] {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+/* Author block at top of post */
+[class*="blogPostAuthors"] [class*="authorCol"] {
+  padding: 0;
+}
+
+[class*="blogPostAuthors"] img[class*="authorImg"],
+[class*="authorCol"] img {
+  border: 2px solid var(--border-medium);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+[class*="authorCol"] a {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+[class*="authorCol"] small {
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+}
+
+/* Prose: editorial line length + rhythm */
+article .markdown {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+}
+
+article .markdown > * {
+  max-width: 720px;
+}
+
+article .markdown > h2,
+article .markdown > h3,
+article .markdown > h4 {
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+article .markdown > h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 2rem;
+}
+
+article .markdown > h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+article .markdown > p {
+  margin-bottom: 1.25rem;
+  text-wrap: pretty;
+}
+
+article .markdown > ul,
+article .markdown > ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+article .markdown > ul li,
+article .markdown > ol li {
+  margin-bottom: 0.4rem;
+}
+
+article .markdown blockquote {
+  background: var(--bg-surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+article .markdown blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+article .markdown img {
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  margin: 1.5rem 0;
+}
+
+article .markdown hr {
+  border: 0;
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 3rem auto;
+  max-width: 200px;
+}
+
+/* TOC sidebar */
+.table-of-contents {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.table-of-contents__link {
+  color: var(--text-tertiary);
+  padding: 4px 0;
+  transition: color 0.2s var(--ease-out);
+}
+
+.table-of-contents__link:hover {
+  color: var(--text-secondary);
+}
+
+.table-of-contents__link--active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Pagination — prev/next at bottom of post */
+.pagination-nav__link {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  transition: all 0.25s var(--ease-out);
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.pagination-nav__sublabel {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pagination-nav__label {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+/* Hide noisy default header date row — meta is duplicated by our list page,
+   but keep here for post detail. No-op for now. */
+
+/* ─── Skip-to-content (a11y) ───────────────────────────────────────── */
+.skipToContent_node_modules-\@docusaurus-theme-classic-lib-theme-SkipToContent-styles-module,
+[class*="skipToContent"] {
+  background: var(--bg-surface) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.85rem !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 8px !important;
+}
+
+/* ─── Focus-visible rings everywhere interactive ───────────────────── */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ─── Admonitions — terminal-tinged, branded ──────────────────────── */
+.theme-admonition {
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  border-left-width: 3px;
+  background: var(--bg-surface);
+  margin: 1.75rem 0;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+.theme-admonition-note {
+  border-left-color: var(--accent-secondary);
+}
+.theme-admonition-tip {
+  border-left-color: var(--accent);
+}
+.theme-admonition-info {
+  border-left-color: var(--accent-secondary);
+}
+.theme-admonition-warning,
+.theme-admonition-caution {
+  border-left-color: var(--accent-warm);
+}
+.theme-admonition-danger {
+  border-left-color: #ef4444;
+}
+
+.theme-admonition .admonitionHeading,
+.theme-admonition [class*="admonitionHeading"] {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+/* ─── Code blocks — terminal vibe + copy/lang clarity ────────────── */
+.theme-code-block {
+  background: #0a0e16;
+  border: 1px solid var(--border-subtle);
+}
+
+[data-theme="light"] .theme-code-block {
+  background: #fafafa;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Language label */
+[class*="codeBlockTitle"] {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  background: var(--bg-elevated);
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Copy button polish */
+[class*="copyButton"] {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 6px !important;
+  transition: all 0.2s var(--ease-out) !important;
+}
+
+[class*="copyButton"]:hover {
+  background: var(--accent-dim) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* Highlighted line in code blocks */
+[class*="codeLineHighlighted"] {
+  background-color: var(--accent-dim);
+  border-left: 3px solid var(--accent);
+  padding-left: calc(var(--ifm-pre-padding) - 3px);
+}
+
+/* ─── Article body link styling (underline on hover only) ────────── */
+article .markdown a:not([class]) {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+article .markdown a:not([class]):hover {
+  border-bottom-color: var(--accent);
+}
+
+/* External link icon hint */
+article .markdown a[href^="http"]:not([class])::after {
+  content: " ↗";
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+/* ─── Tag chips on homepage tags page ─────────────────────────────── */
+[class*="tagsListInline"] li,
+[class*="tagListInline"] {
+  margin-bottom: 0.5rem;
+}
+
+/* ─── Container queries: smooth font scaling ───────────────────────── */
+@media (max-width: 600px) {
+  article .markdown {
+    font-size: 1rem;
+  }
+  article .markdown > h2 {
+    font-size: 1.5rem;
+    margin-top: 2.25rem;
+  }
+}
+
+/* ─── Mermaid diagrams: subtle light card, natural sizing ──────────── */
+.docusaurus-mermaid-container,
+.theme-doc-markdown .docusaurus-mermaid-container {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  padding: 1.25rem 1rem;
+  margin: 1.75rem 0;
+  text-align: center;
+  overflow-x: auto;
+  /* Let the diagram size itself naturally — no forced min-height */
+}
+
+.docusaurus-mermaid-container svg {
+  max-width: 100%;
+  height: auto !important;
+  display: inline-block;
+}
+
+/* Override the Mermaid theme's font weight for readability */
+.docusaurus-mermaid-container .nodeLabel,
+.docusaurus-mermaid-container text {
+  font-family: var(--font-mono) !important;
+  font-weight: 500 !important;
+}
+
+/* Light mode: blend the diagram card with the page */
+[data-theme="light"] .docusaurus-mermaid-container {
+  background: #fafafa;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+/* ─── Tags: enforce readable contrast in both modes ────────────────── */
+a[class*="tag_"],
+.theme-doc-footer-tags-row a {
+  background: var(--accent-dim) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--border-medium) !important;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: lowercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-decoration: none;
+  opacity: 1 !important;
+}
+
+a[class*="tag_"]:hover,
+.theme-doc-footer-tags-row a:hover {
+  background: var(--accent) !important;
+  color: var(--bg-primary) !important;
+  border-color: var(--accent) !important;
+}
+
+/* ─── Reduced motion ───────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

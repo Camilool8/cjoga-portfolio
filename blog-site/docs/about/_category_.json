@@ -1,0 +1,13 @@
+{
+  "label": "About",
+  "position": 1,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "About me",
+    "description": "Who I am, what I work on, and where I stand on things.",
+    "slug": "/about",
+    "keywords": ["about", "bio", "opinions"]
+  }
+}

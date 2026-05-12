@@ -1,0 +1,131 @@
+---
+sidebar_position: 4
+title: Kubernetes (K3s)
+description: Why K3s, how to bootstrap a cluster in one command per node, and the flags that matter for a Tailscale-based mesh network.
+slug: /homelab/kubernetes
+keywords: [k3s, kubernetes, control plane, etcd, flannel]
+---
+
+# Kubernetes — running K3s
+
+[K3s](https://k3s.io/) is real Kubernetes — same API, same `kubectl`, same operators. It just strips the cloud-provider integrations I don't need and ships everything else (Traefik, CoreDNS, ServiceLB, local-path storage) preinstalled.
+
+For a 3+ node homelab, the cognitive savings are enormous.
+
+## Bootstrap, in one command per node
+
+### Control plane (first node)
+
+```bash title="node-1: install + start the control plane"
+curl -sfL https://get.k3s.io | sh -s - server \
+  --write-kubeconfig-mode 644 \
+  --node-ip 100.x.x.10 \
+  --advertise-address 100.x.x.10 \
+  --flannel-iface tailscale0 \
+  --tls-san $(hostname -I | awk '{print $1}')
+```
+
+A few minutes later, `kubectl get nodes` shows one `Ready` node.
+
+The token to join the rest is at `/var/lib/rancher/k3s/server/node-token`:
+
+```bash
+sudo cat /var/lib/rancher/k3s/server/node-token
+# K10abc...xyz::server:hex...
+```
+
+### Worker nodes
+
+```bash title="node-2, node-3, ...: join the cluster"
+curl -sfL https://get.k3s.io | K3S_URL=https://100.x.x.10:6443 \
+  K3S_TOKEN=<paste-token> sh -s - \
+  --node-ip 100.x.x.20 \
+  --flannel-iface tailscale0
+```
+
+Replace `100.x.x.10` with the control plane's Tailscale IP and `100.x.x.20` with this node's. Pop in a fresh node every few minutes:
+
+```bash
+$ kubectl get nodes
+NAME           STATUS   ROLES                  AGE   VERSION
+k3s-master     Ready    control-plane,master   12m   v1.30.x+k3s1
+worker-1       Ready    <none>                 7m    v1.30.x+k3s1
+worker-2       Ready    <none>                 3m    v1.30.x+k3s1
+```
+
+## The flags that actually matter
+
+| Flag                                | Why                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------- |
+| `--node-ip 100.x.x.y`               | Force K3s to register the node under its Tailscale IP, not the LAN  |
+| `--advertise-address 100.x.x.y`     | What the API server advertises to clients (must match Tailscale IP) |
+| `--flannel-iface tailscale0`        | Pod-to-pod traffic flows through the encrypted mesh                 |
+| `--tls-san <extra>`                 | Add SANs to the API server cert so kubectl from elsewhere works     |
+| `--write-kubeconfig-mode 644`       | Lets your unprivileged user read `/etc/rancher/k3s/k3s.yaml`        |
+| `--disable servicelb` (optional)    | Replace ServiceLB with MetalLB if you need multi-IP support         |
+| `--disable traefik` (optional)      | Replace Traefik with NGINX or your ingress of choice                |
+
+## etcd vs SQLite
+
+K3s defaults to **SQLite** for single-server installs. That works until you want HA. If you might ever go multi-server, bootstrap with embedded etcd from day one:
+
+```bash
+curl -sfL https://get.k3s.io | sh -s - server \
+  --cluster-init \                  # ← this flag
+  --node-ip 100.x.x.10 \
+  ...
+```
+
+Other control-plane servers then join with:
+
+```bash
+curl -sfL https://get.k3s.io | K3S_URL=https://100.x.x.10:6443 \
+  K3S_TOKEN=<token> sh -s - server \
+  --server https://100.x.x.10:6443 \
+  ...
+```
+
+:::warning[Migrating SQLite → etcd later is annoying]
+I bootstrapped with SQLite. Months later, going HA meant exporting state, reinstalling, and restoring — clean but tedious. Just use `--cluster-init` from the start. It's free.
+:::
+
+## What's already running after install
+
+K3s preinstalls these in the `kube-system` namespace:
+
+| Component          | Role                                |
+| ------------------ | ----------------------------------- |
+| **Traefik v3**     | Default ingress controller          |
+| **CoreDNS**        | In-cluster DNS                      |
+| **ServiceLB**      | LoadBalancer service implementation |
+| **local-path**     | Default `StorageClass` for PVCs     |
+| **Flannel**        | CNI for pod networking              |
+| **Metrics Server** | For `kubectl top` and HPA           |
+
+You can disable any of them via `--disable`. I keep them all.
+
+:::info[K3s release cadence]
+K3s ships a new patch release within days of upstream Kubernetes. As of 2026 the supported channels are `v1.31`, `v1.30`, and `v1.29`. Pin to `--channel stable` for safety, or `--channel v1.30` if you want to control major-version jumps.
+:::
+
+:::danger[Don't run `k3s-uninstall.sh` casually]
+That script tears down the entire cluster, including etcd state. Run it once at install if you need a do-over. Otherwise, even fixing a misconfigured agent is faster via `systemctl edit k3s-agent` than reinstalling.
+:::
+
+## Kubeconfig from a remote machine
+
+After install, copy `/etc/rancher/k3s/k3s.yaml` from the control plane and point `server:` to its Tailscale IP:
+
+```yaml title="~/.kube/config (snippet)"
+clusters:
+  - cluster:
+      server: https://k3s-master-vm1:6443  # MagicDNS works here
+      certificate-authority-data: <base64>
+    name: homelab
+```
+
+Now `kubectl get nodes` from your laptop just works — over Tailscale, encrypted, no port-forwarding.
+
+## What's next
+
+→ Continue to [**Deployment**](/homelab/deployment) for the Dockerfile, manifests, Traefik ingress, and Cloudflare Zero Trust tunnel.

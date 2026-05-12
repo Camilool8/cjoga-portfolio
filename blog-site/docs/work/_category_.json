@@ -1,0 +1,13 @@
+{
+  "label": "Work",
+  "position": 3,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Work",
+    "description": "Current engagements, client solutions, and case studies.",
+    "slug": "/work",
+    "keywords": ["work", "consulting", "case studies", "devops"]
+  }
+}
