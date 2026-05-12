@@ -4,7 +4,7 @@ import { themes as prismThemes } from "prism-react-renderer";
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "cjoga.cloud",
-  tagline: "Camilo's handbook — homelab, certifications, and field notes",
+  tagline: "Camilo's handbook — opinions, the lab, and cert guides.",
   favicon: "img/favicon.ico",
 
   future: {
@@ -34,7 +34,7 @@ const config = {
   organizationName: "Camilool8",
   projectName: "cjoga-portfolio",
 
-  onBrokenLinks: "warn",
+  onBrokenLinks: "throw",
 
   i18n: {
     defaultLocale: "en",
@@ -45,7 +45,7 @@ const config = {
     format: "mdx",
     mermaid: true,
     hooks: {
-      onBrokenMarkdownLinks: "warn",
+      onBrokenMarkdownLinks: "throw",
     },
   },
   themes: ["@docusaurus/theme-mermaid"],
@@ -141,31 +141,25 @@ const config = {
         items: [
           {
             type: "docSidebar",
-            sidebarId: "about",
+            sidebarId: "me",
             position: "left",
-            label: "About",
+            label: "Me",
           },
           {
             type: "docSidebar",
-            sidebarId: "homelab",
+            sidebarId: "engineering",
             position: "left",
-            label: "Homelab",
+            label: "Engineering",
           },
           {
             type: "docSidebar",
-            sidebarId: "work",
+            sidebarId: "learn",
             position: "left",
-            label: "Work",
-          },
-          {
-            type: "docSidebar",
-            sidebarId: "certifications",
-            position: "left",
-            label: "Certifications",
+            label: "Learn",
           },
           {
             href: "https://cjoga.cloud",
-            label: "Portfolio ↗",
+            label: "Portfolio",
             position: "right",
             className: "navbar-portfolio-link",
           },
@@ -182,10 +176,9 @@ const config = {
           {
             title: "Handbook",
             items: [
-              { label: "About me", to: "/about" },
-              { label: "Homelab", to: "/homelab" },
-              { label: "Work", to: "/work" },
-              { label: "Certifications", to: "/certifications" },
+              { label: "Me", to: "/me" },
+              { label: "Engineering", to: "/engineering" },
+              { label: "Learn", to: "/learn" },
             ],
           },
           {
