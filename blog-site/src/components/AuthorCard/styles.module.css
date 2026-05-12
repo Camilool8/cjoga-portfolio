@@ -1,34 +1,23 @@
+/* Styled squared section, not a card — matches the typographic-row
+   aesthetic used on the landing. Flat, no fill, top + bottom border. */
 .card {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1.5rem;
   align-items: start;
-  padding: 2rem;
+  padding: 2rem 0;
   margin: 4rem 0 1.5rem;
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  background: var(--bg-surface);
-  position: relative;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 24px;
-  width: 60px;
-  height: 1px;
-  background: var(--accent);
-  box-shadow: 0 0 12px var(--accent);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  background: transparent;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--border-medium);
-  box-shadow: 0 0 0 4px var(--accent-dim);
+  border: 1px solid var(--border-medium);
 }
 
 .body {
@@ -96,10 +85,10 @@
 @media (max-width: 600px) {
   .card {
     grid-template-columns: 1fr;
-    padding: 1.5rem;
+    padding: 1.5rem 0;
   }
   .avatar {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
   }
 }

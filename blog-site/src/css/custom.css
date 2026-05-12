@@ -452,19 +452,36 @@ article .markdown hr {
   font-weight: 600;
 }
 
-/* Pagination — prev/next at bottom of post */
+/* Pagination — prev/next at bottom of doc page. Styled squared section,
+   not a card: flat, no fill, no rounded corners, top + bottom border
+   lines like the index rows. Hover lights up the label, no transform. */
 .pagination-nav__link {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
-  transition: all 0.25s var(--ease-out);
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  border-radius: 0;
+  padding: 1.25rem 0;
+  transition: padding-left 0.25s var(--ease-out),
+              padding-right 0.25s var(--ease-out);
 }
 
 .pagination-nav__link:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
+  background: transparent;
+  border-color: var(--border-subtle);
   text-decoration: none;
+}
+
+.pagination-nav__link--prev:hover {
+  padding-left: 1rem;
+}
+
+.pagination-nav__link--next:hover {
+  padding-right: 1rem;
+}
+
+.pagination-nav__link:hover .pagination-nav__label {
+  color: var(--accent);
 }
 
 .pagination-nav__sublabel {
@@ -481,6 +498,7 @@ article .markdown hr {
   font-weight: 600;
   color: var(--text-primary);
   margin-top: 4px;
+  transition: color 0.2s var(--ease-out);
 }
 
 /* Hide noisy default header date row — meta is duplicated by our list page,
