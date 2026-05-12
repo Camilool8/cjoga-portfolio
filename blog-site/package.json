@@ -20,14 +20,10 @@
     "@docusaurus/preset-classic": "3.10.1",
     "@docusaurus/theme-mermaid": "^3.10.1",
     "@mdx-js/react": "^3.0.0",
-    "@supabase/supabase-js": "^2.105.4",
     "clsx": "^2.0.0",
-    "dotenv": "^17.4.2",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "slugify": "^1.6.9",
-    "turndown": "^7.2.4"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.1",
