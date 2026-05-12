@@ -204,6 +204,38 @@
   }
 }
 
+/* ─── Audience paths (If you're hiring / studying / curious) ────────── */
+.paths {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.pathBlock {
+  display: block;
+}
+
+.pathIntro {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 0.5rem;
+  text-wrap: pretty;
+}
+
+/* When .sections is nested inside a path block, drop its outer constraints —
+   the parent .paths handles width and horizontal padding. */
+.pathBlock .sections {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
 /* ─── Signoff ──────────────────────────────────────────────────────── */
 .signoff {
   position: relative;
