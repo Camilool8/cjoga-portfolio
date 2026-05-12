@@ -20,9 +20,9 @@ export default function AuthorCard() {
         <div className={styles.eyebrow}>Written by</div>
         <div className={styles.name}>Jose Camilo Joga Guerrero</div>
         <p className={styles.bio}>
-          DevOps &amp; Cloud Engineer based in the Dominican Republic. I run{" "}
-          <code>cjoga.cloud</code> on a 3-node K3s cluster of repurposed
-          laptops and write here when I learn something worth sharing.
+          DevOps &amp; Cloud Engineer, Dominican&ndash;US dual citizen. I run{" "}
+          <code>cjoga.cloud</code> on a 6-node K3s cluster split across Proxmox
+          and bare metal, and write here when something&apos;s worth sharing.
         </p>
         <div className={styles.links}>
           <Link to="https://cjoga.cloud" className={styles.link}>
