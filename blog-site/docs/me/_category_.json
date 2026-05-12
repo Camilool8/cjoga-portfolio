@@ -1,0 +1,13 @@
+{
+  "label": "Me",
+  "position": 1,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Me",
+    "description": "Who I am, what I'm doing now, what I read, and what I've earned.",
+    "slug": "/me",
+    "keywords": ["about", "bio", "opinions", "credentials"]
+  }
+}

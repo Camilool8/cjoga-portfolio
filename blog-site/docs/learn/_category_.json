@@ -1,0 +1,13 @@
+{
+  "label": "Learn",
+  "position": 3,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Learn",
+    "description": "Curated certification guides — one per cert I think is worth your time.",
+    "slug": "/learn",
+    "keywords": ["learn", "certifications", "study guide", "rhcsa", "linux"]
+  }
+}

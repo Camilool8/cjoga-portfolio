@@ -1,0 +1,13 @@
+{
+  "label": "Lab",
+  "position": 1,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Homelab",
+    "description": "The K3s cluster behind cjoga.cloud — what runs on it, how it's wired, and the things that broke.",
+    "slug": "/engineering/lab",
+    "keywords": ["homelab", "kubernetes", "k3s", "envoy", "cloudflared"]
+  }
+}
