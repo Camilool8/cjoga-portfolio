@@ -44,13 +44,17 @@ The first was **Azure Synapse**: workspace deployment plus a promotion model whe
 
 The second was **Databricks**, with Unity Catalog as the governance layer for permissions and connectivity into other Azure resources — the Databricks-recommended pattern. Both stacks are deployed entirely through Bicep, nothing manual, and I still own day-to-day support for both teams.
 
+### Self-service data access
+
+I help maintain and extend a self-service pipeline that lets developers across the org read from SQL and Mongo databases safely. Reads only — no writes — with PII checks against the returned data and an approval gate for anything hitting PRD. Teams don't need dedicated credentials for ad-hoc queries, and DevOps doesn't field every one-off data request.
+
 ### AKS to Cilium migration (in flight)
 
 The platform is currently migrating off a number of public AKS clusters onto new ones running Cilium. The new clusters need to be wired into the 300+ apps' systems, networking, and permissions, which is not something one person can drive end-to-end. I'm soloing one of the environments — building the cluster, validating connectivity, and writing the smoke-check and deployment helpers that each app set runs through on the way over.
 
 ### Self-healing automation
 
-A lot of older incident response on this platform involved manual remediation. Several tasks I've taken on have been mapping the failure points between services and turning the manual fix into a script — fewer pages, fewer 2 AM tickets, and the runbook ends up as code somebody can read instead of memorize.
+A lot of older incident response on this platform involved manual remediation. Several tasks I've taken on have been mapping the failure points between services and turning the manual fix into a script — so when the same issue happens again the system handles itself, instead of a developer tagging the DevOps team to run the same fix one more time. The runbook ends up as code someone can read instead of memorize.
 
 ### Other work
 
