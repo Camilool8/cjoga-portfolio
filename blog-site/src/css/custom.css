@@ -161,13 +161,18 @@ main .container {
 }
 
 /* ─── Navbar: clean, subtle, no shadow heaviness ───────────────────── */
-/* z-index has to be forced because backdrop-filter creates its own
-   stacking context and we've seen it lose against the main wrapper
-   on mobile. Anything that overlays the page must out-rank 200. */
+/* No backdrop-filter here, even though the frosted-glass look is
+   tempting. Per CSS spec, an element with backdrop-filter creates a
+   containing block for ALL fixed-positioned descendants. Docusaurus
+   renders the mobile sidebar drawer (.navbar-sidebar, which is
+   position: fixed; top: 0; bottom: 0) as a DOM child of .navbar — so
+   if .navbar has backdrop-filter, the drawer is constrained inside the
+   navbar's 72px-tall box instead of covering the viewport. Page
+   content then renders on top of the drawer, looking like the navbar
+   sits behind the page. Solid translucent background is the safe
+   trade. */
 .navbar {
-  background: var(--bg-glass);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  background: var(--bg-primary);
   border-bottom: 1px solid var(--border-subtle);
   box-shadow: none;
   z-index: 1000;
