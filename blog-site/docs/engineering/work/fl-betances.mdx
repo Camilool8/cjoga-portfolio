@@ -1,9 +1,9 @@
 ---
 sidebar_position: 3
 title: FL Betances & Asociados
-description: Previous DevOps role — placed by FL Betances inside a banking institution's main DevOps team. Deployment framework, on-call nights, a self-service portal, and a Terraform handoff at the end.
+description: Previous DevOps role — placed by FL Betances inside a banking institution's main DevOps team. Deployment framework, on-call nights, and a Terraform handoff at the end.
 slug: /engineering/work/fl-betances
-keywords: [work, devops, azure-devops, argocd, aks, vue, dotnet, terraform, banking, fl-betances]
+keywords: [work, devops, azure-devops, argocd, aks, terraform, banking, fl-betances]
 ---
 
 # FL Betances & Asociados
@@ -33,19 +33,13 @@ flowchart LR
 
 Deployments at the bank ran at night — that was the deployment window across all fifty-plus teams — and I worked the night shift. Every team's overnight deploy went through me. When a deploy failed I'd trace the thread back through [ArgoCD](https://argo-cd.readthedocs.io/) and [AKS](https://learn.microsoft.com/en-us/azure/aks/) until I found where the policy or the template had snagged.
 
-### The self-service portal
-
-Alongside the framework I maintained a self-service DevOps portal that the bank's developers used to do half the things they would otherwise have filed tickets for. The frontend was [Vue.js](https://vuejs.org/); the backend was a sizeable .NET API that brokered integrations into ArgoCD, AKS, the Azure Portal, and several private bank systems.
-
-From the portal, anyone with the right role could spin up a new repository pre-loaded with the bank's templates for their service type, manage projects and permissions inside Azure DevOps, work with iterations and Teams, surface deployment metrics, and read critical system information. Toward the end of my time there it grew IaC capabilities as well — fill a form, get the resource — which leaned on the Terraform work below.
-
 ### Smaller pieces of the day
 
-A few things lived alongside the framework and the portal. **[Power Automate](https://www.microsoft.com/en-us/power-platform/products/power-automate)** flows for the business-process automation that happens around DevOps work in a bank: approvals, notifications, ticket lifecycles. **ArgoCD and AKS debugging** when deployments failed in ways the framework couldn't catch on its own.
+A few things lived alongside the framework. **[Power Automate](https://www.microsoft.com/en-us/power-platform/products/power-automate)** flows for the business-process automation that happens around DevOps work in a bank: approvals, notifications, ticket lifecycles. **ArgoCD and AKS debugging** when deployments failed in ways the framework couldn't catch on its own.
 
 ### The Terraform handoff
 
-The last thing I worked on was an internal Terraform implementation that became the engine behind the portal's IaC capability. The bank wanted teams to deploy cloud resources themselves, but only through pre-built modules — modules and not raw resources, because that was the only way to enforce the variables and behaviour the bank's internal policies required. I led the implementation through most of the build, finished the modules and the patterns around them, and handed it off to the team almost complete. The handoff happened when my contract ended.
+The last thing I worked on was an internal Terraform implementation: a library of pre-built modules teams could use to deploy cloud resources themselves. Modules and not raw resources, because that was the only way to enforce the variables and behaviour the bank's internal policies required. I led the implementation through most of the build, finished the modules and the patterns around them, and handed it off to the team almost complete. The handoff happened when my contract ended.
 
 import AuthorCard from '@site/src/components/AuthorCard';
 
