@@ -217,6 +217,66 @@ main .container {
   border-color: var(--accent);
 }
 
+/* ─── Mobile drawer: fully opaque, no backdrop blur ────────────────── */
+/* The navbar itself is intentionally a translucent frosted pane on
+   desktop. The mobile drawer can't share that — when it slides in over
+   the page, it must fully cover the navbar and the content behind it.
+   These overrides force a solid background and disable the inherited
+   backdrop-filter. */
+.navbar-sidebar,
+.navbar-sidebar__brand,
+.navbar-sidebar__items {
+  background: var(--bg-primary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.navbar-sidebar {
+  border-right: 1px solid var(--border-subtle);
+}
+
+.navbar-sidebar__brand {
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: none;
+}
+
+/* The dim overlay over the rest of the page when the drawer is open. */
+.navbar-sidebar__backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* Sidebar menu items inside the drawer get the same monospace voice
+   as the navbar links. */
+.navbar-sidebar .menu__link {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.navbar-sidebar .menu__link:hover {
+  background: var(--bg-surface);
+  color: var(--accent);
+}
+
+.navbar-sidebar .menu__link--active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* "Back to main menu" link at the top of the drawer when a docSidebar
+   item is active. */
+.navbar-sidebar__back {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  background: transparent;
+  margin: 0 0.5rem;
+}
+
+.navbar-sidebar__back:hover {
+  color: var(--accent);
+}
+
 /* ─── Footer ───────────────────────────────────────────────────────── */
 .footer {
   background: var(--bg-primary);
