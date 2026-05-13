@@ -1,0 +1,27 @@
+---
+sidebar_position: 2
+title: The DevOps title is losing value in 2026
+description: I say this as someone whose title is literally "DevOps Engineer" — the role as a standalone job is fading because developers are absorbing the practice, and the work that actually matters is shifting toward SRE, DevSecOps, and platform engineering.
+slug: /me/opinions/devops-title-2026
+keywords: [opinions, devops, sre, devsecops, platform-engineering, career, 2026]
+---
+
+# The DevOps title is losing value in 2026
+
+I say this as someone whose title is literally "DevOps Engineer" on two paychecks: the DevOps title is losing value in 2026, and that is not a complaint. Most developers I work with are willing — and increasingly expected — to understand cloud, write their own pipelines, and apply reasonable operational practices in their own workflow. That was the whole point. The [DevOps movement](https://theagileadmin.com/what-is-devops/) was always supposed to dissolve the wall between development and operations, not erect a new specialist guild on top of it. Watching that wall actually come down is the success condition, not the failure.
+
+The honest read is that the DevOps title became its own silo. The wall between dev and ops got knocked over, and then a new room got built where a small group of people owned the pipelines, the cloud accounts, the Terraform, and the deploy keys, and everyone else filed tickets to get into it. That worked for a while. It does not work anymore. Developers have better tooling, better defaults, and AI assistants that will write a halfway-reasonable Dockerfile or pipeline on request. The bar for a developer to ship to cloud without a dedicated DevOps engineer holding their hand is the lowest it has ever been.
+
+What grows from here is SRE and DevSecOps, with platform engineering as the connective tissue. SRE because once developers can deploy on their own, somebody still has to be accountable for whether the platform stays up under real traffic — designing the [SLAs, SLOs, and SLIs](https://sre.google/sre-book/service-level-objectives/), running error budgets across services, and making sure observability is wired in before something burns. That is a discipline, not a button. DevSecOps because the security surface has gotten worse, not better, and AI-generated code is a large part of why. "It works" and "it is safe to expose to the internet" are very different bars, and the gap between them is exactly the work.
+
+[Platform engineering](https://platformengineering.org/) sits between the two. The value a senior DevOps person gives a developer in 2026 is not "I will deploy your service for you." It is "here is a paved path — golden templates, sensible defaults, guardrails on cost and IAM and network exposure — that lets you ship to cloud without having to learn every primitive underneath." When that path is good, developers stop caring what is behind the curtain, which is exactly what you want. They should be shipping the product, not reading the Terraform. The DevOps engineer's job becomes building and maintaining that path, not gatekeeping it.
+
+The AI angle is what tilts this from a slow drift into something faster. Generated code makes velocity look easy and security look invisible. Secrets get hardcoded into snippets that look fine on the surface. IAM policies get written with wildcards because that is what the model saw most often. Logging gets skipped because the example did not include it. Somebody has to be responsible for the surface area that volume of code creates, and the developer who wrote it with an AI assistant in ten minutes is usually not the answer. That responsibility is SRE and DevSecOps work — and it scales worse than the code generation does, which is exactly why those roles get more valuable, not less.
+
+The nuance matters. DevOps as a *practice* and a *culture* is not going anywhere — it is winning. What is fading is DevOps as a *job description* that means "the one person on the team who knows the cloud." The senior people I respect in this space are already moving up the stack: into platform, into reliability, into security. That is the natural progression, not a layoff. The title was always a transitional artifact of an industry that had not yet absorbed the discipline.
+
+So if you have "DevOps" on your business card right now, my read is simple: do not defend the title, defend the work. Pick the direction — reliability, security, platform — that the next version of your role lives in, and start building depth there. The people who treat DevOps as an identity will find the ground shifting under them. The people who treat it as a starting point will be fine.
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />

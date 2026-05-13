@@ -1,0 +1,25 @@
+---
+sidebar_position: 7
+title: Self-hosting is a privilege, and worth it if you have it
+description: I prefer running my own infrastructure end-to-end, but I'm honest that the option isn't equally available to everyone — and that the real return on it isn't beating SaaS, it's understanding your own stack.
+slug: /me/opinions/self-hosting-privilege
+keywords: [opinions, self-hosting, homelab, kubernetes, k3s, infrastructure, learning]
+---
+
+# Self-hosting is a privilege, and worth it if you have it
+
+I run my own stuff. Given the choice between paying for a managed service and standing up the open-source equivalent on hardware I own, I will almost always pick the second path. But I'm clear-eyed about why I get to make that choice: I have access to hardware, I have weekends I'm willing to spend in a terminal, and I have the patience for the kind of stack-fighting self-hosting demands. Not everyone has those three things, and pretending otherwise turns a personal preference into bad advice.
+
+The reason I prefer it is selfish in the good sense. I learn the stack end-to-end. When I run [K3s](https://k3s.io/) on my own nodes — some [Proxmox](https://www.proxmox.com/) VMs, some bare metal — I'm the one who has to make the storage work, the secrets manager work, the gateway work, the DNS resolve correctly, the certificates renew, the tunnel stay up. The work I get paid to do professionally is built on top of those exact layers, just wrapped in a vendor UI and a support contract. The homelab is the gym. I would rather break my own cluster on a Saturday and fix it than learn the same lesson on a customer call. And the result is mine — cjoga.cloud is not a tenant in someone else's dashboard. It's the topology I picked, the components I picked, the trade-offs I picked. I can change anything in it without filing a ticket.
+
+That said, I want to be honest about the gating cost, because the part almost nobody talks about loudly enough is the hardware. A lot of people I know got into running their own infrastructure because a family member upgraded their desktop and the old box ended up on their desk. Others scored a retired enterprise server from a local reseller for a price that made it impossible to say no. If you don't have either of those — if you'd be buying gear at retail just to start — a homelab is a real budget commitment, and the time it takes to learn the software sits on top of that. The privilege isn't ideological. It's literal. Some people get a head start because hardware fell into their lap, and the rest pay for it in cash or skip it.
+
+I also want to push back on the framing that self-hosting is supposed to beat the SaaS it replaces. It usually won't, at least not on polish. The hosted product will have a smoother dashboard, better uptime, and a support team. The reason to run your own anyway is not that it's a superior product — it's that you understand every layer, you keep your data, and the operational discipline you build doing it is portable to your day job in a way that clicking around a vendor console is not. If you don't have the hardware, the time, or the appetite for it, paying five dollars a month for a managed alternative is not a failure. The point was never that everyone should self-host. The point is that for people who can, the return on the hours spent compounds.
+
+There is also a real category of things I will not self-host even though I could, and I think this is part of the discipline. Email is the canonical example — the deliverability problem, the spam-reputation problem, and the cost of being wrong about any of it are bad enough that someone else's reliability is worth more than my time. Knowing which workloads are worth running yourself and which ones are better left to a vendor is itself a skill, and it's the same skill you use professionally when you decide whether a workload belongs on a managed service or on infrastructure you operate.
+
+If you want to see how this lands in practice, I keep a description of my setup at [the lab overview](/engineering/lab/overview), and I would rather point you there than re-list components. The takeaway is the discipline, not the inventory: if you have access to a piece of hardware and a few weekends, take a swing at running something real on it. The compounding return on understanding your own stack is the kind of thing you only notice in retrospect, but it's real, and it shows up everywhere — including in the work people pay you to do.
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />

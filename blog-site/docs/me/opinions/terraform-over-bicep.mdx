@@ -1,0 +1,27 @@
+---
+sidebar_position: 5
+title: Why I run Terraform on Azure
+description: Bicep is the Microsoft-native option and there are real reasons to use it, but I run Terraform on Azure anyway — here is the honest case for both and why portability and state management win for me.
+slug: /me/opinions/terraform-over-bicep
+keywords: [opinions, terraform, bicep, azure, iac, infrastructure-as-code, state-management]
+---
+
+# Why I run Terraform on Azure
+
+On Azure, with every incentive pointing at the Microsoft-native option, I still reach for [Terraform](https://www.terraform.io) over [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview). I have used both in production, I hold the [HashiCorp Certified Terraform Associate (004)](https://www.hashicorp.com/certification/terraform-associate), and I run Terraform on my own K3s homelab as well as in client engagements. The case for Bicep is not weak, and I want to be honest about that before I make my case for Terraform.
+
+Bicep has real strengths. It gets the newest Azure resource APIs first because Microsoft ships them there directly — when a new SKU or a new resource type lands, the Bicep team is on the same internal release path as the platform itself, which Terraform's provider has to catch up to. It is officially supported by the vendor that owns the platform, which matters when you are filing tickets. The syntax is a substantial improvement over the raw [ARM templates](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/) it compiles down to. And if your organization is locked to Azure forever — no GCP boundary, no AWS acquisition story, no Kubernetes provider in the mix — the case for staying in the native toolchain is genuinely defensible.
+
+I still pick Terraform, and the first reason is portability. The same workflow, the same `plan` and `apply` cycle, the same module structure runs on AWS, GCP, Kubernetes, Cloudflare, GitHub, and dozens of other providers I touch in a given quarter. I do not have to rebuild my mental model when I switch contexts. The community has already solved every problem I am going to hit — there are battle-tested modules from every kind of org for every kind of workload, and the provider registry is enormous. Bicep's community, by comparison, is a single-platform community. That is not a knock; it is just a smaller pool of solved problems.
+
+The second reason, and the one that matters more to me operationally, is state management. Terraform's explicit state file — with remote backends, state locking, drift detection, and the deterministic `terraform plan` semantics that follow from having a real source of truth — is fundamentally a better mental model than what Bicep does. Bicep is "stateless" in the sense that it leans on Azure Resource Manager to derive what the plan should be, which means ARM is the implicit state. That implicit-state model is fragile in ways that surface at the worst moments: when a resource has drifted, when someone touched something in the portal, when a deployment failed halfway and you need to know exactly where you are. Terraform makes that state a first-class object I can inspect, lock, back up, and reason about. Bicep asks me to trust that ARM's view of the world matches mine.
+
+The third reason is small but it captures the philosophy gap. Bicep's [`what-if`](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-what-if) deployment — the diff preview, the equivalent of `terraform plan` — has a character ceiling on its output somewhere in the neighborhood of 64–65k. For a tool whose entire job is to tell me what is about to change in my infrastructure, a hard cap on the diff is a limit I cannot defend. If the change is big enough to be risky, that is exactly when I need to see all of it.
+
+There is a place where Bicep is the right answer, and I want to name it. Small Azure-only shops where nobody is ever leaving Azure. Teams already deep in ARM templates where the migration cost of Terraform exceeds the marginal benefit. Scenarios where being first to a new Azure resource API matters more than portability — niche, but real. I am not arguing Terraform is universally correct.
+
+The discipline is to pick the tool that fits where you are going, not just where you are. If there is any chance you will ever run a workload outside Azure — another cloud, a Kubernetes cluster, a SaaS provider you need to configure as code — Terraform was already the right choice on day one. Pick for the boundary you might cross, not the one you are standing inside.
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />

@@ -1,0 +1,25 @@
+---
+sidebar_position: 3
+title: AI in DevOps — be a power user, not a casual one
+description: AI has stayed, and the engineer who uses it casually is already falling behind the one who uses it well. What casual use looks like, what power use looks like, and the one discipline that does not bend.
+slug: /me/opinions/ai-in-devops-power-user
+keywords: [opinions, ai, llm, devops, productivity, power-user, claude, copilot]
+---
+
+# AI in DevOps — be a power user, not a casual one
+
+AI has come to stay, and the engineer who does not make real use of it is going to fall behind. Not in a decade — now. The gap between the engineer who treats AI as a casual convenience and the one who treats it as core tooling is already wide, and it compounds every month a new model lands. We should not be casual users. We should be power users, following the state of the art, making informed choices about which model fits which problem, and shipping more value in less time because of it.
+
+A casual user types into whatever chat window opens by default, takes the first answer that comes back, and moves on. They do not know which model they are using. They do not know whether it is good at the thing they just asked, or whether a different one would have given a sharper answer in half the tokens. They do not write system prompts. They do not feed it the actual codebase or the actual logs. They use it like a slightly smarter search engine, which is roughly the floor of what this technology can do. That is fine for asking what year something happened. It is not fine if you are trying to keep up with engineers who are doing more.
+
+A power user knows the menu. They know which model to reach for when generating infrastructure-as-code, which is better when reviewing an architecture decision, which one handles long-context summarization without losing the thread, and which one to put inside an agent loop where tool use and instruction-following matter more than prose. They run things locally when that is the right call and through APIs when that is the right call. They build their own workflows — small agents, scripts wired to LLM endpoints, [Claude Code](https://www.anthropic.com/claude-code) or [Cursor](https://cursor.com) sessions tuned to their own repos, [MCP](https://modelcontextprotocol.io) servers exposing the tools they actually need. They keep an eye on the frontier, because what was state of the art three months ago is mid today, and the bar moves faster than any tooling we have worked with.
+
+In our corner of the field this is not abstract. AI accelerates the unglamorous middle of DevOps work in a way nothing else has: drafting Terraform modules and Kubernetes manifests, decoding a stack trace from a CI failure, triaging a wall of logs at 2 a.m., writing a runbook nobody wanted to write, summarizing a post-mortem, translating an error from one ecosystem you live in to another you visit twice a year. Agentic coding tools — Claude Code, Cursor, [Copilot Workspace](https://githubnext.com/projects/copilot-workspace) — turn what used to be a multi-hour yak shave into a focused thirty-minute review. The engineer who has internalized that workflow ships more in a week than the one who has not, full stop.
+
+The one place not to compromise is verification. Power user does not mean trusting the model. It means using it skillfully and verifying always. A hallucinated `kubectl` command run against the wrong context is real damage. An IaC change generated in seconds and applied without reading is a real outage. The model accelerates the draft — the engineer still owns the outcome, the cluster, the bill, the incident report if it goes wrong. That ownership does not move. The whole point of being a power user is that you go faster *and* stay precise, because you know the tool well enough to know where it fails.
+
+The discipline is straightforward. Treat AI as a tool you are consciously sharpening every week. Read the changelogs. Try the new model when it drops, on a real task, not a toy one. Notice when something that used to take two hours now takes twenty minutes, and notice when it doesn't. The engineer who does that will out-deliver the one who keeps using last year's default chat window — for the same reason the engineer with a tuned shell out-delivers the one who never left the GUI. The technology is here. The only question is whether you use it like a search box or like the leverage it actually is.
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />
