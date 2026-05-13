@@ -171,27 +171,20 @@ const config = {
         ],
       },
       footer: {
+        // Simple-mode footer: a flat array of links (no `title` columns)
+        // renders as a single centered row separated by middots. Compact,
+        // editorial, no "About" / "Resources" headers.
         style: "dark",
         links: [
-          {
-            title: "Handbook",
-            items: [
-              { label: "Me", to: "/me" },
-              { label: "Engineering", to: "/engineering" },
-              { label: "Learn", to: "/learn" },
-            ],
-          },
-          {
-            title: "Camilo",
-            items: [
-              { label: "Portfolio", href: "https://cjoga.cloud" },
-              { label: "GitHub", href: "https://github.com/Camilool8" },
-              { label: "LinkedIn", href: "https://www.linkedin.com/in/cjoga" },
-              { label: "Email", href: "mailto:josejoga.opx@gmail.com" },
-            ],
-          },
+          { label: "Me", to: "/me" },
+          { label: "Engineering", to: "/engineering" },
+          { label: "Learn", to: "/learn" },
+          { label: "Portfolio", href: "https://cjoga.cloud" },
+          { label: "GitHub", href: "https://github.com/Camilool8" },
+          { label: "LinkedIn", href: "https://www.linkedin.com/in/cjoga" },
+          { label: "Email", href: "mailto:josejoga.opx@gmail.com" },
         ],
-        copyright: `© ${new Date().getFullYear()} Jose Camilo Joga Guerrero — handbook built with Docusaurus.`,
+        copyright: `© ${new Date().getFullYear()} Jose Camilo Joga Guerrero · handbook built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.oneLight,
