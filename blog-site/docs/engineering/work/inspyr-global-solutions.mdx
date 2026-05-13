@@ -8,9 +8,9 @@ keywords: [work, devops, azure, aks, bicep, inspyr, arroyo]
 
 # INSPYR Global Solutions
 
-**Role:** DevOps Engineer · **Employer:** INSPYR Global Solutions (formerly Arroyo Consulting) · **Since:** March 2025.
+**Role:** DevOps Engineer · **Employer:** [INSPYR Global Solutions](https://www.inspyrsolutions.com/) (formerly Arroyo Consulting) · **Since:** March 2025.
 
-I'm on a long-term engagement with one of the biggest Azure consumers in the world — the kind of customer that previews and recommends Azure features directly with the product team at Microsoft. The platform itself is 300+ services and microservices running across multiple regions on AKS, with releases driven by Azure DevOps pipelines and PowerShell on the CI and scripting side. It could not have been any other language.
+I'm on a long-term engagement with one of the biggest Azure consumers in the world — the kind of customer that previews and recommends Azure features directly with the product team at Microsoft. The platform itself is 300+ services and microservices running across multiple regions on [AKS](https://learn.microsoft.com/en-us/azure/aks/), with releases driven by [Azure DevOps](https://azure.microsoft.com/en-us/products/devops) pipelines and PowerShell on the CI and scripting side. It could not have been any other language.
 
 ## What I work on
 
@@ -30,7 +30,7 @@ flowchart LR
 
 ### Bicep platform
 
-The platform runs on Bicep. I didn't build the original solution, but I maintain it, extend it, and use it to deploy new services. We follow Microsoft's recommended layout of components, stacks, and `bicepparams`, with a what-if pipeline that runs on every MR (the Bicep analogue of `terraform plan`) and a dedicated deployment pipeline parameterized for the resource and the environment.
+The platform runs on [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview). I didn't build the original solution, but I maintain it, extend it, and use it to deploy new services. We follow Microsoft's recommended layout of components, stacks, and `bicepparams`, with a what-if pipeline that runs on every MR (the Bicep analogue of `terraform plan`) and a dedicated deployment pipeline parameterized for the resource and the environment.
 
 ### Azure DevOps to GitHub Enterprise migration
 
@@ -40,9 +40,9 @@ The platform is moving from Azure DevOps to GitHub Enterprise. I was among the f
 
 I've led two enablement engagements for developer teams that needed managed data infrastructure.
 
-The first was **Azure Synapse**: workspace deployment plus a promotion model where notebooks and pipelines move from DEV through approval gates without the team having to touch infrastructure. All third-party credentials live in Azure Key Vault and connect over private endpoints.
+The first was [**Azure Synapse**](https://azure.microsoft.com/en-us/products/synapse-analytics/): workspace deployment plus a promotion model where notebooks and pipelines move from DEV through approval gates without the team having to touch infrastructure. All third-party credentials live in Azure Key Vault and connect over private endpoints.
 
-The second was **Databricks**, with Unity Catalog as the governance layer for permissions and connectivity into other Azure resources — the Databricks-recommended pattern. Both stacks are deployed entirely through Bicep, nothing manual, and I still own day-to-day support for both teams.
+The second was [**Databricks**](https://www.databricks.com/), with [Unity Catalog](https://www.databricks.com/product/unity-catalog) as the governance layer for permissions and connectivity into other Azure resources — the Databricks-recommended pattern. Both stacks are deployed entirely through Bicep, nothing manual, and I still own day-to-day support for both teams.
 
 ### Self-service data access
 
@@ -50,7 +50,7 @@ I help maintain and extend a self-service pipeline that lets developers across t
 
 ### AKS to Cilium migration (in flight)
 
-The platform is currently migrating off a number of public AKS clusters onto new ones running Cilium. The new clusters need to be wired into the 300+ apps' systems, networking, and permissions, which is not something one person can drive end-to-end. I'm soloing one of the environments — building the cluster, validating connectivity, and writing the smoke-check and deployment helpers that each app set runs through on the way over.
+The platform is currently migrating off a number of public AKS clusters onto new ones running [Cilium](https://cilium.io/). The new clusters need to be wired into the 300+ apps' systems, networking, and permissions, which is not something one person can drive end-to-end. I'm soloing one of the environments — building the cluster, validating connectivity, and writing the smoke-check and deployment helpers that each app set runs through on the way over.
 
 ### Self-healing automation
 
