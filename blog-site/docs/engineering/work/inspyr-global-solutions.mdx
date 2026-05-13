@@ -1,24 +1,60 @@
 ---
 sidebar_position: 1
 title: INSPYR Global Solutions
-description: DevOps engineer at INSPYR Global Solutions (formerly Arroyo Consulting) — the work, the stack, and what I've learned.
+description: DevOps engineer on a multi-region Azure platform — observability, IaC, data platform enablement, and a Cilium migration in flight.
 slug: /engineering/work/inspyr-global-solutions
-keywords: [work, devops, consulting, inspyr, arroyo]
+keywords: [work, devops, azure, aks, bicep, inspyr, arroyo]
 ---
 
 # INSPYR Global Solutions
 
-{/* Body to be filled during Phase 1 interview pass. No client names. */}
+**Role:** DevOps Engineer · **Employer:** INSPYR Global Solutions (formerly Arroyo Consulting) · **Since:** March 2025.
 
-## Role
+I'm on a long-term engagement with one of the biggest Azure consumers in the world — the kind of customer that previews and recommends Azure features directly with the product team at Microsoft. The platform itself is 300+ services and microservices running across multiple regions on AKS, with releases driven by Azure DevOps pipelines and PowerShell on the CI and scripting side. It could not have been any other language.
 
-## Context and scale
+## What I work on
 
-## Tech stack
+### Observability consolidation
 
-## What I've built and owned
+When I joined, alerts and dashboards were scattered across environments, regions, and ownership models. I led the consolidation of all of it into one repository — a single source of truth — and a single release pipeline that deploys and reconciles every alert across NPD and PRD, every region, every alert type (metric, log), and every severity, with per-type handling rules baked in. Azure Alerts, Action Groups, and Grafana dashboards all flow through the same pipeline under GitOps practices. I'm one of two or three primary maintainers, and any drift gets reconciled on the next run.
 
-## What I've learned
+```mermaid
+flowchart LR
+  Repo[("alerts-as-code<br/>repository")] -->|MR| Whatif["What-if pipeline"]
+  Whatif -->|approved| Deploy["Release pipeline<br/>(per-env stages)"]
+  Deploy --> NPD["NPD · all regions"]
+  Deploy --> PRD["PRD · all regions"]
+  NPD --> Out["Azure Alerts + Action Groups<br/>· Grafana dashboards"]
+  PRD --> Out
+```
+
+### Bicep platform
+
+The platform runs on Bicep. I didn't build the original solution, but I maintain it, extend it, and use it to deploy new services. We follow Microsoft's recommended layout of components, stacks, and `bicepparams`, with a what-if pipeline that runs on every MR (the Bicep analogue of `terraform plan`) and a dedicated deployment pipeline parameterized for the resource and the environment.
+
+### Azure DevOps to GitHub Enterprise migration
+
+The platform is moving from Azure DevOps to GitHub Enterprise. I was among the first engineers to develop CI pipelines and deploy new services on the GitHub side, which means a meaningful share of "what does a service's pipeline look like here" was settled in code I wrote.
+
+### Data platform enablement
+
+I've led two enablement engagements for developer teams that needed managed data infrastructure.
+
+The first was **Azure Synapse**: workspace deployment plus a promotion model where notebooks and pipelines move from DEV through approval gates without the team having to touch infrastructure. All third-party credentials live in Azure Key Vault and connect over private endpoints.
+
+The second was **Databricks**, with Unity Catalog as the governance layer for permissions and connectivity into other Azure resources — the Databricks-recommended pattern. Both stacks are deployed entirely through Bicep, nothing manual, and I still own day-to-day support for both teams.
+
+### AKS to Cilium migration (in flight)
+
+The platform is currently migrating off a number of public AKS clusters onto new ones running Cilium. The new clusters need to be wired into the 300+ apps' systems, networking, and permissions, which is not something one person can drive end-to-end. I'm soloing one of the environments — building the cluster, validating connectivity, and writing the smoke-check and deployment helpers that each app set runs through on the way over.
+
+### Self-healing automation
+
+A lot of older incident response on this platform involved manual remediation. Several tasks I've taken on have been mapping the failure points between services and turning the manual fix into a script — fewer pages, fewer 2 AM tickets, and the runbook ends up as code somebody can read instead of memorize.
+
+### Other work
+
+A few smaller engagements I've been pulled into: a .NET performance project where I produced reports on long-running threads to identify improvements, and cross-team network troubleshooting where the symptom is "service A can't reach service B" and the actual answer lives somewhere between subnets, route tables, on-prem DNS servers, Microsoft-managed network hubs, and private hubs. The networking debugging in particular has been some of the most useful learning of the year.
 
 import AuthorCard from '@site/src/components/AuthorCard';
 
