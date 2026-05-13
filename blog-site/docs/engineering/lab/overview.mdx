@@ -57,8 +57,6 @@ Two more changes locked the architecture down. **Public ingress moved from Traef
 
 Production workloads include this portfolio and the handbook (`cjoga.cloud`), the KodePull marketing site and internal tooling (`kodepull.com`, an Outline docs instance, an invoice generator, a leads tool), the Perfyles WordPress site, a Discord and WhatsApp bot stack, a private n8n environment, Azure DevOps self-hosted agents, and a handful of personal projects (`elcriollo`, `pucmm-band`, a Minecraft server). The Ansible health playbook runs from [Semaphore](https://semaphoreui.com/) as a scheduled job, so the cluster heals itself overnight without me logging in.
 
-Manifests live in a private GitOps repo (`kp-k8s-dev`); the chart used by most workloads is a generic `kp-app` Helm chart in a sibling templates repo. I'll cover the chart and the deployment workflow on their own pages.
-
 ## Where to read more
 
 For the failure modes that taught me what the playbook actually has to cover, see **[Tips and gotchas](/engineering/lab/tips-and-gotchas)**.

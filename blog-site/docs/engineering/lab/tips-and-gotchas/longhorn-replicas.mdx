@@ -1,0 +1,32 @@
+---
+sidebar_position: 1
+title: Longhorn — replica scheduling and right-sizing for a homelab
+description: How Longhorn engine processes pile up on under-spec'd nodes, why I scope replicas with node labels, and why three-replica defaults don't make sense on a homelab.
+slug: /engineering/lab/tips-and-gotchas/longhorn-replicas
+keywords: [longhorn, kubernetes, storage, homelab, replicas, node-labels, memory]
+---
+
+# Longhorn — replica scheduling and right-sizing for a homelab
+
+[Longhorn](https://longhorn.io/) defaults to three replicas of every PVC and assumes any worker node can host one. Both defaults are fine in a production setup with homogeneous nodes and budget headroom. On a homelab with uneven hardware, they cost me twice — once in scheduling pressure, once in raw memory — before I changed them.
+
+## What broke
+
+Longhorn runs an engine process per replica per node. Each engine reserves memory just to exist, on top of the actual replica I/O. On a node that's already running app pods plus the Longhorn CSI sidecars plus engines for a few replicas, those engines compound. Add one more PVC and the node tips into memory pressure, which on a K3s node usually means flannel or pod eviction chaos before it ever announces itself as a clean OOM. The first time it happened, the symptom looked like cluster networking falling over, not storage.
+
+## What fixed it
+
+**Schedule replicas only on capable nodes.** I labeled the bare-metal workers that actually have the RAM to host engines, and configured Longhorn's replica node selector to only pick from those. The VM workers carry pods but not Longhorn replicas. Cutting the set of replica-eligible nodes alone dropped the engine-process count on the constrained nodes and ended the pressure cascades.
+
+**Drop the replica count to match the actual durability need.** Three replicas of everything is overkill for a homelab. For dev and personal workloads I need durability against a single node failure, not a quorum of three. Most PVCs run at two replicas now. Three is reserved for the small handful of things that genuinely matter — the Outline database, the n8n state volume, the OpenBao backend. Easily-rebuildable or ephemeral workloads run at one.
+
+## The lesson
+
+Longhorn's defaults are tuned for an enterprise context with money and matched hardware. On a homelab they spend memory you don't have. Two changes get you most of the way back:
+
+- Use node labels and the replica node selector to scope which nodes host engines.
+- Set per-PVC replica counts that reflect the actual durability the workload needs, not the default.
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />
