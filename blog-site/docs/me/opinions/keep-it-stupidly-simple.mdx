@@ -1,0 +1,27 @@
+---
+sidebar_position: 1
+title: Keep it stupidly simple
+description: The most useful thing cloud work has taught me is that the simplest solution usually wins — and I am the first one to violate that rule. What over-engineering actually looks like, the one place to make the exception, and the question I ask myself before reaching for an abstraction.
+slug: /me/opinions/keep-it-stupidly-simple
+keywords: [opinions, simplicity, kiss, engineering-judgment, devops, over-engineering]
+---
+
+# Keep it stupidly simple
+
+The most useful thing cloud work has taught me is also the most embarrassing one: most of the time, the simplest solution wins. I am the first person to violate that rule, which is why I have to keep coming back to it.
+
+Over-engineering shows up in patterns that look reasonable from a distance. Code written generic "so it can be extended in the future" — except the future never asks for the second use case, and the generic version costs you cognitive overhead every time someone has to read it. Multi-threaded concurrency or batched job queues bolted onto a script that runs once a night and has five minutes of slack in its SLA. A parameterized helper built before there is a second caller. Configuration shoved into a YAML file when the value will never change and could just live in the script.
+
+The hardcoded variable that gets the job done and stays untouched for years is not a sin. It is a working piece of software. The script with the IP address inlined, the cron that takes no arguments, the bash one-liner that imports nothing — those things ship and stay shipped. Years of "we'll generalize this later" gets you nothing if later never comes, and it gets you negative value if you spent real time on the abstraction.
+
+There is exactly one place where the instinct to keep things simple is wrong, and it's the obvious one: secrets. A hardcoded API key in a script is not "simple" — it is a security failure waiting to be exfiltrated. The right move there is to abstract for correctness, not for hypothetical flexibility: pull the secret from a vault, an environment variable, or a managed identity. That abstraction is paying for safety, which is a real cost. Most abstractions in our work are paying for imagined future flexibility, which is not.
+
+The discipline is a single question I ask myself every time I reach for the extensible version: **what does the dumb solution actually cost?** Hardcode the variable. Run the job single-threaded. Write the function for the one caller that exists. If the cost of the dumb solution is "I might have to come back and change this in eighteen months," that is almost always cheaper than maintaining the abstraction in the meantime. If the cost is "this leaks credentials" or "this breaks under realistic load," then yes — abstract.
+
+I have caught myself building the generic version more times than I can count, and the pattern is always the same. I see the simple path. I notice that with a little more effort I could make it reusable, configurable, future-proof. I take that path. Three months later nobody has touched it, the second use case never materialized, and the code is harder to read than it needed to be. The version of me who wrote the dumb script ships and moves on. The version of me who wrote the elegant version is still tuning it.
+
+Keep it stupidly simple. Not because elegance is bad — but because in cloud and DevOps work the things that actually matter (the cost, the reliability, the security perimeter, the on-call burden) are answered by what the system *does*, not by how elegantly the code is structured. Optimize for the dumb solution that works, and let the abstraction earn its way in only when reality demands it.
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />
