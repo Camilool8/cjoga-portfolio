@@ -340,7 +340,13 @@
   },
   "theme": {
     "dark": "Modo Oscuro",
-    "light": "Modo Claro"
+    "light": "Modo Claro",
+    "system": "Sistema",
+    "aria": {
+      "system": "Tema del sistema — sigue el SO",
+      "light": "Tema claro",
+      "dark": "Tema oscuro"
+    }
   },
   "language": {
     "en": "Inglés",

@@ -53,15 +53,16 @@ function App() {
   const { i18n } = useTranslation();
   const systemTheme = useSystemTheme();
   useScrollReveal();
-  // Initial theme: explicit user choice from localStorage, otherwise
-  // whatever the OS reports. The bootstrap script in index.html applies
-  // the same logic to the <html> element before React mounts, so we
-  // never paint the wrong theme on first frame.
-  const [theme, setThemeState] = useState(() => {
+  // Three-state preference matching Docusaurus: "system" (default,
+  // follows OS dynamically), "light", or "dark". The bootstrap script
+  // in index.html applies the resolved theme to <html> before React
+  // mounts so there's no flash on first frame.
+  const [themePreference, setThemePreference] = useState(() => {
     try {
-      return localStorage.getItem("theme") || systemTheme;
+      const stored = localStorage.getItem("theme");
+      return stored === "light" || stored === "dark" ? stored : "system";
     } catch {
-      return systemTheme;
+      return "system";
     }
   });
   const [language, setLanguage] = useState(() => {
@@ -72,6 +73,11 @@ function App() {
     );
   });
   const contentRef = useRef(null);
+
+  // The actual theme to render with: explicit choice wins, otherwise
+  // mirror the OS.
+  const theme =
+    themePreference === "system" ? systemTheme : themePreference;
 
   // Apply theme to the DOM whenever it changes.
   useEffect(() => {
@@ -84,25 +90,23 @@ function App() {
     }
   }, [theme]);
 
-  // Follow the OS preference whenever the user has NOT made an explicit
-  // choice. Once they toggle, their choice sticks via localStorage.
-  useEffect(() => {
+  // Cycle preference (system → light → dark → system), matching
+  // Docusaurus's `getNextColorMode` order. "system" clears localStorage
+  // so the user re-enters OS-following mode.
+  const cycleThemePreference = () => {
+    const next =
+      themePreference === "system"
+        ? "light"
+        : themePreference === "light"
+          ? "dark"
+          : "system";
+    setThemePreference(next);
     try {
-      if (localStorage.getItem("theme")) return;
-    } catch {
-      return;
-    }
-    setThemeState(systemTheme);
-  }, [systemTheme]);
-
-  // Wrap setTheme so explicit user toggles persist to localStorage.
-  // System-driven theme changes go through setThemeState directly and
-  // are NOT persisted, so the user keeps following the OS until they
-  // actively choose a theme.
-  const setTheme = (next) => {
-    setThemeState(next);
-    try {
-      localStorage.setItem("theme", next);
+      if (next === "system") {
+        localStorage.removeItem("theme");
+      } else {
+        localStorage.setItem("theme", next);
+      }
     } catch {
       // ignore — private browsing, etc.
     }
@@ -123,7 +127,8 @@ function App() {
       <ScrollProgress />
       <NavigationBar
         theme={theme}
-        setTheme={setTheme}
+        themePreference={themePreference}
+        cycleThemePreference={cycleThemePreference}
         language={language}
         setLanguage={setLanguage}
       />

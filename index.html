@@ -36,16 +36,22 @@
     <title>Jose Camilo Joga Guerrero | DevOps & Cloud Engineer</title>
 
     <!-- Theme bootstrap — runs before React mounts so the page paints in
-         the correct theme on first frame. Reads explicit preference from
-         localStorage, falls back to the OS's prefers-color-scheme. -->
+         the correct theme on first frame. Mirrors Docusaurus's
+         three-state model: localStorage "light" or "dark" is an
+         explicit user choice; anything else (including no entry) is
+         "system" and resolves to the OS's prefers-color-scheme. -->
     <script>
       (function () {
         try {
           var stored = localStorage.getItem("theme");
-          var theme = stored ||
-            (window.matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light");
+          var pref =
+            stored === "light" || stored === "dark" ? stored : "system";
+          var theme =
+            pref === "system"
+              ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light"
+              : pref;
           document.documentElement.setAttribute("data-theme", theme);
           if (theme === "dark") {
             document.documentElement.classList.add("dark");

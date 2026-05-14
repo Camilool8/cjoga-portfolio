@@ -1,10 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { FiSun, FiMoon, FiExternalLink } from "react-icons/fi";
+import { FiSun, FiMoon, FiMonitor, FiExternalLink } from "react-icons/fi";
 import { socialLinks } from "../data";
 
-function NavigationBar({ theme, setTheme, language, setLanguage }) {
+function NavigationBar({
+  theme,
+  themePreference,
+  cycleThemePreference,
+  language,
+  setLanguage,
+}) {
   const { t } = useTranslation();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,7 +51,22 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+  // Render icon for the *current* preference (Docusaurus convention).
+  // The button cycles preference → light → dark → system.
+  const ThemeIcon =
+    themePreference === "system"
+      ? FiMonitor
+      : themePreference === "light"
+        ? FiSun
+        : FiMoon;
+  const themeAriaLabel = t(
+    `theme.aria.${themePreference}`,
+    themePreference === "system"
+      ? "System theme"
+      : themePreference === "light"
+        ? "Light theme"
+        : "Dark theme",
+  );
 
   const handleLanguageChange = (lang, e) => {
     e.stopPropagation();
@@ -121,11 +142,12 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
 
         <div className="flex items-center gap-1 ml-1 pl-2" style={{ borderLeft: "1px solid var(--border-subtle)" }}>
           <button
-            onClick={toggleTheme}
-            aria-label={theme === "dark" ? t("theme.light") : t("theme.dark")}
+            onClick={cycleThemePreference}
+            aria-label={themeAriaLabel}
+            title={themeAriaLabel}
             className="nav-control-btn"
           >
-            {theme === "dark" ? <FiSun size={16} /> : <FiMoon size={16} />}
+            <ThemeIcon size={16} />
           </button>
 
           <div className="relative" ref={langRef}>
@@ -243,9 +265,15 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
         <div className="mobile-nav-divider" />
 
         <div className="mobile-nav-controls">
-          <button onClick={toggleTheme} className="mobile-nav-control-btn">
-            {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
-            <span>{theme === "dark" ? t("theme.light", "Light") : t("theme.dark", "Dark")}</span>
+          <button onClick={cycleThemePreference} className="mobile-nav-control-btn">
+            <ThemeIcon size={18} />
+            <span>
+              {themePreference === "system"
+                ? t("theme.system", "System")
+                : themePreference === "light"
+                  ? t("theme.light", "Light")
+                  : t("theme.dark", "Dark")}
+            </span>
           </button>
           <button
             onClick={(e) => handleLanguageChange(language === "en" ? "es" : "en", e)}

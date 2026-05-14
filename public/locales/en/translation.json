@@ -340,7 +340,13 @@
   },
   "theme": {
     "dark": "Dark Mode",
-    "light": "Light Mode"
+    "light": "Light Mode",
+    "system": "System",
+    "aria": {
+      "system": "System theme — follows OS",
+      "light": "Light theme",
+      "dark": "Dark theme"
+    }
   },
   "language": {
     "en": "English",
