@@ -3,43 +3,98 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description"
-        content="Professional portfolio of Jose Camilo Joga Guerrero, DevOps & Cloud Engineer specializing in automation, CI/CD, Infrastructure as Code, and hybrid cloud environments." />
-    <meta name="keywords"
-        content="DevOps, Cloud Engineer, AWS, Azure, Kubernetes, CI/CD, Infrastructure as Code, Terraform, Ansible, Docker" />
-
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:title" content="Jose Camilo Joga Guerrero | DevOps & Cloud Engineer" />
-    <meta property="og:description"
-        content="Professional portfolio of Jose Camilo Joga Guerrero, DevOps & Cloud Engineer specializing in automation, CI/CD, Infrastructure as Code, and hybrid cloud environments." />
-    <meta property="og:image" content="/images/og-image.webp" />
-    <meta property="og:url" content="https://cjoga.cloud" />
-    <meta property="og:type" content="website" />
-
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Jose Camilo Joga Guerrero | DevOps & Cloud Engineer" />
-    <meta name="twitter:description"
-        content="Professional portfolio of Jose Camilo Joga Guerrero, DevOps & Cloud Engineer specializing in automation, CI/CD, Infrastructure as Code, and hybrid cloud environments." />
-    <meta name="twitter:image" content="/images/og-image.webp" />
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#06080d" />
 
     <title>Jose Camilo Joga Guerrero | DevOps & Cloud Engineer</title>
+    <meta name="description"
+        content="Portfolio of Jose Camilo Joga Guerrero — DevOps & Cloud Engineer based in Santo Domingo. AWS, Azure, Kubernetes, Terraform, CI/CD, and a homelab K3s cluster. 11 certifications earned." />
+    <meta name="author" content="Jose Camilo Joga Guerrero" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://cjoga.cloud/" />
 
-    <!-- Theme bootstrap — runs before React mounts so the page paints in
-         the correct theme on first frame. Mirrors Docusaurus's
-         three-state model: localStorage "light" or "dark" is an
-         explicit user choice; anything else (including no entry) is
-         "system" and resolves to the OS's prefers-color-scheme. -->
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="cjoga.cloud" />
+    <meta property="og:title" content="Jose Camilo Joga Guerrero — DevOps & Cloud Engineer" />
+    <meta property="og:description"
+        content="DevOps & Cloud Engineer. AWS, Azure, Kubernetes, Terraform, CI/CD, and a homelab K3s cluster. 11 certifications earned." />
+    <meta property="og:url" content="https://cjoga.cloud/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_DO" />
+    <meta property="og:image" content="https://cjoga.cloud/images/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Jose Camilo Joga Guerrero — DevOps & Cloud Engineer" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jose Camilo Joga Guerrero — DevOps & Cloud Engineer" />
+    <meta name="twitter:description"
+        content="DevOps & Cloud Engineer. AWS, Azure, Kubernetes, Terraform, CI/CD, and a homelab K3s cluster." />
+    <meta name="twitter:image" content="https://cjoga.cloud/images/og-image.png" />
+    <meta name="twitter:image:alt" content="Jose Camilo Joga Guerrero — DevOps & Cloud Engineer" />
+
+    <!-- Favicons & app icons -->
+    <link rel="icon" type="image/svg+xml" href="/icons/logo.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Fonts: preconnect early; load with display=swap to avoid invisible text. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" />
+
+    <!-- Structured data: Person + WebSite — feeds rich-result eligibility
+         and helps disambiguate the name across search results. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://cjoga.cloud/#person",
+          "name": "Jose Camilo Joga Guerrero",
+          "alternateName": "Camilo Joga",
+          "url": "https://cjoga.cloud/",
+          "image": "https://cjoga.cloud/images/og-image.png",
+          "jobTitle": "DevOps & Cloud Engineer",
+          "description": "DevOps & Cloud Engineer specializing in automation, CI/CD, Infrastructure as Code, Kubernetes, and hybrid cloud environments.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Santo Domingo",
+            "addressCountry": "DO"
+          },
+          "knowsLanguage": ["en", "es"],
+          "knowsAbout": ["DevOps", "Kubernetes", "Terraform", "AWS", "Azure", "CI/CD", "GitLab", "Ansible", "Linux", "Docker"],
+          "sameAs": [
+            "https://github.com/Camilool8",
+            "https://www.linkedin.com/in/cjoga",
+            "https://blog.cjoga.cloud"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://cjoga.cloud/#website",
+          "url": "https://cjoga.cloud/",
+          "name": "cjoga.cloud",
+          "description": "Portfolio of Jose Camilo Joga Guerrero, DevOps & Cloud Engineer.",
+          "publisher": { "@id": "https://cjoga.cloud/#person" },
+          "inLanguage": "en"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Theme bootstrap — paints in the correct theme on first frame.
+         Mirrors Docusaurus's three-state model: localStorage "light" or
+         "dark" is an explicit user choice; anything else (including no
+         entry) is "system" and resolves to prefers-color-scheme. -->
     <script>
       (function () {
         try {
@@ -57,8 +112,7 @@
             document.documentElement.classList.add("dark");
           }
         } catch (e) {
-          // localStorage may be unavailable in private browsing — fall
-          // through to the CSS default.
+          /* localStorage unavailable in private browsing — CSS default. */
         }
       })();
     </script>

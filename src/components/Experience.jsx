@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   sectionVariants,
   itemVariants,
@@ -23,11 +23,9 @@ function Experience() {
     target: timelineRef,
     offset: ["start 0.8", "end 0.3"],
   });
-  const lineScale = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1]), {
-    stiffness: 40,
-    damping: 25,
-    mass: 1,
-  });
+  // Raw transform — no spring. Spring kept interpolating after scroll stopped,
+  // wasting frames on what is ultimately just a thin vertical line.
+  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   const companyKeys = ["inspyr", "flBetances", "arctiq"];
   const isActive = (key) => {

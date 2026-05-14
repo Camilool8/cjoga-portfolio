@@ -7,6 +7,38 @@ const config = {
   tagline: "Camilo's handbook — opinions, the lab, and cert guides.",
   favicon: "img/favicon.ico",
 
+  trailingSlash: false,
+
+  headTags: [
+    // Brand icons & manifest. Docusaurus only emits a single favicon link
+    // from the top-level `favicon` field; everything else is appended here.
+    {
+      tagName: "link",
+      attributes: { rel: "icon", type: "image/svg+xml", href: "/img/logo.svg" },
+    },
+    {
+      tagName: "link",
+      attributes: { rel: "apple-touch-icon", href: "/img/apple-touch-icon.png" },
+    },
+    {
+      tagName: "link",
+      attributes: { rel: "manifest", href: "/manifest.webmanifest" },
+    },
+    {
+      tagName: "meta",
+      attributes: { name: "theme-color", content: "#06080d" },
+    },
+    {
+      tagName: "meta",
+      attributes: { name: "color-scheme", content: "dark light" },
+    },
+    // Sister-site discovery — helps Google associate the two properties.
+    {
+      tagName: "link",
+      attributes: { rel: "me", href: "https://cjoga.cloud/" },
+    },
+  ],
+
   future: {
     v4: {
       removeLegacyPostBuildHeadAttribute: true,
@@ -68,6 +100,12 @@ const config = {
         theme: {
           customCss: "./src/css/custom.css",
         },
+        sitemap: {
+          changefreq: "weekly",
+          priority: 0.5,
+          filename: "sitemap.xml",
+          ignorePatterns: ["/tags/**", "/search/**"],
+        },
       }),
     ],
   ],
@@ -88,7 +126,27 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: "img/social-card.jpg",
+      // Default social card. Per-page overrides via MDX frontmatter `image`.
+      image: "img/og-default.png",
+      metadata: [
+        { name: "author", content: "Jose Camilo Joga Guerrero" },
+        {
+          name: "description",
+          content:
+            "Camilo's handbook — opinions, lab notes, and cert guides from a working DevOps engineer.",
+        },
+        {
+          name: "keywords",
+          content:
+            "DevOps, Kubernetes, K3s, Terraform, AWS, RHCSA, RHCE, homelab, GitOps, OpenBao, Vault, Longhorn",
+        },
+        { name: "robots", content: "index, follow, max-image-preview:large" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:site", content: "@cjoga_cloud" },
+        { property: "og:type", content: "website" },
+        { property: "og:site_name", content: "blog.cjoga.cloud" },
+        { property: "og:locale", content: "en_US" },
+      ],
       colorMode: {
         defaultMode: "dark",
         respectPrefersColorScheme: true,
@@ -138,6 +196,12 @@ const config = {
       navbar: {
         title: "cjoga.cloud",
         hideOnScroll: false,
+        logo: {
+          alt: "cjoga.cloud mark",
+          src: "img/logo.svg",
+          width: 28,
+          height: 28,
+        },
         items: [
           {
             type: "dropdown",

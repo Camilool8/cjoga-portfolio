@@ -4,42 +4,49 @@ import {
   motion,
   useScroll,
   useTransform,
-  useSpring,
   useReducedMotion,
 } from "framer-motion";
 import { EASE_SMOOTH } from "../hooks/useMotion";
 
 function BlurWords({ words, baseDelay = 0, className = "", style = {} }) {
   const reduced = useReducedMotion();
-  return words.map((word, i) => (
-    <motion.span
-      key={`${word}-${i}`}
-      className={className}
-      style={{
-        display: "inline-block",
-        marginRight: i === words.length - 1 ? 0 : "0.22em",
-        willChange: "filter, transform, opacity",
-        ...style,
-      }}
-      initial={
-        reduced
-          ? { opacity: 0 }
-          : { opacity: 0, filter: "blur(12px)", y: -14 }
-      }
-      animate={
-        reduced
-          ? { opacity: 1 }
-          : { opacity: 1, filter: "blur(0px)", y: 0 }
-      }
-      transition={{
-        duration: 0.7,
-        delay: baseDelay + i * 0.11,
-        ease: EASE_SMOOTH,
-      }}
-    >
-      {word}
-    </motion.span>
-  ));
+  // On coarse pointers (phones/tablets), skip the blur filter — paint cost on
+  // multi-word headlines was visibly stuttering. opacity+translate covers it.
+  const coarse =
+    typeof window !== "undefined" &&
+    window.matchMedia("(pointer: coarse), (max-width: 768px)").matches;
+  return words.map((word, i) => {
+    const initial = reduced
+      ? { opacity: 0 }
+      : coarse
+        ? { opacity: 0, y: -10 }
+        : { opacity: 0, filter: "blur(8px)", y: -14 };
+    const animate = reduced
+      ? { opacity: 1 }
+      : coarse
+        ? { opacity: 1, y: 0 }
+        : { opacity: 1, filter: "blur(0px)", y: 0 };
+    return (
+      <motion.span
+        key={`${word}-${i}`}
+        className={className}
+        style={{
+          display: "inline-block",
+          marginRight: i === words.length - 1 ? 0 : "0.22em",
+          ...style,
+        }}
+        initial={initial}
+        animate={animate}
+        transition={{
+          duration: 0.7,
+          delay: baseDelay + i * 0.11,
+          ease: EASE_SMOOTH,
+        }}
+      >
+        {word}
+      </motion.span>
+    );
+  });
 }
 
 function Hero() {
@@ -56,14 +63,12 @@ function Hero() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 40,
-    damping: 25,
-    mass: 1,
-  });
-  const heroOpacity = useTransform(smoothProgress, [0, 0.8], [1, 0]);
-  const heroY = useTransform(smoothProgress, [0, 0.8], [0, -60]);
-  const gridY = useTransform(smoothProgress, [0, 1], [0, -20]);
+  // Drive parallax directly off scrollYProgress (compositor-friendly transforms).
+  // Dropped the useSpring wrapper — it keeps interpolating after scroll stops
+  // and adds main-thread cost without a visible benefit on a one-way exit fade.
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.8], [0, -60]);
+  const gridY = useTransform(scrollYProgress, [0, 1], [0, -20]);
 
   const roles = t("hero.roles", { returnObjects: true });
   const textArray = useMemo(
@@ -109,41 +114,17 @@ function Hero() {
     >
       <motion.div
         aria-hidden="true"
-        className="absolute pointer-events-none"
+        className="hero-orb hero-orb-accent absolute pointer-events-none"
         initial={reduced ? { opacity: 0.4, scale: 1 } : { opacity: 0, scale: 0.6 }}
         animate={{ opacity: 0.45, scale: 1 }}
         transition={{ duration: reduced ? 0 : 1.6, ease: EASE_SMOOTH }}
-        style={{
-          top: "-15%",
-          left: "-10%",
-          width: "55vw",
-          height: "55vw",
-          maxWidth: "780px",
-          maxHeight: "780px",
-          background:
-            "radial-gradient(circle at center, var(--accent) 0%, transparent 65%)",
-          filter: "blur(120px)",
-          willChange: "transform, opacity",
-        }}
       />
       <motion.div
         aria-hidden="true"
-        className="absolute pointer-events-none"
+        className="hero-orb hero-orb-warm absolute pointer-events-none"
         initial={reduced ? { opacity: 0.25, scale: 1 } : { opacity: 0, scale: 0.6 }}
         animate={{ opacity: 0.3, scale: 1 }}
         transition={{ duration: reduced ? 0 : 1.8, delay: 0.2, ease: EASE_SMOOTH }}
-        style={{
-          bottom: "-20%",
-          right: "-10%",
-          width: "60vw",
-          height: "60vw",
-          maxWidth: "880px",
-          maxHeight: "880px",
-          background:
-            "radial-gradient(circle at center, var(--accent-warm) 0%, transparent 65%)",
-          filter: "blur(140px)",
-          willChange: "transform, opacity",
-        }}
       />
 
       <motion.div

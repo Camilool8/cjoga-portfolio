@@ -8,19 +8,24 @@ export default function SectionDivider() {
     offset: ["start end", "end start"],
   });
 
+  // scaleX is a compositor-only transform — no layout recalc per frame.
+  // width: 40% baseline + scaleX 0→1→0 yields the same visual effect.
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.6, 0]);
-  const lineWidth = useTransform(scrollYProgress, [0, 0.5, 1], ["0%", "40%", "0%"]);
+  const scaleX = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0]);
 
   return (
     <div
       ref={ref}
       className="relative h-24 md:h-32 flex items-center justify-center overflow-hidden pointer-events-none"
       style={{ zIndex: 2 }}
+      aria-hidden="true"
     >
       <motion.div
         className="h-px"
         style={{
-          width: lineWidth,
+          width: "40%",
+          transformOrigin: "center",
+          scaleX,
           opacity,
           background: "var(--gradient-accent)",
         }}

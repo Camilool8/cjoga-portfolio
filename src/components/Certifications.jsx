@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   motion,
+  useInView,
   useMotionValue,
   useTransform,
   animate as animateValue,
@@ -1229,6 +1230,50 @@ function CertRow({ cert, brandColor, accentBg, t, featured, divider }) {
   );
 }
 
+// Mounts the heavy live-tile SVG only when the frame is on screen.
+// Every live tile (AWS, KCNA, Terraform, GitLab, etc.) ran multiple
+// `repeat: Infinity` framer-motion animations forever once mounted,
+// so seven tiles compounded into constant GPU/main-thread work even
+// while scrolled out of view. Gating on intersection cuts that to zero
+// past the section, which was the bulk of the mobile slowdown near the
+// Handbook section that sits just after this one.
+function LiveTileFrame({ brandColor, liveTile, progress, rawColor }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: "120px 0px" });
+
+  return (
+    <div
+      ref={ref}
+      className="relative w-full mb-4 rounded-xl overflow-hidden"
+      style={{
+        height: "140px",
+        background: `radial-gradient(ellipse at center, ${brandColor}14 0%, transparent 70%)`,
+        border: `1px solid ${brandColor}1a`,
+      }}
+    >
+      {inView && liveTile === "aws" && <AWSRegionsLive color={brandColor} />}
+      {inView && liveTile === "kubestronaut" && (
+        <KubestronautRingLive
+          color={brandColor}
+          current={progress?.current}
+          total={progress?.total}
+        />
+      )}
+      {inView && liveTile === "terraform" && (
+        <TerraformGraphLive color={brandColor} />
+      )}
+      {inView && liveTile === "dynatrace" && (
+        <DynatraceWaveformLive color={brandColor} />
+      )}
+      {inView && liveTile === "award" && <AwardSparkleLive color={rawColor} />}
+      {inView && liveTile === "redhat" && <RedHatRadarLive color={brandColor} />}
+      {inView && liveTile === "gitlab" && (
+        <GitLabPipelineLive color={brandColor} />
+      )}
+    </div>
+  );
+}
+
 function Certifications() {
   const { t } = useTranslation();
 
@@ -1339,40 +1384,12 @@ function Certifications() {
                 )}
 
                 {group.liveTile && (
-                  <div
-                    className="relative w-full mb-4 rounded-xl overflow-hidden"
-                    style={{
-                      height: "140px",
-                      background: `radial-gradient(ellipse at center, ${brandColor}14 0%, transparent 70%)`,
-                      border: `1px solid ${brandColor}1a`,
-                    }}
-                  >
-                    {group.liveTile === "aws" && (
-                      <AWSRegionsLive color={brandColor} />
-                    )}
-                    {group.liveTile === "kubestronaut" && (
-                      <KubestronautRingLive
-                        color={brandColor}
-                        current={group.progress?.current}
-                        total={group.progress?.total}
-                      />
-                    )}
-                    {group.liveTile === "terraform" && (
-                      <TerraformGraphLive color={brandColor} />
-                    )}
-                    {group.liveTile === "dynatrace" && (
-                      <DynatraceWaveformLive color={brandColor} />
-                    )}
-                    {group.liveTile === "award" && (
-                      <AwardSparkleLive color={group.color} />
-                    )}
-                    {group.liveTile === "redhat" && (
-                      <RedHatRadarLive color={brandColor} />
-                    )}
-                    {group.liveTile === "gitlab" && (
-                      <GitLabPipelineLive color={brandColor} />
-                    )}
-                  </div>
+                  <LiveTileFrame
+                    brandColor={brandColor}
+                    liveTile={group.liveTile}
+                    progress={group.progress}
+                    rawColor={group.color}
+                  />
                 )}
 
                 <div className="flex items-center gap-3 mb-3">

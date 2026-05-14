@@ -248,9 +248,16 @@ a {
    ============================================================ */
 .glass {
   background: var(--bg-glass);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-subtle);
+}
+
+@media (min-width: 769px) {
+  .glass {
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  }
 }
 
 /* ============================================================
@@ -792,6 +799,45 @@ pre.line-numbers > code {
 }
 
 /* ============================================================
+   HERO ORBS — large soft-light radial glows behind hero copy.
+   Blur radii are tuned per-breakpoint so mobile GPUs don't
+   choke on 140px filters across a viewport-sized surface.
+   ============================================================ */
+.hero-orb {
+  border-radius: 999px;
+  filter: blur(50px);
+}
+
+.hero-orb-accent {
+  top: -15%;
+  left: -10%;
+  width: 55vw;
+  height: 55vw;
+  max-width: 780px;
+  max-height: 780px;
+  background: radial-gradient(circle at center, var(--accent) 0%, transparent 60%);
+}
+
+.hero-orb-warm {
+  bottom: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  max-width: 880px;
+  max-height: 880px;
+  background: radial-gradient(circle at center, var(--accent-warm) 0%, transparent 60%);
+}
+
+@media (min-width: 769px) {
+  .hero-orb { filter: blur(90px); }
+  .hero-orb-warm { filter: blur(110px); }
+}
+
+@media (max-width: 480px) {
+  .hero-orb { filter: blur(36px); }
+}
+
+/* ============================================================
    HANDBOOK CALLOUT — browser-window framed preview of the
    Docusaurus landing at blog.cjoga.cloud. Outer chrome with 3D
    mouse-parallax tilt; inner content is the actual handbook UI
@@ -815,13 +861,24 @@ pre.line-numbers > code {
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+  /* Isolate paint so adjacent scroll motion doesn't repaint this region */
+  contain: layout paint;
 }
 
 .handbook-orb {
   position: absolute;
   border-radius: 999px;
-  filter: blur(140px);
+  /* Pre-blurred via radial-gradient + lower filter radius. The visual is
+     a soft glow either way; a runtime blur(140px) on a 50vw surface is
+     prohibitive on mobile GPUs. */
+  filter: blur(60px);
   opacity: 0.22;
+}
+
+@media (min-width: 769px) {
+  .handbook-orb {
+    filter: blur(90px);
+  }
 }
 
 .handbook-orb-accent {
@@ -831,7 +888,7 @@ pre.line-numbers > code {
   height: 50vw;
   max-width: 700px;
   max-height: 700px;
-  background: radial-gradient(circle at center, var(--accent) 0%, transparent 65%);
+  background: radial-gradient(circle at center, var(--accent) 0%, transparent 60%);
 }
 
 .handbook-orb-blue {
@@ -841,8 +898,18 @@ pre.line-numbers > code {
   height: 55vw;
   max-width: 800px;
   max-height: 800px;
-  background: radial-gradient(circle at center, var(--accent-secondary) 0%, transparent 65%);
+  background: radial-gradient(circle at center, var(--accent-secondary) 0%, transparent 60%);
   opacity: 0.18;
+}
+
+@media (max-width: 480px) {
+  .handbook-orb {
+    filter: blur(40px);
+    opacity: 0.16;
+  }
+  .handbook-orb-blue {
+    opacity: 0.12;
+  }
 }
 
 [data-theme="light"] .handbook-orb {
@@ -883,7 +950,6 @@ pre.line-numbers > code {
   border: 1px solid var(--border-subtle);
   border-radius: 14px;
   overflow: hidden;
-  will-change: transform;
   transition: border-color 0.4s var(--ease-out-expo),
               box-shadow 0.4s var(--ease-out-expo);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
