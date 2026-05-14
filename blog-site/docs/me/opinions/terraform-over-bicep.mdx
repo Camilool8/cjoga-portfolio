@@ -6,7 +6,16 @@ slug: /me/opinions/terraform-over-bicep
 keywords: [opinions, terraform, bicep, azure, iac, infrastructure-as-code, state-management]
 ---
 
+import PullQuote from '@site/src/components/PullQuote';
+import TechStackGrid from '@site/src/components/TechStackGrid';
+
 # Why I run Terraform on Azure
+
+<PullQuote>
+  Pick for the boundary you might cross, not the one you are standing inside.
+</PullQuote>
+
+<TechStackGrid compact items={['Terraform', 'Bicep']} />
 
 On Azure, with every incentive pointing at the Microsoft-native option, I still reach for [Terraform](https://www.terraform.io) over [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview). I have used both in production, I hold the [HashiCorp Certified Terraform Associate (004)](https://www.hashicorp.com/certification/terraform-associate), and I run Terraform on my own K3s homelab as well as in client engagements. The case for Bicep is not weak, and I want to be honest about that before I make my case for Terraform.
 

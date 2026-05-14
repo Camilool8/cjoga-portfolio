@@ -29,6 +29,9 @@ import {
   SiGooglecloud,
   SiIos,
   SiAndroid,
+  SiClaude,
+  SiGithubcopilot,
+  SiAnthropic,
 } from 'react-icons/si';
 import { VscAzure, VscAzureDevops, VscTerminalPowershell } from 'react-icons/vsc';
 import styles from './styles.module.css';
@@ -108,6 +111,12 @@ const TECH = {
   // Mobile
   iOS: { Icon: SiIos, color: null },
   Android: { Icon: SiAndroid, color: '#3DDC84' },
+
+  // AI tooling
+  Claude: { Icon: SiClaude, color: '#D97757' },
+  'Claude Code': { Icon: SiClaude, color: '#D97757' },
+  'GitHub Copilot': { Icon: SiGithubcopilot, color: null },
+  Anthropic: { Icon: SiAnthropic, color: '#D97757' },
 
   // Other
   'Power Automate': { Icon: FaMicrosoft, color: '#0066FF' },

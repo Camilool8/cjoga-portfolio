@@ -6,7 +6,16 @@ slug: /me/opinions/openbao-over-vault
 keywords: [opinions, openbao, vault, hashicorp, secrets-management, oss, license, homelab]
 ---
 
+import PullQuote from '@site/src/components/PullQuote';
+import TechStackGrid from '@site/src/components/TechStackGrid';
+
 # OpenBao over Vault — same docs, more freedom
+
+<PullQuote>
+  I would still pick Vault if I were running infrastructure for a bank. I'm not running infrastructure for a bank.
+</PullQuote>
+
+<TechStackGrid compact items={['OpenBao', 'Vault']} />
 
 In my homelab and across everything I run personally on cjoga.cloud, the secrets engine is [OpenBao](https://openbao.org/), not [HashiCorp Vault](https://www.vaultproject.io/). Three replicas in the `openbao` namespace, fronted by [External Secrets Operator](https://external-secrets.io/), backing every workload on the cluster that needs a credential. I picked it deliberately, I know the trade-offs, and I would still pick Vault if I were running infrastructure for a bank. I'm not running infrastructure for a bank.
 
