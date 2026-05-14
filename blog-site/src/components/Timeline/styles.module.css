@@ -1,0 +1,127 @@
+/* Vertical timeline — rail with dots, accent year, display title.
+   Editorial aesthetic: flat, subtle borders, accent-color hover.
+   Designed to live above detailed prose as a TL;DR scan view. */
+
+.wrap {
+  margin: 1.5rem 0 2.5rem;
+}
+
+.caption {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1rem;
+}
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+/* The rail — runs the full height behind the dots. */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--border-medium);
+}
+
+.entry {
+  position: relative;
+  padding: 0.4rem 0 0.4rem 2rem;
+  margin: 0;
+  transition: background 0.2s var(--ease-out);
+}
+
+.entry + .entry {
+  margin-top: 0.5rem;
+}
+
+.dot {
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--bg-void);
+  border: 2px solid var(--border-medium);
+  box-sizing: border-box;
+  transition: border-color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.emphasis .dot {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-dim);
+}
+
+.entryBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.year {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.emphasis .year {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.emphasis .title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.body {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  text-wrap: pretty;
+}
+
+.body :global(p) {
+  margin: 0;
+}
+
+.body :global(a) {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.body :global(a):hover {
+  color: var(--accent-secondary);
+}
+
+@media (max-width: 600px) {
+  .entry {
+    padding-left: 1.75rem;
+  }
+}

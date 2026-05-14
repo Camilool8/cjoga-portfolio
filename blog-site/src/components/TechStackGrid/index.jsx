@@ -1,79 +1,118 @@
 import React from 'react';
+import { FaAws, FaMicrosoft } from 'react-icons/fa';
+import {
+  SiKubernetes,
+  SiTerraform,
+  SiAnsible,
+  SiFlux,
+  SiArgo,
+  SiGitlab,
+  SiGithub,
+  SiEnvoyproxy,
+  SiCilium,
+  SiVault,
+  SiGrafana,
+  SiPrometheus,
+  SiOpentelemetry,
+  SiDatabricks,
+  SiDotnet,
+  SiVuedotjs,
+  SiThreedotjs,
+  SiWordpress,
+  SiCloudflare,
+  SiTailscale,
+  SiLetsencrypt,
+  SiProxmox,
+  SiNextdotjs,
+  SiReact,
+  SiPython,
+  SiGooglecloud,
+  SiIos,
+  SiAndroid,
+} from 'react-icons/si';
+import { VscAzure, VscAzureDevops, VscTerminalPowershell } from 'react-icons/vsc';
 import styles from './styles.module.css';
 
-// Registry of tech tools we use across the work + lab pages.
-// Keyed by friendly name. Each entry maps to a simple-icons CDN slug + brand
-// hex, OR to { textOnly: true } when no clean vendor logo is available.
-// Brand hex is hard-coded so logos render with the vendor color, not the
-// text-inherited color.
+// Tool registry — three render shapes:
+//   1. { Icon, color }          — react-icons SVG component
+//   2. { image }                — <img src>: local path or simple-icons CDN
+//   3. { textOnly: true }       — 2-letter monogram chip (last-resort fallback)
 //
-// To add a new tool: pick the slug from https://simpleicons.org/ — and
-// confirm the hex matches the slug page. If simple-icons doesn't carry it,
-// set { textOnly: true } and the tile renders as a mono-cased chip.
+// Mirrors the react-icons sets the portfolio uses where coverage exists.
+// Tools without react-icons coverage use either simple-icons CDN, locally
+// hosted SVG/PNG from each project's repo, or a brand-colored FA fallback.
 const TECH = {
-  // Cloud / infra
-  AWS: { slug: 'amazonwebservices', hex: 'FF9900' },
-  EKS: { slug: 'amazoneks', hex: 'F90' },
-  Azure: { slug: 'microsoftazure', hex: '0078D4' },
-  AKS: { slug: 'kubernetes', hex: '326CE5' },
-  Kubernetes: { slug: 'kubernetes', hex: '326CE5' },
-  K3s: { slug: 'kubernetes', hex: '326CE5' },
-  Proxmox: { slug: 'proxmox', hex: 'E57000' },
-  Cloudflare: { slug: 'cloudflare', hex: 'F38020' },
-  Tailscale: { slug: 'tailscale', hex: '242424' },
-  "Let's Encrypt": { slug: 'letsencrypt', hex: '003A70' },
+  // Cloud / compute
+  AWS: { Icon: FaAws, color: '#FF9900' },
+  EKS: { Icon: FaAws, color: '#FF9900' },
+  'AWS Secrets Manager': { Icon: FaAws, color: '#FF9900' },
+  'AWS Identity Center': { Icon: FaAws, color: '#FF9900' },
+  Azure: { Icon: VscAzure, color: '#0078D4' },
+  AKS: { Icon: SiKubernetes, color: '#326CE5' },
+  Kubernetes: { Icon: SiKubernetes, color: '#326CE5' },
+  K3s: { Icon: SiKubernetes, color: '#326CE5' },
+  'Entra ID': { Icon: FaMicrosoft, color: '#0078D4' },
+  'Key Vault': { Icon: VscAzure, color: '#0078D4' },
+  Synapse: { Icon: VscAzure, color: '#0078D4' },
+  Proxmox: { Icon: SiProxmox, color: '#E57000' },
+  Cloudflare: { Icon: SiCloudflare, color: '#F38020' },
+  Tailscale: { Icon: SiTailscale, color: null },
+  "Let's Encrypt": { Icon: SiLetsencrypt, color: '#003A70' },
 
   // IaC / config
-  Terraform: { slug: 'terraform', hex: '7B42BC' },
-  Ansible: { slug: 'ansible', hex: 'EE0000' },
-  Bicep: { textOnly: true },
+  Terraform: { Icon: SiTerraform, color: '#7B42BC' },
+  Ansible: { Icon: SiAnsible, color: '#EE0000' },
+  Bicep: { image: '/img/logos/azure-bicep.svg' },
 
   // GitOps + CI
-  FluxCD: { slug: 'flux', hex: '5468FF' },
-  ArgoCD: { slug: 'argo', hex: 'EF7B4D' },
-  GitLab: { slug: 'gitlab', hex: 'FC6D26' },
-  'GitLab CI': { slug: 'gitlab', hex: 'FC6D26' },
-  GitHub: { slug: 'github', hex: 'F0F0F0' },
-  'Azure DevOps': { slug: 'azuredevops', hex: '0078D7' },
+  FluxCD: { Icon: SiFlux, color: '#5468FF' },
+  ArgoCD: { Icon: SiArgo, color: '#EF7B4D' },
+  GitLab: { Icon: SiGitlab, color: '#FC6D26' },
+  'GitLab CI': { Icon: SiGitlab, color: '#FC6D26' },
+  GitHub: { Icon: SiGithub, color: null },
+  'Azure DevOps': { Icon: VscAzureDevops, color: '#0078D7' },
 
-  // Networking / ingress / mesh
-  Envoy: { slug: 'envoyproxy', hex: 'AC6199' },
-  Cilium: { slug: 'cilium', hex: 'F8C517' },
+  // Networking
+  Envoy: { Icon: SiEnvoyproxy, color: '#AC6199' },
+  Cilium: { Icon: SiCilium, color: '#F8C517' },
 
   // Storage / secrets / TLS
-  Longhorn: { textOnly: true },
-  OpenBao: { textOnly: true },
-  Vault: { slug: 'vault', hex: 'FFEC6E' },
-  'External Secrets': { textOnly: true },
-  'cert-manager': { textOnly: true },
-  'AWS Secrets Manager': { slug: 'amazonwebservices', hex: 'FF9900' },
-  'Key Vault': { slug: 'microsoftazure', hex: '0078D4' },
+  Longhorn: { image: 'https://cdn.simpleicons.org/longhorn' },
+  OpenBao: { image: 'https://cdn.simpleicons.org/openbao' },
+  Vault: { Icon: SiVault, color: '#FFEC6E' },
+  'External Secrets': { image: '/img/logos/external-secrets.svg' },
+  'cert-manager': { image: '/img/logos/cert-manager.svg' },
 
   // Observability
-  Grafana: { slug: 'grafana', hex: 'F46800' },
-  Loki: { slug: 'grafana', hex: 'F46800' },
-  OpenTelemetry: { slug: 'opentelemetry', hex: 'F5A800' },
-  Prometheus: { slug: 'prometheus', hex: 'E6522C' },
-
-  // Identity
-  'Entra ID': { slug: 'microsoftazure', hex: '0078D4' },
-  'AWS Identity Center': { slug: 'amazonwebservices', hex: 'FF9900' },
+  Grafana: { Icon: SiGrafana, color: '#F46800' },
+  Loki: { Icon: SiGrafana, color: '#F46800' },
+  OpenTelemetry: { Icon: SiOpentelemetry, color: '#F5A800' },
+  Prometheus: { Icon: SiPrometheus, color: '#E6522C' },
 
   // Data
-  Databricks: { slug: 'databricks', hex: 'FF3621' },
-  Synapse: { slug: 'microsoftazure', hex: '0078D4' },
+  Databricks: { Icon: SiDatabricks, color: '#FF3621' },
 
-  // Languages / runtimes
-  PowerShell: { slug: 'powershell', hex: '5391FE' },
-  '.NET': { slug: 'dotnet', hex: '512BD4' },
-  'Vue.js': { slug: 'vuedotjs', hex: '4FC08D' },
-  'Three.js': { slug: 'threedotjs', hex: 'F0F0F0' },
-  WordPress: { slug: 'wordpress', hex: '21759B' },
+  // Languages / runtimes / frameworks
+  PowerShell: { Icon: VscTerminalPowershell, color: '#5391FE' },
+  '.NET': { Icon: SiDotnet, color: '#512BD4' },
+  'Vue.js': { Icon: SiVuedotjs, color: '#4FC08D' },
+  React: { Icon: SiReact, color: '#61DAFB' },
+  'Next.js': { Icon: SiNextdotjs, color: null },
+  Python: { Icon: SiPython, color: '#3776AB' },
+  'Three.js': { Icon: SiThreedotjs, color: null },
+  WordPress: { Icon: SiWordpress, color: '#21759B' },
+
+  // Other clouds
+  GCP: { Icon: SiGooglecloud, color: '#4285F4' },
+
+  // Mobile
+  iOS: { Icon: SiIos, color: null },
+  Android: { Icon: SiAndroid, color: '#3DDC84' },
 
   // Other
-  'Power Automate': { textOnly: true },
-  KubeCost: { textOnly: true },
-  Karpenter: { textOnly: true },
+  'Power Automate': { Icon: FaMicrosoft, color: '#0066FF' },
+  KubeCost: { Icon: SiKubernetes, color: '#326CE5' },
+  Karpenter: { Icon: FaAws, color: '#FF9900' },
 };
 
 function TechTile({ name, href }) {
@@ -83,25 +122,46 @@ function TechTile({ name, href }) {
     ? { href, target: '_blank', rel: 'noopener noreferrer' }
     : {};
 
+  let glyph;
   if (!entry || entry.textOnly) {
-    return (
-      <Wrapper className={styles.tile} {...wrapperProps}>
-        <span className={styles.textChip} aria-hidden="true">
-          {name?.slice(0, 2).toUpperCase()}
-        </span>
-        <span className={styles.label}>{name}</span>
-      </Wrapper>
+    glyph = (
+      <span className={styles.textChip} aria-hidden="true">
+        {name?.slice(0, 2).toUpperCase()}
+      </span>
+    );
+  } else if (entry.image) {
+    const size = entry.size ?? 22;
+    glyph = (
+      <span
+        className={styles.imgWrap}
+        style={{ width: 22, height: 22 }}
+        aria-hidden="true"
+      >
+        <img
+          className={styles.logo}
+          src={entry.image}
+          width={size}
+          height={size}
+          style={{ width: size, height: size }}
+          alt=""
+          loading="lazy"
+        />
+      </span>
+    );
+  } else {
+    const { Icon, color } = entry;
+    glyph = (
+      <Icon
+        className={styles.logo}
+        style={color ? { color } : undefined}
+        aria-hidden="true"
+      />
     );
   }
 
   return (
     <Wrapper className={styles.tile} {...wrapperProps}>
-      <img
-        className={styles.logo}
-        src={`https://cdn.simpleicons.org/${entry.slug}/${entry.hex}`}
-        alt=""
-        loading="lazy"
-      />
+      {glyph}
       <span className={styles.label}>{name}</span>
     </Wrapper>
   );

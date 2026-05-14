@@ -7,6 +7,7 @@ keywords: [homelab, kubernetes, k3s, cluster, envoy, cloudflared, tailscale, pro
 ---
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
+import Timeline, { TimelineEntry } from '@site/src/components/Timeline';
 
 # Lab overview
 
@@ -52,6 +53,22 @@ Six nodes: one K3s control-plane node living as a Proxmox VM (`prox-k8s-master`)
 />
 
 ## How it got here
+
+<Timeline caption="Three iterations">
+  <TimelineEntry
+    year="v1"
+    title="Three nodes on WiFi · mixed-distro · flannel cascade on every dropout"
+  />
+  <TimelineEntry
+    year="v2"
+    title="Wired core · Tailscale mesh for everything off-LAN"
+  />
+  <TimelineEntry
+    year="v3"
+    title="Proxmox VM control plane · Envoy Gateway · Cloudflare Tunnel"
+    emphasis
+  />
+</Timeline>
 
 ### v1 — three nodes on WiFi, and a flannel cascade
 
