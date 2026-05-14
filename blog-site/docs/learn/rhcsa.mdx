@@ -1,30 +1,120 @@
 ---
 sidebar_position: 2
 title: RHCSA (EX200) guide
-description: My honest take on the RHCSA exam — how I studied, what tripped me up, and the runbook I'd hand to a friend.
+description: How to use the RHCSA-LAB GitHub project as your full prep — three intentionally broken servers on Vagrant, mapped to the EX200 exam objectives, no paid course required.
 slug: /learn/rhcsa
-keywords: [rhcsa, ex200, red hat, linux, certification, study guide]
+keywords: [rhcsa, ex200, red hat, linux, certification, lab, vagrant, virtualbox]
 ---
+
+import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # RHCSA (EX200) guide
 
-{/* Body to be filled during Phase 1 interview pass. Anchored on github.com/Camilool8/RHCSA-LAB. */}
+The lab itself lives on GitHub at **[Camilool8/RHCSA-LAB](https://github.com/Camilool8/RHCSA-LAB)** — three intentionally broken RHEL 9 servers you spin up locally with Vagrant. This page is the meta-guide: what the lab is, how to use it well, and the path I'd walk if I were starting from zero today.
 
-## What the exam tests
+## What the lab is
 
-## How I studied
+**Goal.** Give you a real RHCSA practice environment on your laptop — without touching your host OS, without renting cloud VMs, and without a paid course.
 
-## Prep timeline
+**Approach.** Vagrant brings up three RHEL 9 VMs on VirtualBox: a repo server, a target server with deliberately misconfigured web and storage, and a second target with boot issues and a GUI for VNC. Every domain on the EX200 exam objectives maps to a task on those VMs. You debug, fix, verify, then snapshot and break it again.
 
-## Lab setup
+**Stack.**
 
-{/* Link out to github.com/Camilool8/RHCSA-LAB */}
+<TechStackGrid
+  compact
+  items={[
+    { name: 'Vagrant', href: 'https://www.vagrantup.com/' },
+    { name: 'VirtualBox', href: 'https://www.virtualbox.org/' },
+    { name: 'RHEL', href: 'https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux' },
+    { name: 'Bash', href: 'https://www.gnu.org/software/bash/' },
+  ]}
+/>
 
-## Topic-by-topic notes
+## What this guide is and isn't
 
-## Day-of-exam tips
+This page is **not** a re-statement of the lab's README — that lives on GitHub and stays the source of truth. This page is the framing around it: how I'd recommend you use the lab, why it's structured the way it is, and the parts of the prep that aren't in code.
 
-## What I'd do differently
+I took the official Red Hat prep courses for both RHCSA and RHCE, sponsored by a Red Hat partner, and I'd recommend them to anyone who can take them. They are genuinely detailed — they walk through the history behind each subsystem, every command, the different approaches you can take to the same situation, and the *why* underneath the *how*. If you want depth beyond the exam, that's where you find it.
+
+They are not the only path, though. The exam itself rewards being able to debug a real system under a clock, and that skill is built by sitting in front of broken VMs and fixing them — which is what this lab is for. You can pass RHCSA on the lab alone, and you can pass it better if you've also done the courses. Complements, not substitutes.
+
+## Prerequisites
+
+Before you clone, make sure your machine clears the bar. Numbers come from the lab's own `config.yaml`.
+
+- **VirtualBox 7.0+** and **Vagrant 2.4+** installed and on PATH.
+- **CPU virtualization** (VT-x / AMD-V) enabled in BIOS/UEFI.
+- **At least 6 GB RAM** free for the three VMs (1 GB + 2 GB + 2 GB allocated, with overhead).
+- **At least 50 GB free disk** — the VMs plus snapshots eat space fast once you start practicing.
+- macOS, Linux, or Windows host — all three work, with the usual caveat that VirtualBox on Apple Silicon needs the Tech Preview build.
+
+A RHEL 9 ISO in `iso/` is optional but recommended. Without it the lab falls back to a community-rebuild base (Rocky / Alma).
+
+## How to use the lab
+
+The lab ships two key files under `lab/`:
+
+- `ordered-task-list.md` — the task list, in roughly the order they'd surface on a real exam.
+- `ordered-answer-list.md` — the answers.
+
+**Do not open the answers first.** The whole point is to sit with the task, hit the wall, debug your way out, and verify the fix. The lessons that survive into exam day are the ones earned in that struggle. The answers are there for when you're genuinely stuck or want to confirm your approach after the fact — not as a script to follow.
+
+A workflow that works:
+
+1. **`vagrant up`** and let all three VMs come online once. Confirm SSH access (`redhat / redhat`) on each.
+2. **Snapshot** every VM in its freshly-provisioned state. You will break things on purpose, and a clean snapshot is what makes the lab reusable instead of a one-shot.
+3. **Pick a domain** from the task list — boot recovery, SELinux, LVM, storage, networking, whichever is weakest for you. Don't go top-to-bottom on the first pass; go to the topics you'd fail today.
+4. **Read the task. Close the answer file. Open a terminal.** Work it out from `man`, `--help`, and the system itself. RHCSA is open-book on the man pages — train that muscle.
+5. **Verify the fix the way the exam would.** Reboot the VM and confirm the change persists. Anything that only works until the next reboot is wrong.
+6. **Snapshot again** if it was a hard one and you want a checkpoint at "fixed". Then break it again and re-fix from scratch a few days later.
+
+## What the lab maps to
+
+The lab's task list covers every domain on the [EX200 exam objectives](https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam), grouped roughly as:
+
+- System access, SSH, and key-based authentication
+- Network configuration — interfaces, hostnames, services
+- Repository and package management
+- User and group management, password policies
+- Privilege escalation with sudo and command aliases
+- File systems, mounting, autofs, NFS, permissions
+- Archives and backup with tar / star
+- Links, file attributes, setuid discovery
+- Scheduled tasks — at and cron
+- Shell scripting with conditional logic
+- Web services — troubleshooting and access
+- SELinux — contexts, booleans, troubleshooting
+- Boot configuration — GRUB, kernel parameters, recovery
+- System time and persistent journaling
+- Storage management — volume groups, LVM, swap, thin provisioning
+- Performance tuning — tuned profiles, process priority
+- Containerization — image build and rootless service deployment
+
+If any of those headings feel foreign, that's the topic to lead with.
+
+## What the lab won't do for you
+
+The lab gives you the environment and the tasks. It does not give you:
+
+- **Speed under pressure.** EX200 is timed. Practice each task until you can do it without looking — `man` is fine, but pausing to think through fundamentals isn't. Time yourself on a full task list once you've worked through it twice.
+- **Memory of *why*.** The answer file shows the command. It does not always explain the model underneath. When you fix something, ask yourself: what is the system actually checking when it succeeds or fails? If the answer is "I don't know, the command worked," go read the `man` page for the command and the related configuration file before moving on.
+- **The exam interface.** The real exam runs in a controlled environment with its own quirks. The official Red Hat practice exam is the only thing that actually replicates that — worth doing once in the final week, even if you skip everything else paid.
+
+## Day-of guidance
+
+A few things that mattered for me on exam day, in no particular order:
+
+- **Reboot every VM after every change** before you move on. If it doesn't survive a reboot, it's not done.
+- **`grep`, `man -k`, and `apropos`** are your friends. You don't need to remember every flag — you need to find them fast.
+- **Read every task fully before you start it.** A late requirement in the task description can change what the right starting move was.
+- **Don't tune for elegance.** A working solution beats an elegant unfinished one. Hardcoded paths and inline commands are fine — this is an exam, not a code review.
+- **Time-box hard tasks.** If a task burns more than ~15 minutes with no progress, mark it, move on, and come back. Easy points first.
+
+## If you want my opinion on the cert itself
+
+I think RHCSA is the best entry point into serious Linux work I've seen, paid course or not. The exam doesn't reward memorized facts — it rewards being comfortable enough at a Linux prompt to fix what's in front of you. Whether you've earned the badge before or not, the skill it builds is the kind that doesn't expire, even when the badge does. (More on that in [Certifications expire, and that's the point](/me/opinions/certifications-expire).)
+
+The lab is free, open, and on GitHub. Clone it, break it, fix it, and the rest follows.
 
 import AuthorCard from '@site/src/components/AuthorCard';
 

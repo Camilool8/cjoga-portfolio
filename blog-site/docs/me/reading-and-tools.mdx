@@ -6,7 +6,7 @@ slug: /me/reading-and-tools
 keywords: [learning, courses, udemy, tools, hardware, setup, devops, ai]
 ---
 
-import CourseCard from '@site/src/components/CourseCard';
+import CourseCard, { CourseCardGrid } from '@site/src/components/CourseCard';
 import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # Learning and tools
@@ -19,25 +19,28 @@ Most of my structured learning happens on [Udemy](https://www.udemy.com). The on
 
 ### Featured
 
-<CourseCard
-  title="The Complete 2024 Web Development Bootcamp"
-  instructor="Angela Yu"
-  platform="Udemy"
-  year={2021}
-  hours={62}
-  takeaway="The most complete and user-friendly course I've taken. Angela Yu is one of the best teachers I've come across — honest, clear, and genuinely good at making hard concepts feel easy. The course walks you from zero to competent on real web development practices: first the hard way, then building up to frameworks. The one I'd recommend to anyone starting from scratch."
-  link="https://www.udemy.com/course/the-complete-web-development-bootcamp/"
-/>
-
-<CourseCard
-  title="Decoding DevOps"
-  instructor="Imran Teli"
-  platform="Udemy"
-  year={2023}
-  hours={64}
-  takeaway="The course that anchored my DevOps work early on — the one I went back to whenever I was shadowing senior calls and wasn't sure I was tracking the concept being discussed. A genuinely complete tour of the pillars of DevOps and cloud, structured well enough that it stays useful as reference."
-  link="https://www.udemy.com/course/decodingdevops/"
-/>
+<CourseCardGrid>
+  <CourseCard
+    title="The Complete Full-Stack Web Development Bootcamp"
+    instructor="Angela Yu"
+    platform="Udemy"
+    year={2021}
+    hours={62}
+    image="https://img-c.udemycdn.com/course/480x270/1565838_e54e_18.jpg?w=1920&q=75"
+    takeaway="The most complete and user-friendly course I've taken. Angela Yu is one of the best teachers I've come across — honest, clear, and genuinely good at making hard concepts feel easy. The course walks you from zero to competent on real web development practices: first the hard way, then building up to frameworks. The one I'd recommend to anyone starting from scratch."
+    link="https://www.udemy.com/course/the-complete-web-development-bootcamp/"
+  />
+  <CourseCard
+    title="Decoding DevOps"
+    instructor="Imran Teli"
+    platform="Udemy"
+    year={2023}
+    hours={64}
+    image="https://img-c.udemycdn.com/course/480x270/4039556_ebb3_9.jpg?w=1920&q=75"
+    takeaway="The course that anchored my DevOps work early on — the one I went back to whenever I was shadowing senior calls and wasn't sure I was tracking the concept being discussed. A genuinely complete tour of the pillars of DevOps and cloud, structured well enough that it stays useful as reference."
+    link="https://www.udemy.com/course/decodingdevops/"
+  />
+</CourseCardGrid>
 
 ### Also completed
 

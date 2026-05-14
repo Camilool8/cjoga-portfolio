@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaAws, FaMicrosoft } from 'react-icons/fa';
+import { FaAws, FaMicrosoft, FaRedhat } from 'react-icons/fa';
 import {
   SiKubernetes,
   SiTerraform,
@@ -42,6 +42,9 @@ import {
   SiOpenai,
   SiWindsurf,
   SiGooglegemini,
+  SiVagrant,
+  SiVirtualbox,
+  SiGnubash,
 } from 'react-icons/si';
 import {
   VscAzure,
@@ -166,6 +169,13 @@ const TECH = {
   'Power Automate': { Icon: FaMicrosoft, color: '#0066FF' },
   KubeCost: { Icon: SiKubernetes, color: '#326CE5' },
   Karpenter: { Icon: FaAws, color: '#FF9900' },
+
+  // Lab / certification tooling
+  Vagrant: { Icon: SiVagrant, color: '#1868F2' },
+  VirtualBox: { Icon: SiVirtualbox, color: '#183A61' },
+  RHEL: { Icon: FaRedhat, color: '#EE0000' },
+  'Red Hat': { Icon: FaRedhat, color: '#EE0000' },
+  Bash: { Icon: SiGnubash, color: '#4EAA25' },
 };
 
 function TechTile({ name, href }) {
