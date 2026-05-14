@@ -53,8 +53,16 @@ function App() {
   const { i18n } = useTranslation();
   const systemTheme = useSystemTheme();
   useScrollReveal();
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || systemTheme;
+  // Initial theme: explicit user choice from localStorage, otherwise
+  // whatever the OS reports. The bootstrap script in index.html applies
+  // the same logic to the <html> element before React mounts, so we
+  // never paint the wrong theme on first frame.
+  const [theme, setThemeState] = useState(() => {
+    try {
+      return localStorage.getItem("theme") || systemTheme;
+    } catch {
+      return systemTheme;
+    }
   });
   const [language, setLanguage] = useState(() => {
     return (
@@ -65,9 +73,8 @@ function App() {
   });
   const contentRef = useRef(null);
 
+  // Apply theme to the DOM whenever it changes.
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
       document.documentElement.setAttribute("data-theme", "dark");
@@ -76,6 +83,30 @@ function App() {
       document.documentElement.setAttribute("data-theme", "light");
     }
   }, [theme]);
+
+  // Follow the OS preference whenever the user has NOT made an explicit
+  // choice. Once they toggle, their choice sticks via localStorage.
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("theme")) return;
+    } catch {
+      return;
+    }
+    setThemeState(systemTheme);
+  }, [systemTheme]);
+
+  // Wrap setTheme so explicit user toggles persist to localStorage.
+  // System-driven theme changes go through setThemeState directly and
+  // are NOT persisted, so the user keeps following the OS until they
+  // actively choose a theme.
+  const setTheme = (next) => {
+    setThemeState(next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      // ignore — private browsing, etc.
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem("language", language);

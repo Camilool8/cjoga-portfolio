@@ -34,6 +34,28 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <title>Jose Camilo Joga Guerrero | DevOps & Cloud Engineer</title>
+
+    <!-- Theme bootstrap — runs before React mounts so the page paints in
+         the correct theme on first frame. Reads explicit preference from
+         localStorage, falls back to the OS's prefers-color-scheme. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var theme = stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {
+          // localStorage may be unavailable in private browsing — fall
+          // through to the CSS default.
+        }
+      })();
+    </script>
 </head>
 
 <body>
