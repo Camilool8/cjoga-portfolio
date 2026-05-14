@@ -6,6 +6,8 @@ slug: /engineering/lab/overview
 keywords: [homelab, kubernetes, k3s, cluster, envoy, cloudflared, tailscale, proxmox]
 ---
 
+import TechStackGrid from '@site/src/components/TechStackGrid';
+
 # Lab overview
 
 The site you're reading runs on a [K3s](https://k3s.io/) cluster I run myself — six nodes split between a [Proxmox](https://www.proxmox.com/) host and a handful of bare-metal machines, meshed over [Tailscale](https://tailscale.com/), with [Envoy Gateway](https://gateway.envoyproxy.io/) in front and a [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/) handling the public edge. It hosts `cjoga.cloud`, `blog.cjoga.cloud`, `kodepull.com`, `perfyles.do`, and roughly a dozen other projects I run for myself or for [KODEPULL](/engineering/work/kodepull).
@@ -32,6 +34,22 @@ flowchart LR
 ```
 
 Six nodes: one K3s control-plane node living as a Proxmox VM (`prox-k8s-master`), one second VM worker on the same Proxmox host, and four bare-metal workers on a wired LAN. Storage is [Longhorn](https://longhorn.io/). Secrets are [OpenBao](https://openbao.org/) — the FOSS Vault fork — fronted by [External Secrets Operator](https://external-secrets.io/) so apps consume Kubernetes secrets without ever touching the bao directly. TLS is [cert-manager](https://cert-manager.io/) plus Let's Encrypt. Public ingress is Envoy Gateway via the [Gateway API](https://gateway-api.sigs.k8s.io/) — three `Gateway` resources for the three production domains, with `HTTPRoute`s per app. The edge itself is a Cloudflare Tunnel: `cloudflared` runs as pods in the cluster, and Cloudflare proxies public hostnames in.
+
+<TechStackGrid
+  caption="The stack"
+  items={[
+    'K3s',
+    'Proxmox',
+    'Tailscale',
+    'Envoy',
+    'Cloudflare',
+    'Longhorn',
+    'OpenBao',
+    'External Secrets',
+    'cert-manager',
+    "Let's Encrypt",
+  ]}
+/>
 
 ## How it got here
 

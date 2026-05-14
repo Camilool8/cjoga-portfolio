@@ -1,0 +1,96 @@
+/* Tech stack grid — compact tile row of vendor logos + names.
+   Used on work + lab pages to ground the prose in the actual stack.
+   Visual aesthetic matches AuthorCard / CourseCard / CertBadge: flat,
+   subtle borders, accent-color hover, mono-cased caption. */
+
+.wrap {
+  margin: 1.5rem 0 2rem;
+}
+
+.caption {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.75rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+
+.grid.compact {
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.4rem;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  transition: border-color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+a.tile:hover {
+  border-color: var(--border-medium);
+  background: var(--accent-dim);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.textChip {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a.tile:hover .label {
+  color: var(--text-primary);
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
