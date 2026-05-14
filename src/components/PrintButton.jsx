@@ -1,8 +1,6 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MdFileDownload } from "react-icons/md";
-import { pdf } from "@react-pdf/renderer";
-import ProfessionalPDFCV from "./ProfessionalPDFCV";
 
 function PrintButton() {
   const { t, i18n } = useTranslation();
@@ -14,6 +12,11 @@ function PrintButton() {
 
     try {
       setIsGenerating(true);
+
+      const [{ pdf }, { default: ProfessionalPDFCV }] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("./ProfessionalPDFCV"),
+      ]);
 
       const pdfDoc = <ProfessionalPDFCV />;
       const asPdf = pdf();

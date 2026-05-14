@@ -5,7 +5,7 @@
     "projects": "Projects",
     "certifications": "Certifications",
     "contact": "Contact",
-    "blog": "Blog",
+    "handbook": "Handbook",
     "terminal": "Terminal",
     "cv-title": "DevOps & Cloud Engineer"
   },
@@ -25,7 +25,7 @@
     },
     "status": {
       "operational": "systems operational",
-      "certs": "10 certs active",
+      "certs": "11 certs earned",
       "opportunities": "open to opportunities"
     }
   },
@@ -60,6 +60,8 @@
   "experience": {
     "title": "Experience",
     "heading": "Where I've worked.",
+    "active": "Active",
+    "past": "Past",
     "inspyr": {
       "title": "DevOps Engineer",
       "company": "INSPYR Global Solutions",
@@ -101,37 +103,69 @@
     "cicd": {
       "title": "Multi-Environment CI/CD Pipeline",
       "description": "Designed and implemented a comprehensive CI/CD pipeline using GitLab CI that supported development, staging, and production environments with automated testing, deployment, and rollback capabilities.",
-      "tech": ["GitLab CI", "Kubernetes", "ArgoCD", "Kustomize"]
+      "tech": [
+        "GitLab CI",
+        "Kubernetes",
+        "ArgoCD",
+        "Kustomize"
+      ]
     },
     "iac": {
       "title": "Infrastructure as Code for Multi-Cloud",
       "description": "Created a modular Terraform codebase for managing AWS and Azure resources, including networking, compute, storage, and security components, with a focus on reusability and maintainability.",
-      "tech": ["Terraform", "AWS", "Azure", "PowerShell"]
+      "tech": [
+        "Terraform",
+        "AWS",
+        "Azure",
+        "PowerShell"
+      ]
     },
     "monitoring": {
       "title": "Kubernetes Monitoring Solution",
       "description": "Implemented a comprehensive monitoring solution for Kubernetes clusters using Dynatrace, with custom dashboards, alerts, and automated remediation for common failure scenarios.",
-      "tech": ["Kubernetes", "Dynatrace", "Grafana", "Prometheus"]
+      "tech": [
+        "Kubernetes",
+        "Dynatrace",
+        "Grafana",
+        "Prometheus"
+      ]
     },
     "infrastructure": {
       "title": "Automated Infrastructure Deployment",
       "description": "Developed Ansible playbooks and roles for automating the deployment and configuration of application servers, databases, and networking components across multiple environments.",
-      "tech": ["Ansible", "AWS", "Linux", "PostgreSQL"]
+      "tech": [
+        "Ansible",
+        "AWS",
+        "Linux",
+        "PostgreSQL"
+      ]
     },
     "portal": {
       "title": "Internal DevOps Portal",
       "description": "Created a web-based portal using Vue.js that provided a unified interface for deploying applications, managing infrastructure, and viewing monitoring metrics across development teams.",
-      "tech": ["Vue.js", "Node.js", "Docker", "REST APIs"]
+      "tech": [
+        "Vue.js",
+        "Node.js",
+        "Docker",
+        "REST APIs"
+      ]
     },
     "containerization": {
       "title": "Containerization Migration",
       "description": "Led the migration of legacy applications to containerized environments using Docker and Kubernetes, including the development of optimized container images and orchestration configurations.",
-      "tech": ["Docker", "Kubernetes", "Helm", "Jenkins"]
+      "tech": [
+        "Docker",
+        "Kubernetes",
+        "Helm",
+        "Jenkins"
+      ]
     }
   },
   "certifications": {
     "title": "Certifications",
     "heading": "Credentials & certs.",
+    "chip": "{{count}} certifications earned",
+    "chipLabel": "certifications earned",
     "awsSolutionsArchitect": {
       "name": "AWS Certified Solutions Architect (CSA)",
       "issuer": "Amazon Web Services",
@@ -140,6 +174,11 @@
     "hcta": {
       "name": "HashiCorp Certified Terraform Associate (004)",
       "issuer": "HashiCorp",
+      "date": "2026"
+    },
+    "kcna": {
+      "name": "Kubernetes and Cloud Native Associate (KCNA)",
+      "issuer": "The Linux Foundation",
       "date": "2026"
     },
     "rhcsa": {
@@ -200,163 +239,28 @@
     "projects": "KEY PROJECTS",
     "certifications": "CERTIFICATIONS"
   },
-  "blog": {
-    "title": "Blog",
-    "readMore": "Read More",
-    "backToBlog": "Back to Blog",
-    "search": "Search",
-    "searchPlaceholder": "Search posts...",
-    "searchBlogPlaceholder": "Search for articles...",
-    "tags": "Tags",
-    "noTags": "No tags found",
-    "about": "About Me",
-    "aboutContent": "DevOps & Cloud Engineer specializing in building and optimizing infrastructure through automation, CI/CD, Infrastructure as Code, and hybrid cloud environments.",
-    "tableOfContents": "Table of Contents",
-    "sharePost": "Share This Post",
-    "linkCopied": "Link copied!",
-    "relatedPosts": "Related Posts",
-    "readingTime": "{{minutes}} min read",
-    "filterByTag": "Filtered by tag",
-    "clearFilter": "Clear filter",
-    "noPostsWithTag": "No posts found with tag '{{tag}}'",
-    "noPosts": "No posts found",
-    "tryDifferentSearch": "Try a different search term or browse all posts",
-    "previousPage": "Previous page",
-    "nextPage": "Next page",
-    "searchResults": "Search Results",
-    "searchingFor": "Searching for",
-    "noSearchResults": "No results found",
-    "foundResults": "Found {{count}} result(s)",
-    "viewAllPosts": "View All Posts",
-    "error": {
-      "posts": "Failed to load blog posts",
-      "post": "Failed to load blog post",
-      "postNotFound": "Blog post not found",
-      "search": "Failed to search blog posts"
-    },
-    "previewTitle": "Blog",
-    "previewHeading": "Latest from the blog.",
-    "views": "{{count}} views",
-    "publish": "Publish",
-    "unpublish": "Unpublish"
-  },
-  "admin": {
-    "login": {
-      "title": "Admin Login",
-      "email": "Email",
-      "emailPlaceholder": "Enter your email",
-      "password": "Password",
-      "passwordPlaceholder": "Enter your password",
-      "submit": "Sign In",
-      "loggingIn": "Signing in...",
-      "errorEmptyFields": "Email and password are required",
-      "errorInvalidCredentials": "Invalid email or password",
-      "errorNotAdmin": "Your account does not have admin privileges",
-      "errorGeneric": "An error occurred during login",
-      "adminOnly": "This area is restricted to website administrators only"
-    },
-    "dashboard": {
-      "title": "Blog Dashboard",
-      "newPost": "New Post",
-      "signOut": "Sign Out",
-      "noPosts": "No blog posts yet",
-      "getStarted": "Get started by creating your first post",
-      "createFirstPost": "Create First Post",
-      "status": "Status",
-      "date": "Date",
-      "actions": "Actions",
-      "published": "Published",
-      "draft": "Draft",
-      "view": "View",
-      "edit": "Edit",
-      "delete": "Delete",
-      "deleting": "Deleting...",
-      "previous": "Previous",
-      "next": "Next",
-      "confirmDelete": "Delete Post?",
-      "confirmDeleteMessage": "This action cannot be undone. Are you sure you want to delete this post?",
-      "cancel": "Cancel",
-      "errorFetchingPosts": "Failed to load blog posts",
-      "errorDeletingPost": "Failed to delete post",
-      "publish": "Publish",
-      "unpublish": "Unpublish"
-    },
-    "postEditor": {
-      "newPost": "New Blog Post",
-      "editPost": "Edit Blog Post",
-      "back": "Back to Dashboard",
-      "basicInfo": "Basic Information",
-      "title": "Title",
-      "titlePlaceholder": "Enter post title",
-      "slug": "URL Slug",
-      "slugPlaceholder": "enter-post-slug",
-      "slugHelper": "The URL-friendly version of the title",
-      "excerpt": "Excerpt",
-      "excerptPlaceholder": "Brief summary of the post",
-      "excerptHelper": "A short summary that appears in blog listings (160 chars max)",
-      "coverImage": "Cover Image",
-      "coverImagePlaceholder": "https://example.com/image.jpg",
-      "coverImageHelper": "URL to the cover image for this post",
-      "uploadNotImplemented": "Upload functionality would open a file picker here",
-      "tags": "Tags",
-      "tagsPlaceholder": "Add a tag...",
-      "publishImmediately": "Publish immediately",
-      "content": "Content",
-      "seoSettings": "SEO Settings",
-      "seoTitle": "SEO Title",
-      "seoTitlePlaceholder": "Title that appears in search engines",
-      "seoDescription": "SEO Description",
-      "seoDescriptionPlaceholder": "Description that appears in search engines",
-      "seoDescriptionHelper": "Recommended length: 150-160 characters",
-      "seoKeywords": "SEO Keywords",
-      "seoKeywordsPlaceholder": "keyword1, keyword2, keyword3",
-      "seoKeywordsHelper": "Comma-separated list of keywords",
-      "savePost": "Save Post",
-      "updatePost": "Update Post",
-      "saving": "Saving...",
-      "showPreview": "Show Preview",
-      "hidePreview": "Hide Preview",
-      "preview": "Preview",
-      "untitledPost": "Untitled Post",
-      "errorRequiredFields": "Title and content are required",
-      "errorCreatingPost": "Failed to create post",
-      "errorUpdatingPost": "Failed to update post",
-      "errorFetchingPost": "Failed to load post",
-      "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?",
-      "postCreated": "Post created successfully",
-      "postUpdated": "Post updated successfully",
-      "removeCoverImage": "Remove cover image"
-    },
-    "imageUploader": {
-      "selectImage": "Select an image file",
-      "upload": "Upload",
-      "uploading": "Uploading...",
-      "cancel": "Cancel",
-      "noFileSelected": "Please select an image file first",
-      "fileTooLarge": "File is too large. Maximum size is 5MB",
-      "invalidFileType": "Only image files are allowed",
-      "uploadError": "An error occurred while uploading the image",
-      "supportedFormats": "Supported formats: JPEG, PNG, GIF, WebP (max 5MB)"
-    },
-    "markdownEditor": {
-      "placeholder": "Write your content here using Markdown...",
-      "syntaxGuide": "Supports Markdown syntax.",
-      "syntaxGuideLink": "Markdown Guide",
-      "heading": "Heading",
-      "bold": "Bold",
-      "italic": "Italic",
-      "link": "Link",
-      "image": "Image",
-      "bulletList": "Bullet List",
-      "numberedList": "Numbered List",
-      "blockquote": "Blockquote",
-      "codeBlock": "Code Block",
-      "linkPrompt": "Enter the URL",
-      "imagePrompt": "Enter the image URL",
-      "altTextPrompt": "Enter alt text for the image",
-      "uploadImage": "Upload Image",
-      "cancel": "Cancel",
-      "removeCoverImage": "Remove cover image"
+  "handbook": {
+    "label": "The handbook",
+    "heading": "A living technical handbook.",
+    "subheading": "Opinions, lab work, certification guides, and the path I'm walking right now — kept as a separate site so it can grow on its own.",
+    "eyebrow": "cjoga.cloud",
+    "cardTitle": "The Handbook",
+    "cardSubtitle": "Five sections. One source of truth for what I work on, what I think, and what I'm learning.",
+    "cta": "Visit blog.cjoga.cloud",
+    "windowAriaLabel": "Visit the handbook at blog.cjoga.cloud",
+    "sections": {
+      "me": {
+        "title": "Me",
+        "desc": "Who I am, what I'm focused on now, and the takes I'd defend in a review."
+      },
+      "engineering": {
+        "title": "Engineering",
+        "desc": "The K3s lab behind this site, plus the engagements behind the certs."
+      },
+      "learn": {
+        "title": "Learn",
+        "desc": "Cert guides — RHCSA today, RHCE next, more to come."
+      }
     }
   },
   "terminal": {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { FiSun, FiMoon } from "react-icons/fi";
+import { FiSun, FiMoon, FiExternalLink } from "react-icons/fi";
 import { socialLinks } from "../data";
 
 function NavigationBar({ theme, setTheme, language, setLanguage }) {
@@ -10,25 +10,16 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const langRef = useRef(null);
 
   const isHomePage = location.pathname === "/";
 
   const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    setIsScrolled(currentScrollY > 50);
-
-    if (currentScrollY > lastScrollY && currentScrollY > 200) {
-      setVisible(false);
-    } else {
-      setVisible(true);
-    }
-    setLastScrollY(currentScrollY);
-  }, [lastScrollY]);
+    setIsScrolled(window.scrollY > 50);
+  }, []);
 
   useEffect(() => {
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
@@ -86,7 +77,6 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
     );
   };
 
-  const isBlogActive = location.pathname.startsWith("/blog");
   const isTerminalActive = location.pathname.startsWith("/terminal");
 
   return (
@@ -94,7 +84,7 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
       <nav
         className={`fixed top-4 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-0.5 py-1.5 px-2 glass rounded-2xl transition-all duration-500 max-w-[calc(100vw-32px)] ${
           isScrolled ? "shadow-lg" : ""
-        } ${visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}
+        }`}
         style={{
           borderColor: isScrolled ? "var(--border-medium)" : "var(--border-subtle)",
         }}
@@ -111,13 +101,15 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           {navItems.map(({ section, label }) => (
             <NavLink key={section} section={section} label={label} />
           ))}
-          <Link
-            to="/blog"
-            className={`nav-pill-link ${isBlogActive ? "nav-pill-active" : ""}`}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          <a
+            href="https://blog.cjoga.cloud"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-pill-link nav-pill-external"
           >
-            {t("header.blog")}
-          </Link>
+            <span>{t("header.handbook")}</span>
+            <FiExternalLink size={11} aria-hidden="true" />
+          </a>
           <Link
             to="/terminal"
             className={`nav-pill-link ${isTerminalActive ? "nav-pill-active" : ""}`}
@@ -216,20 +208,22 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
               <span className="mobile-nav-label">{label}</span>
             </NavLink>
           ))}
-          <Link
-            to="/blog"
-            className={`mobile-nav-item ${isBlogActive ? "is-active" : ""}`}
-            onClick={() => {
-              setMenuOpen(false);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+          <a
+            href="https://blog.cjoga.cloud"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mobile-nav-item"
+            onClick={() => setMenuOpen(false)}
             style={{ "--i": navItems.length }}
           >
             <span className="mobile-nav-num">
               {String(navItems.length + 1).padStart(2, "0")}.
             </span>
-            <span className="mobile-nav-label">{t("header.blog")}</span>
-          </Link>
+            <span className="mobile-nav-label" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              {t("header.handbook")}
+              <FiExternalLink size={12} aria-hidden="true" />
+            </span>
+          </a>
           <Link
             to="/terminal"
             className={`mobile-nav-item ${isTerminalActive ? "is-active" : ""}`}

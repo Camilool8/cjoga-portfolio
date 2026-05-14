@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavigationBar from "./components/NavigationBar";
@@ -9,25 +9,45 @@ import Projects from "./components/Projects";
 import Certifications from "./components/Certifications";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import BlogPage from "./components/Blog/BlogPage";
-import BlogPost from "./components/Blog/BlogPost";
-import BlogSearchResults from "./components/Blog/BlogSearchResults";
-import LoginPage from "./components/Admin/LoginPage";
-import Dashboard from "./components/Admin/Dashboard";
-import PostEditor from "./components/Admin/PostEditor";
-import ProtectedRoute from "./components/Admin/ProtectedRoute";
-import BlogPreview from "./components/Blog/BlogPreview";
+import HandbookCallout from "./components/HandbookCallout";
 import SectionDivider from "./components/SectionDivider";
 import PrintButton from "./components/PrintButton";
 import BackgroundAnimation from "./components/BackgroundAnimation";
 import CursorGlow from "./components/CursorGlow";
 import ScrollProgress from "./components/ScrollProgress";
 import SideElements from "./components/SideElements";
-import Terminal from "./components/Terminal/Terminal";
 import TerminalPromo from "./components/Terminal/TerminalPromo";
 import useSystemTheme from "./hooks/useSystemTheme";
 import useScrollReveal from "./hooks/useScrollReveal";
 import "./styles/global.css";
+
+const Terminal = lazy(() => import("./components/Terminal/Terminal"));
+
+function RouteFallback() {
+  return (
+    <div
+      className="min-h-[60vh] flex items-center justify-center"
+      style={{ color: "var(--text-tertiary)" }}
+      role="status"
+      aria-live="polite"
+    >
+      <div
+        className="flex items-center gap-3"
+        style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}
+      >
+        <span
+          className="w-2 h-2 rounded-full"
+          style={{
+            background: "var(--accent)",
+            boxShadow: "0 0 8px var(--accent)",
+            animation: "pulse 1.2s ease-in-out infinite",
+          }}
+        />
+        loading…
+      </div>
+    </div>
+  );
+}
 
 function App() {
   const { i18n } = useTranslation();
@@ -83,18 +103,6 @@ function App() {
     </div>
   );
 
-  const AdminLayout = ({ children }) => (
-    <div
-      className={`min-h-screen transition-colors duration-300 ${
-        theme === "dark"
-          ? "bg-dark-primary text-dark-text-primary"
-          : "bg-light-primary text-light-text-primary"
-      }`}
-    >
-      {children}
-    </div>
-  );
-
   const Home = () => (
     <>
       <Hero />
@@ -107,7 +115,7 @@ function App() {
       <SectionDivider />
       <Certifications />
       <SectionDivider />
-      <BlogPreview />
+      <HandbookCallout />
       <SectionDivider />
       <TerminalPromo />
       <SectionDivider />
@@ -127,73 +135,15 @@ function App() {
           }
         />
         <Route
-          path="/blog"
-          element={
-            <MainLayout>
-              <BlogPage />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/blog/search"
-          element={
-            <MainLayout>
-              <BlogSearchResults />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/blog/:slug"
-          element={
-            <MainLayout>
-              <BlogPost />
-            </MainLayout>
-          }
-        />
-        <Route
           path="/terminal"
           element={
             <MainLayout>
-              <Terminal />
+              <Suspense fallback={<RouteFallback />}>
+                <Terminal />
+              </Suspense>
             </MainLayout>
           }
         />
-
-        <Route
-          path="/admin/login"
-          element={
-            <AdminLayout>
-              <LoginPage />
-            </AdminLayout>
-          }
-        />
-
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path="/admin/dashboard"
-            element={
-              <AdminLayout>
-                <Dashboard />
-              </AdminLayout>
-            }
-          />
-          <Route
-            path="/admin/posts/new"
-            element={
-              <AdminLayout>
-                <PostEditor />
-              </AdminLayout>
-            }
-          />
-          <Route
-            path="/admin/posts/edit/:id"
-            element={
-              <AdminLayout>
-                <PostEditor />
-              </AdminLayout>
-            }
-          />
-        </Route>
       </Routes>
     </Router>
   );

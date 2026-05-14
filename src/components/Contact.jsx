@@ -68,6 +68,7 @@ function Contact() {
               whileInView="visible"
               viewport={{ once: true }}
               href={link.href}
+              aria-label={link.label}
               {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="contact-link inline-flex items-center gap-2 py-3 px-6 rounded-xl transition-all duration-300 no-underline"
               style={{
@@ -75,7 +76,7 @@ function Contact() {
                 color: "var(--text-secondary)", border: "1px solid var(--border-subtle)",
               }}
             >
-              {link.icon}
+              <span aria-hidden="true">{link.icon}</span>
               <span className="hidden sm:inline">{link.label}</span>
             </motion.a>
           ))}

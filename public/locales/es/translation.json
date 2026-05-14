@@ -5,7 +5,7 @@
     "projects": "Proyectos",
     "certifications": "Certificaciones",
     "contact": "Contacto",
-    "blog": "Blog",
+    "handbook": "Manual",
     "terminal": "Terminal",
     "cv-title": "Ingeniero DevOps/Cloud"
   },
@@ -25,7 +25,7 @@
     },
     "status": {
       "operational": "sistemas operativos",
-      "certs": "10 certs activas",
+      "certs": "11 certs obtenidas",
       "opportunities": "abierto a oportunidades"
     }
   },
@@ -60,6 +60,8 @@
   "experience": {
     "title": "Experiencia",
     "heading": "Dónde he trabajado.",
+    "active": "Activo",
+    "past": "Pasado",
     "inspyr": {
       "title": "Ingeniero DevOps",
       "company": "INSPYR Global Solutions",
@@ -101,37 +103,69 @@
     "cicd": {
       "title": "Pipeline CI/CD Multi-Entorno",
       "description": "Diseñé e implementé un canal CI/CD integral usando GitLab CI que soportaba entornos de desarrollo, pruebas y producción con pruebas automatizadas, despliegue y capacidades de rollback.",
-      "tech": ["GitLab CI", "Kubernetes", "ArgoCD", "Kustomize"]
+      "tech": [
+        "GitLab CI",
+        "Kubernetes",
+        "ArgoCD",
+        "Kustomize"
+      ]
     },
     "iac": {
       "title": "Infraestructura como Código para Multi-Nube",
       "description": "Creé un código base modular en Terraform para gestionar recursos de AWS y Azure, incluyendo redes, cómputo, almacenamiento y componentes de seguridad, con enfoque en reusabilidad y mantenibilidad.",
-      "tech": ["Terraform", "AWS", "Azure", "PowerShell"]
+      "tech": [
+        "Terraform",
+        "AWS",
+        "Azure",
+        "PowerShell"
+      ]
     },
     "monitoring": {
       "title": "Solución de Monitoreo para Kubernetes",
       "description": "Implementé una solución integral de monitoreo para clústeres Kubernetes usando Dynatrace, con dashboards personalizados, alertas y remediación automatizada para escenarios comunes de fallo.",
-      "tech": ["Kubernetes", "Dynatrace", "Grafana", "Prometheus"]
+      "tech": [
+        "Kubernetes",
+        "Dynatrace",
+        "Grafana",
+        "Prometheus"
+      ]
     },
     "infrastructure": {
       "title": "Despliegue Automatizado de Infraestructura",
       "description": "Desarrollé playbooks y roles de Ansible para automatizar el despliegue y configuración de servidores de aplicaciones, bases de datos y componentes de red en múltiples entornos.",
-      "tech": ["Ansible", "AWS", "Linux", "PostgreSQL"]
+      "tech": [
+        "Ansible",
+        "AWS",
+        "Linux",
+        "PostgreSQL"
+      ]
     },
     "portal": {
       "title": "Portal DevOps Interno",
       "description": "Creé un portal web usando Vue.js que proporcionaba una interfaz unificada para desplegar aplicaciones, gestionar infraestructura y visualizar métricas de monitoreo entre equipos de desarrollo.",
-      "tech": ["Vue.js", "Node.js", "Docker", "REST APIs"]
+      "tech": [
+        "Vue.js",
+        "Node.js",
+        "Docker",
+        "REST APIs"
+      ]
     },
     "containerization": {
       "title": "Migración a Contenedores",
       "description": "Lideré la migración de aplicaciones heredadas a entornos containerizados usando Docker y Kubernetes, incluyendo el desarrollo de imágenes de contenedores optimizadas y configuraciones de orquestación.",
-      "tech": ["Docker", "Kubernetes", "Helm", "Jenkins"]
+      "tech": [
+        "Docker",
+        "Kubernetes",
+        "Helm",
+        "Jenkins"
+      ]
     }
   },
   "certifications": {
     "title": "Certificaciones",
     "heading": "Credenciales y certs.",
+    "chip": "{{count}} certificaciones obtenidas",
+    "chipLabel": "certificaciones obtenidas",
     "awsSolutionsArchitect": {
       "name": "AWS Certified Solutions Architect (CSA)",
       "issuer": "Amazon Web Services",
@@ -140,6 +174,11 @@
     "hcta": {
       "name": "HashiCorp Certified Terraform Associate (004)",
       "issuer": "HashiCorp",
+      "date": "2026"
+    },
+    "kcna": {
+      "name": "Kubernetes and Cloud Native Associate (KCNA)",
+      "issuer": "The Linux Foundation",
       "date": "2026"
     },
     "rhcsa": {
@@ -189,165 +228,6 @@
     "text": "Actualmente estoy buscando nuevas oportunidades y mi bandeja de entrada siempre está abierta. Ya sea que tengas una pregunta o simplemente quieras saludar, ¡haré todo lo posible por responderte!",
     "cta": "Enviar Mensaje"
   },
-  "blog": {
-    "title": "Blog",
-    "readMore": "Leer Más",
-    "backToBlog": "Volver al Blog",
-    "search": "Buscar",
-    "searchPlaceholder": "Buscar artículos...",
-    "searchBlogPlaceholder": "Buscar artículos...",
-    "tags": "Etiquetas",
-    "noTags": "No se encontraron etiquetas",
-    "about": "Sobre Mí",
-    "aboutContent": "Ingeniero DevOps y de Cloud especializado en construir y optimizar infraestructura a través de automatización, CI/CD, Infraestructura como Código y entornos de nube híbrida.",
-    "tableOfContents": "Tabla de Contenidos",
-    "sharePost": "Compartir Este Artículo",
-    "linkCopied": "¡Enlace copiado!",
-    "relatedPosts": "Artículos Relacionados",
-    "readingTime": "{{minutes}} min de lectura",
-    "filterByTag": "Filtrado por etiqueta",
-    "clearFilter": "Limpiar filtro",
-    "noPostsWithTag": "No se encontraron artículos con la etiqueta '{{tag}}'",
-    "noPosts": "No se encontraron artículos",
-    "tryDifferentSearch": "Intenta con otro término de búsqueda o navega por todos los artículos",
-    "previousPage": "Página anterior",
-    "nextPage": "Página siguiente",
-    "searchResults": "Resultados de Búsqueda",
-    "searchingFor": "Buscando",
-    "noSearchResults": "No se encontraron resultados",
-    "foundResults": "{{count}} resultado(s) encontrado(s)",
-    "viewAllPosts": "Ver Todos los Artículos",
-    "error": {
-      "posts": "Error al cargar artículos",
-      "post": "Error al cargar el artículo",
-      "postNotFound": "Artículo no encontrado",
-      "search": "Error al buscar artículos"
-    },
-    "previewTitle": "Blog",
-    "previewHeading": "Lo último del blog.",
-    "views": "{{count}} vistas",
-    "publish": "Publicar",
-    "unpublish": "Despublicar"
-  },
-  "admin": {
-    "login": {
-      "title": "Acceso Administrador",
-      "email": "Correo electrónico",
-      "emailPlaceholder": "Ingresa tu correo electrónico",
-      "password": "Contraseña",
-      "passwordPlaceholder": "Ingresa tu contraseña",
-      "submit": "Iniciar Sesión",
-      "loggingIn": "Iniciando sesión...",
-      "errorEmptyFields": "El correo y la contraseña son obligatorios",
-      "errorInvalidCredentials": "Correo o contraseña inválidos",
-      "errorNotAdmin": "Tu cuenta no tiene privilegios de administrador",
-      "errorGeneric": "Ocurrió un error durante el inicio de sesión",
-      "adminOnly": "Esta área está restringida solo para administradores del sitio"
-    },
-    "dashboard": {
-      "title": "Panel de Blog",
-      "newPost": "Nuevo Artículo",
-      "signOut": "Cerrar Sesión",
-      "noPosts": "Aún no hay artículos",
-      "getStarted": "Comienza creando tu primer artículo",
-      "createFirstPost": "Crear Primer Artículo",
-      "status": "Estado",
-      "date": "Fecha",
-      "actions": "Acciones",
-      "published": "Publicado",
-      "draft": "Borrador",
-      "view": "Ver",
-      "edit": "Editar",
-      "delete": "Eliminar",
-      "deleting": "Eliminando...",
-      "previous": "Anterior",
-      "next": "Siguiente",
-      "confirmDelete": "¿Eliminar Artículo?",
-      "confirmDeleteMessage": "Esta acción no se puede deshacer. ¿Estás seguro de que deseas eliminar este artículo?",
-      "cancel": "Cancelar",
-      "errorFetchingPosts": "Error al cargar artículos",
-      "errorDeletingPost": "Error al eliminar artículo",
-      "publish": "Publicar",
-      "unpublish": "Despublicar"
-    },
-    "postEditor": {
-      "newPost": "Nuevo Artículo",
-      "editPost": "Editar Artículo",
-      "back": "Volver al Panel",
-      "basicInfo": "Información Básica",
-      "title": "Título",
-      "titlePlaceholder": "Ingresa el título del artículo",
-      "slug": "Slug URL",
-      "slugPlaceholder": "ingresa-slug-articulo",
-      "slugHelper": "Versión amigable para URL del título",
-      "excerpt": "Extracto",
-      "excerptPlaceholder": "Breve resumen del artículo",
-      "excerptHelper": "Un resumen corto que aparece en los listados del blog (máx. 160 caracteres)",
-      "coverImage": "Imagen de Portada",
-      "coverImagePlaceholder": "https://ejemplo.com/imagen.jpg",
-      "coverImageHelper": "URL de la imagen de portada para este artículo",
-      "uploadNotImplemented": "La funcionalidad de carga abriría un selector de archivos aquí",
-      "tags": "Etiquetas",
-      "tagsPlaceholder": "Añadir etiqueta...",
-      "publishImmediately": "Publicar inmediatamente",
-      "content": "Contenido",
-      "seoSettings": "Configuración SEO",
-      "seoTitle": "Título SEO",
-      "seoTitlePlaceholder": "Título que aparece en motores de búsqueda",
-      "seoDescription": "Descripción SEO",
-      "seoDescriptionPlaceholder": "Descripción que aparece en motores de búsqueda",
-      "seoDescriptionHelper": "Longitud recomendada: 150-160 caracteres",
-      "seoKeywords": "Palabras Clave SEO",
-      "seoKeywordsPlaceholder": "palabra1, palabra2, palabra3",
-      "seoKeywordsHelper": "Lista de palabras clave separadas por comas",
-      "savePost": "Guardar Artículo",
-      "updatePost": "Actualizar Artículo",
-      "saving": "Guardando...",
-      "showPreview": "Mostrar Vista Previa",
-      "hidePreview": "Ocultar Vista Previa",
-      "preview": "Vista Previa",
-      "untitledPost": "Artículo Sin Título",
-      "errorRequiredFields": "El título y el contenido son obligatorios",
-      "errorCreatingPost": "Error al crear artículo",
-      "errorUpdatingPost": "Error al actualizar artículo",
-      "errorFetchingPost": "Error al cargar artículo",
-      "unsavedChanges": "Tienes cambios sin guardar. ¿Estás seguro de que deseas salir?",
-      "postCreated": "Artículo creado exitosamente",
-      "postUpdated": "Artículo actualizado exitosamente",
-      "removeCoverImage": "Eliminar imagen de portada"
-    },
-    "imageUploader": {
-      "selectImage": "Selecciona una imagen",
-      "upload": "Subir",
-      "uploading": "Subiendo...",
-      "cancel": "Cancelar",
-      "noFileSelected": "Por favor selecciona una imagen primero",
-      "fileTooLarge": "El archivo es demasiado grande. El tamaño máximo es 5MB",
-      "invalidFileType": "Solo se permiten archivos de imagen",
-      "uploadError": "Ocurrió un error al subir la imagen",
-      "supportedFormats": "Formatos soportados: JPEG, PNG, GIF, WebP (máx 5MB)"
-    },
-    "markdownEditor": {
-      "placeholder": "Escribe tu contenido aquí usando Markdown...",
-      "syntaxGuide": "Soporta sintaxis Markdown.",
-      "syntaxGuideLink": "Guía de Markdown",
-      "heading": "Encabezado",
-      "bold": "Negrita",
-      "italic": "Cursiva",
-      "link": "Enlace",
-      "image": "Imagen",
-      "bulletList": "Lista con Viñetas",
-      "numberedList": "Lista Numerada",
-      "blockquote": "Cita",
-      "codeBlock": "Bloque de Código",
-      "linkPrompt": "Ingresa la URL",
-      "imagePrompt": "Ingresa la URL de la imagen",
-      "altTextPrompt": "Ingresa texto alternativo para la imagen",
-      "uploadImage": "Subir Imagen",
-      "cancel": "Cancelar",
-      "removeCoverImage": "Eliminar imagen de portada"
-    }
-  },
   "cv": {
     "summary": "RESUMEN PROFESIONAL",
     "skills": "HABILIDADES TÉCNICAS",
@@ -358,6 +238,30 @@
     "experience": "EXPERIENCIA PROFESIONAL",
     "projects": "PROYECTOS CLAVE",
     "certifications": "CERTIFICACIONES"
+  },
+  "handbook": {
+    "label": "El manual",
+    "heading": "Un manual técnico vivo.",
+    "subheading": "Opiniones, trabajo de laboratorio, guías de certificación y el camino que estoy recorriendo ahora — mantenido como un sitio aparte para que pueda crecer por su cuenta.",
+    "eyebrow": "cjoga.cloud",
+    "cardTitle": "El Manual",
+    "cardSubtitle": "Cinco secciones. Una sola fuente de verdad sobre en qué trabajo, qué pienso y qué estoy aprendiendo.",
+    "cta": "Visitar blog.cjoga.cloud",
+    "windowAriaLabel": "Visitar el manual en blog.cjoga.cloud",
+    "sections": {
+      "me": {
+        "title": "Yo",
+        "desc": "Quién soy, en qué estoy enfocado ahora y las posturas que defendería en una revisión."
+      },
+      "engineering": {
+        "title": "Ingeniería",
+        "desc": "El laboratorio K3s detrás de este sitio, más los proyectos detrás de los certificados."
+      },
+      "learn": {
+        "title": "Aprende",
+        "desc": "Guías de certificación — RHCSA hoy, RHCE próximamente, y más por venir."
+      }
+    }
   },
   "terminal": {
     "label": "Terminal",

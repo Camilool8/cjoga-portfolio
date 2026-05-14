@@ -61,8 +61,29 @@
    BASE STYLES
    ============================================================ */
 html {
-  scroll-padding-top: 0;
+  scroll-padding-top: 80px;
   overflow-x: hidden;
+}
+
+#about,
+#experience,
+#projects,
+#certifications,
+#handbook,
+#contact,
+#hero {
+  scroll-margin-top: 80px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 
@@ -93,7 +114,7 @@ section {
 #experience,
 #projects,
 #certifications,
-#blog-preview,
+#handbook,
 #contact {
   min-height: 100vh;
   display: flex;
@@ -139,9 +160,10 @@ section {
   letter-spacing: -0.03em;
   margin-bottom: 24px;
   color: var(--text-primary);
+  text-wrap: balance;
 }
 
-/* Legacy section-title (preserved for blog and other components during transition) */
+/* Legacy section-title (preserved for components still using the older heading style) */
 .section-title {
   @apply flex items-center relative mb-10 w-full text-2xl sm:text-3xl font-bold;
   font-family: var(--font-display);
@@ -201,7 +223,7 @@ section {
   transform: translateY(-2px);
 }
 
-/* Legacy cta-button (preserved for blog/admin) */
+/* Legacy cta-button (preserved for older usages) */
 .cta-button {
   @apply inline-block bg-transparent rounded px-4 py-3 text-sm leading-none;
   font-family: var(--font-mono);
@@ -433,7 +455,7 @@ a {
   @apply px-4 py-2;
 }
 
-/* Line Clamps for Blog Cards */
+/* Line Clamps — general-purpose utilities */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -727,7 +749,7 @@ pre.line-numbers > code {
    SMOOTH TRANSITIONS FOR NEW DESIGN SYSTEM
    ============================================================ */
 .glass, .skill-node, .stat-card, .timeline-card, .project-card,
-.cert-card, .cert-group-card, .blog-card, .sidebar-widget, .contact-link {
+.cert-card, .cert-group-card, .sidebar-widget, .contact-link {
   transition: background-color 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
 }
 
@@ -771,18 +793,242 @@ pre.line-numbers > code {
   color: var(--accent) !important;
 }
 
-/* Blog cards */
-.blog-card {
-  transition: transform 0.4s var(--ease-out-expo), border-color 0.4s, box-shadow 0.4s;
+/* ============================================================
+   HANDBOOK CALLOUT — browser-window portal card pointing
+   to the dedicated handbook site at blog.cjoga.cloud
+   ============================================================ */
+.handbook-window {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  text-decoration: none;
+  color: inherit;
+  will-change: transform;
+  transition: border-color 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
-.blog-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--border-medium) !important;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+
+.handbook-window:hover {
+  border-color: var(--border-active);
+  box-shadow: 0 20px 60px -10px rgba(100, 255, 218, 0.18),
+              0 8px 32px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  color: inherit;
 }
-.blog-card:hover .blog-gradient { opacity: 1 !important; }
-.blog-card:hover .blog-title-link { color: var(--accent) !important; }
-.blog-card:hover .blog-cover-img { transform: scale(1.05); }
+
+[data-theme="light"] .handbook-window:hover {
+  box-shadow: 0 20px 60px -10px rgba(2, 132, 199, 0.2),
+              0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.handbook-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.handbook-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.handbook-urlbar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 18px;
+  flex: 1;
+  max-width: 360px;
+  margin: 0 auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.handbook-content {
+  position: relative;
+  padding: 48px 40px 40px;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .handbook-content {
+    padding: 32px 24px 28px;
+  }
+}
+
+.handbook-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, var(--accent-glow), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(56, 189, 248, 0.05), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.handbook-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center;
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+}
+
+.handbook-headline {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 28px;
+}
+
+.handbook-eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  padding: 4px 10px;
+  background: var(--accent-dim);
+  border: 1px solid var(--border-medium);
+  border-radius: 4px;
+}
+
+.handbook-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 0 0 12px;
+  line-height: 1.1;
+}
+
+.handbook-card-sub {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  max-width: 540px;
+  margin: 0;
+}
+
+.handbook-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 720px) {
+  .handbook-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.handbook-tile {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  transition: border-color 0.3s var(--ease-out-expo);
+}
+
+.handbook-window:hover .handbook-tile {
+  border-color: var(--border-medium);
+}
+
+.handbook-tile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: var(--accent-dim);
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 1.15rem;
+}
+
+.handbook-tile-body {
+  min-width: 0;
+}
+
+.handbook-tile-title {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+
+.handbook-tile-desc {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.handbook-cta {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: var(--accent-dim);
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  transition: background 0.3s var(--ease-out-expo),
+              color 0.3s var(--ease-out-expo),
+              border-color 0.3s var(--ease-out-expo);
+}
+
+.handbook-window:hover .handbook-cta {
+  background: var(--accent);
+  color: var(--bg-primary);
+  border-color: var(--accent);
+}
+
+.handbook-window:hover .handbook-cta svg {
+  transform: translateX(4px);
+}
+
+.handbook-cta svg {
+  transition: transform 0.3s var(--ease-out-expo);
+}
 
 /* Cert group cards */
 .cert-group-card {
