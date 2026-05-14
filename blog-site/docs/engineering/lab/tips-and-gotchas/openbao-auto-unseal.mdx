@@ -24,7 +24,7 @@ I run OpenBao with the static seal configured. The key itself isn't in the clust
 
 ## The trade-off, named
 
-Static-key auto-unseal lowers the security ceiling, and pretending otherwise would be silly. Anyone who exfiltrates both the OpenBao storage and the static-key material can read every secret in the bao. That risk is the price of the seal type. I accepted it because the alternative was a vault that sealed itself every time a node sneezed — and a vault that constantly needs manual unsealing eventually gets unsealed in a hurry, with the keys ending up somewhere worse than the static-key store ever would.
+Static-key auto-unseal lowers the security ceiling. Anyone who exfiltrates both the OpenBao storage and the static-key material can read every secret in the bao. That risk is the price of the seal type. I accepted it because the alternative was a vault that sealed itself every time a node sneezed — and a vault that constantly needs manual unsealing eventually gets unsealed in a hurry, with the keys ending up somewhere worse than the static-key store ever would.
 
 ## The lesson
 

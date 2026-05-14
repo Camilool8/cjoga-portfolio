@@ -13,8 +13,6 @@ import Timeline, { TimelineEntry } from '@site/src/components/Timeline';
 
 The site you're reading runs on a [K3s](https://k3s.io/) cluster I run myself — six nodes split between a [Proxmox](https://www.proxmox.com/) host and a handful of bare-metal machines, meshed over [Tailscale](https://tailscale.com/), with [Envoy Gateway](https://gateway.envoyproxy.io/) in front and a [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/) handling the public edge. It hosts `cjoga.cloud`, `blog.cjoga.cloud`, `kodepull.com`, `perfyles.do`, and roughly a dozen other projects I run for myself or for [KODEPULL](/engineering/work/kodepull).
 
-The interesting part isn't what's running on it today. It's how it got here.
-
 ## How it's wired today
 
 ```mermaid
@@ -74,7 +72,7 @@ Six nodes: one K3s control-plane node living as a Proxmox VM (`prox-k8s-master`)
 
 The first version was three physical machines on WiFi, all on the same network. K3s plus Traefik — the default k3s setup. The first headache came from being mixed-distro: two nodes on Ubuntu and one on Rocky Linux. Networking, storage drivers, and the OS commands the cluster relied on did not behave the same on both sides, and the differences kept biting.
 
-The bigger problem was the WiFi itself. When a node briefly dropped its connection, or when it hit disk or memory pressure, [flannel](https://github.com/flannel-io/flannel) on that node would fall over — and the failure tended to ripple, taking pod-to-pod networking down across the rest of the cluster. Manual recovery was happening more often than I wanted to admit.
+The bigger problem was the WiFi itself. When a node briefly dropped its connection, or when it hit disk or memory pressure, [flannel](https://github.com/flannel-io/flannel) on that node would fall over — and the failure rippled, taking pod-to-pod networking down across the rest of the cluster. Manual recovery became the daily mode.
 
 That's what produced the self-healing Ansible playbook I still run today. It checks `tailscaled`, the flannel interface, the K3s service, CoreDNS resolution, and disk usage on every node; heals what it can (restarts services, recreates interfaces, prunes container images when disk is elevated, vacuums journals when it's critical); and reports a per-node status block at the end. It's the closest thing the lab has to a node operator, and it's been running long enough to outlast two cluster topologies.
 
@@ -91,8 +89,6 @@ Two more changes locked the architecture down. **Public ingress moved from Traef
 ## What runs on it now
 
 Production workloads include this portfolio and the handbook (`cjoga.cloud`), the KodePull marketing site and internal tooling (`kodepull.com`, an Outline docs instance, an invoice generator, a leads tool), the Perfyles WordPress site, a Discord and WhatsApp bot stack, a private n8n environment, Azure DevOps self-hosted agents, and a handful of personal projects (`elcriollo`, `pucmm-band`, a Minecraft server). The Ansible health playbook runs from [Semaphore](https://semaphoreui.com/) as a scheduled job, so the cluster heals itself overnight without me logging in.
-
-## Where to read more
 
 For the failure modes that taught me what the playbook actually has to cover, see **[Tips and gotchas](/engineering/lab/tips-and-gotchas)**.
 

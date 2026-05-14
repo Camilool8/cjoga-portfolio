@@ -1,19 +1,55 @@
 ---
 sidebar_position: 3
 title: Now
-description: What I'm doing, learning, and building right now. Dated; updated occasionally.
+description: What I'm working on, learning, and building right now. Dated; updated occasionally.
 slug: /me/now
 keywords: [now, current, learning, building]
 ---
 
+import TechStackGrid from '@site/src/components/TechStackGrid';
+import AuthorCard from '@site/src/components/AuthorCard';
+
 # Now
 
-{/* Body to be filled during Phase 1 interview pass. Top of page = current month. */}
+*Last updated · May 2026*
+
+This is a [/now page](https://nownownow.com/about) — a snapshot of where my hours are actually going this month. It's deliberately narrow and short-lived. If you're reading this in a future quarter, it's already wrong.
 
 ## Right now
 
+Across my Arctiq and INSPYR engagements, four threads carry most of the week:
+
+- **Platform documentation.** Writing the internal procedures for our platform stack so the runbook stops living in my head. The kind of work that pays back the third time a teammate needs the same answer.
+- **CI/CD credentials cleanup.** Replacing hard-coded pipeline credentials with short-lived, federated tokens. One pipeline at a time, one merge request at a time — the classic shape of a long, careful migration.
+- **AKS → Cilium migration.** Moving one of our environment clusters off the default CNI to Cilium. Eyes on policy parity, eBPF-side observability, and the cut-over plan.
+- **On deck.** A security hardening pass and a Databricks workspace migration to a better-segmented VNet.
+
+Outside the day job, KodePull is in client-website mode: rebuilding a few WordPress sites that were neglected or corrupted, untangling DNS and TLS so traffic lands on the right server, and putting some of those properties behind Cloudflare for the first time.
+
+<TechStackGrid
+  caption="This month"
+  compact
+  items={['AKS', 'Cilium', 'Databricks', 'GitLab CI', 'WordPress', 'Cloudflare']}
+/>
+
 ## Learning
+
+Working through **CKAD** — [Certified Kubernetes Application Developer](https://www.udemy.com/course/certified-kubernetes-application-developer/) — step 2 on the [Kubestronaut](https://www.cncf.io/training/kubestronaut/) path. KCNA was step one earlier this year. The full set is KCNA, CKAD, CKA, KCSA, CKS, and I'd like to clear all five.
+
+The title isn't the goal. The goal is the forced depth across every Kubernetes surface area on a clock. CKAD is the application-author lens: pods, deployments, services, configmaps, secrets, and the small daily-driver fluency that only really comes from passing it under a timer.
+
+<TechStackGrid
+  caption="In progress"
+  compact
+  items={['Kubernetes', 'Docker']}
+/>
 
 ## Building
 
-## Reading
+**Goal.** A written guide to passing the **RHCE** while building the lab to study in — no rack required.
+
+**Approach.** Vagrant spins up the RHEL VMs locally so any laptop can run it. Each exam objective gets mapped onto a real lab task: provision, break, fix, verify. The path I actually walked, not the airbrushed version.
+
+**Stack.** Vagrant · RHEL · Ansible · the RHCE objective list as the table of contents.
+
+<AuthorCard />
