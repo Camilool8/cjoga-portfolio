@@ -1,22 +1,132 @@
 ---
 sidebar_position: 4
-title: Reading and tools
-description: Books that shaped how I think, the tools I use daily, and the hardware I keep on my desk.
+title: Learning and tools
+description: How I actually learn — Udemy courses, hands-on lab work, AI tooling — and the tools and hardware I use every day.
 slug: /me/reading-and-tools
-keywords: [reading, books, tools, hardware, setup]
+keywords: [learning, courses, udemy, tools, hardware, setup, devops, ai]
 ---
 
-# Reading and tools
+import CourseCard from '@site/src/components/CourseCard';
+import TechStackGrid from '@site/src/components/TechStackGrid';
 
-{/* Body to be filled during Phase 1 interview pass. */}
+# Learning and tools
 
-## Books that shaped me
+I don't read many technical books. The few I started rarely held up against the pace of the tools they were trying to cover, and I learned faster by working through structured courses, building the thing in my [lab](/engineering/lab/overview), and reading whatever official documentation the project itself ships. This page is the inventory of how I actually keep up: the courses that earned a spot on the shelf, the tools I open every day, and the hardware on my desk.
+
+## Courses
+
+Most of my structured learning happens on [Udemy](https://www.udemy.com). The ones that stay on this list are the ones I finished and then went back to as reference while building something real — not the impulse buys that sit at 12% completion forever. If a course doesn't survive contact with an actual project, it didn't teach me anything that stuck.
+
+### Featured
+
+<CourseCard
+  title="The Complete 2024 Web Development Bootcamp"
+  instructor="Angela Yu"
+  platform="Udemy"
+  year={2021}
+  hours={62}
+  takeaway="The most complete and user-friendly course I've taken. Angela Yu is one of the best teachers I've come across — honest, clear, and genuinely good at making hard concepts feel easy. The course walks you from zero to competent on real web development practices: first the hard way, then building up to frameworks. The one I'd recommend to anyone starting from scratch."
+  link="https://www.udemy.com/course/the-complete-web-development-bootcamp/"
+/>
+
+<CourseCard
+  title="Decoding DevOps"
+  instructor="Imran Teli"
+  platform="Udemy"
+  year={2023}
+  hours={64}
+  takeaway="The course that anchored my DevOps work early on — the one I went back to whenever I was shadowing senior calls and wasn't sure I was tracking the concept being discussed. A genuinely complete tour of the pillars of DevOps and cloud, structured well enough that it stays useful as reference."
+  link="https://www.udemy.com/course/decodingdevops/"
+/>
+
+### Also completed
+
+These are the other courses I finished and would still recommend.
+
+- 2021 · [100 Days of Code: The Complete Python Pro Bootcamp](https://www.udemy.com/course/100-days-of-code/) — Angela Yu
+- 2021 · [Computer Science 101: Master the Theory Behind Programming](https://www.udemy.com/course/computer-science-101-master-the-theory-behind-programming/) — Kurt Anderson
+- 2022 · [React — The Complete Guide (incl. Hooks, React Router, Redux)](https://www.udemy.com/course/react-the-complete-guide-incl-redux/) — Maximilian Schwarzmüller
+- 2022 · [React Native — The Practical Guide](https://www.udemy.com/course/react-native-the-practical-guide/) — Maximilian Schwarzmüller
+- 2023 · [Docker & Kubernetes — The Practical Guide](https://www.udemy.com/course/docker-kubernetes-the-practical-guide/) — Maximilian Schwarzmüller
+- 2025 · [Ultimate AWS Certified Solutions Architect Associate (SAA-C03)](https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/) — Stephane Maarek
+- 2025 · [HashiCorp Terraform: The Ultimate Beginner's Guide with Labs](https://www.udemy.com/course/terraform-for-beginners-with-labs/) — Bryan Krausen
+- 2026 · [Dive Into Cloud Native Containers, Kubernetes and the KCNA](https://www.udemy.com/course/dive-into-cloud-native-containers-kubernetes-and-the-kcna/) — James Spurin
 
 ## Daily-driver tools
 
+The tools I open every working day, or close to it. Not an exhaustive stack list — only the ones whose absence I'd actually notice within an hour of starting work.
+
+<TechStackGrid
+  caption="Terminal & shell"
+  compact
+  items={['Warp', 'Windows Terminal', 'PowerShell']}
+/>
+
+Warp is my macOS terminal of choice — AI integration, auto-suggestions, and the ability to "Warpify" any SSH session so the same UI follows me everywhere. I've been on it since the beta. On Windows it's the built-in Terminal app with PowerShell 7 as the default shell.
+
+<TechStackGrid
+  caption="Editor & dev"
+  compact
+  items={['VS Code', 'Cursor']}
+/>
+
+VS Code for client work — it's the lowest-friction shared default and every team I touch has it. On my personal workstation, Cursor: tighter AI integration, and the free tier covers the short focused prompts I tend to fire off.
+
+<TechStackGrid
+  caption="AI"
+  compact
+  items={['Claude Code', 'Claude for Teams', 'GitHub Copilot', 'Gemini']}
+/>
+
+Claude Code is the one I pay for myself, on a Max subscription, and the one I'd defend on its own. Augmented with skills and MCP, and driven by someone who knows the domain, it's the closest thing I've used to having a full team on call. Clients give me Copilot, Claude for Teams, and Gemini — I use what each engagement provides and run my own benchmark on whether the new release of any of them moves the needle.
+
+<TechStackGrid
+  caption="Cloud & infrastructure"
+  compact
+  items={['AWS', 'Azure', 'GCP', 'Docker', 'k3s', 'kubectl', 'Lens', 'VMware Fusion', 'Proxmox']}
+/>
+
+All three major clouds, with strong preference for AWS (the one I'm most exposed to), Azure second, GCP last — GCP is mostly for the Google Workspace surface KodePull touches (service accounts, IAM). Containers via Docker on OrbStack. Local Kubernetes is k3s; `kubectl` for the fast loop, Lens by Mirantis for the slow one when I need to actually understand what's going on. Proxmox is my VM OS of choice; VMware Fusion when I need to run it from macOS directly.
+
+<TechStackGrid
+  caption="Browser, VPN & secrets"
+  compact
+  items={['Arc', 'Tailscale', 'KeePassXC']}
+/>
+
+Arc browser, mostly for the keyboard-driven model — tabs, spaces, and search all from the command palette once you get used to it. Tailscale is the VPN back to the lab; I don't run a country-changing VPN. KeePassXC is the local password store, used hardest for its auto-type feature against client VDIs that block cross-host copy-paste.
+
 ## Hardware
 
+### On the desk
+
+- **MacBook Pro M4 Pro 16″** — 48 GB RAM, 1 TB SSD. The work machine.
+- **Gigabyte M27Q 4K · 165 Hz** external monitor — DisplayPort over USB-C from the MacBook, HDMI from the gaming PC. One screen, two inputs.
+- **Logitech G915** keyboard — silent low-profile switches; 2.4 GHz to the PC, Bluetooth to the Mac.
+- **Razer Cobra Pro V3** mouse — same dual-band trick, 2.4 GHz to the PC, Bluetooth to the Mac.
+- **Astro A50 X** headset — primary audio.
+- **Sony WH-1000XM5** — outdoor headphones.
+
+### Gaming + VR
+
+- **Gaming PC** — Intel i9-14900K · 64 GB RAM · 4 TB NVMe SSD · NVIDIA RTX 5080.
+- **Meta Quest 3** · 512 GB — VR headset.
+- **4 Xbox controllers** in black, white, red, and pink. Matching set of **4 Wii controllers** in the same four colors.
+
+### In the rack
+
+- **Proxmox host** — Intel i9, 64 GB RAM, 2 TB SSD. Carries the K3s control-plane VM and a second worker VM.
+- **Bare-metal workers** · 4 nodes — ~50 GB RAM and ~32 vCPU total across the four, 2 TB SSD pooled.
+- **TP-Link SG108E** — managed 8-port gigabit switch.
+- **CyberPower CP1500PFCLCD** UPS — 1500 VA / 1000 W. Backs both the gaming PC and the rack.
+
 ## Things I tried and dropped
+
+Tools and platforms I gave a real shot and stopped using. Naming what didn't work is more useful than another list of what does.
+
+- **GPT Codex** — Too slow for my loop, and predictable for coding tasks — doesn't go beyond what I asked or surprise me usefully. The new image generation model is genuinely nice; when I need it I borrow a partner's subscription. I no longer pay for it myself.
+- **Neovim** — I gave it a real shot. Plugin management for the AI integration and auto-completion I want every day was more overhead than I was willing to carry against editors I already know. I see the potential clearly. It's just not for me.
+- **Google Antigravity · Kiro Code · Windsurf** — Tried all three. Cursor still wins on polish and habit. I'm not religious about the editor — if something genuinely raises the bar I'll switch — these three didn't.
 
 import AuthorCard from '@site/src/components/AuthorCard';
 

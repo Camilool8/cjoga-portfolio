@@ -32,8 +32,24 @@ import {
   SiClaude,
   SiGithubcopilot,
   SiAnthropic,
+  SiWarp,
+  SiArc,
+  SiDocker,
+  SiLens,
+  SiVmware,
+  SiKeepassxc,
+  SiNeovim,
+  SiOpenai,
+  SiWindsurf,
+  SiGooglegemini,
 } from 'react-icons/si';
-import { VscAzure, VscAzureDevops, VscTerminalPowershell } from 'react-icons/vsc';
+import {
+  VscAzure,
+  VscAzureDevops,
+  VscTerminalPowershell,
+  VscVscode,
+  VscTerminal,
+} from 'react-icons/vsc';
 import styles from './styles.module.css';
 
 // Tool registry — three render shapes:
@@ -115,8 +131,36 @@ const TECH = {
   // AI tooling
   Claude: { Icon: SiClaude, color: '#D97757' },
   'Claude Code': { Icon: SiClaude, color: '#D97757' },
+  'Claude for Teams': { Icon: SiClaude, color: '#D97757' },
   'GitHub Copilot': { Icon: SiGithubcopilot, color: null },
   Anthropic: { Icon: SiAnthropic, color: '#D97757' },
+  Gemini: { Icon: SiGooglegemini, color: '#4285F4' },
+  'GPT Codex': { Icon: SiOpenai, color: null },
+  Codex: { Icon: SiOpenai, color: null },
+  Windsurf: { Icon: SiWindsurf, color: null },
+  Cursor: { image: '/img/logos/cursor.svg', mono: true },
+  Antigravity: { textOnly: true },
+  'Google Antigravity': { textOnly: true },
+  'Kiro Code': { textOnly: true },
+
+  // Terminal & editor
+  Warp: { Icon: SiWarp, color: '#01A4FF' },
+  'Windows Terminal': { Icon: VscTerminal, color: null },
+  'VS Code': { Icon: VscVscode, color: '#007ACC' },
+
+  // Containers / VMs / cluster tooling
+  Docker: { Icon: SiDocker, color: '#2496ED' },
+  OrbStack: { textOnly: true },
+  kubectl: { Icon: SiKubernetes, color: '#326CE5' },
+  k3s: { Icon: SiKubernetes, color: '#326CE5' },
+  Lens: { Icon: SiLens, color: '#3D90CE' },
+  'VMware Fusion': { Icon: SiVmware, color: '#607078' },
+
+  // Browser + utilities
+  Arc: { Icon: SiArc, color: '#FCBFBD' },
+  KeePassXC: { Icon: SiKeepassxc, color: '#7BAC2A' },
+  NeoVim: { Icon: SiNeovim, color: '#57A143' },
+  Neovim: { Icon: SiNeovim, color: '#57A143' },
 
   // Other
   'Power Automate': { Icon: FaMicrosoft, color: '#0066FF' },
@@ -140,23 +184,45 @@ function TechTile({ name, href }) {
     );
   } else if (entry.image) {
     const size = entry.size ?? 22;
-    glyph = (
-      <span
-        className={styles.imgWrap}
-        style={{ width: 22, height: 22 }}
-        aria-hidden="true"
-      >
-        <img
-          className={styles.logo}
-          src={entry.image}
-          width={size}
-          height={size}
-          style={{ width: size, height: size }}
-          alt=""
-          loading="lazy"
-        />
-      </span>
-    );
+    if (entry.mono) {
+      // Monochrome SVGs (e.g. Cursor) render as a CSS mask so they
+      // inherit theme color instead of being locked to black.
+      glyph = (
+        <span
+          className={styles.imgWrap}
+          style={{ width: 22, height: 22 }}
+          aria-hidden="true"
+        >
+          <span
+            className={styles.maskLogo}
+            style={{
+              width: size,
+              height: size,
+              WebkitMaskImage: `url(${entry.image})`,
+              maskImage: `url(${entry.image})`,
+            }}
+          />
+        </span>
+      );
+    } else {
+      glyph = (
+        <span
+          className={styles.imgWrap}
+          style={{ width: 22, height: 22 }}
+          aria-hidden="true"
+        >
+          <img
+            className={styles.logo}
+            src={entry.image}
+            width={size}
+            height={size}
+            style={{ width: size, height: size }}
+            alt=""
+            loading="lazy"
+          />
+        </span>
+      );
+    }
   } else {
     const { Icon, color } = entry;
     glyph = (
