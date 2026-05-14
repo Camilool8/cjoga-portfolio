@@ -225,7 +225,11 @@ export default function Terminal() {
 
         @media (max-width: 640px) {
           .terminal-window {
-            font-size: 0.72rem;
+            /* 16px (1rem) prevents iOS Safari's automatic zoom-on-focus
+               behavior, which triggers when an input has font-size < 16px.
+               Worth the slight density loss to keep the terminal usable
+               on mobile without the viewport jumping around. */
+            font-size: 1rem;
             border-radius: 8px;
           }
 
@@ -242,6 +246,10 @@ export default function Terminal() {
           .terminal-dot {
             width: 10px;
             height: 10px;
+          }
+
+          .terminal-title {
+            font-size: 0.7rem;
           }
         }
       `}</style>

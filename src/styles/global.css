@@ -113,7 +113,6 @@ section {
 #experience,
 #projects,
 #certifications,
-#handbook,
 #contact {
   min-height: 100vh;
   display: flex;
@@ -793,16 +792,21 @@ pre.line-numbers > code {
 }
 
 /* ============================================================
-   HANDBOOK CALLOUT — mirrors the Docusaurus landing at
-   blog.cjoga.cloud: orb backdrop, hero with eyebrow + title +
-   lede, three audience-paths (typographic rows), signoff.
+   HANDBOOK CALLOUT — browser-window framed preview of the
+   Docusaurus landing at blog.cjoga.cloud. Outer chrome with 3D
+   mouse-parallax tilt; inner content is the actual handbook UI
+   (hero + audience-paths + signoff) so it reads as a true peek.
    ============================================================ */
 .handbook-section {
   position: relative;
   overflow: hidden;
-  /* The Docusaurus index page has its own outer min-height; here the
-     surrounding portfolio section + #handbook { min-height: 100vh; }
-     handle viewport sizing. */
+  padding: 5rem 0;
+}
+
+@media (max-width: 768px) {
+  .handbook-section {
+    padding: 3rem 0;
+  }
 }
 
 .handbook-backdrop {
@@ -845,22 +849,140 @@ pre.line-numbers > code {
   opacity: 0.14;
 }
 
-.handbook-inner {
+.handbook-section-inner {
   position: relative;
   z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
-/* Hero */
-.handbook-hero {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 4rem 1.5rem 2.5rem;
+.handbook-section-header {
+  margin: 0 0 2.5rem;
+}
+
+.handbook-section-sub {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0.5rem 0 0;
+  max-width: 640px;
+  text-wrap: pretty;
 }
 
 @media (max-width: 768px) {
-  .handbook-hero {
-    padding: 3rem 1.5rem 1.5rem;
+  .handbook-section-header {
+    margin-bottom: 1.75rem;
   }
+}
+
+/* Window shell */
+.handbook-window {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  overflow: hidden;
+  will-change: transform;
+  transition: border-color 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.handbook-window:hover {
+  border-color: var(--border-active);
+  box-shadow: 0 24px 70px -12px rgba(100, 255, 218, 0.18),
+              0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] .handbook-window:hover {
+  box-shadow: 0 24px 70px -12px rgba(2, 132, 199, 0.22),
+              0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Browser chrome */
+.handbook-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.handbook-chrome-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.handbook-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.handbook-urlbar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 18px;
+  flex: 1;
+  max-width: 380px;
+  margin: 0 auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-out-expo),
+              border-color 0.2s var(--ease-out-expo);
+}
+
+.handbook-urlbar:hover {
+  color: var(--accent);
+  border-color: var(--border-medium);
+  text-decoration: none;
+}
+
+.handbook-chrome-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-out-expo),
+              background 0.2s var(--ease-out-expo);
+}
+
+.handbook-chrome-open:hover {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* Window content — the actual Docusaurus landing UI, scaled to fit */
+.handbook-content {
+  position: relative;
+  padding: 1.75rem 1.25rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .handbook-content {
+    padding: 2rem 2rem 1.75rem;
+  }
+}
+
+.handbook-hero {
+  max-width: 680px;
+  margin: 0 auto 1.75rem;
 }
 
 .handbook-eyebrow {
@@ -868,12 +990,22 @@ pre.line-numbers > code {
   align-items: center;
   gap: 10px;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.handbook-eyebrow-sm {
+  font-size: 0.68rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.handbook-path-block:first-child .handbook-eyebrow-sm {
+  margin-top: 0;
 }
 
 .handbook-eyebrow-dot {
@@ -886,18 +1018,18 @@ pre.line-numbers > code {
 
 .handbook-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.1rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;
   color: var(--text-primary);
-  margin: 0 0 1.5rem;
+  margin: 0 0 0.85rem;
   text-wrap: balance;
 }
 
 .handbook-lede {
-  font-size: 1.1rem;
-  line-height: 1.7;
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: var(--text-secondary);
   margin: 0;
   text-wrap: pretty;
@@ -915,12 +1047,12 @@ pre.line-numbers > code {
 
 /* Audience paths */
 .handbook-paths {
-  max-width: 720px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 1rem 1.5rem 2.5rem;
+  padding: 0.5rem 0 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 0.75rem;
 }
 
 .handbook-path-block {
@@ -928,10 +1060,10 @@ pre.line-numbers > code {
 }
 
 .handbook-path-intro {
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.55;
   color: var(--text-secondary);
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.35rem;
   text-wrap: pretty;
 }
 
@@ -946,7 +1078,7 @@ pre.line-numbers > code {
   grid-template-columns: 1fr auto;
   gap: 1.5rem;
   align-items: baseline;
-  padding: 1.4rem 0;
+  padding: 1rem 0;
   border-top: 1px solid var(--border-subtle);
   color: inherit;
   text-decoration: none;
@@ -970,7 +1102,7 @@ pre.line-numbers > code {
 
 .handbook-row-label {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
@@ -979,7 +1111,7 @@ pre.line-numbers > code {
 
 .handbook-row-arrow {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text-tertiary);
   transition: color 0.2s var(--ease-out-expo),
               transform 0.25s var(--ease-out-expo);
@@ -991,10 +1123,10 @@ pre.line-numbers > code {
 
 @media (max-width: 600px) {
   .handbook-row {
-    padding: 1.2rem 0;
+    padding: 0.75rem 0;
   }
   .handbook-row-label {
-    font-size: 1.15rem;
+    font-size: 1rem;
   }
   .handbook-row:hover {
     padding-left: 0;
@@ -1003,12 +1135,12 @@ pre.line-numbers > code {
 
 /* Signoff */
 .handbook-signoff {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 1.5rem 4rem;
+  max-width: 680px;
+  margin: 1rem auto 0;
+  padding: 0;
   color: var(--text-tertiary);
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.8rem;
+  line-height: 1.55;
 }
 
 .handbook-signoff p {

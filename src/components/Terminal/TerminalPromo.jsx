@@ -209,8 +209,7 @@ loki-0                      1/1     Running   1          30d`,
       <style>{`
         .tp-wrapper {
           position: relative;
-          max-width: 52rem;
-          margin: 0 auto;
+          margin: 0;
           overflow: hidden;
         }
 
@@ -270,9 +269,9 @@ loki-0                      1/1     Running   1          30d`,
         }
 
         .tp-body {
-          padding: 14px 16px;
-          min-height: 260px;
-          max-height: 360px;
+          padding: 18px 20px;
+          min-height: 380px;
+          max-height: 500px;
           overflow: hidden;
         }
 

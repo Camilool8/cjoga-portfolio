@@ -1,14 +1,17 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { FaCircle, FaExternalLinkAlt } from "react-icons/fa";
 import {
   sectionVariants,
   itemVariants,
   viewportConfig,
 } from "../hooks/useMotion";
 
-// Mirrors the Docusaurus landing at blog.cjoga.cloud — same audience-paths
-// pattern, same typographic rows, same orb backdrop — so the portfolio
-// callout reads as a true preview of the handbook, not a different surface.
+// Browser-window framed preview of blog.cjoga.cloud's landing page.
+// Inner content mirrors the actual Docusaurus index (hero +
+// audience-paths + signoff). Hover applies an accent-border + glow
+// highlight — no 3D tilt; the parallax was disorienting for visitors
+// who weren't expecting their cursor to move the whole card.
 
 const HANDBOOK_URL = "https://blog.cjoga.cloud";
 
@@ -34,8 +37,8 @@ const PATHS = [
 function PathBlock({ pathBlock, t }) {
   const { key, hasIntro, rows } = pathBlock;
   return (
-    <section className="handbook-path-block">
-      <div className="handbook-eyebrow">
+    <div className="handbook-path-block">
+      <div className="handbook-eyebrow handbook-eyebrow-sm">
         <span className="handbook-eyebrow-dot" aria-hidden="true" />
         {t(`handbook.paths.${key}.eyebrow`)}
       </div>
@@ -65,7 +68,7 @@ function PathBlock({ pathBlock, t }) {
           </a>
         ))}
       </nav>
-    </section>
+    </div>
   );
 }
 
@@ -84,41 +87,80 @@ export default function HandbookCallout() {
         initial="hidden"
         whileInView="visible"
         viewport={viewportConfig}
-        className="handbook-inner"
+        className="handbook-section-inner"
       >
-        <motion.div variants={itemVariants} className="handbook-hero">
-          <div className="handbook-eyebrow">
-            <span className="handbook-eyebrow-dot" aria-hidden="true" />
-            {t("handbook.eyebrow")}
-          </div>
-          <h2 className="handbook-title">{t("handbook.title")}</h2>
-          <p className="handbook-lede">
-            {t("handbook.ledeBefore")}
-            <code>{t("handbook.ledeCode")}</code>
-            {t("handbook.ledeAfter")}
-          </p>
+        <motion.div variants={itemVariants} className="handbook-section-header">
+          <span className="section-label">{t("handbook.label")}</span>
+          <h2 className="section-heading">{t("handbook.heading")}</h2>
+          <p className="handbook-section-sub">{t("handbook.subheading")}</p>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="handbook-paths">
-          {PATHS.map((pathBlock) => (
-            <PathBlock key={pathBlock.key} pathBlock={pathBlock} t={t} />
-          ))}
-        </motion.div>
-
-        <motion.footer variants={itemVariants} className="handbook-signoff">
-          <p>
-            {t("handbook.signoff")}{" "}
+        <motion.div variants={itemVariants} className="handbook-window">
+          {/* Browser chrome */}
+          <div className="handbook-chrome">
+            <div className="handbook-chrome-dots">
+              <span className="handbook-dot" style={{ background: "#ff5f56" }} />
+              <span className="handbook-dot" style={{ background: "#ffbd2e" }} />
+              <span className="handbook-dot" style={{ background: "#27c93f" }} />
+            </div>
             <a
-              href={`${HANDBOOK_URL}/me/who-i-am#how-to-reach-me`}
+              href={HANDBOOK_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="handbook-signoff-link"
+              className="handbook-urlbar"
+              aria-label={t("handbook.windowAriaLabel")}
             >
-              {t("handbook.signoffLink")}
+              <FaCircle size={6} style={{ color: "#27c93f", opacity: 0.85 }} />
+              <span>blog.cjoga.cloud</span>
             </a>
-            .
-          </p>
-        </motion.footer>
+            <a
+              href={HANDBOOK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="handbook-chrome-open"
+              aria-label={t("handbook.windowAriaLabel")}
+            >
+              <FaExternalLinkAlt size={11} />
+            </a>
+          </div>
+
+          {/* Window content — mirrors the Docusaurus landing */}
+          <div className="handbook-content">
+            <div className="handbook-hero">
+              <div className="handbook-eyebrow">
+                <span className="handbook-eyebrow-dot" aria-hidden="true" />
+                {t("handbook.eyebrow")}
+              </div>
+              <h2 className="handbook-title">{t("handbook.title")}</h2>
+              <p className="handbook-lede">
+                {t("handbook.ledeBefore")}
+                <code>{t("handbook.ledeCode")}</code>
+                {t("handbook.ledeAfter")}
+              </p>
+            </div>
+
+            <div className="handbook-paths">
+              {PATHS.map((pathBlock) => (
+                <PathBlock key={pathBlock.key} pathBlock={pathBlock} t={t} />
+              ))}
+            </div>
+
+            <div className="handbook-signoff">
+              <p>
+                {t("handbook.signoff")}{" "}
+                <a
+                  href={`${HANDBOOK_URL}/me/who-i-am#how-to-reach-me`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="handbook-signoff-link"
+                >
+                  {t("handbook.signoffLink")}
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </motion.div>
     </section>
   );

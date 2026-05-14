@@ -240,6 +240,9 @@
     "certifications": "CERTIFICACIONES"
   },
   "handbook": {
+    "label": "Manual",
+    "heading": "Un sitio aparte para la escritura.",
+    "subheading": "Opiniones, el laboratorio K3s y guías de certificación — separados del portafolio para que puedan crecer por su cuenta en blog.cjoga.cloud.",
     "eyebrow": "cjoga.cloud / manual",
     "title": "Aquí es donde escribo las cosas.",
     "ledeBefore": "Un manual de trabajo — opiniones, el laboratorio K3s que corre ",

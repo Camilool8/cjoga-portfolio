@@ -240,6 +240,9 @@
     "certifications": "CERTIFICATIONS"
   },
   "handbook": {
+    "label": "Handbook",
+    "heading": "A separate site for the writing.",
+    "subheading": "Opinions, the K3s lab, and cert guides — kept off the portfolio so they can grow on their own at blog.cjoga.cloud.",
     "eyebrow": "cjoga.cloud / handbook",
     "title": "This is where I write things down.",
     "ledeBefore": "A working handbook — opinions, the K3s lab that runs ",
