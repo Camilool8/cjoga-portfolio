@@ -4,10 +4,7 @@
   "collapsible": true,
   "collapsed": false,
   "link": {
-    "type": "generated-index",
-    "title": "Work",
-    "description": "Engagements past and present — described by employer, never by client.",
-    "slug": "/engineering/work",
-    "keywords": ["work", "consulting", "career", "devops"]
+    "type": "doc",
+    "id": "engineering/work/index"
   }
 }

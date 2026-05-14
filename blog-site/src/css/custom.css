@@ -819,6 +819,128 @@ a[class*="tag_"]:hover,
   border-color: var(--accent) !important;
 }
 
+/* ─── Navbar dropdowns: section labels + dividers ─────────────────── */
+/* `<div class="navbar-dropdown-section">` items inside a dropdown render
+   as a mono-cased eyebrow row separating logical groups (e.g. Opinions,
+   Lab, Work). Non-clickable visual divider. */
+.navbar-dropdown-section {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0.75rem 0.75rem 0.4rem;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.navbar-dropdown-section:not(:first-child) {
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 0.4rem;
+  padding-top: 0.85rem;
+}
+
+.navbar-dropdown-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 0.3rem 0;
+  pointer-events: none;
+}
+
+/* Widen the dropdown so long essay titles fit on one line. */
+.navbar .dropdown__menu {
+  min-width: 280px;
+  max-width: 340px;
+}
+
+/* ─── Sidebar: collapse button repositioned to top-right header ────── */
+/* The default Docusaurus collapse-sidebar button is a full-width bar
+   pinned to the bottom of the sidebar. Reposition to top-right as a
+   small chevron icon — Notion/Linear pattern, matches editorial scale. */
+
+[class*="docSidebarContainer_"],
+.theme-doc-sidebar-container {
+  position: relative;
+}
+
+[class*="collapseSidebarButton_"] {
+  position: absolute !important;
+  top: 12px;
+  right: 12px;
+  bottom: auto !important;
+  left: auto !important;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: none;
+  transition: background 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out);
+}
+
+[class*="collapseSidebarButton_"]:hover {
+  background: var(--accent-dim);
+  border-color: var(--border-medium);
+}
+
+[class*="collapseSidebarButton_"] svg {
+  width: 14px;
+  height: 14px;
+  color: var(--text-secondary);
+  transition: color 0.2s var(--ease-out);
+}
+
+[class*="collapseSidebarButton_"]:hover svg {
+  color: var(--accent);
+}
+
+/* When sidebar is collapsed, the expand handle gets the same small
+   chevron treatment. */
+[class*="expandButton_"] {
+  width: 32px;
+  height: 32px;
+  margin: 16px auto 0;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  transition: background 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out);
+}
+
+[class*="expandButton_"]:hover {
+  background: var(--accent-dim);
+  border-color: var(--border-medium);
+}
+
+[class*="expandButton_"] svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text-secondary);
+  transition: color 0.2s var(--ease-out);
+}
+
+[class*="expandButton_"]:hover svg {
+  color: var(--accent);
+}
+
+/* Pad the sidebar menu top so the chevron has clear visual space. */
+.theme-doc-sidebar-container .menu {
+  padding-top: 1.75rem;
+}
+
 /* ─── Reduced motion ───────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -6,14 +6,48 @@ slug: /me
 keywords: [about, bio, opinions, credentials]
 ---
 
-# Me
+import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
+import {
+  FaUser,
+  FaQuoteLeft,
+  FaClock,
+  FaBookOpen,
+  FaCertificate,
+} from 'react-icons/fa';
 
-{/* Section landing. Body filled lightly during Phase 0; deeper editorial pass in Phase 1+. */}
+# Me
 
 The personal section of the handbook — written first-person, on purpose.
 
-- [Who I am](/me/who-i-am)
-- [Opinions](/me/opinions)
-- [Now](/me/now)
-- [Reading and tools](/me/reading-and-tools)
-- [Credentials](/me/credentials)
+<SectionCardGrid>
+  <SectionCard
+    href="/me/who-i-am"
+    icon={FaUser}
+    title="Who I am"
+    description="The origin story — where I'm from, how I got into DevOps, and how I work."
+  />
+  <SectionCard
+    href="/me/opinions"
+    icon={FaQuoteLeft}
+    title="Opinions"
+    description="Strong takes on the tools and practices I work with — things I'd defend in a code review."
+  />
+  <SectionCard
+    href="/me/now"
+    icon={FaClock}
+    title="Now"
+    description="What I'm focused on this quarter — current engagements, study, and side projects."
+  />
+  <SectionCard
+    href="/me/reading-and-tools"
+    icon={FaBookOpen}
+    title="Learning and tools"
+    description="How I actually learn — Udemy, lab, AI tooling — and the tools and hardware I use every day."
+  />
+  <SectionCard
+    href="/me/credentials"
+    icon={FaCertificate}
+    title="Credentials"
+    description="Eleven certifications earned, in order, with verification links."
+  />
+</SectionCardGrid>

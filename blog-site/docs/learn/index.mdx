@@ -6,24 +6,23 @@ slug: /learn
 keywords: [learn, certifications, study guide]
 ---
 
+import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
+import { FaRedhat } from 'react-icons/fa';
+
 # Learn
 
-{/* Section landing. Generic intro that survives new guides being added. */}
-
-This section is for anyone studying for a cert I've passed and decided was worth a real guide.
-
-## Why I write these
-
-{/* To be filled during Phase 1 interview pass. */}
-
-## How to use a guide
-
-{/* To be filled during Phase 1 interview pass. */}
+This section is for anyone studying for a cert I've passed and decided was worth a real guide. Each guide is the honest version — how I studied, what tripped me up, and what I'd hand to a friend the night before the exam.
 
 ## Available guides
 
-- [RHCSA (EX200)](/learn/rhcsa)
+<SectionCardGrid>
+  <SectionCard
+    href="/learn/rhcsa"
+    icon={FaRedhat}
+    iconColor="#EE0000"
+    title="RHCSA (EX200)"
+    description="Red Hat Certified System Administrator — what the exam tests, how I prepped, and the lab setup."
+  />
+</SectionCardGrid>
 
-## How they're maintained
-
-{/* To be filled during Phase 1 interview pass. */}
+More guides land here as I write them.

@@ -140,22 +140,96 @@ const config = {
         hideOnScroll: false,
         items: [
           {
-            type: "docSidebar",
-            sidebarId: "me",
-            position: "left",
+            type: "dropdown",
+            to: "/me",
             label: "Me",
+            position: "left",
+            items: [
+              { to: "/me/who-i-am", label: "Who I am" },
+              { to: "/me/now", label: "Now" },
+              {
+                type: "html",
+                value: '<div class="navbar-dropdown-section">Opinions</div>',
+              },
+              {
+                to: "/me/opinions/keep-it-stupidly-simple",
+                label: "Keep it stupidly simple",
+              },
+              {
+                to: "/me/opinions/devops-title-2026",
+                label: "The DevOps title is losing value in 2026",
+              },
+              {
+                to: "/me/opinions/ai-in-devops-power-user",
+                label: "AI in DevOps — be a power user",
+              },
+              {
+                to: "/me/opinions/certifications-expire",
+                label: "Certifications expire, and that's the point",
+              },
+              {
+                to: "/me/opinions/terraform-over-bicep",
+                label: "Why I run Terraform on Azure",
+              },
+              {
+                to: "/me/opinions/openbao-over-vault",
+                label: "OpenBao over Vault",
+              },
+              {
+                to: "/me/opinions/self-hosting-privilege",
+                label: "Self-hosting is a privilege",
+              },
+              {
+                type: "html",
+                value: '<div class="navbar-dropdown-divider"></div>',
+              },
+              { to: "/me/reading-and-tools", label: "Learning and tools" },
+              { to: "/me/credentials", label: "Credentials" },
+            ],
           },
           {
-            type: "docSidebar",
-            sidebarId: "engineering",
-            position: "left",
+            type: "dropdown",
+            to: "/engineering",
             label: "Engineering",
+            position: "left",
+            items: [
+              {
+                type: "html",
+                value: '<div class="navbar-dropdown-section">Lab</div>',
+              },
+              { to: "/engineering/lab/overview", label: "Overview" },
+              {
+                to: "/engineering/lab/tips-and-gotchas/longhorn-replicas",
+                label: "Longhorn — replica scheduling",
+              },
+              {
+                to: "/engineering/lab/tips-and-gotchas/openbao-auto-unseal",
+                label: "OpenBao — static-key auto-unseal",
+              },
+              {
+                type: "html",
+                value: '<div class="navbar-dropdown-section">Work</div>',
+              },
+              { to: "/engineering/work/arctiq", label: "Arctiq" },
+              {
+                to: "/engineering/work/inspyr-global-solutions",
+                label: "INSPYR Global Solutions",
+              },
+              {
+                to: "/engineering/work/fl-betances",
+                label: "FL Betances & Asociados",
+              },
+              { to: "/engineering/work/kodepull", label: "KODEPULL SRL" },
+            ],
           },
           {
-            type: "docSidebar",
-            sidebarId: "learn",
-            position: "left",
+            type: "dropdown",
+            to: "/learn",
             label: "Learn",
+            position: "left",
+            items: [
+              { to: "/learn/rhcsa", label: "RHCSA (EX200) guide" },
+            ],
           },
           {
             href: "https://cjoga.cloud",

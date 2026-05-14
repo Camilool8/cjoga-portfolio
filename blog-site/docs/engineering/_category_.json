@@ -4,10 +4,7 @@
   "collapsible": true,
   "collapsed": false,
   "link": {
-    "type": "generated-index",
-    "title": "Engineering",
-    "description": "The K3s homelab and the consulting work that pays for it.",
-    "slug": "/engineering",
-    "keywords": ["engineering", "homelab", "work", "devops", "kubernetes"]
+    "type": "doc",
+    "id": "engineering/index"
   }
 }

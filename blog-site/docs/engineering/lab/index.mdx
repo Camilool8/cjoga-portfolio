@@ -1,0 +1,31 @@
+---
+sidebar_position: 0
+title: Lab
+description: The K3s cluster behind cjoga.cloud — the tour, and the things that broke.
+slug: /engineering/lab
+keywords: [homelab, kubernetes, k3s, lab, gotchas]
+---
+
+import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
+import { SiKubernetes } from 'react-icons/si';
+import { FaWrench } from 'react-icons/fa';
+
+# Lab
+
+The lab is a six-node K3s cluster on a mix of Proxmox and bare metal. It runs `cjoga.cloud`, `kodepull.com`, `perfyles.do`, and the small fleet of services I host for myself. The architecture took three iterations to settle into the shape it's in.
+
+<SectionCardGrid>
+  <SectionCard
+    href="/engineering/lab/overview"
+    icon={SiKubernetes}
+    iconColor="#326CE5"
+    title="Overview"
+    description="The full tour — six nodes, three iterations, the stack, and what runs on it now."
+  />
+  <SectionCard
+    href="/engineering/lab/tips-and-gotchas"
+    icon={FaWrench}
+    title="Tips and gotchas"
+    description="Lab-specific notes from things that broke or took too long to debug."
+  />
+</SectionCardGrid>

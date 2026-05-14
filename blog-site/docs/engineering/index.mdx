@@ -6,11 +6,26 @@ slug: /engineering
 keywords: [engineering, homelab, work, devops, kubernetes]
 ---
 
-# Engineering
+import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
+import { SiKubernetes } from 'react-icons/si';
+import { FaBriefcase } from 'react-icons/fa';
 
-{/* Section landing. Body filled lightly during Phase 0; deeper editorial pass in Phase 1+. */}
+# Engineering
 
 The technical side of the handbook — what I run, and the work that pays for it.
 
-- [Lab](/engineering/lab) — the K3s cluster behind `cjoga.cloud`
-- [Work](/engineering/work) — engagements past and present
+<SectionCardGrid>
+  <SectionCard
+    href="/engineering/lab/overview"
+    icon={SiKubernetes}
+    iconColor="#326CE5"
+    title="Lab"
+    description="The six-node K3s cluster behind cjoga.cloud — how it's wired, how it got here, and what runs on it now."
+  />
+  <SectionCard
+    href="/engineering/work/arctiq"
+    icon={FaBriefcase}
+    title="Work"
+    description="Engagements past and present — Arctiq, INSPYR, FL Betances, and KODEPULL."
+  />
+</SectionCardGrid>
