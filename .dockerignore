@@ -48,3 +48,13 @@ docker-compose.yml
 README.md
 LICENSE
 *.md
+CLAUDE.md
+
+# CI metadata
+.github
+
+# Sibling app — built independently in CI
+blog-site
+
+# K8s manifests live elsewhere; not needed in the image
+kubernetes
