@@ -240,28 +240,29 @@
     "certifications": "CERTIFICATIONS"
   },
   "handbook": {
-    "label": "The handbook",
-    "heading": "A living technical handbook.",
-    "subheading": "Opinions, lab work, certification guides, and the path I'm walking right now — kept as a separate site so it can grow on its own.",
-    "eyebrow": "cjoga.cloud",
-    "cardTitle": "The Handbook",
-    "cardSubtitle": "Five sections. One source of truth for what I work on, what I think, and what I'm learning.",
-    "cta": "Visit blog.cjoga.cloud",
-    "windowAriaLabel": "Visit the handbook at blog.cjoga.cloud",
-    "sections": {
-      "me": {
-        "title": "Me",
-        "desc": "Who I am, what I'm focused on now, and the takes I'd defend in a review."
+    "eyebrow": "cjoga.cloud / handbook",
+    "title": "This is where I write things down.",
+    "ledeBefore": "A working handbook — opinions, the K3s lab that runs ",
+    "ledeCode": "cjoga.cloud",
+    "ledeAfter": ", the consulting work that pays the bills, and cert guides for the certs I think are worth your time. Nothing here is for sale. Read whatever's useful.",
+    "paths": {
+      "hiring": {
+        "eyebrow": "If you're hiring",
+        "whoIAm": "Who I am",
+        "whatBuilt": "What I've built"
       },
-      "engineering": {
-        "title": "Engineering",
-        "desc": "The K3s lab behind this site, plus the engagements behind the certs."
+      "studying": {
+        "eyebrow": "If you're studying",
+        "intro": "Honest cert guides — my experience, my tips, and the runbooks I'd hand to a friend.",
+        "rhcsa": "RHCSA (EX200) guide"
       },
-      "learn": {
-        "title": "Learn",
-        "desc": "Cert guides — RHCSA today, RHCE next, more to come."
+      "lab": {
+        "eyebrow": "If you're curious about the lab",
+        "k3s": "The K3s setup"
       }
-    }
+    },
+    "signoff": "New pages land when they're ready, not on a schedule. If something here is wrong, or you want to talk about the work,",
+    "signoffLink": "email is the right channel"
   },
   "terminal": {
     "label": "Terminal",

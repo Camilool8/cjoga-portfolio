@@ -240,28 +240,29 @@
     "certifications": "CERTIFICACIONES"
   },
   "handbook": {
-    "label": "El manual",
-    "heading": "Un manual técnico vivo.",
-    "subheading": "Opiniones, trabajo de laboratorio, guías de certificación y el camino que estoy recorriendo ahora — mantenido como un sitio aparte para que pueda crecer por su cuenta.",
-    "eyebrow": "cjoga.cloud",
-    "cardTitle": "El Manual",
-    "cardSubtitle": "Cinco secciones. Una sola fuente de verdad sobre en qué trabajo, qué pienso y qué estoy aprendiendo.",
-    "cta": "Visitar blog.cjoga.cloud",
-    "windowAriaLabel": "Visitar el manual en blog.cjoga.cloud",
-    "sections": {
-      "me": {
-        "title": "Yo",
-        "desc": "Quién soy, en qué estoy enfocado ahora y las posturas que defendería en una revisión."
+    "eyebrow": "cjoga.cloud / manual",
+    "title": "Aquí es donde escribo las cosas.",
+    "ledeBefore": "Un manual de trabajo — opiniones, el laboratorio K3s que corre ",
+    "ledeCode": "cjoga.cloud",
+    "ledeAfter": ", el trabajo de consultoría que paga las cuentas y guías de los certificados que creo que valen tu tiempo. Nada aquí está a la venta. Lee lo que te sea útil.",
+    "paths": {
+      "hiring": {
+        "eyebrow": "Si estás contratando",
+        "whoIAm": "Quién soy",
+        "whatBuilt": "Lo que he construido"
       },
-      "engineering": {
-        "title": "Ingeniería",
-        "desc": "El laboratorio K3s detrás de este sitio, más los proyectos detrás de los certificados."
+      "studying": {
+        "eyebrow": "Si estás estudiando",
+        "intro": "Guías honestas de certificación — mi experiencia, mis consejos y los runbooks que le pasaría a un amigo.",
+        "rhcsa": "Guía RHCSA (EX200)"
       },
-      "learn": {
-        "title": "Aprende",
-        "desc": "Guías de certificación — RHCSA hoy, RHCE próximamente, y más por venir."
+      "lab": {
+        "eyebrow": "Si te interesa el laboratorio",
+        "k3s": "El setup de K3s"
       }
-    }
+    },
+    "signoff": "Las páginas nuevas aparecen cuando están listas, no en un calendario. Si algo aquí está mal, o quieres hablar del trabajo,",
+    "signoffLink": "el correo es el canal correcto"
   },
   "terminal": {
     "label": "Terminal",

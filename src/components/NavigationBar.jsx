@@ -286,6 +286,18 @@ function NavigationBar({ theme, setTheme, language, setLanguage }) {
           color: var(--accent);
           background: var(--accent-dim);
         }
+        .nav-pill-external {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .nav-pill-external svg {
+          flex-shrink: 0;
+          opacity: 0.7;
+        }
+        .nav-pill-external:hover svg {
+          opacity: 1;
+        }
 
         .nav-control-btn {
           width: 36px;

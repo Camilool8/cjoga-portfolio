@@ -36,11 +36,6 @@ export default defineConfig({
           "icons-vendor": ["react-icons"],
           "motion-vendor": ["framer-motion"],
           "pdf-vendor": ["@react-pdf/renderer"],
-          "markdown-vendor": [
-            "marked",
-            "dompurify",
-            "react-syntax-highlighter",
-          ],
         },
       },
     },

@@ -7,10 +7,7 @@ import helmet from "helmet";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
-import { supabase } from "./utils/supabase.js";
 import logger from "./utils/logger.js";
-import blogRoutes from "./routes/blog.js";
-import authRoutes from "./routes/auth.js";
 import terminalRoutes from "./routes/terminal.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -43,12 +40,7 @@ if (isProduction) {
         directives: {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-          connectSrc: [
-            "'self'",
-            "https://etyutaeoblbixarewyrv.supabase.co",
-            "data:",
-            "https://cdnjs.cloudflare.com",
-          ],
+          connectSrc: ["'self'", "data:", "https://cdnjs.cloudflare.com"],
           fontSrc: [
             "'self'",
             "https://fonts.gstatic.com",
@@ -59,11 +51,7 @@ if (isProduction) {
             "'unsafe-inline'",
             "https://fonts.googleapis.com",
           ],
-          imgSrc: [
-            "'self'",
-            "data:",
-            "https://etyutaeoblbixarewyrv.supabase.co",
-          ],
+          imgSrc: ["'self'", "data:"],
         },
       },
     })
@@ -111,13 +99,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  req.supabase = supabase;
-  next();
-});
-
-app.use("/api/blog", blogRoutes);
-app.use("/api/auth", authRoutes);
 app.use("/api/terminal", terminalRoutes);
 
 app.get("/api/health", (req, res) => {
