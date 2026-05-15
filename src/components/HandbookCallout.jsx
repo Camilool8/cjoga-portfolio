@@ -77,11 +77,6 @@ export default function HandbookCallout() {
 
   return (
     <section id="handbook" className="handbook-section">
-      <div className="handbook-backdrop" aria-hidden="true">
-        <div className="handbook-orb handbook-orb-accent" />
-        <div className="handbook-orb handbook-orb-blue" />
-      </div>
-
       <motion.div
         variants={sectionVariants}
         initial="hidden"

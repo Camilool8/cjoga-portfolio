@@ -844,84 +844,13 @@ pre.line-numbers > code {
    (hero + audience-paths + signoff) so it reads as a true peek.
    ============================================================ */
 .handbook-section {
+  @apply py-16 md:py-24;
   position: relative;
-  overflow: hidden;
-  padding: 5rem 0;
-}
-
-@media (max-width: 768px) {
-  .handbook-section {
-    padding: 3rem 0;
-  }
-}
-
-.handbook-backdrop {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-  /* Isolate paint so adjacent scroll motion doesn't repaint this region */
-  contain: layout paint;
-}
-
-.handbook-orb {
-  position: absolute;
-  border-radius: 999px;
-  /* Pre-blurred via radial-gradient + lower filter radius. The visual is
-     a soft glow either way; a runtime blur(140px) on a 50vw surface is
-     prohibitive on mobile GPUs. */
-  filter: blur(60px);
-  opacity: 0.22;
-}
-
-@media (min-width: 769px) {
-  .handbook-orb {
-    filter: blur(90px);
-  }
-}
-
-.handbook-orb-accent {
-  top: -12%;
-  left: -8%;
-  width: 50vw;
-  height: 50vw;
-  max-width: 700px;
-  max-height: 700px;
-  background: radial-gradient(circle at center, var(--accent) 0%, transparent 60%);
-}
-
-.handbook-orb-blue {
-  top: 5%;
-  right: -12%;
-  width: 55vw;
-  height: 55vw;
-  max-width: 800px;
-  max-height: 800px;
-  background: radial-gradient(circle at center, var(--accent-secondary) 0%, transparent 60%);
-  opacity: 0.18;
-}
-
-@media (max-width: 480px) {
-  .handbook-orb {
-    filter: blur(40px);
-    opacity: 0.16;
-  }
-  .handbook-orb-blue {
-    opacity: 0.12;
-  }
-}
-
-[data-theme="light"] .handbook-orb {
-  opacity: 0.14;
+  z-index: 2;
 }
 
 .handbook-section-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full;
 }
 
 .handbook-section-header {
