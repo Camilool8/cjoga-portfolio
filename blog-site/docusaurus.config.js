@@ -5,17 +5,14 @@ import { themes as prismThemes } from "prism-react-renderer";
 const config = {
   title: "cjoga.cloud",
   tagline: "Camilo's handbook — opinions, the lab, and cert guides.",
-  favicon: "img/favicon.ico",
+  favicon: "img/logo.svg",
 
   trailingSlash: false,
 
   headTags: [
-    // Brand icons & manifest. Docusaurus only emits a single favicon link
-    // from the top-level `favicon` field; everything else is appended here.
-    {
-      tagName: "link",
-      attributes: { rel: "icon", type: "image/svg+xml", href: "/img/logo.svg" },
-    },
+    // Brand icons & manifest. Docusaurus emits the primary favicon from
+    // the top-level `favicon` field (logo.svg). Additional formats and
+    // manifest links are appended here.
     {
       tagName: "link",
       attributes: { rel: "apple-touch-icon", href: "/img/apple-touch-icon.png" },
