@@ -255,6 +255,25 @@ const ProfessionalPDFCV = () => {
 
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
+              {t("experience.kodepull.title")},{" "}
+              {t("experience.kodepull.company")}
+            </Text>
+            <Text style={styles.jobPeriod}>
+              {t("experience.kodepull.period")}
+            </Text>
+            <View style={styles.jobResponsibilities}>
+              {t("experience.kodepull.responsibilities", {
+                returnObjects: true,
+              }).map((item, index) => (
+                <Text key={index} style={styles.jobResponsibility}>
+                  • {item}
+                </Text>
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.jobEntry}>
+            <Text style={styles.jobTitle}>
               {t("experience.flBetances.title")},{" "}
               {t("experience.flBetances.company")}
             </Text>
