@@ -11,6 +11,7 @@ import {
 
 const COMPANY_META = {
   inspyr: { initial: "I", color: "#2563eb" },
+  kodepull: { initial: "K", color: "#7c3aed" },
   flBetances: { initial: "F", color: "#d97706" },
   arctiq: { initial: "A", color: "#10b981" },
 };
@@ -27,7 +28,7 @@ function Experience() {
   // wasting frames on what is ultimately just a thin vertical line.
   const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  const companyKeys = ["inspyr", "flBetances", "arctiq"];
+  const companyKeys = ["inspyr", "kodepull", "flBetances", "arctiq"];
   const isActive = (key) => {
     const period = t(`experience.${key}.period`);
     return /present|presente/i.test(period);
