@@ -18,7 +18,7 @@
       "Automation Expert",
       "Kubernetes Specialist"
     ],
-    "description": "I'm a DevOps & Cloud Engineer specializing in building and optimizing infrastructure through automation, CI/CD, Infrastructure as Code, and hybrid cloud environments. Currently focused on streamlining deployments and infrastructure management for enterprise solutions.",
+    "description": "I'm a DevOps & Cloud Engineer who builds and runs Kubernetes platforms on AWS and Azure. My work centers on Infrastructure as Code, GitOps delivery, and observability — turning sprawling, manually-managed environments into automated, self-service platforms teams can run themselves.",
     "cta": {
       "work": "View My Work",
       "contact": "Get In Touch"
@@ -32,8 +32,8 @@
   "about": {
     "title": "About",
     "heading": "Building systems that scale.",
-    "paragraph1": "Hello! I'm Jose Camilo (please call me Camilo), a Computer Science Engineer with a passion for DevOps practices and cloud technologies. I specialize in creating efficient, scalable, and automated infrastructure solutions.",
-    "paragraph2": "My expertise lies in automating deployments, implementing robust CI/CD pipelines, and managing infrastructure as code across hybrid cloud environments. I enjoy optimizing operations and workflows to help teams deliver software more efficiently.",
+    "paragraph1": "Hello! I'm Jose Camilo (please call me Camilo), a Computer Science Engineer drawn to DevOps and cloud since the start of my career. I build efficient, scalable, automated infrastructure — and I care about the platform being something teams can actually run themselves.",
+    "paragraph2": "I've taken environments from manually-managed servers and console-clicked clusters to managed Kubernetes platforms on AWS and Azure, with GitOps delivery, Infrastructure as Code, and observability built in. The part I enjoy most is the consolidation work — collapsing sprawl into something simple and self-service.",
     "skills": "Here are some technologies I've been working with recently:",
     "stats": {
       "years": "Years Exp",
@@ -67,20 +67,35 @@
       "company": "INSPYR Global Solutions",
       "period": "March 2025 - Present",
       "responsibilities": [
-        "Manage and optimize Kubernetes clusters (EKS, AKS) for various applications",
-        "Optimize cloud costs by implementing resource management best practices",
-        "Manage big application projects with global impact"
+        "Operate a multi-region Azure platform of 300+ services on AKS, with releases driven by Azure DevOps pipelines and PowerShell",
+        "Led consolidation of every alert and dashboard into a single alerts-as-code repository and GitOps release pipeline spanning all environments and regions",
+        "Maintain and extend the Bicep infrastructure platform, shipping new services through what-if and release pipelines",
+        "Enabled managed data infrastructure for developer teams — Azure Synapse and Databricks with Unity Catalog governance, deployed entirely as code",
+        "Drive an in-flight migration of AKS clusters onto Cilium and replace manual incident remediation with self-healing automation"
+      ]
+    },
+    "kodepull": {
+      "title": "Co-founder & CTO",
+      "company": "KODEPULL SRL",
+      "period": "2025 - Present",
+      "responsibilities": [
+        "Co-founded the company in 2025 — it delivers enterprise-grade engineering to businesses without enterprise budgets",
+        "Own the entire technical side as CTO: architecture, infrastructure design, platform and vendor decisions, and the quality bar every project ships under",
+        "Lead hands-on engineering and technical delivery across web, custom software, cloud, and mobile work",
+        "Scale specialist engineers, designers, and partners onto each engagement based on what the work actually needs",
+        "Partner with the CEO on technical strategy, keeping delivery mapped to real business outcomes"
       ]
     },
     "flBetances": {
-      "title": "DevOps Intermediate Engineer",
+      "title": "DevOps Engineer",
       "company": "FL Betances & Asociados",
       "period": "June 2024 - December 2025",
       "responsibilities": [
-        "Implement cloud migration strategies for clients moving to AWS and Azure",
-        "Develop infrastructure automation using Terraform and PowerShell",
-        "Create and maintained containerized applications using Docker and Kubernetes",
-        "Design and implement CI/CD pipelines using Azure DevOps and GitLab CI for enterprise clients"
+        "Embedded in a banking institution's core DevOps team, supporting 50+ engineering teams and a continuous automation backlog",
+        "Maintained and extended an in-house deployment framework on Azure DevOps — YAML templates that detect project type, target environment, and required policy checks",
+        "Ran nightly deployment operations across all teams, tracing failed deploys through ArgoCD and AKS to the policy or template at fault",
+        "Built Power Automate flows for the approval, notification, and ticket-lifecycle processes around DevOps work",
+        "Led an internal Terraform module library that let teams self-provision cloud resources within bank policy; handed off near-complete at contract end"
       ]
     },
     "arctiq": {
@@ -88,12 +103,11 @@
       "company": "Arctiq",
       "period": "July 2022 - Present",
       "responsibilities": [
-        "Provide consulting services for clients implementing DevOps practices",
-        "Build CI/CD pipelines using Jenkins and GitLab",
-        "Implement container orchestration solutions with Kubernetes",
-        "Train client teams on DevOps methodologies and tools",
-        "Implement Infrastructure as Code solutions with Terraform and Ansible for multi-cloud environments",
-        "Create and maintain monitoring solutions using Dynatrace for critical production systems"
+        "Designed and led the migration of 60+ applications from a hand-built Rancher setup to a managed AWS EKS platform — FluxCD, GitLab CI, and Terraform",
+        "Consolidated branch-per-team sprawl into per-team namespaces, cutting 5–8× of redundant deployed surface",
+        "Rolled out SSO-based access with AWS Identity Center and Entra ID, retiring IAM users in favor of assumed roles and OIDC for pipelines",
+        "Built observability from zero — OpenTelemetry instrumentation with Grafana, Loki, and distributed traces across every application",
+        "Led Terraform workshops moving dev teams to self-service infrastructure; promoted to local team mentor"
       ]
     }
   },
@@ -101,63 +115,63 @@
     "title": "Projects",
     "heading": "Things I've built.",
     "cicd": {
-      "title": "Multi-Environment CI/CD Pipeline",
-      "description": "Designed and implemented a comprehensive CI/CD pipeline using GitLab CI that supported development, staging, and production environments with automated testing, deployment, and rollback capabilities.",
+      "title": "EKS Platform Migration",
+      "description": "Designed and led the migration of 60+ applications from a hand-built Rancher setup to a managed AWS EKS platform, with FluxCD for GitOps delivery and Terraform for the cloud underneath.",
       "tech": [
+        "AWS EKS",
+        "FluxCD",
         "GitLab CI",
-        "Kubernetes",
-        "ArgoCD",
-        "Kustomize"
+        "Terraform"
       ]
     },
     "iac": {
-      "title": "Infrastructure as Code for Multi-Cloud",
-      "description": "Created a modular Terraform codebase for managing AWS and Azure resources, including networking, compute, storage, and security components, with a focus on reusability and maintainability.",
+      "title": "Multi-Cloud Infrastructure as Code",
+      "description": "Modular Terraform and Bicep platforms for AWS and Azure — networking, compute, storage, and security — with a plan or what-if check running on every change.",
       "tech": [
         "Terraform",
+        "Bicep",
         "AWS",
-        "Azure",
-        "PowerShell"
+        "Azure"
       ]
     },
     "monitoring": {
-      "title": "Kubernetes Monitoring Solution",
-      "description": "Implemented a comprehensive monitoring solution for Kubernetes clusters using Dynatrace, with custom dashboards, alerts, and automated remediation for common failure scenarios.",
+      "title": "Observability from Zero",
+      "description": "Built observability for a platform that started with none — OpenTelemetry instrumentation feeding Grafana, Loki, and distributed traces, with dashboards and alerts on every application.",
       "tech": [
-        "Kubernetes",
-        "Dynatrace",
+        "OpenTelemetry",
         "Grafana",
+        "Loki",
         "Prometheus"
       ]
     },
     "infrastructure": {
-      "title": "Automated Infrastructure Deployment",
-      "description": "Developed Ansible playbooks and roles for automating the deployment and configuration of application servers, databases, and networking components across multiple environments.",
+      "title": "Alerts-as-Code Pipeline",
+      "description": "Consolidated every alert and dashboard into a single repository and a GitOps release pipeline that deploys and reconciles them across all environments, regions, and severities.",
       "tech": [
-        "Ansible",
-        "AWS",
-        "Linux",
-        "PostgreSQL"
+        "Azure",
+        "Azure DevOps",
+        "Grafana",
+        "GitOps"
       ]
     },
     "portal": {
-      "title": "Internal DevOps Portal",
-      "description": "Created a web-based portal using Vue.js that provided a unified interface for deploying applications, managing infrastructure, and viewing monitoring metrics across development teams.",
+      "title": "Self-Service Infrastructure Portal",
+      "description": "A Vue.js and .NET portal that lets developers self-provision repositories, manage permissions, and request infrastructure through approved templates and guardrails instead of tickets.",
       "tech": [
         "Vue.js",
-        "Node.js",
-        "Docker",
-        "REST APIs"
+        ".NET",
+        "ArgoCD",
+        "AKS"
       ]
     },
     "containerization": {
-      "title": "Containerization Migration",
-      "description": "Led the migration of legacy applications to containerized environments using Docker and Kubernetes, including the development of optimized container images and orchestration configurations.",
+      "title": "Distributed Kubernetes Homelab",
+      "description": "A multi-node K3s cluster on personal hardware running GitOps delivery, observability, and secrets management behind an Envoy Gateway and Cloudflare Tunnel — it hosts this very site.",
       "tech": [
-        "Docker",
-        "Kubernetes",
-        "Helm",
-        "Jenkins"
+        "K3s",
+        "Longhorn",
+        "OpenBao",
+        "Envoy"
       ]
     }
   },
@@ -332,7 +346,7 @@
   "footer": {
     "text1": "Jose Camilo Joga Guerrero",
     "text2": "DevOps & Cloud Engineer",
-    "copyright": "Designed & Built by Jose Camilo Joga Guerrero © 2025"
+    "copyright": "Designed & Built by Jose Camilo Joga Guerrero © 2026"
   },
   "print": {
     "button": "Download CV",

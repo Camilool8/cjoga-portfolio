@@ -1,17 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { FaAws, FaMicrosoft, FaDocker, FaVuejs, FaNodeJs, FaLinux } from "react-icons/fa";
+import { FaAws, FaMicrosoft, FaVuejs, FaServer } from "react-icons/fa";
 import {
   SiGitlab,
   SiKubernetes,
   SiTerraform,
-  SiDynatrace,
   SiGrafana,
   SiPrometheus,
-  SiAnsible,
-  SiHelm,
-  SiPostgresql,
-  SiJenkins,
+  SiOpentelemetry,
+  SiArgo,
+  SiDotnet,
+  SiCloudflare,
 } from "react-icons/si";
 import {
   sectionVariants,
@@ -26,9 +25,9 @@ import {
 const projects = [
   {
     key: "cicd",
-    color: "#fc6d26",
-    accent: "#ffb088",
-    icons: [SiGitlab, SiKubernetes, SiHelm],
+    color: "#ff9900",
+    accent: "#ffc266",
+    icons: [FaAws, SiGitlab, SiKubernetes],
   },
   {
     key: "iac",
@@ -38,27 +37,27 @@ const projects = [
   },
   {
     key: "monitoring",
-    color: "#73be28",
-    accent: "#a8e068",
-    icons: [SiDynatrace, SiGrafana, SiPrometheus],
+    color: "#f46800",
+    accent: "#f99d5c",
+    icons: [SiGrafana, SiOpentelemetry, SiPrometheus],
   },
   {
     key: "infrastructure",
-    color: "#ee0000",
-    accent: "#ff6666",
-    icons: [SiAnsible, FaAws, FaLinux],
+    color: "#0078d4",
+    accent: "#5fb0ec",
+    icons: [FaMicrosoft, SiGrafana, SiArgo],
   },
   {
     key: "portal",
     color: "#41b883",
     accent: "#7ed4a6",
-    icons: [FaVuejs, FaNodeJs, FaDocker],
+    icons: [FaVuejs, SiDotnet, SiArgo],
   },
   {
     key: "containerization",
-    color: "#2496ed",
-    accent: "#7cc0ff",
-    icons: [FaDocker, SiKubernetes, SiJenkins],
+    color: "#ffc61c",
+    accent: "#ffdd73",
+    icons: [SiKubernetes, SiCloudflare, FaServer],
   },
 ];
 

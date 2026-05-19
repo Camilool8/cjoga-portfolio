@@ -30,6 +30,7 @@
     "react/prop-types": "off",
     "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     "react/display-name": "off",
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "no-constant-condition": ["error", { "checkLoops": false }]
   }
 }

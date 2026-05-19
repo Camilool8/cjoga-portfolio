@@ -18,7 +18,7 @@
       "Experto en Automatización",
       "Especialista en Kubernetes"
     ],
-    "description": "Soy un ingeniero DevOps y de Cloud especializado en construir y optimizar infraestructura a través de automatización, CI/CD, Infraestructura como Código y entornos de nube híbrida. Actualmente enfocado en agilizar despliegues y gestión de infraestructura para soluciones empresariales.",
+    "description": "Soy Ingeniero DevOps y Cloud que construye y opera plataformas de Kubernetes sobre AWS y Azure. Mi trabajo se centra en la Infraestructura como Código, la entrega GitOps y la observabilidad — convirtiendo entornos dispersos y gestionados a mano en plataformas automatizadas y autogestionadas que los equipos pueden operar por sí mismos.",
     "cta": {
       "work": "Ver Mi Trabajo",
       "contact": "Contáctame"
@@ -32,8 +32,8 @@
   "about": {
     "title": "Sobre Mí",
     "heading": "Construyendo sistemas que escalan.",
-    "paragraph1": "¡Hola! Soy José Camilo (por favor dígame Camilo), un ingeniero en Ciencias de la Computación con pasión por las prácticas DevOps y tecnologías cloud. Me especializo en crear soluciones de infraestructura eficientes, escalables y automatizadas.",
-    "paragraph2": "Mi experiencia se centra en automatizar despliegues, implementar canales robustos de CI/CD y gestionar infraestructura como código en entornos de nube híbrida. Disfruto optimizando operaciones y flujos de trabajo para ayudar a los equipos a entregar software de manera más eficiente.",
+    "paragraph1": "¡Hola! Soy Jose Camilo (llámame Camilo), Ingeniero en Ciencias de la Computación atraído por DevOps y la nube desde el inicio de mi carrera. Construyo infraestructura eficiente, escalable y automatizada — y me importa que la plataforma sea algo que los propios equipos puedan operar.",
+    "paragraph2": "He llevado entornos desde servidores gestionados a mano y clusters configurados clic a clic hasta plataformas de Kubernetes gestionadas sobre AWS y Azure, con entrega GitOps, Infraestructura como Código y observabilidad integradas. Lo que más disfruto es el trabajo de consolidación — reducir la dispersión a algo simple y autogestionado.",
     "skills": "Estas son algunas de las tecnologías con las que he estado trabajando recientemente:",
     "stats": {
       "years": "Años Exp",
@@ -67,20 +67,35 @@
       "company": "INSPYR Global Solutions",
       "period": "Marzo 2025 - Presente",
       "responsibilities": [
-        "Gestionar y optimizar clusters de Kubernetes (EKS, AKS) para diversas aplicaciones",
-        "Optimización costos en la nube implementando mejores prácticas de gestión de recursos",
-        "Gestionar grandes proyectos de aplicaciones con impacto global"
+        "Operar una plataforma Azure multi-región de más de 300 servicios sobre AKS, con despliegues gestionados por pipelines de Azure DevOps y PowerShell",
+        "Lideré la consolidación de todas las alertas y dashboards en un único repositorio de alertas como código y un pipeline de despliegue GitOps que abarca todos los entornos y regiones",
+        "Mantener y extender la plataforma de infraestructura en Bicep, desplegando nuevos servicios mediante pipelines de what-if y de release",
+        "Habilité infraestructura de datos gestionada para equipos de desarrollo — Azure Synapse y Databricks con gobernanza vía Unity Catalog, desplegados íntegramente como código",
+        "Impulsar una migración en curso de clusters de AKS hacia Cilium y reemplazar la remediación manual de incidentes con automatización de auto-recuperación"
+      ]
+    },
+    "kodepull": {
+      "title": "Cofundador y CTO",
+      "company": "KODEPULL SRL",
+      "period": "2025 - Presente",
+      "responsibilities": [
+        "Cofundé la empresa en 2025 — ofrece ingeniería de nivel empresarial a negocios sin presupuesto de gran empresa",
+        "Dirijo todo el lado técnico como CTO: arquitectura, diseño de infraestructura, decisiones de plataforma y proveedores, y el estándar de calidad con el que se entrega cada proyecto",
+        "Liderar la ingeniería práctica y la entrega técnica en proyectos de web, software a medida, nube y móvil",
+        "Incorporar ingenieros, diseñadores y socios especialistas a cada proyecto según lo que el trabajo realmente requiere",
+        "Colaborar con el CEO en la estrategia técnica, manteniendo la entrega alineada con resultados de negocio reales"
       ]
     },
     "flBetances": {
-      "title": "Ingeniero DevOps Intermedio",
+      "title": "Ingeniero DevOps",
       "company": "FL Betances & Asociados",
       "period": "Junio 2024 - Diciembre 2025",
       "responsibilities": [
-        "Implementar estrategias de migración a la nube para clientes moviéndose a AWS y Azure",
-        "Desarrollar automatización de infraestructura usando Terraform y PowerShell",
-        "Crear y mantener aplicaciones containerizadas usando Docker y Kubernetes",
-        "Diseñar e implementar pipelines de CI/CD usando Azure DevOps y GitLab CI para clientes empresariales"
+        "Integrado en el equipo central de DevOps de una institución bancaria, dando soporte a más de 50 equipos de ingeniería y a un backlog continuo de automatización",
+        "Mantuve y extendí un framework de despliegue interno sobre Azure DevOps — plantillas YAML que detectan el tipo de proyecto, el entorno destino y las verificaciones de política requeridas",
+        "Operé los despliegues nocturnos de todos los equipos, rastreando los despliegues fallidos a través de ArgoCD y AKS hasta la política o plantilla causante",
+        "Construí flujos en Power Automate para los procesos de aprobación, notificación y ciclo de vida de tickets en torno al trabajo de DevOps",
+        "Lideré una librería interna de módulos de Terraform que permitió a los equipos autoaprovisionar recursos en la nube dentro de la política del banco; entregada casi completa al finalizar el contrato"
       ]
     },
     "arctiq": {
@@ -88,12 +103,11 @@
       "company": "Arctiq",
       "period": "Julio 2022 - Presente",
       "responsibilities": [
-        "Proveer servicios de consultoría para clientes implementando prácticas DevOps",
-        "Construír pipelines de CI/CD usando Jenkins y GitLab",
-        "Implementar soluciones de orquestación de contenedores con Kubernetes",
-        "Capacitar equipos de clientes en metodologías y herramientas DevOps",
-        "Implementar soluciones de Infraestructura como Código con Terraform y Ansible para entornos multi-nube",
-        "Crear y mantener soluciones de monitoreo usando Dynatrace para sistemas críticos en producción"
+        "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS — FluxCD, GitLab CI y Terraform",
+        "Consolidé la dispersión de \"una rama por equipo\" en namespaces por equipo, recortando entre 5 y 8 veces la superficie desplegada redundante",
+        "Implementé el acceso basado en SSO con AWS Identity Center y Entra ID, retirando los usuarios IAM en favor de roles asumidos y OIDC para los pipelines",
+        "Construí observabilidad desde cero — instrumentación con OpenTelemetry y Grafana, Loki y trazas distribuidas en cada aplicación",
+        "Impartí talleres de Terraform para llevar a los equipos de desarrollo a la infraestructura autogestionada; ascendido a mentor del equipo local"
       ]
     }
   },
@@ -101,63 +115,63 @@
     "title": "Proyectos",
     "heading": "Lo que he construido.",
     "cicd": {
-      "title": "Pipeline CI/CD Multi-Entorno",
-      "description": "Diseñé e implementé un canal CI/CD integral usando GitLab CI que soportaba entornos de desarrollo, pruebas y producción con pruebas automatizadas, despliegue y capacidades de rollback.",
+      "title": "Migración de Plataforma a EKS",
+      "description": "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS, con FluxCD para la entrega GitOps y Terraform para la nube subyacente.",
       "tech": [
+        "AWS EKS",
+        "FluxCD",
         "GitLab CI",
-        "Kubernetes",
-        "ArgoCD",
-        "Kustomize"
+        "Terraform"
       ]
     },
     "iac": {
-      "title": "Infraestructura como Código para Multi-Nube",
-      "description": "Creé un código base modular en Terraform para gestionar recursos de AWS y Azure, incluyendo redes, cómputo, almacenamiento y componentes de seguridad, con enfoque en reusabilidad y mantenibilidad.",
+      "title": "Infraestructura como Código Multi-Nube",
+      "description": "Plataformas modulares de Terraform y Bicep para AWS y Azure — redes, cómputo, almacenamiento y seguridad — con una verificación de plan o what-if que se ejecuta en cada cambio.",
       "tech": [
         "Terraform",
+        "Bicep",
         "AWS",
-        "Azure",
-        "PowerShell"
+        "Azure"
       ]
     },
     "monitoring": {
-      "title": "Solución de Monitoreo para Kubernetes",
-      "description": "Implementé una solución integral de monitoreo para clústeres Kubernetes usando Dynatrace, con dashboards personalizados, alertas y remediación automatizada para escenarios comunes de fallo.",
+      "title": "Observabilidad desde Cero",
+      "description": "Construí la observabilidad de una plataforma que partía de nada — instrumentación con OpenTelemetry alimentando Grafana, Loki y trazas distribuidas, con dashboards y alertas en cada aplicación.",
       "tech": [
-        "Kubernetes",
-        "Dynatrace",
+        "OpenTelemetry",
         "Grafana",
+        "Loki",
         "Prometheus"
       ]
     },
     "infrastructure": {
-      "title": "Despliegue Automatizado de Infraestructura",
-      "description": "Desarrollé playbooks y roles de Ansible para automatizar el despliegue y configuración de servidores de aplicaciones, bases de datos y componentes de red en múltiples entornos.",
+      "title": "Pipeline de Alertas como Código",
+      "description": "Consolidé todas las alertas y dashboards en un único repositorio y un pipeline de despliegue GitOps que las despliega y reconcilia en todos los entornos, regiones y niveles de severidad.",
       "tech": [
-        "Ansible",
-        "AWS",
-        "Linux",
-        "PostgreSQL"
+        "Azure",
+        "Azure DevOps",
+        "Grafana",
+        "GitOps"
       ]
     },
     "portal": {
-      "title": "Portal DevOps Interno",
-      "description": "Creé un portal web usando Vue.js que proporcionaba una interfaz unificada para desplegar aplicaciones, gestionar infraestructura y visualizar métricas de monitoreo entre equipos de desarrollo.",
+      "title": "Portal de Infraestructura Autogestionada",
+      "description": "Un portal en Vue.js y .NET que permite a los desarrolladores autoaprovisionar repositorios, gestionar permisos y solicitar infraestructura mediante plantillas y guardarraíles aprobados en lugar de tickets.",
       "tech": [
         "Vue.js",
-        "Node.js",
-        "Docker",
-        "REST APIs"
+        ".NET",
+        "ArgoCD",
+        "AKS"
       ]
     },
     "containerization": {
-      "title": "Migración a Contenedores",
-      "description": "Lideré la migración de aplicaciones heredadas a entornos containerizados usando Docker y Kubernetes, incluyendo el desarrollo de imágenes de contenedores optimizadas y configuraciones de orquestación.",
+      "title": "Homelab Distribuido de Kubernetes",
+      "description": "Un cluster K3s multi-nodo sobre hardware propio que ejecuta entrega GitOps, observabilidad y gestión de secretos detrás de un Envoy Gateway y un Cloudflare Tunnel — aloja este mismo sitio.",
       "tech": [
-        "Docker",
-        "Kubernetes",
-        "Helm",
-        "Jenkins"
+        "K3s",
+        "Longhorn",
+        "OpenBao",
+        "Envoy"
       ]
     }
   },
@@ -332,7 +346,7 @@
   "footer": {
     "text1": "Jose Camilo Joga Guerrero",
     "text2": "Ingeniero DevOps y Cloud",
-    "copyright": "Diseñado y Construido por Jose Camilo Joga Guerrero © 2025"
+    "copyright": "Diseñado y Construido por Jose Camilo Joga Guerrero © 2026"
   },
   "print": {
     "button": "Descargar CV",

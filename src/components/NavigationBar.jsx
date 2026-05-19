@@ -5,7 +5,6 @@ import { FiSun, FiMoon, FiMonitor, FiExternalLink } from "react-icons/fi";
 import { socialLinks } from "../data";
 
 function NavigationBar({
-  theme,
   themePreference,
   cycleThemePreference,
   language,

@@ -126,7 +126,6 @@ function App() {
       <CursorGlow />
       <ScrollProgress />
       <NavigationBar
-        theme={theme}
         themePreference={themePreference}
         cycleThemePreference={cycleThemePreference}
         language={language}
