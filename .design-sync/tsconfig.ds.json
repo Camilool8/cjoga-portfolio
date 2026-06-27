@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@react-pdf/renderer": ["./stubs/react-pdf.js"]
+    }
+  }
+}

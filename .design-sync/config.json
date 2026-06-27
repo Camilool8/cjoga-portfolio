@@ -1,0 +1,38 @@
+{
+  "pkg": "cjoga-portfolio",
+  "globalName": "CjogaPortfolio",
+  "shape": "package",
+  "projectId": "1f7a224e-80d4-48bd-baa2-143077c17ade",
+  "srcDir": "src",
+  "buildCmd": "npm run build",
+  "cssEntry": ".design-sync/styles-src.css",
+  "tsconfig": ".design-sync/tsconfig.ds.json",
+  "readmeHeader": ".design-sync/conventions.md",
+  "provider": { "component": "PreviewProvider" },
+  "componentSrcMap": {
+    "About": "src/components/About.jsx",
+    "BackgroundAnimation": "src/components/BackgroundAnimation.jsx",
+    "Certifications": "src/components/Certifications.jsx",
+    "Contact": "src/components/Contact.jsx",
+    "CursorGlow": "src/components/CursorGlow.jsx",
+    "Experience": "src/components/Experience.jsx",
+    "Footer": "src/components/Footer.jsx",
+    "HandbookCallout": "src/components/HandbookCallout.jsx",
+    "Hero": "src/components/Hero.jsx",
+    "NavigationBar": "src/components/NavigationBar.jsx",
+    "PrintButton": "src/components/PrintButton.jsx",
+    "Projects": "src/components/Projects.jsx",
+    "ScrollProgress": "src/components/ScrollProgress.jsx",
+    "SectionDivider": "src/components/SectionDivider.jsx",
+    "SideElements": "src/components/SideElements.jsx"
+  },
+  "overrides": {
+    "NavigationBar": { "cardMode": "single", "viewport": "1280x360" },
+    "PrintButton": { "cardMode": "single", "viewport": "560x280" },
+    "BackgroundAnimation": { "cardMode": "single", "viewport": "760x420" },
+    "CursorGlow": { "cardMode": "single", "viewport": "760x380" },
+    "ScrollProgress": { "cardMode": "single", "viewport": "760x200" },
+    "SideElements": { "cardMode": "single", "viewport": "1440x500" },
+    "SectionDivider": { "cardMode": "single", "viewport": "760x520" }
+  }
+}
