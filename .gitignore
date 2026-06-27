@@ -58,3 +58,8 @@ ds-bundle/
 .design-sync/learnings/
 .design-sync/node_modules
 .design-sync/styles-src.css
+
+# design-sync (blog-site / handbook DS)
+blog-site/ds-bundle/
+blog-site/.design-sync/.cache/
+blog-site/.design-sync/node_modules

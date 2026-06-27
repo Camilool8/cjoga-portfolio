@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@docusaurus/Link": ["./stubs/docusaurus-link.jsx"]
+    }
+  }
+}

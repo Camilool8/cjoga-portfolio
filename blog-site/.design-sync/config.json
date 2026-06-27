@@ -1,0 +1,28 @@
+{
+  "pkg": "blog-site",
+  "globalName": "CjogaHandbook",
+  "shape": "package",
+  "projectId": "38352d34-6326-478a-a462-d0ad380f29fc",
+  "srcDir": "src",
+  "buildCmd": "npm run build",
+  "cssEntry": "src/css/custom.css",
+  "tsconfig": ".design-sync/tsconfig.ds.json",
+  "readmeHeader": ".design-sync/conventions.md",
+  "provider": {
+    "component": "PreviewFrame"
+  },
+  "componentSrcMap": {
+    "AuthorCard": "src/components/AuthorCard/index.jsx",
+    "CertBadge": "src/components/CertBadge/index.jsx",
+    "CertBadgeGrid": "src/components/CertBadge/index.jsx",
+    "CourseCard": "src/components/CourseCard/index.jsx",
+    "CourseCardGrid": "src/components/CourseCard/index.jsx",
+    "DiagramZoom": "src/components/DiagramZoom/index.jsx",
+    "PullQuote": "src/components/PullQuote/index.jsx",
+    "SectionCardGrid": "src/components/SectionCardGrid/index.jsx",
+    "SectionCard": "src/components/SectionCardGrid/index.jsx",
+    "TechStackGrid": "src/components/TechStackGrid/index.jsx",
+    "Timeline": "src/components/Timeline/index.jsx",
+    "TimelineEntry": "src/components/Timeline/index.jsx"
+  }
+}
