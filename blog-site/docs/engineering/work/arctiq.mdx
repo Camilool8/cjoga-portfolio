@@ -5,6 +5,10 @@ image: img/og/engineering-work-arctiq.png
 description: DevOps consultant at Arctiq (formerly Shadow-Soft) — a four-year engagement that took 60+ apps from manual Rancher into a self-service EKS platform.
 slug: /engineering/work/arctiq
 keywords: [work, devops, aws, eks, terraform, fluxcd, gitlab, arctiq, shadow-soft]
+date: "2026-05-12"
+last_update:
+  date: "2026-06-28"
+  author: Jose Camilo Joga Guerrero
 ---
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
@@ -82,9 +86,19 @@ Monitoring started at zero. We brought in AWS CloudWatch alongside Grafana to co
 
 Once the IaC repos were in place, the next bottleneck was that the dev teams still treated infrastructure as something the DevOps team did for them. I've led several Terraform workshops to flip that pattern — teaching the dev teams to author their own resources, open MRs against the IaC repos, and own the result. Self-service via MR, reviewed by the platform team, instead of tickets routed through us.
 
+### Compliance and guardrails
+
+Security and audit pressure turned into platform work. I embedded SOC2 controls directly into delivery — automated CI/CD checks, IaC policy, and merge-request gating in GitLab — so the evidence is produced by the pipeline instead of reconstructed after the fact, across both lower and production environments. Alongside that, Kubernetes [LimitRanges](https://kubernetes.io/docs/concepts/policy/limit-range/) set sane resource defaults and ceilings per namespace, so a missing request or an oversized limit can't quietly starve a node.
+
 ### Where it's at now
 
-The work today is consolidating what we built into something the client can run as a proper internal platform. We're formalizing the platform team, documenting the self-service tools and the expected developer workflow, and writing down our internal definitions for things that vary too much team to team. Cost and security are the two big themes of 2026 — [**KubeCost**](https://www.kubecost.com/) for cluster-level cost visibility, [**GuardDuty**](https://aws.amazon.com/guardduty/) and [**WAF**](https://aws.amazon.com/waf/) for the security perimeter, and [**Karpenter**](https://karpenter.sh/) coming up next for smarter node autoscaling.
+The work today is consolidating what we built into something the client can run as a proper internal platform. We're formalizing the platform team, documenting the self-service tools and the expected developer workflow, and writing down our internal definitions for things that vary too much team to team. The architecture itself is documented as code with [D2](https://d2lang.com/), so the diagrams live beside the platform and change with it. Cost and security are the two big themes of 2026 — [**KubeCost**](https://www.kubecost.com/) for cluster-level cost visibility, [**GuardDuty**](https://aws.amazon.com/guardduty/) and [**WAF**](https://aws.amazon.com/waf/) for the security perimeter, and [**Karpenter**](https://karpenter.sh/) coming up next for smarter node autoscaling.
+
+## Teaching Azure to a client team
+
+Arctiq places me on more than the main engagement, and one of the most rewarding pieces of 2026 was a week-long Azure enablement workshop I instructed for another client's team — full days, start to finish, on the cloud they were committing to.
+
+The arc ran from the ground up: cloud computing fundamentals and the IaaS / PaaS / SaaS models against on-premise, then Azure governance end to end — management groups, subscriptions, resource groups, and resources, with policy and RBAC across Entra ID and IAM. From there into networking and security, compute and storage, data and AI, and finally operations: monitoring, alerting, and backups. Each session closed with a Kahoot to check what landed, and the questions coming back were sharp. If another one comes up, the answer is yes.
 
 ## Other work at Shadow-Soft
 

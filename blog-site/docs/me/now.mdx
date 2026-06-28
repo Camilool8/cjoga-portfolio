@@ -5,6 +5,10 @@ image: img/og/me-now.png
 description: What I'm working on, learning, and building right now. Dated; updated occasionally.
 slug: /me/now
 keywords: [now, current, learning, building]
+date: "2026-05-12"
+last_update:
+  date: "2026-06-28"
+  author: Jose Camilo Joga Guerrero
 ---
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
@@ -12,25 +16,23 @@ import AuthorCard from '@site/src/components/AuthorCard';
 
 # Now
 
-*Last updated · May 2026*
-
 This is a [/now page](https://nownownow.com/about) — a snapshot of where my hours are actually going this month. It's deliberately narrow and short-lived. If you're reading this in a future quarter, it's already wrong.
 
 ## Right now
 
-Across my Arctiq and INSPYR engagements, four threads carry most of the week:
+Across my Arctiq and INSPYR engagements, a few threads carry most of the week:
 
-- **Platform documentation.** Writing the internal procedures for our platform stack so the runbook stops living in my head. The kind of work that pays back the third time a teammate needs the same answer.
-- **CI/CD credentials cleanup.** Replacing hard-coded pipeline credentials with short-lived, federated tokens. One pipeline at a time, one merge request at a time — the classic shape of a long, careful migration.
-- **AKS → Cilium migration.** Moving one of our environment clusters off the default CNI to Cilium. Eyes on policy parity, eBPF-side observability, and the cut-over plan.
-- **On deck.** A security hardening pass and a Databricks workspace migration to a better-segmented VNet.
+- **A self-service data and operations portal.** Leading the build of an internal web app that lets developers query Azure SQL and MongoDB across environments without routing every request through a pipeline or the DevOps team — PII masked in production, gated by a one-click admin approval queue. The same app hands load-testing teams self-service Kubernetes operations: restart a workload, or change its requests, limits, or replica count, every action audited. The aim is to push the team from DevOps toward a real platform team.
+- **SOC2 compliance and guardrails.** Building compliance into delivery on the EKS platform — automated CI/CD checks, IaC policy, and merge-request gating in GitLab — plus Kubernetes LimitRanges to standardize resource governance across lower and production, with the architecture documented as code in D2.
+- **AKS → Cilium migration.** Still moving one of our environment clusters off the default CNI to Cilium. Eyes on policy parity, eBPF-side observability, and the cut-over plan.
+- **Just wrapped.** A week-long Azure enablement workshop I instructed for a client team — cloud fundamentals through governance, networking, compute, data and AI, and operations. I'd take another one.
 
-Outside the day job, KodePull is in client-website mode: rebuilding a few WordPress sites that were neglected or corrupted, untangling DNS and TLS so traffic lands on the right server, and putting some of those properties behind Cloudflare for the first time.
+Outside the day job, KodePull is closing its biggest engagement yet — a long-term build for a psychology-testing platform for athletes, with an integrated shop and results analysis. While that lands, the steady work is maintaining a handful of clients' personal-brand sites and their hosting.
 
 <TechStackGrid
   caption="This month"
   compact
-  items={['AKS', 'Cilium', 'Databricks', 'GitLab CI', 'WordPress', 'Cloudflare']}
+  items={['AKS', 'Cilium', 'Azure', 'D2', 'GitLab CI', 'WordPress', 'Cloudflare']}
 />
 
 ## Learning

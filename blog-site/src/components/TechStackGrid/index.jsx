@@ -170,6 +170,9 @@ const TECH = {
   KubeCost: { Icon: SiKubernetes, color: '#326CE5' },
   Karpenter: { Icon: FaAws, color: '#FF9900' },
 
+  // Diagrams as code (official D2 mark, self-hosted from terrastruct/d2)
+  D2: { image: '/img/logos/d2.png' },
+
   // Lab / certification tooling
   Vagrant: { Icon: SiVagrant, color: '#1868F2' },
   VirtualBox: { Icon: SiVirtualbox, color: '#183A61' },

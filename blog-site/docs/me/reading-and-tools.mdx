@@ -5,6 +5,10 @@ image: img/og/me-reading-and-tools.png
 description: How I actually learn — Udemy courses, hands-on lab work, AI tooling — and the tools and hardware I use every day.
 slug: /me/reading-and-tools
 keywords: [learning, courses, udemy, tools, hardware, setup, devops, ai]
+date: "2026-05-12"
+last_update:
+  date: "2026-06-28"
+  author: Jose Camilo Joga Guerrero
 ---
 
 import CourseCard, { CourseCardGrid } from '@site/src/components/CourseCard';
@@ -91,6 +95,14 @@ Claude Code is the one I pay for myself, on a Max subscription, and the one I'd 
 />
 
 All three major clouds, with strong preference for AWS (the one I'm most exposed to), Azure second, GCP last — GCP is mostly for the Google Workspace surface KodePull touches (service accounts, IAM). Containers via Docker on OrbStack. Local Kubernetes is k3s; `kubectl` for the fast loop, Lens by Mirantis for the slow one when I need to actually understand what's going on. Proxmox is my VM OS of choice; VMware Fusion when I need to run it from macOS directly.
+
+<TechStackGrid
+  caption="Diagrams as code"
+  compact
+  items={['D2']}
+/>
+
+[D2](https://d2lang.com/) is my new default for architecture diagrams — text in, clean SVG out, diffable in a merge request like everything else. I picked it up this year documenting EKS infrastructure and it stuck.
 
 <TechStackGrid
   caption="Browser, VPN & secrets"
