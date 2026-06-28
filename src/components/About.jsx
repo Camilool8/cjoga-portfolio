@@ -132,7 +132,7 @@ function About() {
               <div className="grid grid-cols-3 gap-2.5 mt-3.5">
                 {[
                   { number: "4+", label: t("about.stats.years", "Years Exp") },
-                  { number: "10", label: t("about.stats.certs", "Certs") },
+                  { number: "11", label: t("about.stats.certs", "Certs") },
                   { number: "2", label: t("about.stats.clouds", "Clouds") },
                 ].map((stat, i) => (
                   <motion.div

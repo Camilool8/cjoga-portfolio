@@ -383,6 +383,14 @@ const ProfessionalPDFCV = () => {
             </View>
             <View style={styles.certItem}>
               <Text style={styles.certName}>
+                {t("certifications.ckad.name")}
+              </Text>
+              <Text style={styles.certIssuer}>
+                {t("certifications.ckad.issuer")} ({t("certifications.inProgress")})
+              </Text>
+            </View>
+            <View style={styles.certItem}>
+              <Text style={styles.certName}>
                 {t("certifications.rhcsa.name")}
               </Text>
               <Text style={styles.certIssuer}>

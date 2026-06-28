@@ -36,12 +36,18 @@ const certGroups = [
     color: "#326ce5",
     size: "featured",
     liveTile: "kubestronaut",
-    progress: { current: 1, total: 5, label: "Kubestronaut path" },
+    progress: { current: 1, inProgress: 1, total: 5, label: "Kubestronaut path" },
     spanClasses: "md:col-span-2 md:row-span-2 lg:col-span-3",
     certs: [
       {
         key: "kcna",
         link: "https://www.credly.com/badges/bc307278-2a6d-4065-a1b5-5b1b7bda61bd",
+      },
+    ],
+    inProgressCerts: [
+      {
+        key: "ckad",
+        link: "https://www.cncf.io/training/certification/ckad/",
       },
     ],
   },
@@ -987,7 +993,7 @@ function GitLabPipelineLive({ color }) {
 }
 
 // KCNA: circular progress ring with 5 segment dots + central k8s helm.
-function KubestronautRingLive({ color, current = 1, total = 5 }) {
+function KubestronautRingLive({ color, current = 1, inProgress = 0, total = 5 }) {
   const reduced = useReducedMotion();
   const RADIUS = 36;
   const CIRC = 2 * Math.PI * RADIUS;
@@ -1034,6 +1040,7 @@ function KubestronautRingLive({ color, current = 1, total = 5 }) {
           const x = 50 + RADIUS * Math.cos(angle);
           const y = 50 + RADIUS * Math.sin(angle);
           const isLit = i < current;
+          const isInProgress = i >= current && i < current + inProgress;
           return (
             <g key={i}>
               {isLit && !reduced && (
@@ -1047,14 +1054,28 @@ function KubestronautRingLive({ color, current = 1, total = 5 }) {
                   transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                 />
               )}
+              {isInProgress && !reduced && (
+                <motion.circle
+                  cx={x}
+                  cy={y}
+                  r="3"
+                  fill="none"
+                  stroke={color}
+                  strokeWidth="0.7"
+                  strokeDasharray="1.2 1"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                  style={{ transformOrigin: `${x}px ${y}px` }}
+                />
+              )}
               <circle
                 cx={x}
                 cy={y}
                 r="2.4"
-                fill={isLit ? color : "var(--bg-surface)"}
+                fill={isLit ? color : isInProgress ? `${color}33` : "var(--bg-surface)"}
                 stroke={color}
                 strokeWidth="0.7"
-                opacity={isLit ? 1 : 0.4}
+                opacity={isLit ? 1 : isInProgress ? 0.85 : 0.4}
               />
             </g>
           );
@@ -1163,7 +1184,7 @@ function CountUp({ value, duration = 1.1 }) {
   );
 }
 
-function CertRow({ cert, brandColor, accentBg, t, featured, divider }) {
+function CertRow({ cert, brandColor, accentBg, t, featured, divider, inProgress }) {
   return (
     <div
       className="flex items-center justify-between gap-3 py-2"
@@ -1212,20 +1233,44 @@ function CertRow({ cert, brandColor, accentBg, t, featured, divider }) {
           {t(`certifications.${cert.key}.issuer`)}
         </div>
       </div>
-      <div
-        className="flex-shrink-0"
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: "0.7rem",
-          fontWeight: 500,
-          color: brandColor,
-          background: accentBg,
-          padding: "3px 10px",
-          borderRadius: "6px",
-        }}
-      >
-        {t(`certifications.${cert.key}.date`)}
-      </div>
+      {inProgress ? (
+        <div
+          className="flex-shrink-0 inline-flex items-center gap-1.5"
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.65rem",
+            fontWeight: 500,
+            color: brandColor,
+            background: accentBg,
+            padding: "3px 10px",
+            borderRadius: "6px",
+            letterSpacing: "0.03em",
+            textTransform: "uppercase",
+          }}
+        >
+          <span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: brandColor, boxShadow: `0 0 6px ${brandColor}` }}
+            aria-hidden="true"
+          />
+          {t("certifications.inProgress", "In progress")}
+        </div>
+      ) : (
+        <div
+          className="flex-shrink-0"
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.7rem",
+            fontWeight: 500,
+            color: brandColor,
+            background: accentBg,
+            padding: "3px 10px",
+            borderRadius: "6px",
+          }}
+        >
+          {t(`certifications.${cert.key}.date`)}
+        </div>
+      )}
     </div>
   );
 }
@@ -1256,6 +1301,7 @@ function LiveTileFrame({ brandColor, liveTile, progress, rawColor }) {
         <KubestronautRingLive
           color={brandColor}
           current={progress?.current}
+          inProgress={progress?.inProgress}
           total={progress?.total}
         />
       )}
@@ -1419,6 +1465,9 @@ function Certifications() {
                       {group.certs.length === 1
                         ? "certification"
                         : "certifications"}
+                      {group.inProgressCerts?.length
+                        ? ` · ${group.inProgressCerts.length} in progress`
+                        : ""}
                     </div>
                   </div>
                 </div>
@@ -1460,6 +1509,18 @@ function Certifications() {
                       />
                     );
                   })}
+                  {group.inProgressCerts?.map((cert) => (
+                    <CertRow
+                      key={cert.key}
+                      cert={cert}
+                      brandColor={brandColor}
+                      accentBg={accentBg}
+                      t={t}
+                      featured={isFeatured}
+                      divider
+                      inProgress
+                    />
+                  ))}
                 </div>
 
                 {isFeatured && group.progress && (
@@ -1491,7 +1552,7 @@ function Certifications() {
                       </span>
                     </div>
                     <div
-                      className="h-1.5 rounded-full overflow-hidden"
+                      className="h-1.5 rounded-full overflow-hidden flex"
                       style={{ background: "var(--border-subtle)" }}
                       role="progressbar"
                       aria-valuenow={group.progress.current}
@@ -1500,7 +1561,7 @@ function Certifications() {
                       aria-label={group.progress.label}
                     >
                       <motion.div
-                        className="h-full rounded-full"
+                        className="h-full"
                         initial={{ width: 0 }}
                         whileInView={{
                           width: `${
@@ -1514,6 +1575,25 @@ function Certifications() {
                           background: `linear-gradient(90deg, ${brandColor}, ${brandColor}aa)`,
                         }}
                       />
+                      {group.progress.inProgress ? (
+                        <motion.div
+                          className="h-full"
+                          initial={{ width: 0, opacity: 0 }}
+                          whileInView={{
+                            width: `${
+                              (group.progress.inProgress /
+                                group.progress.total) *
+                              100
+                            }%`,
+                            opacity: 1,
+                          }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.9, ease: "easeOut", delay: 0.7 }}
+                          style={{
+                            backgroundImage: `repeating-linear-gradient(45deg, ${brandColor}80 0, ${brandColor}80 3px, transparent 3px, transparent 6px)`,
+                          }}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 )}

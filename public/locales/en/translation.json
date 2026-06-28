@@ -71,7 +71,8 @@
         "Led consolidation of every alert and dashboard into a single alerts-as-code repository and GitOps release pipeline spanning all environments and regions",
         "Maintain and extend the Bicep infrastructure platform, shipping new services through what-if and release pipelines",
         "Enabled managed data infrastructure for developer teams — Azure Synapse and Databricks with Unity Catalog governance, deployed entirely as code",
-        "Drive an in-flight migration of AKS clusters onto Cilium and replace manual incident remediation with self-healing automation"
+        "Drive an in-flight migration of AKS clusters onto Cilium and replace manual incident remediation with self-healing automation",
+        "Led a self-service web app giving developers audited, PII-masked access to Azure SQL and MongoDB across environments — gated by a one-click admin approval queue — plus self-service Kubernetes operations (workload restarts, resource and replica changes) for load-testing teams"
       ]
     },
     "kodepull": {
@@ -107,7 +108,10 @@
         "Consolidated branch-per-team sprawl into per-team namespaces, cutting 5–8× of redundant deployed surface",
         "Rolled out SSO-based access with AWS Identity Center and Entra ID, retiring IAM users in favor of assumed roles and OIDC for pipelines",
         "Built observability from zero — OpenTelemetry instrumentation with Grafana, Loki, and distributed traces across every application",
-        "Led Terraform workshops moving dev teams to self-service infrastructure; promoted to local team mentor"
+        "Led Terraform workshops moving dev teams to self-service infrastructure; promoted to local team mentor",
+        "Embedded SOC2 compliance into delivery — automated CI/CD checks, IaC policy, and merge-request gating on GitLab across lower and production environments",
+        "Standardized resource governance with Kubernetes LimitRanges across every environment, and documented the EKS architecture as code with D2 diagrams",
+        "Led a week-long Azure enablement workshop for a client team — from cloud fundamentals and governance through networking, compute, data and AI, and operations"
       ]
     }
   },
@@ -180,6 +184,7 @@
     "heading": "Credentials & certs.",
     "chip": "{{count}} certifications earned",
     "chipLabel": "certifications earned",
+    "inProgress": "In progress",
     "awsSolutionsArchitect": {
       "name": "AWS Certified Solutions Architect (CSA)",
       "issuer": "Amazon Web Services",
@@ -192,6 +197,11 @@
     },
     "kcna": {
       "name": "Kubernetes and Cloud Native Associate (KCNA)",
+      "issuer": "The Linux Foundation",
+      "date": "2026"
+    },
+    "ckad": {
+      "name": "Certified Kubernetes Application Developer (CKAD)",
       "issuer": "The Linux Foundation",
       "date": "2026"
     },

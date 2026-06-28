@@ -71,7 +71,8 @@
         "Lideré la consolidación de todas las alertas y dashboards en un único repositorio de alertas como código y un pipeline de despliegue GitOps que abarca todos los entornos y regiones",
         "Mantener y extender la plataforma de infraestructura en Bicep, desplegando nuevos servicios mediante pipelines de what-if y de release",
         "Habilité infraestructura de datos gestionada para equipos de desarrollo — Azure Synapse y Databricks con gobernanza vía Unity Catalog, desplegados íntegramente como código",
-        "Impulsar una migración en curso de clusters de AKS hacia Cilium y reemplazar la remediación manual de incidentes con automatización de auto-recuperación"
+        "Impulsar una migración en curso de clusters de AKS hacia Cilium y reemplazar la remediación manual de incidentes con automatización de auto-recuperación",
+        "Lideré una aplicación web de autoservicio que da a los desarrolladores acceso auditado y con PII enmascarada a Azure SQL y MongoDB en todos los entornos — controlado por una cola de aprobación con un clic para administradores — además de operaciones de Kubernetes de autoservicio (reinicios de cargas de trabajo, cambios de recursos y réplicas) para los equipos de pruebas de carga"
       ]
     },
     "kodepull": {
@@ -107,7 +108,10 @@
         "Consolidé la dispersión de \"una rama por equipo\" en namespaces por equipo, recortando entre 5 y 8 veces la superficie desplegada redundante",
         "Implementé el acceso basado en SSO con AWS Identity Center y Entra ID, retirando los usuarios IAM en favor de roles asumidos y OIDC para los pipelines",
         "Construí observabilidad desde cero — instrumentación con OpenTelemetry y Grafana, Loki y trazas distribuidas en cada aplicación",
-        "Impartí talleres de Terraform para llevar a los equipos de desarrollo a la infraestructura autogestionada; ascendido a mentor del equipo local"
+        "Impartí talleres de Terraform para llevar a los equipos de desarrollo a la infraestructura autogestionada; ascendido a mentor del equipo local",
+        "Integré el cumplimiento de SOC2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en los entornos de lower y producción",
+        "Estandaricé la gobernanza de recursos con Kubernetes LimitRanges en todos los entornos, y documenté la arquitectura de EKS como código con diagramas D2",
+        "Impartí un taller de habilitación en Azure de una semana para el equipo de un cliente — desde fundamentos de la nube y gobernanza hasta redes, cómputo, datos e IA, y operaciones"
       ]
     }
   },
@@ -180,6 +184,7 @@
     "heading": "Credenciales y certs.",
     "chip": "{{count}} certificaciones obtenidas",
     "chipLabel": "certificaciones obtenidas",
+    "inProgress": "En progreso",
     "awsSolutionsArchitect": {
       "name": "AWS Certified Solutions Architect (CSA)",
       "issuer": "Amazon Web Services",
@@ -192,6 +197,11 @@
     },
     "kcna": {
       "name": "Kubernetes and Cloud Native Associate (KCNA)",
+      "issuer": "The Linux Foundation",
+      "date": "2026"
+    },
+    "ckad": {
+      "name": "Certified Kubernetes Application Developer (CKAD)",
       "issuer": "The Linux Foundation",
       "date": "2026"
     },
