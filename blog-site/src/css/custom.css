@@ -700,44 +700,87 @@ article .markdown hr {
   font-weight: 600;
 }
 
-/* Pagination — prev/next at bottom of doc page. Styled squared section,
-   not a card: flat, no fill, no rounded corners, top + bottom border
-   lines like the index rows. Hover lights up the label, no transform. */
+/* Pagination — prev/next at the bottom of a doc. Enclosed surface cards with a
+   directional arrow that travels on hover; the card lifts and the label + arrow
+   pick up the accent. Transform-only motion, so there is no layout shift. */
+.pagination-nav {
+  gap: 1rem;
+}
+
 .pagination-nav__link {
-  background: transparent;
-  border: 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
-  border-radius: 0;
-  padding: 1.25rem 0;
-  transition: padding-left 0.25s var(--ease-out),
-              padding-right 0.25s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  transition: border-color 0.25s var(--ease-out),
+              background-color 0.25s var(--ease-out),
+              box-shadow 0.25s var(--ease-out),
+              transform 0.25s var(--ease-out);
+}
+
+.pagination-nav__link--prev {
+  align-items: flex-start;
+}
+
+.pagination-nav__link--next {
+  align-items: flex-end;
+  text-align: right;
 }
 
 .pagination-nav__link:hover {
-  background: transparent;
-  border-color: var(--border-subtle);
+  background: var(--bg-elevated);
+  border-color: var(--accent);
+  box-shadow: 0 14px 30px -20px var(--accent);
+  transform: translateY(-2px);
   text-decoration: none;
 }
 
-.pagination-nav__link--prev:hover {
-  padding-left: 1rem;
-}
-
-.pagination-nav__link--next:hover {
-  padding-right: 1rem;
-}
-
-.pagination-nav__link:hover .pagination-nav__label {
-  color: var(--accent);
+/* Drop infima's default guillemets on the title — the travelling arrow lives on
+   the sublabel row instead. */
+.pagination-nav__link--prev .pagination-nav__label::before,
+.pagination-nav__link--next .pagination-nav__label::after {
+  content: none;
 }
 
 .pagination-nav__sublabel {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.08em;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--text-tertiary);
+  transition: color 0.2s var(--ease-out);
+}
+
+.pagination-nav__link:hover .pagination-nav__sublabel {
+  color: var(--accent);
+}
+
+.pagination-nav__link--prev .pagination-nav__sublabel::before {
+  content: "\2190"; /* ← */
+  font-size: 0.85rem;
+  line-height: 1;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.pagination-nav__link--next .pagination-nav__sublabel::after {
+  content: "\2192"; /* → */
+  font-size: 0.85rem;
+  line-height: 1;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.pagination-nav__link--prev:hover .pagination-nav__sublabel::before {
+  transform: translateX(-4px);
+}
+
+.pagination-nav__link--next:hover .pagination-nav__sublabel::after {
+  transform: translateX(4px);
 }
 
 .pagination-nav__label {
@@ -745,8 +788,6 @@ article .markdown hr {
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-top: 4px;
-  transition: color 0.2s var(--ease-out);
 }
 
 /* Hide noisy default header date row — meta is duplicated by our list page,
@@ -1028,4 +1069,33 @@ a[class*="tag_"]:hover,
   html {
     scroll-behavior: auto;
   }
+}
+
+/* ─── Doc dateline (Published / Updated, above each post title) ──────── */
+.doc-dateline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.75rem;
+  margin: 0 0 1.75rem;
+}
+.doc-dateline__item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  white-space: nowrap;
+}
+.doc-dateline__label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.doc-dateline__date {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
 }

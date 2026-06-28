@@ -88,8 +88,12 @@ const config = {
           path: "docs",
           routeBasePath: "/",
           sidebarPath: "./sidebars.js",
+          // Dates are rendered by the DocItem/Content swizzle straight from
+          // frontmatter (date + last_update.date), so the git-based lastUpdate
+          // lookup is unused — and it warns in the Docker build where .git is
+          // absent. Keep it off.
           showLastUpdateAuthor: false,
-          showLastUpdateTime: true,
+          showLastUpdateTime: false,
           breadcrumbs: true,
           editUrl: undefined,
         },
