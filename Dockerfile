@@ -4,15 +4,25 @@
 FROM node:24-alpine AS builder
 WORKDIR /app
 
+# System chromium for the build-time prerender step (scripts/prerender.mjs).
+# Playwright drives it via PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH; the skip
+# env must be set BEFORE npm ci so playwright's postinstall doesn't
+# download its own browsers into the layer. Builder-only — the runtime
+# stage ships no chromium.
+RUN apk add --no-cache chromium nss freetype harfbuzz ca-certificates ttf-freefont
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+    PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 # Install deps first for layer caching; cache mount keeps repeat
 # builds off the network.
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm \
     npm ci --prefer-offline --no-audit --no-fund
 
-# Rest of the source + production build.
+# Rest of the source + production build, then prerender / and /es/ into
+# static snapshots (dist/index.html, dist/es/index.html).
 COPY . .
-RUN npm run build
+RUN npm run build && node scripts/prerender.mjs
 
 # ─── Runtime ────────────────────────────────────────────────────────
 FROM node:24-alpine AS runtime
