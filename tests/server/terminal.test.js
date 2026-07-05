@@ -77,13 +77,15 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 
-describe("terminal namespace allowlist", () => {
-  it("allows -n with an allowlisted namespace", async () => {
-    const res = await exec("kubectl get pods -n monitoring");
-    expect(res.status).toBe(200);
-    expect(res.body.type).toBe("success");
-    expect(res.body.output).toContain("pod-in-monitoring");
-    expect(k8sClient.getPods).toHaveBeenCalledWith("monitoring");
+describe("terminal namespace access", () => {
+  it("reads pods from any namespace passed with -n", async () => {
+    for (const ns of ["monitoring", "kube-system", "argocd"]) {
+      const res = await exec(`kubectl get pods -n ${ns}`);
+      expect(res.status).toBe(200);
+      expect(res.body.type).toBe("success");
+      expect(res.body.output).toContain(`pod-in-${ns}`);
+      expect(k8sClient.getPods).toHaveBeenCalledWith(ns);
+    }
   });
 
   it("defaults to web-development when no -n is given", async () => {
@@ -92,48 +94,26 @@ describe("terminal namespace allowlist", () => {
     expect(k8sClient.getPods).toHaveBeenCalledWith("web-development");
   });
 
-  it("rejects -n with a namespace outside the allowlist", async () => {
-    const res = await exec("kubectl get pods -n kube-system");
-    expect(res.status).toBe(200);
-    expect(res.body.type).toBe("error");
-    expect(res.body.output).toMatch(/not accessible from this terminal/i);
-    // Friendly error, no cluster call, no data leak.
-    expect(k8sClient.getPods).not.toHaveBeenCalled();
-    expect(res.body.output).not.toContain("pod-in-");
+  it("honors TERMINAL_DEFAULT_NAMESPACE for the no-flag default", async () => {
+    vi.stubEnv("TERMINAL_DEFAULT_NAMESPACE", "kube-system");
+    const res = await exec("kubectl get pods");
+    expect(res.body.type).toBe("success");
+    expect(k8sClient.getPods).toHaveBeenCalledWith("kube-system");
   });
 
-  it("rejects disallowed namespaces for services and deployments too", async () => {
-    for (const cmd of [
-      "kubectl get svc -n argocd",
-      "kubectl get deploy -n default",
-    ]) {
-      const res = await exec(cmd);
-      expect(res.body.type).toBe("error");
-      expect(res.body.output).toMatch(/not accessible from this terminal/i);
-    }
-    expect(k8sClient.getServices).not.toHaveBeenCalled();
-    expect(k8sClient.getDeployments).not.toHaveBeenCalled();
-  });
-
-  it("filters `kubectl get namespaces` output to the allowlist", async () => {
+  it("lists every namespace in the cluster", async () => {
     const res = await exec("kubectl get namespaces");
     expect(res.body.type).toBe("success");
     expect(res.body.output).toContain("web-development");
     expect(res.body.output).toContain("monitoring");
-    expect(res.body.output).not.toContain("kube-system");
-    expect(res.body.output).not.toContain("argocd");
-    expect(res.body.output).not.toContain("default");
+    expect(res.body.output).toContain("kube-system");
   });
 
-  it("respects a custom TERMINAL_NAMESPACE_ALLOWLIST env", async () => {
-    vi.stubEnv("TERMINAL_NAMESPACE_ALLOWLIST", "web-development");
-    const rejected = await exec("kubectl get pods -n monitoring");
-    expect(rejected.body.type).toBe("error");
-    expect(rejected.body.output).toMatch(/not accessible/i);
-
-    const nsList = await exec("kubectl get ns");
-    expect(nsList.body.output).toContain("web-development");
-    expect(nsList.body.output).not.toContain("monitoring");
+  it("still rejects a syntactically invalid namespace name", async () => {
+    const res = await exec("kubectl get pods -n Invalid_NS!");
+    expect(res.body.type).toBe("error");
+    expect(res.body.output).toMatch(/invalid namespace name/i);
+    expect(k8sClient.getPods).not.toHaveBeenCalled();
   });
 });
 
