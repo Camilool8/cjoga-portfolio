@@ -52,18 +52,18 @@
   --bg-surface: #111827;
   --bg-elevated: #1a2332;
   --bg-glass: rgba(17, 24, 37, 0.72);
-  --border-subtle: rgba(62, 224, 127, 0.08);
-  --border-medium: rgba(62, 224, 127, 0.15);
-  --border-active: rgba(62, 224, 127, 0.4);
-  --accent: #3ee07f;
-  --accent-dim: rgba(62, 224, 127, 0.12);
-  --accent-glow: rgba(62, 224, 127, 0.1);
+  --border-subtle: rgba(100, 255, 218, 0.08);
+  --border-medium: rgba(100, 255, 218, 0.15);
+  --border-active: rgba(100, 255, 218, 0.4);
+  --accent: #64ffda;
+  --accent-dim: rgba(100, 255, 218, 0.12);
+  --accent-glow: rgba(100, 255, 218, 0.1);
   --accent-secondary: #38bdf8;
   --accent-warm: #f59e0b;
   --text-primary: #e2e8f0;
   --text-secondary: #94a3b8;
   --text-tertiary: #8794ab;
-  --gradient-accent: linear-gradient(135deg, #3ee07f, #38bdf8);
+  --gradient-accent: linear-gradient(135deg, #64ffda, #38bdf8);
   --font-display: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
@@ -77,30 +77,30 @@
   --bg-surface: #f1f5f9;
   --bg-elevated: #e2e8f0;
   --bg-glass: rgba(255, 255, 255, 0.85);
-  --border-subtle: rgba(13, 112, 56, 0.12);
-  --border-medium: rgba(13, 112, 56, 0.25);
-  --border-active: rgba(13, 112, 56, 0.5);
-  --accent: #0d7038;
-  --accent-dim: rgba(13, 112, 56, 0.1);
-  --accent-glow: rgba(13, 112, 56, 0.1);
-  --accent-secondary: #0369a1;
+  --border-subtle: rgba(3, 105, 161, 0.12);
+  --border-medium: rgba(3, 105, 161, 0.25);
+  --border-active: rgba(3, 105, 161, 0.5);
+  --accent: #0369a1;
+  --accent-dim: rgba(3, 105, 161, 0.1);
+  --accent-glow: rgba(3, 105, 161, 0.1);
+  --accent-secondary: #0e7490;
   --accent-warm: #b45309;
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-tertiary: #64748b;
-  --gradient-accent: linear-gradient(135deg, #0d7038, #0369a1);
+  --gradient-accent: linear-gradient(135deg, #0369a1, #0e7490);
 }
 /* @brand-tokens:end */
 
 /* ─── Infima overrides — minimal, surgical ──────────────────────────── */
 :root {
-  --ifm-color-primary: #3ee07f;
-  --ifm-color-primary-dark: #23d76b;
-  --ifm-color-primary-darker: #21ca64;
-  --ifm-color-primary-darkest: #1ba753;
-  --ifm-color-primary-light: #58e490;
-  --ifm-color-primary-lighter: #6ae79c;
-  --ifm-color-primary-lightest: #96eeb9;
+  --ifm-color-primary: #64ffda;
+  --ifm-color-primary-dark: #41ffd0;
+  --ifm-color-primary-darker: #2fffcb;
+  --ifm-color-primary-darkest: #00d9a0;
+  --ifm-color-primary-light: #87ffe4;
+  --ifm-color-primary-lighter: #99ffe9;
+  --ifm-color-primary-lightest: #ccfff2;
 
   --ifm-background-color: var(--bg-void);
   --ifm-background-surface-color: var(--bg-surface);
@@ -142,18 +142,18 @@
   --ifm-pre-background: var(--bg-surface);
   --ifm-pre-color: var(--text-primary);
 
-  --docusaurus-highlighted-code-line-bg: rgba(62, 224, 127, 0.08);
+  --docusaurus-highlighted-code-line-bg: rgba(100, 255, 218, 0.08);
 }
 
 [data-theme="light"] {
-  --ifm-color-primary: #0d7038;
-  --ifm-color-primary-dark: #0c6733;
-  --ifm-color-primary-darker: #0b6030;
-  --ifm-color-primary-darkest: #095028;
-  --ifm-color-primary-light: #0f7e3f;
-  --ifm-color-primary-lighter: #108944;
-  --ifm-color-primary-lightest: #14a954;
-  --docusaurus-highlighted-code-line-bg: rgba(13, 112, 56, 0.1);
+  --ifm-color-primary: #0369a1;
+  --ifm-color-primary-dark: #035e91;
+  --ifm-color-primary-darker: #035989;
+  --ifm-color-primary-darkest: #024971;
+  --ifm-color-primary-light: #0373b1;
+  --ifm-color-primary-lighter: #0379b9;
+  --ifm-color-primary-lightest: #0488d1;
+  --docusaurus-highlighted-code-line-bg: rgba(3, 105, 161, 0.1);
 }
 
 /* ─── Body & global polish ─────────────────────────────────────────── */

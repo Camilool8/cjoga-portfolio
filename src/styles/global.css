@@ -17,18 +17,18 @@
   --bg-surface: #111827;
   --bg-elevated: #1a2332;
   --bg-glass: rgba(17, 24, 37, 0.72);
-  --border-subtle: rgba(62, 224, 127, 0.08);
-  --border-medium: rgba(62, 224, 127, 0.15);
-  --border-active: rgba(62, 224, 127, 0.4);
-  --accent: #3ee07f;
-  --accent-dim: rgba(62, 224, 127, 0.12);
-  --accent-glow: rgba(62, 224, 127, 0.1);
+  --border-subtle: rgba(100, 255, 218, 0.08);
+  --border-medium: rgba(100, 255, 218, 0.15);
+  --border-active: rgba(100, 255, 218, 0.4);
+  --accent: #64ffda;
+  --accent-dim: rgba(100, 255, 218, 0.12);
+  --accent-glow: rgba(100, 255, 218, 0.1);
   --accent-secondary: #38bdf8;
   --accent-warm: #f59e0b;
   --text-primary: #e2e8f0;
   --text-secondary: #94a3b8;
   --text-tertiary: #8794ab;
-  --gradient-accent: linear-gradient(135deg, #3ee07f, #38bdf8);
+  --gradient-accent: linear-gradient(135deg, #64ffda, #38bdf8);
   --font-display: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
@@ -42,18 +42,18 @@
   --bg-surface: #f1f5f9;
   --bg-elevated: #e2e8f0;
   --bg-glass: rgba(255, 255, 255, 0.85);
-  --border-subtle: rgba(13, 112, 56, 0.12);
-  --border-medium: rgba(13, 112, 56, 0.25);
-  --border-active: rgba(13, 112, 56, 0.5);
-  --accent: #0d7038;
-  --accent-dim: rgba(13, 112, 56, 0.1);
-  --accent-glow: rgba(13, 112, 56, 0.1);
-  --accent-secondary: #0369a1;
+  --border-subtle: rgba(3, 105, 161, 0.12);
+  --border-medium: rgba(3, 105, 161, 0.25);
+  --border-active: rgba(3, 105, 161, 0.5);
+  --accent: #0369a1;
+  --accent-dim: rgba(3, 105, 161, 0.1);
+  --accent-glow: rgba(3, 105, 161, 0.1);
+  --accent-secondary: #0e7490;
   --accent-warm: #b45309;
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-tertiary: #64748b;
-  --gradient-accent: linear-gradient(135deg, #0d7038, #0369a1);
+  --gradient-accent: linear-gradient(135deg, #0369a1, #0e7490);
 }
 /* @brand-tokens:end */
 
@@ -602,12 +602,12 @@ pre.line-numbers > code {
 
 .handbook-window:hover {
   border-color: var(--border-active);
-  box-shadow: 0 24px 70px -12px rgba(62, 224, 127, 0.18),
+  box-shadow: 0 24px 70px -12px rgba(100, 255, 218, 0.18),
               0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="light"] .handbook-window:hover {
-  box-shadow: 0 24px 70px -12px rgba(13, 112, 56, 0.22),
+  box-shadow: 0 24px 70px -12px rgba(3, 105, 161, 0.22),
               0 10px 40px rgba(0, 0, 0, 0.08);
 }
 

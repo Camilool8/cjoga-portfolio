@@ -8,7 +8,7 @@ export default {
         light: {
           primary: "#ffffff",
           secondary: "#f1f5f9",
-          accent: "#0d7038",
+          accent: "#0369a1",
           text: {
             primary: "#0f172a",
             secondary: "#475569",
@@ -17,7 +17,7 @@ export default {
         dark: {
           primary: "#0b0f1a",
           secondary: "#111827",
-          accent: "#3ee07f",
+          accent: "#64ffda",
           text: {
             primary: "#e2e8f0",
             secondary: "#94a3b8",
