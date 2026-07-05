@@ -1,22 +1,21 @@
 // Client module: binds click-to-zoom onto the build-time-rendered mermaid
-// diagrams (rehype-mermaid `img-svg` output — `img.mermaid-diagram`, class
-// added by the rehypeMermaidImgAlt pass in docusaurus.config.js).
-//
-// Each diagram img gets wrapped in a keyboard-operable button-role element
-// with the hover affordance; clicks/Enter/Space open a single shared
-// yet-another-react-lightbox host (DiagramZoom) mounted outside the
-// Docusaurus app root. The host (and the lightbox library with it) is
-// dynamically imported the first time a page with diagrams is seen, so
-// diagram-free pages never pay for it. `onRouteDidUpdate` rebinds after
-// client-side navigations; already-bound imgs are skipped via a data
-// attribute.
+// diagrams. The zoom wrapper (`div.mermaid-zoom-wrap`, role=button) is emitted
+// at BUILD time by the rehypeMermaidImgAlt pass in docusaurus.config.js, so
+// this module never restructures the DOM (an earlier version moved the img
+// into a runtime-created wrapper, which reflowed the page after paint — a
+// ~0.26 CLS regression). Here we only: attach the absolutely-positioned
+// affordance (out of flow → no shift) and wire click/Enter/Space to open a
+// single shared yet-another-react-lightbox host (DiagramZoom) mounted outside
+// the app root. The host is dynamically imported the first time a page with
+// diagrams is seen. `onRouteDidUpdate` rebinds after client-side navigations;
+// already-bound wrappers are skipped via a data attribute.
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
-// Static import so the global card CSS (img.mermaid-diagram) ships in the
-// main stylesheet and applies pre-JS.
-import styles from '@site/src/components/DiagramZoom/styles.module.css';
+// Static import so the global card/wrap/affordance CSS ships in the main
+// stylesheet and applies pre-JS.
+import '@site/src/components/DiagramZoom/styles.module.css';
 
 // Target natural width for the lightbox slide. The SVG data URI scales
 // losslessly, and the upscale makes the lightbox's fit-to-viewport open at
@@ -72,25 +71,18 @@ function buildSlide(img) {
   };
 }
 
-function bindDiagram(img) {
-  img.setAttribute('data-zoom-bound', 'true');
+function bindWrap(wrap) {
+  wrap.setAttribute('data-zoom-bound', 'true');
 
-  const wrap = document.createElement('div');
-  wrap.className = styles.inlineWrap;
-  wrap.setAttribute('role', 'button');
-  wrap.tabIndex = 0;
-  wrap.setAttribute(
-    'aria-label',
-    `${img.alt || 'Diagram'} — open in zoom view`,
-  );
+  const img = wrap.querySelector('img.mermaid-diagram');
+  if (!img) return;
 
-  img.parentNode.insertBefore(wrap, img);
-  wrap.appendChild(img);
-
+  // The affordance is position:absolute (out of flow), so appending it never
+  // shifts layout — unlike moving the img itself.
   const affordance = document.createElement('div');
-  affordance.className = styles.affordance;
+  affordance.className = 'mermaid-zoom-affordance';
   affordance.setAttribute('aria-hidden', 'true');
-  affordance.innerHTML = `${EXPAND_ICON}<span class="${styles.affordanceText}">Click to zoom</span>`;
+  affordance.innerHTML = `${EXPAND_ICON}<span class="mermaid-zoom-affordance-text">Click to zoom</span>`;
   wrap.appendChild(affordance);
 
   const open = () => {
@@ -112,15 +104,15 @@ function bindDiagram(img) {
 }
 
 function bindAll() {
-  const diagrams = document.querySelectorAll(
-    'img.mermaid-diagram:not([data-zoom-bound])',
+  const wraps = document.querySelectorAll(
+    '.mermaid-zoom-wrap:not([data-zoom-bound])',
   );
-  if (!diagrams.length) {
+  if (!wraps.length) {
     return;
   }
   // Warm the lightbox host so the first click opens instantly.
   ensureHost();
-  diagrams.forEach(bindDiagram);
+  wraps.forEach(bindWrap);
 }
 
 export function onRouteDidUpdate() {

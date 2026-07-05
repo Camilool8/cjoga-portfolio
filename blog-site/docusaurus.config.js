@@ -45,26 +45,53 @@ const mermaidConfig = {
 
 // rehype-mermaid maps a diagram's accTitle to the img *title* attribute and
 // accDescr to *alt* (via mermaid-isomorphic's aria lookups). Docs carry an
-// accTitle per fence, so promote title → alt for accessibility, drop the
-// redundant tooltip, and tag the img with a stable class the diagram-zoom
-// client module and card CSS can target.
+// accTitle per fence, so promote title → alt for accessibility and drop the
+// redundant tooltip. We ALSO wrap each diagram in its zoom container at BUILD
+// time (`div.mermaid-zoom-wrap`): the client module used to move the img into
+// a wrapper at runtime, which reflowed the page after paint (~0.26 CLS). With
+// the wrapper already in the static HTML, the client module only attaches
+// listeners and an absolutely-positioned affordance — no layout shift.
 function rehypeMermaidImgAlt() {
+  /** @param {any} n */
+  const isMermaidImg = (n) =>
+    n &&
+    n.type === "element" &&
+    n.tagName === "img" &&
+    typeof n.properties?.id === "string" &&
+    n.properties.id.startsWith("mermaid");
+
+  /** @param {any} img */
+  const wrapDiagram = (img) => {
+    if (!img.properties.alt && img.properties.title) {
+      img.properties.alt = img.properties.title;
+    }
+    delete img.properties.title;
+    img.properties.className = ["mermaid-diagram"];
+    const alt =
+      typeof img.properties.alt === "string" ? img.properties.alt : "Diagram";
+    return {
+      type: "element",
+      tagName: "div",
+      properties: {
+        className: ["mermaid-zoom-wrap"],
+        role: "button",
+        tabIndex: 0,
+        "aria-label": `${alt} — open in zoom view`,
+      },
+      children: [img],
+    };
+  };
+
   /** @param {any} node */
   const visit = (node) => {
-    if (
-      node.type === "element" &&
-      node.tagName === "img" &&
-      typeof node.properties?.id === "string" &&
-      node.properties.id.startsWith("mermaid")
-    ) {
-      if (!node.properties.alt && node.properties.title) {
-        node.properties.alt = node.properties.title;
+    if (!Array.isArray(node.children)) return;
+    for (let i = 0; i < node.children.length; i += 1) {
+      const child = node.children[i];
+      if (isMermaidImg(child)) {
+        node.children[i] = wrapDiagram(child);
+      } else {
+        visit(child);
       }
-      delete node.properties.title;
-      node.properties.className = ["mermaid-diagram"];
-    }
-    if (Array.isArray(node.children)) {
-      node.children.forEach(visit);
     }
   };
   return (/** @type {any} */ tree) => visit(tree);
@@ -116,26 +143,38 @@ export default async function createConfigAsync() {
       tagName: "link",
       attributes: { rel: "me", href: "https://cjoga.cloud/" },
     },
-    // Web fonts. Loaded as head links (not a CSS @import in custom.css)
-    // so the browser can preconnect and fetch in parallel instead of
-    // blocking on the stylesheet chain.
-    {
-      tagName: "link",
-      attributes: { rel: "preconnect", href: "https://fonts.googleapis.com" },
-    },
+    // Web fonts: self-hosted latin variable fonts (static/fonts/) declared
+    // via @font-face in custom.css. Preloading all three means they arrive
+    // before first paint — this is what keeps font-swap CLS at ~0, so keep
+    // the preloads if the font files ever move.
     {
       tagName: "link",
       attributes: {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/syne-latin-var.woff2",
         crossorigin: "anonymous",
       },
     },
     {
       tagName: "link",
       attributes: {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap",
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/outfit-latin-var.woff2",
+        crossorigin: "anonymous",
+      },
+    },
+    {
+      tagName: "link",
+      attributes: {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/jetbrains-mono-latin-var.woff2",
+        crossorigin: "anonymous",
       },
     },
   ],
@@ -211,12 +250,14 @@ export default async function createConfigAsync() {
             ],
             rehypeMermaidImgAlt,
           ],
-          // Dates are rendered by the DocItem/Content swizzle straight from
-          // frontmatter (date + last_update.date), so the git-based lastUpdate
-          // lookup is unused — and it warns in the Docker build where .git is
-          // absent. Keep it off.
+          // Visible dates come from the DocItem/Content swizzle (frontmatter
+          // date + last_update.date); the DocItem/Footer swizzle renders null,
+          // so showLastUpdateTime adds no UI. It must stay ON: the sitemap's
+          // `lastmod` only reads frontmatter last_update through this flag,
+          // and the Docker build has no .git for the git fallback (it warns
+          // there for docs without frontmatter dates — harmless).
           showLastUpdateAuthor: false,
-          showLastUpdateTime: false,
+          showLastUpdateTime: true,
           breadcrumbs: true,
           editUrl: undefined,
         },

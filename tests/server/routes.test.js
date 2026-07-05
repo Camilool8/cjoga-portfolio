@@ -33,6 +33,15 @@ describe("route handling (dev mode)", () => {
     "serves the SPA at %s",
     async (route) => {
       const res = await request(app).get(route);
+      if (res.status === 301) {
+        // When a prerendered dist/<route>/index.html exists, express.static
+        // canonically redirects the bare path to its trailing-slash form.
+        expect(res.headers.location).toBe(`${route}/`);
+        const followed = await request(app).get(res.headers.location);
+        expect(followed.status).toBe(200);
+        expect(followed.headers["content-type"]).toMatch(/html/);
+        return;
+      }
       expect(res.status).toBe(200);
       expect(res.headers["content-type"]).toMatch(/html/);
     }
