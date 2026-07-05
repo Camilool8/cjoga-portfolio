@@ -5,7 +5,7 @@
     "projects": "Proyectos",
     "certifications": "Certificaciones",
     "contact": "Contacto",
-    "handbook": "Manual",
+    "handbook": "Handbook (EN)",
     "terminal": "Terminal",
     "cv-title": "Ingeniero DevOps/Cloud"
   },
@@ -15,7 +15,7 @@
     "roles": [
       "Ingeniero DevOps y Cloud",
       "Arquitecto de Infraestructura",
-      "Experto en Automatización",
+      "Ingeniero de Automatización",
       "Especialista en Kubernetes"
     ],
     "description": "Soy Ingeniero DevOps y Cloud que construye y opera plataformas de Kubernetes sobre AWS y Azure. Mi trabajo se centra en la Infraestructura como Código, la entrega GitOps y la observabilidad — convirtiendo entornos dispersos y gestionados a mano en plataformas automatizadas y autogestionadas que los equipos pueden operar por sí mismos.",
@@ -24,15 +24,24 @@
       "contact": "Contáctame"
     },
     "status": {
-      "operational": "sistemas operativos",
+      "operational": "sistemas en línea",
+      "checking": "verificando sistemas…",
+      "unavailable": "sistemas fuera de línea",
       "certs": "11 certs obtenidas",
       "opportunities": "abierto a oportunidades"
-    }
+    },
+    "terminalHint": "prueba la terminal en vivo →"
+  },
+  "nav": {
+    "languageSelector": "Selector de idioma",
+    "skipToContent": "Saltar al contenido",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
   },
   "about": {
     "title": "Sobre Mí",
     "heading": "Construyendo sistemas que escalan.",
-    "paragraph1": "¡Hola! Soy Jose Camilo (llámame Camilo), Ingeniero en Ciencias de la Computación atraído por DevOps y la nube desde el inicio de mi carrera. Construyo infraestructura eficiente, escalable y automatizada — y me importa que la plataforma sea algo que los propios equipos puedan operar.",
+    "paragraph1": "¡Hola! Soy José Camilo (llámame Camilo), Ingeniero en Ciencias de la Computación atraído por DevOps y la nube desde el inicio de mi carrera. Construyo infraestructura eficiente, escalable y automatizada — y me importa que la plataforma sea algo que los propios equipos puedan operar.",
     "paragraph2": "He llevado entornos desde servidores gestionados a mano y clusters configurados clic a clic hasta plataformas de Kubernetes gestionadas sobre AWS y Azure, con entrega GitOps, Infraestructura como Código y observabilidad integradas. Lo que más disfruto es el trabajo de consolidación — reducir la dispersión a algo simple y autogestionado.",
     "skills": "Estas son algunas de las tecnologías con las que he estado trabajando recientemente:",
     "stats": {
@@ -67,11 +76,11 @@
       "company": "INSPYR Global Solutions",
       "period": "Marzo 2025 - Presente",
       "responsibilities": [
-        "Operar una plataforma Azure multi-región de más de 300 servicios sobre AKS, con despliegues gestionados por pipelines de Azure DevOps y PowerShell",
+        "Opero una plataforma Azure multi-región de más de 300 servicios sobre AKS, con despliegues gestionados por pipelines de Azure DevOps y PowerShell",
         "Lideré la consolidación de todas las alertas y dashboards en un único repositorio de alertas como código y un pipeline de despliegue GitOps que abarca todos los entornos y regiones",
-        "Mantener y extender la plataforma de infraestructura en Bicep, desplegando nuevos servicios mediante pipelines de what-if y de release",
+        "Mantengo y extiendo la plataforma de infraestructura en Bicep, desplegando nuevos servicios mediante pipelines de what-if y de release",
         "Habilité infraestructura de datos gestionada para equipos de desarrollo — Azure Synapse y Databricks con gobernanza vía Unity Catalog, desplegados íntegramente como código",
-        "Impulsar una migración en curso de clusters de AKS hacia Cilium y reemplazar la remediación manual de incidentes con automatización de auto-recuperación",
+        "Impulso una migración en curso de clusters de AKS hacia Cilium y reemplazo la remediación manual de incidentes con automatización de auto-recuperación",
         "Lideré una aplicación web de autoservicio que da a los desarrolladores acceso auditado y con PII enmascarada a Azure SQL y MongoDB en todos los entornos — controlado por una cola de aprobación con un clic para administradores — además de operaciones de Kubernetes de autoservicio (reinicios de cargas de trabajo, cambios de recursos y réplicas) para los equipos de pruebas de carga"
       ]
     },
@@ -82,9 +91,9 @@
       "responsibilities": [
         "Cofundé la empresa en 2025 — ofrece ingeniería de nivel empresarial a negocios sin presupuesto de gran empresa",
         "Dirijo todo el lado técnico como CTO: arquitectura, diseño de infraestructura, decisiones de plataforma y proveedores, y el estándar de calidad con el que se entrega cada proyecto",
-        "Liderar la ingeniería práctica y la entrega técnica en proyectos de web, software a medida, nube y móvil",
-        "Incorporar ingenieros, diseñadores y socios especialistas a cada proyecto según lo que el trabajo realmente requiere",
-        "Colaborar con el CEO en la estrategia técnica, manteniendo la entrega alineada con resultados de negocio reales"
+        "Lidero la ingeniería práctica y la entrega técnica en proyectos de web, software a medida, nube y móvil",
+        "Incorporo ingenieros, diseñadores y socios especialistas a cada proyecto según lo que el trabajo realmente requiere",
+        "Colaboro con el CEO en la estrategia técnica, manteniendo la entrega alineada con resultados de negocio reales"
       ]
     },
     "flBetances": {
@@ -92,7 +101,7 @@
       "company": "FL Betances & Asociados",
       "period": "Junio 2024 - Diciembre 2025",
       "responsibilities": [
-        "Integrado en el equipo central de DevOps de una institución bancaria, dando soporte a más de 50 equipos de ingeniería y a un backlog continuo de automatización",
+        "Me integré al equipo central de DevOps de una institución bancaria, dando soporte a más de 50 equipos de ingeniería y a un backlog continuo de automatización",
         "Mantuve y extendí un framework de despliegue interno sobre Azure DevOps — plantillas YAML que detectan el tipo de proyecto, el entorno destino y las verificaciones de política requeridas",
         "Operé los despliegues nocturnos de todos los equipos, rastreando los despliegues fallidos a través de ArgoCD y AKS hasta la política o plantilla causante",
         "Construí flujos en Power Automate para los procesos de aprobación, notificación y ciclo de vida de tickets en torno al trabajo de DevOps",
@@ -109,7 +118,7 @@
         "Implementé el acceso basado en SSO con AWS Identity Center y Entra ID, retirando los usuarios IAM en favor de roles asumidos y OIDC para los pipelines",
         "Construí observabilidad desde cero — instrumentación con OpenTelemetry y Grafana, Loki y trazas distribuidas en cada aplicación",
         "Impartí talleres de Terraform para llevar a los equipos de desarrollo a la infraestructura autogestionada; ascendido a mentor del equipo local",
-        "Integré el cumplimiento de SOC2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en los entornos de lower y producción",
+        "Integré el cumplimiento de SOC2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en los entornos inferiores y de producción",
         "Estandaricé la gobernanza de recursos con Kubernetes LimitRanges en todos los entornos, y documenté la arquitectura de EKS como código con diagramas D2",
         "Impartí un taller de habilitación en Azure de una semana para el equipo de un cliente — desde fundamentos de la nube y gobernanza hasta redes, cómputo, datos e IA, y operaciones"
       ]
@@ -118,6 +127,7 @@
   "projects": {
     "title": "Proyectos",
     "heading": "Lo que he construido.",
+    "readCaseStudy": "Lee el caso de estudio",
     "cicd": {
       "title": "Migración de Plataforma a EKS",
       "description": "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS, con FluxCD para la entrega GitOps y Terraform para la nube subyacente.",
@@ -182,9 +192,37 @@
   "certifications": {
     "title": "Certificaciones",
     "heading": "Credenciales y certs.",
+    "opensInNewTab": "(se abre en una pestaña nueva)",
     "chip": "{{count}} certificaciones obtenidas",
     "chipLabel": "certificaciones obtenidas",
     "inProgress": "En progreso",
+    "countLabel_one": "{{count}} certificación",
+    "countLabel_other": "{{count}} certificaciones",
+    "countInProgress": "· {{count}} en curso",
+    "groups": {
+      "kubestronaut": {
+        "tagline": "Camino a Kubestronaut",
+        "progressLabel": "Ruta Kubestronaut"
+      },
+      "aws": {
+        "tagline": "Arquitectura y operaciones en la nube"
+      },
+      "terraform": {
+        "tagline": "Infraestructura como código"
+      },
+      "dynatrace": {
+        "tagline": "Observabilidad de aplicaciones"
+      },
+      "partner": {
+        "tagline": "Ingeniero acreditado"
+      },
+      "redhat": {
+        "tagline": "Linux y administración de sistemas"
+      },
+      "gitlab": {
+        "tagline": "DevSecOps y CI/CD"
+      }
+    },
     "awsSolutionsArchitect": {
       "name": "AWS Certified Solutions Architect (CSA)",
       "issuer": "Amazon Web Services",
@@ -249,7 +287,7 @@
   "contact": {
     "subtitle": "¿Qué Sigue?",
     "title": "Contáctame",
-    "text": "Actualmente estoy buscando nuevas oportunidades y mi bandeja de entrada siempre está abierta. Ya sea que tengas una pregunta o simplemente quieras saludar, ¡haré todo lo posible por responderte!",
+    "text": "Mi correo está abierto. Preguntas sobre el trabajo, el laboratorio o una vacante — todas reciben respuesta.",
     "cta": "Enviar Mensaje"
   },
   "cv": {
@@ -296,11 +334,16 @@
     "heading": "Explora mi infraestructura.",
     "description": "Una terminal en vivo y de solo lectura conectada al clúster K3s que alimenta este sitio. Navega por namespaces, inspecciona pods y explora — es tu shell.",
     "cta": "Abrir Terminal",
+    "loading": "consultando el clúster…",
+    "inputLabel": "entrada de comandos de la terminal",
+    "errors": {
+      "timeout": "el clúster no respondió — intenta de nuevo en un momento"
+    },
     "help": {
       "whoami": "¿Quién eres?",
       "neofetch": "Información del sistema",
       "resume": "Ver mi currículum",
-      "hire": "Sabes que quieres",
+      "hire": "Sabes que quieres hacerlo",
       "ls": "Listar archivos",
       "lsLa": "Listar archivos (detallado)",
       "pwd": "Directorio de trabajo actual",
@@ -354,12 +397,14 @@
     }
   },
   "footer": {
-    "text1": "Jose Camilo Joga Guerrero",
+    "text1": "José Camilo Joga Guerrero",
     "text2": "Ingeniero DevOps y Cloud",
-    "copyright": "Diseñado y Construido por Jose Camilo Joga Guerrero © 2026"
+    "copyright": "Diseñado y Construido por José Camilo Joga Guerrero © 2026"
   },
   "print": {
     "button": "Descargar CV",
+    "generating": "Generando...",
+    "error": "No se pudo generar el CV. Intenta de nuevo en un momento.",
     "phone": "Teléfono: +1 (809) 881-7982"
   },
   "theme": {

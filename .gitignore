@@ -63,3 +63,6 @@ ds-bundle/
 blog-site/ds-bundle/
 blog-site/.design-sync/.cache/
 blog-site/.design-sync/node_modules
+
+# local audit reports (contain client names / security notes — never publish)
+AUDIT-*.md
