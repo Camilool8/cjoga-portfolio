@@ -1,11 +1,15 @@
 name: Build & push Docker images
 
 # Triggers:
-#   - push to main → build whichever image's files changed
+#   - pull_request → run the test suite only (no image build/push), so a
+#     red suite is visible before merge
+#   - push to main → test, then build whichever image's files changed
 #   - workflow_dispatch → force-build both, useful for re-rolling after
 #     base-image security updates without touching app code
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -53,15 +57,16 @@ jobs:
               - 'blog-site/**'
               - '.github/workflows/build-images.yaml'
 
-  portfolio:
-    name: Build cjoga/portfolio
+  # Test suite + translation-key parity. Runs on PRs (the whole point:
+  # surface failures before merge) and gates the image build on push.
+  portfolio-tests:
+    name: Test portfolio
     needs: changes
     if: needs.changes.outputs.portfolio == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      # Gate the image build on the test suite + translation-key parity.
       - name: Set up Node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -71,11 +76,27 @@ jobs:
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit --no-fund
 
+      # The server route tests assert against the built SPA (dist/ is
+      # gitignored): SPA shell + prerendered routes, robots.txt, hashed
+      # assets, CSP on served pages. Without this step they 404.
+      - name: Build SPA
+        run: npm run build
+
       - name: Run tests
         run: npm test
 
       - name: Check translation parity
         run: npm run i18n:check
+
+  portfolio:
+    name: Build cjoga/portfolio
+    needs: [changes, portfolio-tests]
+    if: >-
+      github.event_name != 'pull_request' &&
+      (needs.changes.outputs.portfolio == 'true' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Set up Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
@@ -112,7 +133,9 @@ jobs:
   blog:
     name: Build cjoga/blog
     needs: changes
-    if: needs.changes.outputs.blog == 'true' || github.event_name == 'workflow_dispatch'
+    if: >-
+      github.event_name != 'pull_request' &&
+      (needs.changes.outputs.blog == 'true' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
