@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FaAws, FaMicrosoft, FaVuejs, FaServer } from "react-icons/fa";
 import {
   SiGitlab,
@@ -19,45 +19,54 @@ import {
   viewportConfig,
 } from "../hooks/useMotion";
 
+const HANDBOOK_URL = "https://blog.cjoga.cloud";
+
 // Each project gets a themed visual identity: a primary color, a gradient
 // background for the preview area, and a stack of tech icons rendered large.
 // No fake screenshots — what you see is the stack the project actually runs on.
+// Every card links to the handbook case study that tells the full story.
 const projects = [
   {
     key: "cicd",
     color: "#ff9900",
     accent: "#ffc266",
     icons: [FaAws, SiGitlab, SiKubernetes],
+    caseStudy: `${HANDBOOK_URL}/engineering/work/arctiq`,
   },
   {
     key: "iac",
     color: "#7f4dff",
     accent: "#b08aff",
     icons: [SiTerraform, FaAws, FaMicrosoft],
+    caseStudy: `${HANDBOOK_URL}/engineering/work/inspyr-global-solutions`,
   },
   {
     key: "monitoring",
     color: "#f46800",
     accent: "#f99d5c",
     icons: [SiGrafana, SiOpentelemetry, SiPrometheus],
+    caseStudy: `${HANDBOOK_URL}/engineering/work/arctiq`,
   },
   {
     key: "infrastructure",
     color: "#0078d4",
     accent: "#5fb0ec",
     icons: [FaMicrosoft, SiGrafana, SiArgo],
+    caseStudy: `${HANDBOOK_URL}/engineering/work/inspyr-global-solutions`,
   },
   {
     key: "portal",
     color: "#41b883",
     accent: "#7ed4a6",
     icons: [FaVuejs, SiDotnet, SiArgo],
+    caseStudy: `${HANDBOOK_URL}/engineering/work/inspyr-global-solutions`,
   },
   {
     key: "containerization",
     color: "#ffc61c",
     accent: "#ffdd73",
     icons: [SiKubernetes, SiCloudflare, FaServer],
+    caseStudy: `${HANDBOOK_URL}/engineering/lab/overview`,
   },
 ];
 
@@ -130,26 +139,26 @@ function Projects() {
   return (
     <section id="projects">
       <div className="section-inner">
-        <motion.div
+        <m.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={viewportConfig}
         >
-          <motion.div variants={itemVariants}>
-            <span className="section-label">
-              {t("projects.title", "Projects")}
-            </span>
+          <m.div variants={itemVariants}>
             <h2 className="section-heading">
               {t("projects.heading", "Things I've built.")}
             </h2>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
           {projects.map((project, index) => (
-            <motion.div
+            <m.a
               key={project.key}
+              href={project.caseStudy}
+              target="_blank"
+              rel="noopener noreferrer"
               custom={index}
               variants={cardVariants}
               initial="hidden"
@@ -157,7 +166,7 @@ function Projects() {
               viewport={{ once: true }}
               whileHover={{ y: -6 }}
               transition={{ type: "tween", duration: 0.28, ease: [0.25, 1, 0.5, 1] }}
-              className="project-card group flex flex-col rounded-2xl overflow-hidden cursor-default"
+              className="project-card group flex flex-col rounded-2xl overflow-hidden no-underline"
               style={{
                 background: "var(--bg-surface)",
                 border: "1px solid var(--border-subtle)",
@@ -212,8 +221,28 @@ function Projects() {
                     </span>
                   ))}
                 </div>
+
+                <div
+                  className="mt-4 flex items-center gap-1.5 transition-colors duration-300"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.68rem",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  <span className="group-hover:underline underline-offset-4">
+                    {t("projects.readCaseStudy", "Read the case study")}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                    style={{ color: project.color }}
+                  >
+                    →
+                  </span>
+                </div>
               </div>
-            </motion.div>
+            </m.a>
           ))}
         </div>
       </div>

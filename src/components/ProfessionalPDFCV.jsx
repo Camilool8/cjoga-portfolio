@@ -8,22 +8,18 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import { cvMetadata } from "../data";
+// Fonts are bundled (Vite emits hashed asset URLs) instead of fetched from
+// a CDN at click time — a CDN hiccup used to mean a failed CV download.
+import robotoRegular from "../assets/fonts/roboto-regular-webfont.ttf";
+import robotoBold from "../assets/fonts/roboto-bold-webfont.ttf";
+import robotoItalic from "../assets/fonts/roboto-italic-webfont.ttf";
 
 Font.register({
   family: "Roboto",
   fonts: [
-    {
-      src: "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-regular-webfont.ttf",
-      fontWeight: "normal",
-    },
-    {
-      src: "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf",
-      fontWeight: "bold",
-    },
-    {
-      src: "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-italic-webfont.ttf",
-      fontStyle: "italic",
-    },
+    { src: robotoRegular, fontWeight: "normal" },
+    { src: robotoBold, fontWeight: "bold" },
+    { src: robotoItalic, fontStyle: "italic" },
   ],
 });
 
@@ -150,6 +146,10 @@ const styles = StyleSheet.create({
   },
 });
 
+// Accented spelling to match the site-wide unification; cvMetadata.name
+// (src/data.js) still carries the ASCII form used elsewhere.
+const CV_NAME = "José Camilo Joga Guerrero";
+
 const ProfessionalPDFCV = () => {
   const { t } = useTranslation();
 
@@ -157,7 +157,7 @@ const ProfessionalPDFCV = () => {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.name}>{cvMetadata.name}</Text>
+          <Text style={styles.name}>{CV_NAME}</Text>
           <Text style={styles.title}>
             {t("header.cv-title", "DevOps & Cloud Engineer")}
           </Text>

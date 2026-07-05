@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FaCircle, FaExternalLinkAlt } from "react-icons/fa";
 import {
   sectionVariants,
@@ -77,20 +77,19 @@ export default function HandbookCallout() {
 
   return (
     <section id="handbook" className="handbook-section">
-      <motion.div
+      <m.div
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
         viewport={viewportConfig}
         className="handbook-section-inner"
       >
-        <motion.div variants={itemVariants} className="handbook-section-header">
-          <span className="section-label">{t("handbook.label")}</span>
+        <m.div variants={itemVariants} className="handbook-section-header">
           <h2 className="section-heading">{t("handbook.heading")}</h2>
           <p className="handbook-section-sub">{t("handbook.subheading")}</p>
-        </motion.div>
+        </m.div>
 
-        <motion.div variants={itemVariants} className="handbook-window">
+        <m.div variants={itemVariants} className="handbook-window">
           {/* Browser chrome */}
           <div className="handbook-chrome">
             <div className="handbook-chrome-dots">
@@ -126,7 +125,10 @@ export default function HandbookCallout() {
                 <span className="handbook-eyebrow-dot" aria-hidden="true" />
                 {t("handbook.eyebrow")}
               </div>
-              <h2 className="handbook-title">{t("handbook.title")}</h2>
+              {/* Preview of the handbook's own landing title — styled like a
+                  heading but rendered as a <p> so this section keeps a single
+                  <h2> in the document outline. */}
+              <p className="handbook-title">{t("handbook.title")}</p>
               <p className="handbook-lede">
                 {t("handbook.ledeBefore")}
                 <code>{t("handbook.ledeCode")}</code>
@@ -155,8 +157,8 @@ export default function HandbookCallout() {
               </p>
             </div>
           </div>
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
     </section>
   );
 }

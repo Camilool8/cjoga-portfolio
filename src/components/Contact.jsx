@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FaEnvelope, FaLinkedinIn, FaGithub } from "react-icons/fa";
 import {
   sectionVariants, itemVariants, cardVariants, viewportConfig,
@@ -31,13 +31,13 @@ function Contact() {
   return (
     <section id="contact" style={{ textAlign: "center" }}>
       <div className="section-inner max-w-3xl mx-auto">
-        <motion.div
+        <m.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={viewportConfig}
         >
-          <motion.div variants={itemVariants}>
+          <m.div variants={itemVariants}>
             <span className="section-label">{t("contact.subtitle", "Contact")}</span>
             <h2
               className="section-heading"
@@ -45,22 +45,22 @@ function Contact() {
             >
               {t("contact.title")}
             </h2>
-          </motion.div>
+          </m.div>
 
-          <motion.p
+          <m.p
             variants={itemVariants}
             className="max-w-[500px] mx-auto mb-10"
             style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7 }}
           >
             {t("contact.text")}
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
 
         <p className="print-only mb-4">{t("print.phone")}</p>
 
         <div className="flex justify-center gap-3 flex-wrap">
           {contactLinks.map((link, i) => (
-            <motion.a
+            <m.a
               key={link.href}
               custom={i}
               variants={cardVariants}
@@ -78,7 +78,7 @@ function Contact() {
             >
               <span aria-hidden="true">{link.icon}</span>
               <span className="hidden sm:inline">{link.label}</span>
-            </motion.a>
+            </m.a>
           ))}
         </div>
       </div>
