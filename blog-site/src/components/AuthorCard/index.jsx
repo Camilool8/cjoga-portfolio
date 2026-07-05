@@ -10,7 +10,7 @@ export default function AuthorCard() {
     <aside className={styles.card} aria-label="About the author">
       <img
         className={styles.avatar}
-        src="https://github.com/Camilool8.png"
+        src="https://avatars.githubusercontent.com/u/73915896?v=4"
         alt="Jose Camilo Joga Guerrero"
         width="80"
         height="80"
