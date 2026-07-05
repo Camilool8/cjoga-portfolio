@@ -195,6 +195,17 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
       >
         <Link
           to={homePath}
+          onClick={() => {
+            // Same-path navigation is a no-op in React Router and
+            // useHashScroll only reacts to hashes, so the logo needs
+            // its own scroll-to-top.
+            const behavior = window.matchMedia(
+              "(prefers-reduced-motion: reduce)",
+            ).matches
+              ? "auto"
+              : "smooth";
+            window.scrollTo({ top: 0, behavior });
+          }}
           className="font-mono font-bold text-sm px-3 py-2 no-underline"
           style={{ color: "var(--accent)" }}
         >

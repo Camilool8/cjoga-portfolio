@@ -11,7 +11,7 @@
   </defs>
 
   <!-- Rounded dark tile -->
-  <rect width="256" height="256" rx="56" fill="url(#surface)"/>
+  <rect width="256" height="256" rx="56" fill="url(#surface) #0b0f1a"/>
 
   <!-- Hairline inner border -->
   <rect x="1" y="1" width="254" height="254" rx="55"
@@ -20,7 +20,7 @@
   <!-- Cloud — three overlapping pillows + a flat rounded base. Drawing
        it as a union of solid shapes (rather than a hand-tuned path) keeps
        the silhouette smooth and symmetrical when rasterized to 16/32px. -->
-  <g fill="url(#brand)">
+  <g fill="url(#brand) #64ffda">
     <circle cx="90" cy="86" r="22"/>
     <circle cx="128" cy="68" r="30"/>
     <circle cx="168" cy="86" r="24"/>
@@ -30,7 +30,7 @@
   <!-- "CJ" — wide, bold, monospace. Centered horizontally; sits on a strong
        baseline at y=204 with caps reaching up to ~y=126. -->
   <text x="128" y="204"
-        fill="url(#brand)"
+        fill="url(#brand) #64ffda"
         font-family="ui-monospace, Menlo, 'JetBrains Mono', 'Courier New', monospace"
         font-size="118" font-weight="900"
         text-anchor="middle" letter-spacing="-0.04em">CJ</text>
