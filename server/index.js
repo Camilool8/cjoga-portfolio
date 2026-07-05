@@ -63,8 +63,7 @@ const clientIpKey = (req) => {
 };
 
 // Kubernetes liveness/readiness probes hit /api/health every few seconds —
-// they must never consume (or trip) the public rate-limit budget. This is
-// what lets the k8s manifests use a plain httpGet probe again.
+// they must never consume (or trip) the public rate-limit budget.
 const isHealthCheck = (req) =>
   req.method === "GET" && req.originalUrl.split("?")[0] === "/api/health";
 

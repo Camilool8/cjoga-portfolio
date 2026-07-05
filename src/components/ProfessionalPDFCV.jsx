@@ -9,7 +9,7 @@ import {
 } from "@react-pdf/renderer";
 import { cvMetadata } from "../data";
 // Fonts are bundled (Vite emits hashed asset URLs) instead of fetched from
-// a CDN at click time — a CDN hiccup used to mean a failed CV download.
+// a CDN at click time.
 import robotoRegular from "../assets/fonts/roboto-regular-webfont.ttf";
 import robotoBold from "../assets/fonts/roboto-bold-webfont.ttf";
 import robotoItalic from "../assets/fonts/roboto-italic-webfont.ttf";

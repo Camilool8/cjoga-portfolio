@@ -10,8 +10,7 @@ import {
 // Browser-window framed preview of blog.cjoga.cloud's landing page.
 // Inner content mirrors the actual Docusaurus index (hero +
 // audience-paths + signoff). Hover applies an accent-border + glow
-// highlight — no 3D tilt; the parallax was disorienting for visitors
-// who weren't expecting their cursor to move the whole card.
+// highlight.
 
 const HANDBOOK_URL = "https://blog.cjoga.cloud";
 

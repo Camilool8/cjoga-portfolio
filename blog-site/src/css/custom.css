@@ -425,13 +425,6 @@ main .container {
   transform: translateX(-50%);
   transition: transform 0.35s var(--ease-out), opacity 0.25s var(--ease-out);
 }
-/* Use ::before/::after as the top + bottom lines; inject a middle bar via
-   a pseudo on the parent via box-shadow trick — actually we wire an
-   appended <span> in a swizzle. Simpler path: use ::before for top, ::after
-   for bottom, and middle bar as the SVG's first <path> background — but
-   the SVG is hidden. Instead, paint the middle bar via a tiny inline span
-   inserted by CSS counters... not possible. Fall back: use only two bars
-   that morph into the X. Visually equivalent; readable as a hamburger. */
 .navbar__toggle::before { top: 12px; }
 .navbar__toggle::after  { bottom: 12px; }
 
@@ -830,9 +823,6 @@ article .markdown hr {
   font-weight: 600;
   color: var(--text-primary);
 }
-
-/* Hide noisy default header date row — meta is duplicated by our list page,
-   but keep here for post detail. No-op for now. */
 
 /* ─── Skip-to-content (a11y) ───────────────────────────────────────── */
 .skipToContent_node_modules-\@docusaurus-theme-classic-lib-theme-SkipToContent-styles-module,

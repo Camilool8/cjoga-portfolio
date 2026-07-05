@@ -47,10 +47,9 @@ const mermaidConfig = {
 // accDescr to *alt* (via mermaid-isomorphic's aria lookups). Docs carry an
 // accTitle per fence, so promote title → alt for accessibility and drop the
 // redundant tooltip. We ALSO wrap each diagram in its zoom container at BUILD
-// time (`div.mermaid-zoom-wrap`): the client module used to move the img into
-// a wrapper at runtime, which reflowed the page after paint (~0.26 CLS). With
-// the wrapper already in the static HTML, the client module only attaches
-// listeners and an absolutely-positioned affordance — no layout shift.
+// time (`div.mermaid-zoom-wrap`) so the wrapper ships in the static HTML: the
+// client module then only attaches listeners and an absolutely-positioned
+// affordance, avoiding the layout shift a runtime wrap would cause.
 function rehypeMermaidImgAlt() {
   /** @param {any} n */
   const isMermaidImg = (n) =>

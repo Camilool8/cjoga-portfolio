@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 // WCAG contrast gate for the shared brand tokens.
 // Reads scripts/brand/tokens.css and asserts every required pair meets its
-// threshold. Tolerates a missing tokens.css (exits 0 with a warning) so this
-// can run before the design-tokens workstream lands.
+// threshold. Tolerates a missing tokens.css (exits 0 with a warning).
 import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -10,7 +9,7 @@ import { dirname, join } from "node:path";
 const tokensPath = join(dirname(fileURLToPath(import.meta.url)), "tokens.css");
 
 if (!existsSync(tokensPath)) {
-  console.warn("contrast:check — scripts/brand/tokens.css not found yet; skipping (OK before WS-A lands).");
+  console.warn("contrast:check — scripts/brand/tokens.css not found; skipping.");
   process.exit(0);
 }
 

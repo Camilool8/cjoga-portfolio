@@ -8,8 +8,7 @@ function ScrollProgress() {
     restDelta: 0.001,
   });
 
-  // Purely decorative — hidden from assistive tech (a progressbar role
-  // here contradicted aria-hidden and announced nothing useful).
+  // Purely decorative — hidden from assistive tech.
   return (
     <m.div
       className="fixed top-0 left-0 right-0 h-0.5 z-[9999] origin-left pointer-events-none"

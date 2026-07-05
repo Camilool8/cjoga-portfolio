@@ -1,14 +1,13 @@
 // Client module: binds click-to-zoom onto the build-time-rendered mermaid
 // diagrams. The zoom wrapper (`div.mermaid-zoom-wrap`, role=button) is emitted
 // at BUILD time by the rehypeMermaidImgAlt pass in docusaurus.config.js, so
-// this module never restructures the DOM (an earlier version moved the img
-// into a runtime-created wrapper, which reflowed the page after paint — a
-// ~0.26 CLS regression). Here we only: attach the absolutely-positioned
-// affordance (out of flow → no shift) and wire click/Enter/Space to open a
-// single shared yet-another-react-lightbox host (DiagramZoom) mounted outside
-// the app root. The host is dynamically imported the first time a page with
-// diagrams is seen. `onRouteDidUpdate` rebinds after client-side navigations;
-// already-bound wrappers are skipped via a data attribute.
+// this module never restructures the DOM. Here we only: attach the
+// absolutely-positioned affordance (out of flow → no shift) and wire
+// click/Enter/Space to open a single shared yet-another-react-lightbox host
+// (DiagramZoom) mounted outside the app root. The host is dynamically imported
+// the first time a page with diagrams is seen. `onRouteDidUpdate` rebinds after
+// client-side navigations; already-bound wrappers are skipped via a data
+// attribute.
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
