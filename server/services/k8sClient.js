@@ -7,7 +7,14 @@ const isProduction = process.env.NODE_ENV === "production";
 const kc = new k8s.KubeConfig();
 
 if (isProduction) {
-  kc.loadFromCluster();
+  try {
+    kc.loadFromCluster();
+  } catch {
+    // Don't crash the whole server at import time if the SA token/CA are
+    // missing (e.g. automountServiceAccountToken off, or running the prod
+    // build outside a cluster). The terminal degrades, the site stays up.
+    logger.error("Failed to load in-cluster K8s config - terminal disabled");
+  }
 } else {
   try {
     kc.loadFromDefault();
@@ -100,9 +107,9 @@ const MOCK_SERVICES = {
 };
 
 const MOCK_NODES = [
-  { name: "k3s-master-01", status: "Ready", roles: "control-plane,master", age: "180d", version: "v1.28.4+k3s1", os: "Debian GNU/Linux 12", arch: "arm64" },
-  { name: "k3s-worker-01", status: "Ready", roles: "worker", age: "180d", version: "v1.28.4+k3s1", os: "Debian GNU/Linux 12", arch: "arm64" },
-  { name: "k3s-worker-02", status: "Ready", roles: "worker", age: "90d", version: "v1.28.4+k3s1", os: "Debian GNU/Linux 12", arch: "arm64" },
+  { name: "k3s-master-01", status: "Ready", roles: "control-plane,master", age: "180d" },
+  { name: "k3s-worker-01", status: "Ready", roles: "worker", age: "180d" },
+  { name: "k3s-worker-02", status: "Ready", roles: "worker", age: "90d" },
 ];
 
 function getMockData(resource, namespace) {
@@ -223,14 +230,13 @@ export async function getNodes() {
     const res = await coreApi.listNode({});
     return res.items.map((node) => {
       const readyCondition = node.status?.conditions?.find((c) => c.type === "Ready");
+      // Deliberately no kubeletVersion / osImage / architecture: those are
+      // reconnaissance-grade (CVE targeting) for a public endpoint.
       return {
         name: node.metadata.name,
         status: readyCondition?.status === "True" ? "Ready" : "NotReady",
         roles: extractRoles(node.metadata.labels),
         age: humanizeAge(node.metadata.creationTimestamp),
-        version: node.status?.nodeInfo?.kubeletVersion || "Unknown",
-        os: node.status?.nodeInfo?.osImage || "Unknown",
-        arch: node.status?.nodeInfo?.architecture || "Unknown",
       };
     });
   } catch (err) {

@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: portfolio
+  name: portfolio-deploy
+  namespace: web-development
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: portfolio
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: portfolio
+    spec:
+      # Dedicated SA for the live terminal — scoped by portfolio-rbac.yaml
+      # to read-only get/list in the allowlisted namespaces only.
+      serviceAccountName: portfolio-terminal
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000 # `node` user in node:24-alpine (Dockerfile sets USER node)
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "8080" # unprivileged port; matches the image default
+            - name: TERMINAL_NAMESPACE_ALLOWLIST
+              value: "web-development,monitoring"
+            - name: REACT_APP_SUPABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: supabase-url
+                  name: portfolio-secrets
+            - name: REACT_APP_SUPABASE_ANON_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: supabase-anon-key
+                  name: portfolio-secrets
+          image: cjoga/portfolio:latest
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            failureThreshold: 3
+            # httpGet again: /api/health is now exempt from the app's rate
+            # limiter in code, so probes can't burn (or trip) the budget.
+            # The old TCP-socket workaround is no longer needed.
+            httpGet:
+              path: /api/health
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: portfolio-container
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /api/health
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30

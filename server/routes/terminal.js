@@ -42,6 +42,22 @@ const RESOURCE_HANDLERS = {
 
 const NS_REGEX = /^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]?$/;
 
+const DEFAULT_NAMESPACE_ALLOWLIST = "web-development,monitoring";
+
+/**
+ * Namespaces the public terminal may see. Read per-request so tests (and
+ * ops) can change TERMINAL_NAMESPACE_ALLOWLIST without a restart-and-reimport.
+ */
+function getNamespaceAllowlist() {
+  const raw =
+    process.env.TERMINAL_NAMESPACE_ALLOWLIST || DEFAULT_NAMESPACE_ALLOWLIST;
+  const list = raw
+    .split(",")
+    .map((ns) => ns.trim())
+    .filter(Boolean);
+  return list.length > 0 ? list : ["web-development"];
+}
+
 function formatAsTable(headers, rows) {
   if (rows.length === 0) return "No resources found.";
 
@@ -76,10 +92,12 @@ const FORMATTERS = {
       ["NAME", "TYPE", "CLUSTER-IP", "PORT(S)", "AGE"],
       data.map((s) => ({ name: s.name, type: s.type, clusterIp: s.clusterIp, ports: s.ports, age: s.age }))
     ),
+  // No VERSION / OS-IMAGE columns: kubelet version + OS image are
+  // CVE-targeting reconnaissance and add nothing for visitors.
   nodes: (data) =>
     formatAsTable(
-      ["NAME", "STATUS", "ROLES", "AGE", "VERSION"],
-      data.map((n) => ({ name: n.name, status: n.status, roles: n.roles, age: n.age, version: n.version }))
+      ["NAME", "STATUS", "ROLES", "AGE"],
+      data.map((n) => ({ name: n.name, status: n.status, roles: n.roles, age: n.age }))
     ),
   namespaces: (data) =>
     formatAsTable(
@@ -90,9 +108,10 @@ const FORMATTERS = {
 
 /**
  * Parse a kubectl command. Only allows: kubectl get <resource> [-n <namespace>]
+ * with the namespace restricted to `allowlist`.
  * Returns { resource, namespace } or { error: string }
  */
-function parseKubectlCommand(normalized) {
+function parseKubectlCommand(normalized, allowlist) {
   const tokens = normalized.split(" ").filter(Boolean);
 
   if (tokens[0] !== "kubectl") return { error: "not-kubectl" };
@@ -146,6 +165,12 @@ function parseKubectlCommand(normalized) {
       if (!NS_REGEX.test(namespace)) {
         return { error: "Error: invalid namespace name." };
       }
+      if (!allowlist.includes(namespace)) {
+        // Same friendly shape as other blocked input — no cluster info leaked.
+        return {
+          error: `Error: namespace '${namespace}' is not accessible from this terminal.\nAvailable namespaces: ${allowlist.join(" | ")}`,
+        };
+      }
       i += 2;
     } else if (tokens[i].startsWith("-")) {
       return { error: `Error: flag '${tokens[i]}' is not allowed. Only '-n <namespace>' is supported.` };
@@ -171,7 +196,8 @@ router.post("/execute", async (req, res) => {
       return res.json({ output: "Error: Command too long (max 200 characters).", type: "error" });
     }
 
-    const parsed = parseKubectlCommand(normalized);
+    const allowlist = getNamespaceAllowlist();
+    const parsed = parseKubectlCommand(normalized, allowlist);
 
     if (parsed.error === "not-kubectl") {
       return res.json({
@@ -188,12 +214,18 @@ router.post("/execute", async (req, res) => {
     const handler = RESOURCE_HANDLERS[resource];
     const formatter = FORMATTERS[resource];
 
-    const effectiveNs = namespace || "web-development";
+    const effectiveNs = namespace || allowlist[0] || "web-development";
     logger.info(`Terminal kubectl: get ${resource}${!CLUSTER_SCOPED.has(resource) ? ` -n ${effectiveNs}` : ""}`);
 
-    const data = CLUSTER_SCOPED.has(resource)
+    let data = CLUSTER_SCOPED.has(resource)
       ? await handler()
       : await handler(effectiveNs);
+
+    // Namespace listing only shows the showcase namespaces — the public
+    // terminal must not enumerate the cluster layout.
+    if (resource === "namespaces") {
+      data = data.filter((ns) => allowlist.includes(ns.name));
+    }
 
     const output = formatter(data);
 
