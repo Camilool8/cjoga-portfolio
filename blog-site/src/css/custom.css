@@ -6,60 +6,68 @@
  * editorial rhythm and brand parity — no heavy bespoke layouts.
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap");
+/* Fonts are loaded via docusaurus.config headTags (preconnect + stylesheet),
+   not an @import here — @import blocks first paint. */
 
-/* ─── Brand tokens (kept verbatim from portfolio's global.css) ──────── */
+/* ─── Brand tokens — synced from scripts/brand/tokens.css ───────────── */
+/* Edit there, then run `node scripts/brand/sync-tokens.mjs`. */
+/* @brand-tokens:start */
 :root {
+  /* Dark theme (default) */
   --bg-void: #06080d;
   --bg-primary: #0b0f1a;
   --bg-surface: #111827;
   --bg-elevated: #1a2332;
-  --bg-glass: rgba(11, 15, 26, 0.72);
-  --border-subtle: rgba(100, 255, 218, 0.08);
-  --border-medium: rgba(100, 255, 218, 0.18);
-  --accent: #64ffda;
-  --accent-dim: rgba(100, 255, 218, 0.12);
-  --accent-glow: rgba(100, 255, 218, 0.18);
+  --bg-glass: rgba(17, 24, 37, 0.72);
+  --border-subtle: rgba(62, 224, 127, 0.08);
+  --border-medium: rgba(62, 224, 127, 0.15);
+  --border-active: rgba(62, 224, 127, 0.4);
+  --accent: #3ee07f;
+  --accent-dim: rgba(62, 224, 127, 0.12);
+  --accent-glow: rgba(62, 224, 127, 0.1);
   --accent-secondary: #38bdf8;
   --accent-warm: #f59e0b;
   --text-primary: #e2e8f0;
   --text-secondary: #94a3b8;
-  --text-tertiary: #475569;
-  --gradient-accent: linear-gradient(135deg, #64ffda, #38bdf8);
+  --text-tertiary: #8794ab;
+  --gradient-accent: linear-gradient(135deg, #3ee07f, #38bdf8);
   --font-display: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] {
-  --bg-void: #fafafa;
-  --bg-primary: #ffffff;
-  --bg-surface: #f5f5f5;
-  --bg-elevated: #ebebeb;
+  --bg-void: #ffffff;
+  --bg-primary: #f8fafc;
+  --bg-surface: #f1f5f9;
+  --bg-elevated: #e2e8f0;
   --bg-glass: rgba(255, 255, 255, 0.85);
-  --border-subtle: rgba(2, 132, 199, 0.12);
-  --border-medium: rgba(2, 132, 199, 0.25);
-  --accent: #0284c7;
-  --accent-dim: rgba(2, 132, 199, 0.08);
-  --accent-glow: rgba(2, 132, 199, 0.18);
-  --accent-secondary: #0ea5e9;
-  --accent-warm: #d97706;
-  --text-primary: #0a0a0a;
-  --text-secondary: #525252;
-  --text-tertiary: #a3a3a3;
-  --gradient-accent: linear-gradient(135deg, #0284c7, #0ea5e9);
+  --border-subtle: rgba(13, 112, 56, 0.12);
+  --border-medium: rgba(13, 112, 56, 0.25);
+  --border-active: rgba(13, 112, 56, 0.5);
+  --accent: #0d7038;
+  --accent-dim: rgba(13, 112, 56, 0.1);
+  --accent-glow: rgba(13, 112, 56, 0.1);
+  --accent-secondary: #0369a1;
+  --accent-warm: #b45309;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --gradient-accent: linear-gradient(135deg, #0d7038, #0369a1);
 }
+/* @brand-tokens:end */
 
 /* ─── Infima overrides — minimal, surgical ──────────────────────────── */
 :root {
-  --ifm-color-primary: #64ffda;
-  --ifm-color-primary-dark: #41ffd0;
-  --ifm-color-primary-darker: #2fffcb;
-  --ifm-color-primary-darkest: #00d9a0;
-  --ifm-color-primary-light: #87ffe4;
-  --ifm-color-primary-lighter: #99ffe9;
-  --ifm-color-primary-lightest: #ccfff2;
+  --ifm-color-primary: #3ee07f;
+  --ifm-color-primary-dark: #23d76b;
+  --ifm-color-primary-darker: #21ca64;
+  --ifm-color-primary-darkest: #1ba753;
+  --ifm-color-primary-light: #58e490;
+  --ifm-color-primary-lighter: #6ae79c;
+  --ifm-color-primary-lightest: #96eeb9;
 
   --ifm-background-color: var(--bg-void);
   --ifm-background-surface-color: var(--bg-surface);
@@ -101,18 +109,18 @@
   --ifm-pre-background: var(--bg-surface);
   --ifm-pre-color: var(--text-primary);
 
-  --docusaurus-highlighted-code-line-bg: rgba(100, 255, 218, 0.08);
+  --docusaurus-highlighted-code-line-bg: rgba(62, 224, 127, 0.08);
 }
 
 [data-theme="light"] {
-  --ifm-color-primary: #0284c7;
-  --ifm-color-primary-dark: #0276b3;
-  --ifm-color-primary-darker: #026fa8;
-  --ifm-color-primary-darkest: #015a89;
-  --ifm-color-primary-light: #1297de;
-  --ifm-color-primary-lighter: #2ba1e1;
-  --ifm-color-primary-lightest: #5db8e9;
-  --docusaurus-highlighted-code-line-bg: rgba(2, 132, 199, 0.1);
+  --ifm-color-primary: #0d7038;
+  --ifm-color-primary-dark: #0c6733;
+  --ifm-color-primary-darker: #0b6030;
+  --ifm-color-primary-darkest: #095028;
+  --ifm-color-primary-light: #0f7e3f;
+  --ifm-color-primary-lighter: #108944;
+  --ifm-color-primary-lightest: #14a954;
+  --docusaurus-highlighted-code-line-bg: rgba(13, 112, 56, 0.1);
 }
 
 /* ─── Body & global polish ─────────────────────────────────────────── */
@@ -191,7 +199,7 @@ main .container {
 }
 
 .navbar__title::after {
-  content: "/blog";
+  content: "/handbook";
   color: var(--accent);
   margin-left: 0.25rem;
   font-weight: 500;
@@ -857,14 +865,67 @@ button:focus-visible {
 }
 
 /* ─── Code blocks — terminal vibe + copy/lang clarity ────────────── */
+/* Token-driven; identical scheme to the portfolio's Prism CSS. */
 .theme-code-block {
-  background: #0a0e16;
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
 }
 
-[data-theme="light"] .theme-code-block {
-  background: #fafafa;
-  border-color: rgba(0, 0, 0, 0.08);
+.theme-code-block pre,
+.theme-code-block .prism-code {
+  background: var(--bg-surface);
+}
+
+/* prism-react-renderer inlines theme colors on each token span, so the
+   shared scheme needs !important to win. Keywords sky, strings phosphor
+   green, comments tertiary, punctuation/plain text-primary. */
+.prism-code .token.comment,
+.prism-code .token.prolog,
+.prism-code .token.doctype,
+.prism-code .token.cdata {
+  color: var(--text-tertiary) !important;
+}
+
+.prism-code .token.punctuation,
+.prism-code .token.operator,
+.prism-code .token.entity,
+.prism-code .token.url,
+.prism-code .token.plain {
+  color: var(--text-primary) !important;
+}
+
+.prism-code .token.property,
+.prism-code .token.tag,
+.prism-code .token.constant,
+.prism-code .token.symbol,
+.prism-code .token.deleted,
+.prism-code .token.atrule,
+.prism-code .token.attr-value,
+.prism-code .token.keyword,
+.prism-code .token.function,
+.prism-code .token.class-name {
+  color: var(--accent-secondary) !important;
+}
+
+.prism-code .token.selector,
+.prism-code .token.attr-name,
+.prism-code .token.string,
+.prism-code .token.char,
+.prism-code .token.builtin,
+.prism-code .token.inserted {
+  color: var(--accent) !important;
+}
+
+.prism-code .token.boolean,
+.prism-code .token.number,
+.prism-code .token.regex,
+.prism-code .token.important,
+.prism-code .token.variable {
+  color: var(--accent-warm) !important;
+}
+
+.prism-code {
+  color: var(--text-primary);
 }
 
 /* Language label */
@@ -964,7 +1025,7 @@ article .markdown a[href^="http"]:not([class])::after {
 
 /* Light mode: blend the diagram card with the page */
 [data-theme="light"] .docusaurus-mermaid-container {
-  background: #fafafa;
+  background: var(--bg-void);
   border-color: rgba(15, 23, 42, 0.08);
 }
 
