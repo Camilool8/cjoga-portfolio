@@ -45,6 +45,7 @@ import {
   SiVagrant,
   SiVirtualbox,
   SiGnubash,
+  SiPodman,
 } from 'react-icons/si';
 import {
   VscAzure,
@@ -153,6 +154,7 @@ const TECH = {
 
   // Containers / VMs / cluster tooling
   Docker: { Icon: SiDocker, color: '#2496ED' },
+  Podman: { Icon: SiPodman, color: '#892CA0' },
   OrbStack: { textOnly: true },
   kubectl: { Icon: SiKubernetes, color: '#326CE5' },
   k3s: { Icon: SiKubernetes, color: '#326CE5' },

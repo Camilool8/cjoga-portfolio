@@ -1,0 +1,136 @@
+---
+sidebar_position: 3
+title: RHCE (EX294) guide
+image: img/og/learn-rhce.png
+description: How to use the RHCE-LAB GitHub project as your full prep — seven VMs, 18 exam-style tasks, and a 300-point grader that scores you like the real EX294.
+slug: /learn/rhce
+keywords: [rhce, ex294, red hat, ansible, certification, lab, vagrant, ansible-navigator]
+date: "2026-07-05"
+---
+
+import TechStackGrid from '@site/src/components/TechStackGrid';
+
+# RHCE (EX294) guide
+
+The lab itself lives on GitHub at **[Camilool8/RHCE-LAB](https://github.com/Camilool8/RHCE-LAB)** — seven VMs, eighteen exam-style tasks, and a grader that scores you out of 300 the way EX294 does. This page is the meta-guide: what the lab is, how to use it well, and the path I'd walk from RHCSA to RHCE. It's the sibling of the [RHCSA guide](/learn/rhcsa) — same philosophy, bigger machine.
+
+## What the lab is
+
+**Goal.** Give you a real EX294 practice environment on your laptop — offline like the exam room, self-grading like the exam itself, and free.
+
+**Approach.** Vagrant brings up seven VMs: a repo server holding a full offline AlmaLinux 9 mirror (BaseOS + AppStream, served over HTTP and NFS), a control node with `ansible-core`, `ansible-navigator`, and a Podman execution-environment image pre-pulled, and five managed nodes grouped like an exam inventory — dev, test, prod, balancers, with webservers as a children group. After the first `vagrant up`, the whole lab runs with the network cable pulled.
+
+**Stack.**
+
+<TechStackGrid
+  compact
+  items={[
+    { name: 'Vagrant', href: 'https://www.vagrantup.com/' },
+    { name: 'RHEL', href: 'https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux' },
+    { name: 'Ansible', href: 'https://www.ansible.com/' },
+    { name: 'Podman', href: 'https://podman.io/' },
+    { name: 'Bash', href: 'https://www.gnu.org/software/bash/' },
+  ]}
+/>
+
+## What this guide is and isn't
+
+This page is **not** a re-statement of the lab's README — that lives on GitHub, along with a full docs tree, and stays the source of truth. This page is the framing around it: how I'd recommend you use the lab, why it's built the way it is, and the parts of the prep that aren't in code.
+
+I took the official Red Hat prep courses for both RHCSA and RHCE, sponsored by a Red Hat partner, and I'd recommend them to anyone who can take them. RH294 in particular walks through every module, the different ways to solve the same automation problem, and the *why* underneath the *how*. If you want depth beyond the exam, that's where you find it.
+
+They are not the only path, though. EX294 rewards writing working automation under a clock, and that skill is built by sitting in front of five managed nodes and making playbooks converge — which is what this lab is for. You can pass RHCE on the lab alone, and you can pass it better if you've also done the courses. Complements, not substitutes.
+
+## RHCSA first — and which exam version
+
+Two facts worth settling before you start:
+
+**RHCSA comes first.** You can sit EX294 before EX200, but the RHCE credential stays pending until you've passed both — and the exam assumes RHCSA-level fluency anyway, because you'll be automating exactly those tasks. If that base isn't there yet, start with the [RHCSA guide](/learn/rhcsa) and come back.
+
+**Two exam versions are live** as of mid-2026: EX294V9 (RHEL 9, Ansible Automation Platform 2.2) and EX294V10 (RHEL 10, AAP 2.5). This lab targets the RHEL 9 exam. Red Hat's May 2026 certification restructure also renamed the credential to "Red Hat Certified Advanced System Administrator in Ansible" on the Ansible track — the name moved, the skills tested did not, and existing RHCE credentials are unchanged.
+
+## Prerequisites
+
+Before you clone, make sure your machine clears the bar. Numbers come from the lab's own `config.yaml`.
+
+- **A supported hypervisor** — VirtualBox, libvirt, Parallels, or VMware Desktop. The Vagrantfile auto-detects what's installed; override with `LAB_PROVIDER` if you need to.
+- **Vagrant 2.4+** on PATH.
+- **About 10.5 GB RAM** free for the seven VMs (2 GB repo + 2 GB control + five 1.25 GB nodes).
+- **At least 80 GB free disk** — the offline mirror alone is ~28 GB, and snapshots add up once you start practicing.
+- macOS, Linux, or Windows host, on **x86_64 or arm64** — the lab runs native-arch guests on both, so Apple Silicon works without emulation.
+
+The first `vagrant up` takes 30–90 minutes because the repo server mirrors AlmaLinux 9 with `dnf reposync` — that sync is the one moment the lab needs internet. Everything after it is offline, which is exactly the condition you'll take the exam under.
+
+## How to use the lab
+
+The tasks live in `lab/tasks/` — eighteen of them, in exam shape — with reference solutions in `lab/solutions/`.
+
+**Do not open the solutions first.** Same rule as the RHCSA lab: sit with the task, hit the wall, work your way out with `ansible-doc`, and verify the result. The solutions are for when you're genuinely stuck or want to compare approaches after the fact — not a script to follow.
+
+A workflow that works:
+
+1. **`vagrant up`** once and let the mirror sync. Then snapshot everything — a clean baseline is what makes the lab reusable.
+2. **`vagrant ssh control`**, then `sudo -iu student`. The `student` user is your exam identity: SSH keys to every node, inventory, and `ansible.cfg` paths arrive pre-wired, so minute one is Ansible, not plumbing.
+3. **Work each task in `~/ansible/`** with only `ansible-doc` and `man` open. That's the exam's entire documentation surface — train on it, not on browser tabs.
+4. **Run every playbook twice.** The second run must report `changed=0`. If it doesn't, the playbook isn't idempotent, and the exam grades converged state, not effort.
+5. **Grade yourself with the verifier** (next section), redo the weak tasks from scratch a few days later, and restore the baseline snapshot when you want a truly clean run.
+
+## The grader
+
+The part I'd call the lab's centerpiece: `~/verify/verify-all.sh` on the control node scores your work the way the real exam does — 300 points across the eighteen tasks, 210 to pass.
+
+- **Default run** checks end-state on the nodes: files, packages, services, mounts, SELinux, vault decryption.
+- **`--apply`** additionally runs each of your playbooks twice and fails any task whose second run reports changes — idempotency is enforced, because a `command:` or `shell:` task without `creates:` or `changed_when:` is the classic silent point-loss on EX294.
+- **`--reboot`** gracefully reboots all five nodes and re-verifies — persistence is the other silent loss. Anything living only in runtime state dies here, exactly as it would on exam day.
+- **`--task N`** scores one task; **`--list`** shows the point allocation.
+
+Early on, grade per task while you learn. In the final weeks, do full timed runs: eighteen tasks, four hours, grader at the end. Treat 210 as the bar and the gap above it as your margin for a bad morning.
+
+## What the lab maps to
+
+The eighteen tasks cover the [EX294 exam objectives](https://www.redhat.com/en/services/training/ex294-red-hat-certified-engineer-rhce-exam-red-hat-enterprise-linux), grouped roughly as:
+
+- Control node setup — inventory groups and `ansible.cfg`
+- Repository configuration and package management by playbook
+- RHEL system roles — timesync and SELinux
+- Writing your own role, and consuming roles from Galaxy with `requirements.yml`
+- File management — directories, symlinks, SELinux contexts, setgid
+- Ansible Vault — creating, using, and rekeying encrypted files
+- Jinja2 templating — a hosts file, a hardware report, per-group `/etc/issue`
+- User management with vaulted passwords and `password_hash`
+- Scheduled tasks with the cron module
+- Storage — LVM with a rescue fallback, partitioning with runtime device discovery
+- `ansible-navigator` and execution environments throughout
+
+One design detail worth knowing: each node carries two extra disks sized 2 GB and 1 GB on purpose. The LVM task asks for a volume the 1 GB disk can't hold, so your `rescue` block has to actually fire — the lab makes you practice the failure branch, not just the happy path.
+
+If any of those headings feel foreign, that's the topic to lead with.
+
+## What the lab won't do for you
+
+The lab gives you the environment, the tasks, and the score. It does not give you:
+
+- **Speed under a four-hour clock.** Eighteen tasks sounds roomy until a YAML error eats twenty minutes. Once you've been through the list twice, run it timed and watch where the minutes go.
+- **YAML fluency.** Indentation errors under pressure are pure time loss, and no amount of reading fixes them — volume of playbooks written does. Write until the structure is muscle memory.
+- **The exam interface.** The real exam runs in a controlled environment with its own quirks. The official Red Hat practice exam is the only thing that replicates it — worth doing once in the final week, even if you skip everything else paid.
+
+## Day-of guidance
+
+A few things that mattered for me on exam day, in no particular order:
+
+- **Live in `ansible-navigator` from day one of prep.** The exam's tooling is navigator with execution environments, not bare `ansible-playbook`, and the muscle memory differs just enough to cost you time if you switch late.
+- **Run it twice before moving on.** Second run shows `changed=0` or the task isn't done.
+- **`ansible-doc` is the open book.** `ansible-doc -l | grep` to find the module, then jump to the EXAMPLES section — it's usually a paste-and-edit starting point.
+- **Set up Vault early, not last.** A vaulted variable wired wrong breaks every playbook that includes it, and you want that failure at hour one, not hour four.
+- **Read every task fully before you start it.** A late requirement changes what the right first move was.
+- **Time-box hard tasks.** More than ~15 minutes with no progress: mark it, move on, come back. Easy points first.
+
+## If you want my opinion on the cert itself
+
+RHCE changed how I work more than RHCSA did. RHCSA is the point where you can fix the server in front of you; RHCE is the point where you stop logging into servers one at a time and start describing the fleet as code. That shift — idempotent, versioned, repeatable — is the actual product of the prep, and it outlives the badge (more on that in [Certifications expire, and that's the point](/me/opinions/certifications-expire)).
+
+The lab is free, open, and on GitHub. Clone it, write the playbooks, run the grader, and chase 210.
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />

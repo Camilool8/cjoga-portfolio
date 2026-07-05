@@ -21,7 +21,10 @@ const PATHS = [
     eyebrow: "If you're studying",
     intro:
       "Honest cert guides — my experience, my tips, and the runbooks I'd hand to a friend.",
-    rows: [{ to: "/learn/rhcsa", label: "RHCSA (EX200) guide" }],
+    rows: [
+      { to: "/learn/rhcsa", label: "RHCSA (EX200) guide" },
+      { to: "/learn/rhce", label: "RHCE (EX294) guide" },
+    ],
   },
   {
     eyebrow: "If you're curious about the lab",
