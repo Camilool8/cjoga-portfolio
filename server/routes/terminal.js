@@ -42,6 +42,11 @@ const RESOURCE_HANDLERS = {
 
 const NS_REGEX = /^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]?$/;
 
+// Namespace used when a `kubectl get` omits `-n`. Read per-request so ops can
+// change TERMINAL_DEFAULT_NAMESPACE without a restart.
+const defaultNamespace = () =>
+  process.env.TERMINAL_DEFAULT_NAMESPACE || "web-development";
+
 function formatAsTable(headers, rows) {
   if (rows.length === 0) return "No resources found.";
 
@@ -76,10 +81,12 @@ const FORMATTERS = {
       ["NAME", "TYPE", "CLUSTER-IP", "PORT(S)", "AGE"],
       data.map((s) => ({ name: s.name, type: s.type, clusterIp: s.clusterIp, ports: s.ports, age: s.age }))
     ),
+  // No VERSION / OS-IMAGE columns: kubelet version + OS image are
+  // CVE-targeting reconnaissance and add nothing for visitors.
   nodes: (data) =>
     formatAsTable(
-      ["NAME", "STATUS", "ROLES", "AGE", "VERSION"],
-      data.map((n) => ({ name: n.name, status: n.status, roles: n.roles, age: n.age, version: n.version }))
+      ["NAME", "STATUS", "ROLES", "AGE"],
+      data.map((n) => ({ name: n.name, status: n.status, roles: n.roles, age: n.age }))
     ),
   namespaces: (data) =>
     formatAsTable(
@@ -188,7 +195,7 @@ router.post("/execute", async (req, res) => {
     const handler = RESOURCE_HANDLERS[resource];
     const formatter = FORMATTERS[resource];
 
-    const effectiveNs = namespace || "web-development";
+    const effectiveNs = namespace || defaultNamespace();
     logger.info(`Terminal kubectl: get ${resource}${!CLUSTER_SCOPED.has(resource) ? ` -n ${effectiveNs}` : ""}`);
 
     const data = CLUSTER_SCOPED.has(resource)

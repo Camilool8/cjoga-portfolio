@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import {
   sectionVariants,
   itemVariants,
@@ -37,21 +37,21 @@ function Experience() {
   return (
     <section id="experience">
       <div className="section-inner">
-        <motion.div
+        <m.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={viewportConfig}
         >
-          <motion.div variants={itemVariants}>
+          <m.div variants={itemVariants}>
             <span className="section-label">
               {t("experience.title", "Experience")}
             </span>
             <h2 className="section-heading">
               {t("experience.heading", "Where I've worked.")}
             </h2>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
 
         <div
           ref={timelineRef}
@@ -59,7 +59,7 @@ function Experience() {
           role="list"
           aria-label={t("experience.title", "Experience")}
         >
-          <motion.div
+          <m.div
             className="absolute top-0 bottom-0 hidden md:block"
             style={{
               left: "32px",
@@ -71,7 +71,7 @@ function Experience() {
             }}
             aria-hidden="true"
           />
-          <motion.div
+          <m.div
             className="absolute top-0 bottom-0 md:hidden"
             style={{
               left: "16px",
@@ -88,7 +88,7 @@ function Experience() {
             const active = isActive(key);
             const meta = COMPANY_META[key] || { initial: "•", color: "var(--accent)" };
             return (
-              <motion.div
+              <m.div
                 key={key}
                 custom={index}
                 variants={cardVariants}
@@ -98,7 +98,7 @@ function Experience() {
                 className="relative mb-10 pl-12 md:pl-[72px]"
                 role="listitem"
               >
-                <motion.div
+                <m.div
                   initial={{ scale: 0, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
@@ -120,7 +120,7 @@ function Experience() {
                   aria-hidden="true"
                 >
                   {meta.initial}
-                </motion.div>
+                </m.div>
 
                 {active && (
                   <div
@@ -133,7 +133,7 @@ function Experience() {
                   />
                 )}
 
-                <motion.div
+                <m.div
                   whileHover={{ y: -4 }}
                   transition={{ type: "tween", duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
                   className="timeline-card rounded-2xl p-6 md:p-7 transition-colors duration-300"
@@ -249,8 +249,8 @@ function Experience() {
                       </li>
                     ))}
                   </ul>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             );
           })}
         </div>

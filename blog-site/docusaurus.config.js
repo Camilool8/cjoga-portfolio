@@ -1,8 +1,116 @@
 // @ts-check
 import { themes as prismThemes } from "prism-react-renderer";
 
-/** @type {import('@docusaurus/types').Config} */
-const config = {
+// Mermaid renders to static SVG at build time (rehype-mermaid, img-svg
+// strategy) — no mermaid runtime ships to the client. Diagrams are drawn
+// once with the dark phosphor brand theme; a CSS card behind each diagram
+// keeps them legible on the light theme (see DiagramZoom/styles.module.css).
+const mermaidConfig = {
+  theme: "base",
+  // SVGs inside <img> can't load web fonts, so JetBrains Mono is out of
+  // reach here. Use a deterministic system mono stack so build-time text
+  // metrics match what viewers render.
+  fontFamily: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+  fontSize: 15,
+  themeVariables: {
+    background: "transparent",
+    // Node fills
+    primaryColor: "#1a2332",
+    primaryTextColor: "#e2e8f0",
+    primaryBorderColor: "#3ee07f",
+    // Secondary fills (edge labels, alt shapes)
+    secondaryColor: "#111827",
+    secondaryTextColor: "#cbd5e1",
+    secondaryBorderColor: "#38bdf8",
+    // Tertiary fills (alt nodes)
+    tertiaryColor: "#1f2937",
+    tertiaryTextColor: "#fbbf24",
+    tertiaryBorderColor: "#f59e0b",
+    // Lines + arrows
+    lineColor: "#94a3b8",
+    textColor: "#cbd5e1",
+    // Misc
+    mainBkg: "#1a2332",
+    nodeBorder: "#3ee07f",
+    titleColor: "#e2e8f0",
+    clusterBkg: "#0e1626",
+    clusterBorder: "#334155",
+    edgeLabelBackground: "#0b0f1a",
+    fontSize: "15px",
+  },
+  flowchart: { useMaxWidth: true, htmlLabels: true, curve: "basis", padding: 16 },
+  sequence: { useMaxWidth: true, mirrorActors: false, messageFontSize: 14, actorFontSize: 14 },
+  gantt: { useMaxWidth: true, fontSize: 13 },
+};
+
+// rehype-mermaid maps a diagram's accTitle to the img *title* attribute and
+// accDescr to *alt* (via mermaid-isomorphic's aria lookups). Docs carry an
+// accTitle per fence, so promote title → alt for accessibility and drop the
+// redundant tooltip. We ALSO wrap each diagram in its zoom container at BUILD
+// time (`div.mermaid-zoom-wrap`) so the wrapper ships in the static HTML: the
+// client module then only attaches listeners and an absolutely-positioned
+// affordance, avoiding the layout shift a runtime wrap would cause.
+function rehypeMermaidImgAlt() {
+  /** @param {any} n */
+  const isMermaidImg = (n) =>
+    n &&
+    n.type === "element" &&
+    n.tagName === "img" &&
+    typeof n.properties?.id === "string" &&
+    n.properties.id.startsWith("mermaid");
+
+  /** @param {any} img */
+  const wrapDiagram = (img) => {
+    if (!img.properties.alt && img.properties.title) {
+      img.properties.alt = img.properties.title;
+    }
+    delete img.properties.title;
+    img.properties.className = ["mermaid-diagram"];
+    const alt =
+      typeof img.properties.alt === "string" ? img.properties.alt : "Diagram";
+    return {
+      type: "element",
+      tagName: "div",
+      properties: {
+        className: ["mermaid-zoom-wrap"],
+        role: "button",
+        tabIndex: 0,
+        "aria-label": `${alt} — open in zoom view`,
+      },
+      children: [img],
+    };
+  };
+
+  /** @param {any} node */
+  const visit = (node) => {
+    if (!Array.isArray(node.children)) return;
+    for (let i = 0; i < node.children.length; i += 1) {
+      const child = node.children[i];
+      if (isMermaidImg(child)) {
+        node.children[i] = wrapDiagram(child);
+      } else {
+        visit(child);
+      }
+    }
+  };
+  return (/** @type {any} */ tree) => visit(tree);
+}
+
+// Async config so rehype-mermaid (ESM-only) can be loaded lazily. jiti —
+// Docusaurus' config loader — can't evaluate it itself (its interpreter
+// trips on `import.meta.resolve` inside mermaid-isomorphic, and its VM
+// sandbox has no dynamic-import callback), so the module is pulled in
+// through a *native* createRequire: Node ≥22 supports require() of ESM,
+// and that path bypasses jiti's transform entirely.
+import { createRequire } from "node:module";
+const requireNative = createRequire(import.meta.url);
+
+/** @returns {Promise<import('@docusaurus/types').Config>} */
+export default async function createConfigAsync() {
+  const { default: rehypeMermaid } = requireNative("rehype-mermaid");
+
+  /** @type {import('@docusaurus/types').Config} */
+  const config = {
   title: "cjoga.cloud",
   tagline: "Camilo's handbook — opinions, the lab, and cert guides.",
   favicon: "img/logo.svg",
@@ -33,6 +141,40 @@ const config = {
     {
       tagName: "link",
       attributes: { rel: "me", href: "https://cjoga.cloud/" },
+    },
+    // Web fonts: self-hosted latin variable fonts (static/fonts/) declared
+    // via @font-face in custom.css. Preloading all three means they arrive
+    // before first paint — this is what keeps font-swap CLS at ~0, so keep
+    // the preloads if the font files ever move.
+    {
+      tagName: "link",
+      attributes: {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/syne-latin-var.woff2",
+        crossorigin: "anonymous",
+      },
+    },
+    {
+      tagName: "link",
+      attributes: {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/outfit-latin-var.woff2",
+        crossorigin: "anonymous",
+      },
+    },
+    {
+      tagName: "link",
+      attributes: {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: "/fonts/jetbrains-mono-latin-var.woff2",
+        crossorigin: "anonymous",
+      },
     },
   ],
 
@@ -72,12 +214,14 @@ const config = {
 
   markdown: {
     format: "mdx",
-    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: "throw",
     },
   },
-  themes: ["@docusaurus/theme-mermaid"],
+
+  // Binds click-to-zoom onto the statically rendered mermaid <img>s
+  // (and rebinds on client-side route changes).
+  clientModules: ["./src/clientModules/mermaidZoom.js"],
 
   presets: [
     [
@@ -88,12 +232,31 @@ const config = {
           path: "docs",
           routeBasePath: "/",
           sidebarPath: "./sidebars.js",
-          // Dates are rendered by the DocItem/Content swizzle straight from
-          // frontmatter (date + last_update.date), so the git-based lastUpdate
-          // lookup is unused — and it warns in the Docker build where .git is
-          // absent. Keep it off.
+          rehypePlugins: [
+            [
+              rehypeMermaid,
+              {
+                strategy: "img-svg",
+                mermaidConfig,
+                // In the Docker builder the env points at the apk-installed
+                // chromium; locally it's unset and playwright resolves its
+                // own cached browser.
+                launchOptions: {
+                  executablePath:
+                    process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined,
+                },
+              },
+            ],
+            rehypeMermaidImgAlt,
+          ],
+          // Visible dates come from the DocItem/Content swizzle (frontmatter
+          // date + last_update.date); the DocItem/Footer swizzle renders null,
+          // so showLastUpdateTime adds no UI. It must stay ON: the sitemap's
+          // `lastmod` only reads frontmatter last_update through this flag,
+          // and the Docker build has no .git for the git fallback (it warns
+          // there for docs without frontmatter dates — harmless).
           showLastUpdateAuthor: false,
-          showLastUpdateTime: false,
+          showLastUpdateTime: true,
           breadcrumbs: true,
           editUrl: undefined,
         },
@@ -106,6 +269,8 @@ const config = {
           priority: 0.5,
           filename: "sitemap.xml",
           ignorePatterns: ["/tags/**", "/search/**"],
+          // Emit <lastmod> from each doc's `last_update` frontmatter.
+          lastmod: "date",
         },
       }),
     ],
@@ -143,7 +308,6 @@ const config = {
         },
         { name: "robots", content: "index, follow, max-image-preview:large" },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:site", content: "@cjoga_cloud" },
         { property: "og:type", content: "website" },
         { property: "og:site_name", content: "blog.cjoga.cloud" },
         { property: "og:locale", content: "en_US" },
@@ -151,42 +315,6 @@ const config = {
       colorMode: {
         defaultMode: "dark",
         respectPrefersColorScheme: true,
-      },
-      mermaid: {
-        // Always render with `base` theme + custom variables so diagrams
-        // read clearly against the dark site shell. Branded, not washed out.
-        theme: { light: "base", dark: "base" },
-        options: {
-          fontFamily: "JetBrains Mono, ui-monospace, monospace",
-          fontSize: 15,
-          themeVariables: {
-            // Background of node fills
-            primaryColor: "#e0f2fe",
-            primaryTextColor: "#0c4a6e",
-            primaryBorderColor: "#0284c7",
-            // Secondary fills (subgraph backgrounds, edge labels, etc.)
-            secondaryColor: "#f1f5f9",
-            secondaryTextColor: "#334155",
-            secondaryBorderColor: "#94a3b8",
-            // Tertiary fills (alt nodes)
-            tertiaryColor: "#fef3c7",
-            tertiaryTextColor: "#78350f",
-            tertiaryBorderColor: "#d97706",
-            // Lines + arrows
-            lineColor: "#475569",
-            textColor: "#0f172a",
-            // Misc
-            mainBkg: "#ffffff",
-            nodeBorder: "#0284c7",
-            clusterBkg: "#f8fafc",
-            clusterBorder: "#cbd5e1",
-            edgeLabelBackground: "#ffffff",
-            fontSize: "15px",
-          },
-          flowchart: { useMaxWidth: true, htmlLabels: true, curve: "basis", padding: 16 },
-          sequence: { useMaxWidth: true, mirrorActors: false, messageFontSize: 14, actorFontSize: 14 },
-          gantt: { useMaxWidth: true, fontSize: 13 },
-        },
       },
       docs: {
         sidebar: {
@@ -344,6 +472,7 @@ const config = {
         ],
       },
     }),
-};
+  };
 
-export default config;
+  return config;
+}

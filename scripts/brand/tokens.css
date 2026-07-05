@@ -1,0 +1,58 @@
+/*
+ * Canonical brand tokens for cjoga.cloud + blog.cjoga.cloud.
+ *
+ * Source of truth for the shared token block in:
+ *   - src/styles/global.css            (portfolio)
+ *   - blog-site/src/css/custom.css     (handbook)
+ *
+ * Edit HERE, then run `node scripts/brand/sync-tokens.mjs` to propagate
+ * (or `--check` to diff). Gated by scripts/brand/check-contrast.mjs,
+ * which parses this file (`:root` = dark theme, `[data-theme="light"]` =
+ * light theme) and asserts WCAG AA on the required pairs.
+ */
+
+:root {
+  /* Dark theme (default) */
+  --bg-void: #06080d;
+  --bg-primary: #0b0f1a;
+  --bg-surface: #111827;
+  --bg-elevated: #1a2332;
+  --bg-glass: rgba(17, 24, 37, 0.72);
+  --border-subtle: rgba(62, 224, 127, 0.08);
+  --border-medium: rgba(62, 224, 127, 0.15);
+  --border-active: rgba(62, 224, 127, 0.4);
+  --accent: #3ee07f;
+  --accent-dim: rgba(62, 224, 127, 0.12);
+  --accent-glow: rgba(62, 224, 127, 0.1);
+  --accent-secondary: #38bdf8;
+  --accent-warm: #f59e0b;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #8794ab;
+  --gradient-accent: linear-gradient(135deg, #3ee07f, #38bdf8);
+  --font-display: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] {
+  --bg-void: #ffffff;
+  --bg-primary: #f8fafc;
+  --bg-surface: #f1f5f9;
+  --bg-elevated: #e2e8f0;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --border-subtle: rgba(13, 112, 56, 0.12);
+  --border-medium: rgba(13, 112, 56, 0.25);
+  --border-active: rgba(13, 112, 56, 0.5);
+  --accent: #0d7038;
+  --accent-dim: rgba(13, 112, 56, 0.1);
+  --accent-glow: rgba(13, 112, 56, 0.1);
+  --accent-secondary: #0369a1;
+  --accent-warm: #b45309;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --gradient-accent: linear-gradient(135deg, #0d7038, #0369a1);
+}

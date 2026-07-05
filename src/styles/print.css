@@ -187,7 +187,6 @@ body.print-mode .theme-toggle,
 body.print-mode .language-selector,
 body.print-mode .print-button,
 body.print-mode footer,
-body.print-mode canvas,
-body.print-mode #background-animation {
+body.print-mode canvas {
   display: none !important;
 }

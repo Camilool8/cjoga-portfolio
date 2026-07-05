@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FaAws, FaMicrosoft, FaDocker } from "react-icons/fa";
 import {
   SiTerraform, SiAnsible, SiKubernetes, SiGitlab,
@@ -39,32 +39,31 @@ function About() {
         <div className="grid grid-cols-1 gap-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-start">
             <div>
-              <motion.div
+              <m.div
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportConfig}
               >
-                <motion.div variants={itemVariants}>
-                  <span className="section-label">{t("about.title", "About")}</span>
+                <m.div variants={itemVariants}>
                   <h2 className="section-heading">
                     {t("about.heading", "Building systems that scale.")}
                   </h2>
-                </motion.div>
+                </m.div>
 
-                <motion.div variants={itemVariants}>
+                <m.div variants={itemVariants}>
                   <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px" }}>
                     {t("about.paragraph1")}
                   </p>
                   <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px" }}>
                     {t("about.paragraph2")}
                   </p>
-                </motion.div>
+                </m.div>
 
-                <motion.div variants={itemVariants} className="mt-8">
+                <m.div variants={itemVariants} className="mt-8">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {skills.map((skill, i) => (
-                      <motion.div
+                      <m.div
                         key={skill.name}
                         custom={i}
                         variants={cardVariants}
@@ -82,21 +81,21 @@ function About() {
                       >
                         <span className="text-base">{skill.icon}</span>
                         {skill.name}
-                      </motion.div>
+                      </m.div>
                     ))}
                   </div>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             </div>
 
-            <motion.div
+            <m.div
               ref={photoRef}
               variants={sectionVariants}
               initial="hidden"
               whileInView="visible"
               viewport={viewportConfig}
             >
-              <motion.div
+              <m.div
                 variants={itemVariants}
                 style={{ y: photoY }}
                 className="relative rounded-2xl overflow-hidden"
@@ -113,7 +112,7 @@ function About() {
                 >
                   <img
                     src="/images/camilo.webp"
-                    alt="Jose Camilo Joga Guerrero"
+                    alt="José Camilo Joga Guerrero"
                     className="photo-img w-full h-full object-cover object-top transition-[filter] duration-500"
                     style={{ filter: "grayscale(0.8) contrast(1.05)" }}
                     loading="lazy"
@@ -127,7 +126,7 @@ function About() {
                     style={{ borderBottom: "2px solid var(--accent)", borderRight: "2px solid var(--accent)", borderRadius: "0 0 16px 0" }}
                   />
                 </div>
-              </motion.div>
+              </m.div>
 
               <div className="grid grid-cols-3 gap-2.5 mt-3.5">
                 {[
@@ -135,7 +134,7 @@ function About() {
                   { number: "11", label: t("about.stats.certs", "Certs") },
                   { number: "2", label: t("about.stats.clouds", "Clouds") },
                 ].map((stat, i) => (
-                  <motion.div
+                  <m.div
                     key={stat.label}
                     custom={i}
                     variants={cardVariants}
@@ -165,10 +164,10 @@ function About() {
                     >
                       {stat.label}
                     </div>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </div>

@@ -19,6 +19,7 @@ The site you're reading runs on a [K3s](https://k3s.io/) cluster I run myself �
 
 ```mermaid
 flowchart LR
+  accTitle: Homelab ingress flow — internet traffic passes through Cloudflare and cloudflared into Envoy Gateway, whose HTTPRoutes fan out to app namespaces on the Tailscale-meshed K3s cluster of Proxmox VMs and bare-metal workers
   Internet([Internet]) -->|cloudflared| CF[Cloudflare]
   CF --> Envoy["Envoy Gateway<br/>cjoga.cloud · kodepull.com · perfyles.do"]
   Envoy --> Routes["HTTPRoutes →<br/>app namespaces"]

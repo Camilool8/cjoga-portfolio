@@ -30,7 +30,9 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.1",
-    "@docusaurus/types": "3.10.1"
+    "@docusaurus/types": "3.10.1",
+    "playwright": "^1.61.1",
+    "rehype-mermaid": "^3.0.0"
   },
   "browserslist": {
     "production": [

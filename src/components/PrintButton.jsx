@@ -1,14 +1,23 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MdFileDownload } from "react-icons/md";
+
+const TOAST_DISMISS_MS = 5000;
 
 function PrintButton() {
   const { t, i18n } = useTranslation();
   const buttonRef = useRef(null);
+  const toastTimerRef = useRef(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+
+  useEffect(() => () => clearTimeout(toastTimerRef.current), []);
 
   const handleDownloadPDF = async () => {
     if (isGenerating) return;
+
+    clearTimeout(toastTimerRef.current);
+    setShowErrorToast(false);
 
     try {
       setIsGenerating(true);
@@ -34,14 +43,36 @@ function PrintButton() {
       setTimeout(() => URL.revokeObjectURL(url), 100);
     } catch (error) {
       console.error("Failed to generate PDF:", error);
-      alert("There was an error generating the PDF. Please try again.");
+      setShowErrorToast(true);
+      toastTimerRef.current = setTimeout(
+        () => setShowErrorToast(false),
+        TOAST_DISMISS_MS,
+      );
     } finally {
       setIsGenerating(false);
     }
   };
 
   return (
-    <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 xl:right-20 z-40 print:hidden">
+    <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 xl:right-20 z-40 print:hidden flex flex-col items-end gap-2">
+      <div role="status">
+        {showErrorToast && (
+          <p
+            className="max-w-[240px] py-2 px-3 rounded-lg shadow-lg text-xs leading-relaxed m-0"
+            style={{
+              background: "var(--bg-elevated)",
+              border: "1px solid var(--border-subtle)",
+              color: "var(--text-secondary)",
+              fontFamily: "var(--font-mono)",
+            }}
+          >
+            {t(
+              "print.error",
+              "Couldn't generate the PDF. Please try again.",
+            )}
+          </p>
+        )}
+      </div>
       <button
         ref={buttonRef}
         onClick={handleDownloadPDF}

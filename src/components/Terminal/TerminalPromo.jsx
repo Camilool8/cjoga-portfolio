@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
 import {
   sectionVariants,
@@ -24,7 +24,13 @@ export default function TerminalPromo() {
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: false, amount: 0.4 });
-  const animationRef = useRef(null);
+  // Pending sleep: { timer, resolve } — cleanup must BOTH clear the timer
+  // and resolve the promise, otherwise the awaited sleep never settles and
+  // the animation loop stalls forever with isAnimating stuck at true.
+  const pendingSleepRef = useRef(null);
+  // Bumped on cleanup; each runSequence captures its generation and exits
+  // as soon as it no longer matches.
+  const generationRef = useRef(0);
 
   const demoSequence = useMemo(
     () => [
@@ -61,14 +67,20 @@ loki-0                      1/1     Running   1          30d`,
   );
 
   const sleep = (ms) =>
-    new Promise((r) => {
-      animationRef.current = setTimeout(r, ms);
+    new Promise((resolve) => {
+      const timer = setTimeout(() => {
+        pendingSleepRef.current = null;
+        resolve();
+      }, ms);
+      pendingSleepRef.current = { timer, resolve };
     });
 
   const runSequence = useCallback(async () => {
+    const generation = generationRef.current;
+    const cancelled = () => generationRef.current !== generation;
     setIsAnimating(true);
 
-    while (true) {
+    while (!cancelled()) {
       setLines([]);
       setCurrentTyping("");
 
@@ -78,9 +90,11 @@ loki-0                      1/1     Running   1          30d`,
         for (let i = 0; i <= command.length; i++) {
           setCurrentTyping(command.slice(0, i));
           await sleep(TYPING_SPEED + Math.random() * 30);
+          if (cancelled()) return;
         }
 
         await sleep(OUTPUT_DELAY);
+        if (cancelled()) return;
 
         setLines((prev) => [
           ...prev,
@@ -91,6 +105,7 @@ loki-0                      1/1     Running   1          30d`,
 
         if (s < demoSequence.length - 1) {
           await sleep(PAUSE_BETWEEN);
+          if (cancelled()) return;
         }
       }
 
@@ -103,7 +118,16 @@ loki-0                      1/1     Running   1          30d`,
       runSequence();
     }
     return () => {
-      if (animationRef.current) clearTimeout(animationRef.current);
+      // Cancel-safe teardown: invalidate the running sequence, settle any
+      // pending sleep so the loop can observe the cancellation, and reset
+      // isAnimating so re-entering the viewport restarts the demo.
+      generationRef.current += 1;
+      if (pendingSleepRef.current) {
+        clearTimeout(pendingSleepRef.current.timer);
+        pendingSleepRef.current.resolve();
+        pendingSleepRef.current = null;
+      }
+      setIsAnimating(false);
     };
   }, [isInView]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -115,15 +139,14 @@ loki-0                      1/1     Running   1          30d`,
   return (
     <section id="terminal-promo" className="py-16 md:py-24 relative z-10">
       <div className="section-inner">
-        <motion.div
+        <m.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={viewportConfig}
           className="mb-10"
         >
-          <motion.div variants={itemVariants}>
-            <span className="section-label">{t("terminal.label")}</span>
+          <m.div variants={itemVariants}>
             <h2 className="section-heading">{t("terminal.heading")}</h2>
             <p
               className="max-w-2xl text-base leading-relaxed"
@@ -131,10 +154,10 @@ loki-0                      1/1     Running   1          30d`,
             >
               {t("terminal.description")}
             </p>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           ref={containerRef}
           variants={itemVariants}
           initial="hidden"
@@ -182,9 +205,9 @@ loki-0                      1/1     Running   1          30d`,
           </div>
 
           <div className="tp-glow" />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={itemVariants}
           initial="hidden"
           whileInView="visible"
@@ -203,7 +226,7 @@ loki-0                      1/1     Running   1          30d`,
             {t("terminal.cta")}
             <FaArrowRight size={12} />
           </Link>
-        </motion.div>
+        </m.div>
       </div>
 
       <style>{`
@@ -300,7 +323,11 @@ loki-0                      1/1     Running   1          30d`,
           font-size: inherit;
           line-height: inherit;
           color: var(--text-secondary);
-          overflow: hidden;
+          max-width: 100%;
+          min-width: 0;
+          overflow-x: auto;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
         }
 
         .tp-cursor {

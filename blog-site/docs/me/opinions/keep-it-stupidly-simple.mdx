@@ -2,10 +2,13 @@
 sidebar_position: 1
 title: Keep it stupidly simple
 image: img/og/me-opinions-keep-it-stupidly-simple.png
-description: The most useful thing cloud work has taught me is that the simplest solution usually wins — and I am the first one to violate that rule. What over-engineering actually looks like, the one place to make the exception, and the question I ask myself before reaching for an abstraction.
+description: The most useful thing cloud work has taught me is that the simplest solution usually wins — and I am the first one to violate that rule. What over-engineering looks like, the one place to make the exception, and the question I ask myself before reaching for an abstraction.
 slug: /me/opinions/keep-it-stupidly-simple
 keywords: [opinions, simplicity, kiss, engineering-judgment, devops, over-engineering]
 date: "2026-05-13"
+last_update:
+  date: "2026-07-04"
+  author: Jose Camilo Joga Guerrero
 ---
 
 import PullQuote from '@site/src/components/PullQuote';
@@ -26,9 +29,9 @@ There is exactly one place where the instinct to keep things simple is wrong, an
 
 The discipline is a single question I ask myself every time I reach for the extensible version: **what does the dumb solution actually cost?** Hardcode the variable. Run the job single-threaded. Write the function for the one caller that exists. If the cost of the dumb solution is "I might have to come back and change this in eighteen months," that is almost always cheaper than maintaining the abstraction in the meantime. If the cost is "this leaks credentials" or "this breaks under realistic load," then yes — abstract.
 
-I have caught myself building the generic version more times than I can count, and the pattern is always the same. I see the simple path. I notice that with a little more effort I could make it reusable, configurable, future-proof. I take that path. Three months later nobody has touched it, the second use case never materialized, and the code is harder to read than it needed to be. The version of me who wrote the dumb script ships and moves on. The version of me who wrote the elegant version is still tuning it.
+Keep it stupidly simple. Not because elegance is bad, but because in cloud and DevOps work the things that matter — the cost, the reliability, the security perimeter, the on-call burden — are answered by what the system *does*, not by how elegantly the code is structured. Let the abstraction earn its way in when reality demands it.
 
-Keep it stupidly simple. Not because elegance is bad — but because in cloud and DevOps work the things that actually matter (the cost, the reliability, the security perimeter, the on-call burden) are answered by what the system *does*, not by how elegantly the code is structured. Optimize for the dumb solution that works, and let the abstraction earn its way in only when reality demands it.
+I have caught myself building the generic version more times than I can count, and the pattern is always the same. I see the simple path. I notice that with a little more effort I could make it reusable, configurable, future-proof. I take that path. Three months later nobody has touched it, the second use case never materialized, and the code is harder to read than it needed to be. The version of me who wrote the dumb script ships and moves on. The version of me who wrote the elegant version is still tuning it.
 
 import AuthorCard from '@site/src/components/AuthorCard';
 

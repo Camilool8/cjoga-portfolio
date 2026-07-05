@@ -7,8 +7,8 @@ export default {
       colors: {
         light: {
           primary: "#ffffff",
-          secondary: "#f3f4f6",
-          accent: "#0284c7",
+          secondary: "#f1f5f9",
+          accent: "#0d7038",
           text: {
             primary: "#0f172a",
             secondary: "#475569",
@@ -17,10 +17,10 @@ export default {
         dark: {
           primary: "#0b0f1a",
           secondary: "#111827",
-          accent: "#64ffda",
+          accent: "#3ee07f",
           text: {
             primary: "#e2e8f0",
-            secondary: "#8892b0",
+            secondary: "#94a3b8",
           },
         },
         void: "var(--bg-void)",
@@ -61,16 +61,11 @@ export default {
         glow: "0 8px 30px var(--accent-glow)",
       },
       animation: {
-        "pulse-dot": "pulse-dot 2s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
         "fade-in-up": "fadeInUp 0.6s var(--ease-out-expo) forwards",
         blink: "blink 1s step-end infinite",
       },
       keyframes: {
-        "pulse-dot": {
-          "0%, 100%": { opacity: 1, transform: "scale(1)" },
-          "50%": { opacity: 0.5, transform: "scale(0.8)" },
-        },
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },

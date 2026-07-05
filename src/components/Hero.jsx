@@ -1,12 +1,23 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import {
-  motion,
+  m,
+  AnimatePresence,
   useScroll,
   useTransform,
   useReducedMotion,
 } from "framer-motion";
 import { EASE_SMOOTH } from "../hooks/useMotion";
+import { CERT_COUNT } from "./certifications/certData";
+
+const ROLE_PERIOD = 4000;
+
+const HEALTH_DOT = {
+  checking: "var(--text-tertiary)",
+  operational: "var(--accent)",
+  unavailable: "var(--accent-warm)",
+};
 
 function BlurWords({ words, baseDelay = 0, className = "", style = {} }) {
   const reduced = useReducedMotion();
@@ -27,7 +38,7 @@ function BlurWords({ words, baseDelay = 0, className = "", style = {} }) {
         ? { opacity: 1, y: 0 }
         : { opacity: 1, filter: "blur(0px)", y: 0 };
     return (
-      <motion.span
+      <m.span
         key={`${word}-${i}`}
         className={className}
         style={{
@@ -44,18 +55,16 @@ function BlurWords({ words, baseDelay = 0, className = "", style = {} }) {
         }}
       >
         {word}
-      </motion.span>
+      </m.span>
     );
   });
 }
 
 function Hero() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const reduced = useReducedMotion();
-  const [text, setText] = useState("");
   const [roleIndex, setRoleIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [delta, setDelta] = useState(100);
+  const [health, setHealth] = useState("checking");
 
   const heroRef = useRef(null);
 
@@ -75,51 +84,57 @@ function Hero() {
     () => [...(Array.isArray(roles) ? roles : [])],
     [roles],
   );
-  const period = 2000;
 
+  // Crossfade role rotation — one re-render every ROLE_PERIOD instead of a
+  // per-keystroke typewriter. Under reduced motion the first role renders
+  // statically and this effect never schedules.
   useEffect(() => {
-    const tick = () => {
-      const i = roleIndex % textArray.length;
-      const fullText = textArray[i];
-      let nextDelta = 100 - Math.random() * 50;
+    if (reduced || textArray.length < 2) return undefined;
+    const timer = setTimeout(() => {
+      setRoleIndex((i) => (i + 1) % textArray.length);
+    }, ROLE_PERIOD);
+    return () => clearTimeout(timer);
+  }, [reduced, roleIndex, textArray.length]);
 
-      if (isDeleting) {
-        setText(fullText.substring(0, text.length - 1));
-        nextDelta = 50;
-      } else {
-        setText(fullText.substring(0, text.length + 1));
-      }
-      setDelta(nextDelta);
-
-      if (!isDeleting && text === fullText) {
-        setIsDeleting(true);
-        setDelta(period);
-      } else if (isDeleting && text === "") {
-        setIsDeleting(false);
-        setRoleIndex(roleIndex + 1);
-        setDelta(500);
-      }
+  // Real health for the status strip — one fetch on mount, no polling.
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/health", { signal: AbortSignal.timeout(5000) })
+      .then((res) => {
+        if (!cancelled) setHealth(res.ok ? "operational" : "unavailable");
+      })
+      .catch(() => {
+        if (!cancelled) setHealth("unavailable");
+      });
+    return () => {
+      cancelled = true;
     };
+  }, []);
 
-    const ticker = setInterval(tick, delta);
-    return () => clearInterval(ticker);
-  }, [text, delta, isDeleting, roleIndex, textArray]);
+  const currentRole =
+    textArray.length > 0 ? textArray[roleIndex % textArray.length] : "";
+
+  const healthLabel = {
+    checking: t("hero.status.checking", "checking systems…"),
+    operational: t("hero.status.operational", "systems operational"),
+    unavailable: t("hero.status.unavailable", "systems unreachable"),
+  }[health];
 
   return (
     <section
       ref={heroRef}
       id="hero"
-      className="min-h-screen flex flex-col justify-center relative overflow-hidden"
+      className="min-h-[100dvh] flex flex-col justify-center relative overflow-hidden"
       style={{ background: "var(--gradient-hero)", padding: "100px 0 60px" }}
     >
-      <motion.div
+      <m.div
         aria-hidden="true"
         className="hero-orb hero-orb-accent absolute pointer-events-none"
         initial={reduced ? { opacity: 0.4, scale: 1 } : { opacity: 0, scale: 0.6 }}
         animate={{ opacity: 0.45, scale: 1 }}
         transition={{ duration: reduced ? 0 : 1.6, ease: EASE_SMOOTH }}
       />
-      <motion.div
+      <m.div
         aria-hidden="true"
         className="hero-orb hero-orb-warm absolute pointer-events-none"
         initial={reduced ? { opacity: 0.25, scale: 1 } : { opacity: 0, scale: 0.6 }}
@@ -127,7 +142,7 @@ function Hero() {
         transition={{ duration: reduced ? 0 : 1.8, delay: 0.2, ease: EASE_SMOOTH }}
       />
 
-      <motion.div
+      <m.div
         className="absolute inset-0 pointer-events-none"
         style={{
           y: gridY,
@@ -143,7 +158,7 @@ function Hero() {
         aria-hidden="true"
       />
 
-      <motion.div
+      <m.div
         className="section-inner relative z-10"
         style={{ opacity: heroOpacity, y: heroY }}
       >
@@ -195,27 +210,33 @@ function Hero() {
         </h1>
 
         <div
-          className="min-h[1.4em]"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(1.2rem, 3.5vw, 2.2rem)",
             fontWeight: 600,
             color: "var(--text-secondary)",
             marginBottom: "28px",
+            minHeight: "1.4em",
             opacity: 0,
             animation: "hReveal 0.8s 1.1s var(--ease-out-expo) forwards",
           }}
         >
-          <span
-            style={{
-              borderRight: "2px solid var(--accent)",
-              paddingRight: "4px",
-              animation: "blink-border 1s step-end infinite",
-            }}
-            aria-live="polite"
-          >
-            {text}
-          </span>
+          {reduced ? (
+            <span>{textArray[0]}</span>
+          ) : (
+            <AnimatePresence mode="wait">
+              <m.span
+                key={roleIndex}
+                className="inline-block"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: EASE_SMOOTH }}
+              >
+                {currentRole}
+              </m.span>
+            </AnimatePresence>
+          )}
         </div>
 
         <p
@@ -234,7 +255,7 @@ function Hero() {
         </p>
 
         <div
-          className="flex gap-4 flex-wrap"
+          className="flex items-center gap-4 flex-wrap"
           style={{
             opacity: 0,
             animation: "hReveal 0.8s 1.45s var(--ease-out-expo) forwards",
@@ -246,6 +267,26 @@ function Hero() {
           <a href="#contact" className="btn btn-outline">
             {t("hero.cta.contact")}
           </a>
+          <Link
+            to={i18n.language === "es" ? "/es/terminal" : "/terminal"}
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.8rem",
+              color: "var(--text-tertiary)",
+              textDecoration: "none",
+              borderBottom: "1px dashed var(--border-medium)",
+              paddingBottom: "2px",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--accent)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--text-tertiary)";
+            }}
+          >
+            {t("hero.terminalHint", "try the live terminal →")}
+          </Link>
         </div>
 
         <div
@@ -266,13 +307,18 @@ function Hero() {
           >
             <span
               className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-              style={{ background: "#22c55e", boxShadow: "0 0 6px #22c55e" }}
+              style={{
+                background: HEALTH_DOT[health],
+                boxShadow:
+                  health === "checking"
+                    ? "none"
+                    : `0 0 6px ${HEALTH_DOT[health]}`,
+              }}
               aria-hidden="true"
             />
-            <span>{t("hero.status.operational", "systems operational")}</span>
+            <span>{healthLabel}</span>
           </div>
-          <div
-            className="flex items-center gap-2"
+          <span
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.72rem",
@@ -280,82 +326,19 @@ function Hero() {
               fontVariantNumeric: "tabular-nums",
             }}
           >
-            <span
-              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-              style={{ background: "#22c55e", boxShadow: "0 0 6px #22c55e" }}
-              aria-hidden="true"
-            />
-            <span>{t("hero.status.certs", "11 certs earned")}</span>
-          </div>
-          <div
-            className="flex items-center gap-2"
+            {t("hero.status.certs", { count: CERT_COUNT })}
+          </span>
+          <span
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.72rem",
               color: "var(--text-tertiary)",
             }}
           >
-            <span
-              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-              style={{
-                background: "var(--accent-warm)",
-                boxShadow: "0 0 6px var(--accent-warm)",
-              }}
-              aria-hidden="true"
-            />
-            <span>
-              {t("hero.status.opportunities", "open to opportunities")}
-            </span>
-          </div>
+            {t("hero.status.opportunities", "open to opportunities")}
+          </span>
         </div>
-      </motion.div>
-
-      <a
-        href="#about"
-        aria-label={t("hero.scroll", "Scroll to about section")}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 cursor-pointer z-10"
-        style={{
-          opacity: 0,
-          animation: "hReveal 0.8s 2.0s var(--ease-out-expo) forwards",
-          textDecoration: "none",
-        }}
-        onClick={(e) => {
-          e.preventDefault();
-          document
-            .getElementById("about")
-            ?.scrollIntoView({ behavior: "smooth" });
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.65rem",
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "var(--text-tertiary)",
-          }}
-        >
-          scroll
-        </span>
-        <div
-          className="relative overflow-hidden"
-          style={{
-            width: "1px",
-            height: "40px",
-            background: "var(--border-medium)",
-          }}
-          aria-hidden="true"
-        >
-          <div
-            className="absolute w-full"
-            style={{
-              height: "50%",
-              background: "var(--accent)",
-              animation: "scroll-anim 2s ease-in-out infinite",
-            }}
-          />
-        </div>
-      </a>
+      </m.div>
     </section>
   );
 }

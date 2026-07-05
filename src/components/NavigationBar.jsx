@@ -1,23 +1,73 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiSun, FiMoon, FiMonitor, FiExternalLink } from "react-icons/fi";
 import { socialLinks } from "../data";
+import {
+  SUPPORTED_LANGUAGES,
+  getLangFromPath,
+  stripLangPrefix,
+  localizePath,
+} from "../utils/i18n";
 
-function NavigationBar({
-  themePreference,
-  cycleThemePreference,
-  language,
-  setLanguage,
+// Section links are language-aware: on the home page a plain anchor
+// keeps the current pathname (`/` or `/es`); from any other route we
+// link to the localized home with a hash and let useHashScroll handle
+// the landing.
+function SectionLink({
+  isHomePage,
+  homePathPrefix,
+  section,
+  onClick,
+  className = "nav-pill-link",
+  style,
+  children,
 }) {
+  if (isHomePage) {
+    return (
+      <a
+        href={`#${section}`}
+        onClick={onClick}
+        className={className}
+        style={style}
+      >
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link
+      to={`${homePathPrefix}/#${section}`}
+      onClick={onClick}
+      className={className}
+      style={style}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function NavigationBar({ themePreference, cycleThemePreference }) {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const langRef = useRef(null);
+  const langButtonRef = useRef(null);
+  const panelRef = useRef(null);
+  const hamburgerRef = useRef(null);
 
-  const isHomePage = location.pathname === "/";
+  // Language is derived from the URL — the path prefix is the source
+  // of truth (crawlable ES pages live under /es).
+  const language = getLangFromPath(location.pathname);
+  const basePath = stripLangPrefix(location.pathname);
+  const isHomePage = basePath === "/";
+  const homePath = localizePath("/", language);
+  const homePathPrefix = homePath === "/" ? "" : homePath;
+  const terminalPath = localizePath("/terminal", language);
+  const isTerminalActive = basePath.startsWith("/terminal");
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50);
@@ -35,19 +85,56 @@ function NavigationBar({
   }, [location]);
 
   useEffect(() => {
-    if (!languageMenuOpen) return;
+    if (!languageMenuOpen) return undefined;
     const handleClick = (e) => {
       if (langRef.current && !langRef.current.contains(e.target)) {
         setLanguageMenuOpen(false);
       }
     };
+    const handleKey = (e) => {
+      if (e.key === "Escape") {
+        setLanguageMenuOpen(false);
+        langButtonRef.current?.focus();
+      }
+    };
     document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
   }, [languageMenuOpen]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  // Mobile panel focus management: `inert` blocks focus/AT while the
+  // panel is closed (its links are otherwise still tabbable behind the
+  // translateX), focus moves to the first link on open, and Escape
+  // closes and returns focus to the hamburger.
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (panel) panel.inert = !menuOpen;
+    if (!menuOpen) return undefined;
+
+    const rafId = requestAnimationFrame(() => {
+      panelRef.current?.querySelector("a, button")?.focus();
+    });
+    const handleKey = (e) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        hamburgerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("keydown", handleKey);
+    };
   }, [menuOpen]);
 
   // Render icon for the *current* preference (Docusaurus convention).
@@ -67,10 +154,23 @@ function NavigationBar({
         : "Dark theme",
   );
 
+  // Switching language navigates to the equivalent localized URL,
+  // preserving any section hash. localStorage is only a first-visit
+  // hint recorded on explicit choice — never read for redirects.
   const handleLanguageChange = (lang, e) => {
-    e.stopPropagation();
-    setLanguage(lang);
+    e?.stopPropagation();
     setLanguageMenuOpen(false);
+    setMenuOpen(false);
+    try {
+      localStorage.setItem("language", lang);
+    } catch {
+      // ignore — private browsing, etc.
+    }
+    if (lang !== language) {
+      navigate(
+        localizePath(location.pathname, lang) + location.search + location.hash,
+      );
+    }
   };
 
   const navItems = [
@@ -81,23 +181,7 @@ function NavigationBar({
     { section: "contact", label: t("header.contact") },
   ];
 
-  const NavLink = ({ section, label, onClick, className = "", style, children }) => {
-    const content = children || label;
-    if (isHomePage) {
-      return (
-        <a href={`#${section}`} onClick={onClick} className={className || "nav-pill-link"} style={style}>
-          {content}
-        </a>
-      );
-    }
-    return (
-      <Link to={`/#${section}`} onClick={onClick} className={className || "nav-pill-link"} style={style}>
-        {content}
-      </Link>
-    );
-  };
-
-  const isTerminalActive = location.pathname.startsWith("/terminal");
+  const languageSelectorLabel = t("nav.languageSelector", "Language selector");
 
   return (
     <>
@@ -110,16 +194,23 @@ function NavigationBar({
         }}
       >
         <Link
-          to="/"
+          to={homePath}
           className="font-mono font-bold text-sm px-3 py-2 no-underline"
           style={{ color: "var(--accent)" }}
         >
           CJ
         </Link>
 
-        <div className="hidden lg:flex items-center gap-0.5">
+        <div className="hidden md:flex items-center gap-0.5">
           {navItems.map(({ section, label }) => (
-            <NavLink key={section} section={section} label={label} />
+            <SectionLink
+              key={section}
+              section={section}
+              isHomePage={isHomePage}
+              homePathPrefix={homePathPrefix}
+            >
+              {label}
+            </SectionLink>
           ))}
           <a
             href="https://blog.cjoga.cloud"
@@ -131,7 +222,7 @@ function NavigationBar({
             <FiExternalLink size={11} aria-hidden="true" />
           </a>
           <Link
-            to="/terminal"
+            to={terminalPath}
             className={`nav-pill-link ${isTerminalActive ? "nav-pill-active" : ""}`}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
@@ -139,7 +230,10 @@ function NavigationBar({
           </Link>
         </div>
 
-        <div className="flex items-center gap-1 ml-1 pl-2" style={{ borderLeft: "1px solid var(--border-subtle)" }}>
+        <div
+          className="flex items-center gap-1 ml-1 pl-2"
+          style={{ borderLeft: "1px solid var(--border-subtle)" }}
+        >
           <button
             onClick={cycleThemePreference}
             aria-label={themeAriaLabel}
@@ -151,28 +245,41 @@ function NavigationBar({
 
           <div className="relative" ref={langRef}>
             <button
+              ref={langButtonRef}
               onClick={(e) => {
                 e.stopPropagation();
                 setLanguageMenuOpen(!languageMenuOpen);
               }}
-              aria-label="Language selector"
+              aria-label={languageSelectorLabel}
+              aria-haspopup="listbox"
+              aria-expanded={languageMenuOpen}
               className="nav-control-btn"
             >
-              <span className="font-mono text-xs font-medium uppercase">{language}</span>
+              <span className="font-mono text-xs font-medium uppercase">
+                {language}
+              </span>
             </button>
 
             {languageMenuOpen && (
               <div
+                role="listbox"
+                aria-label={languageSelectorLabel}
                 className="absolute right-0 mt-2 glass rounded-xl overflow-hidden shadow-lg"
                 style={{ minWidth: "120px" }}
               >
-                {["en", "es"].map((lang) => (
+                {SUPPORTED_LANGUAGES.map((lang) => (
                   <button
                     key={lang}
+                    role="option"
+                    aria-selected={language === lang}
+                    aria-current={language === lang ? "true" : undefined}
                     onClick={(e) => handleLanguageChange(lang, e)}
                     className="lang-option"
                     style={{
-                      color: language === lang ? "var(--accent)" : "var(--text-primary)",
+                      color:
+                        language === lang
+                          ? "var(--accent)"
+                          : "var(--text-primary)",
                     }}
                   >
                     {t(`language.${lang}`)}
@@ -183,10 +290,16 @@ function NavigationBar({
           </div>
 
           <button
+            ref={hamburgerRef}
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={
+              menuOpen
+                ? t("nav.closeMenu", "Close menu")
+                : t("nav.openMenu", "Open menu")
+            }
             aria-expanded={menuOpen}
-            className={`lg:hidden nav-control-btn mobile-hamburger ${menuOpen ? "is-active" : ""}`}
+            aria-controls="mobile-nav-panel"
+            className={`md:hidden nav-control-btn mobile-hamburger ${menuOpen ? "is-active" : ""}`}
           >
             <span className="hamburger-box">
               <span className="hamburger-line hamburger-line--top" />
@@ -200,14 +313,18 @@ function NavigationBar({
       <div
         className={`mobile-nav-backdrop ${menuOpen ? "is-open" : ""}`}
         onClick={() => setMenuOpen(false)}
-        aria-hidden={!menuOpen}
+        aria-hidden="true"
       />
       <aside
+        id="mobile-nav-panel"
+        ref={panelRef}
         className={`mobile-nav-panel ${menuOpen ? "is-open" : ""}`}
-        aria-hidden={!menuOpen}
       >
         <div className="mobile-nav-header">
-          <span className="font-mono text-xs tracking-widest uppercase" style={{ color: "var(--text-tertiary)" }}>
+          <span
+            className="font-mono text-xs tracking-widest uppercase"
+            style={{ color: "var(--text-tertiary)" }}
+          >
             {t("header.navigation", "Navigation")}
           </span>
           <div className="mobile-nav-header-line" />
@@ -215,19 +332,17 @@ function NavigationBar({
 
         <nav className="mobile-nav-links">
           {navItems.map(({ section, label }, i) => (
-            <NavLink
+            <SectionLink
               key={section}
               section={section}
-              label={label}
+              isHomePage={isHomePage}
+              homePathPrefix={homePathPrefix}
               className="mobile-nav-item"
               style={{ "--i": i }}
               onClick={() => setMenuOpen(false)}
             >
-              <span className="mobile-nav-num">
-                {String(i + 1).padStart(2, "0")}.
-              </span>
               <span className="mobile-nav-label">{label}</span>
-            </NavLink>
+            </SectionLink>
           ))}
           <a
             href="https://blog.cjoga.cloud"
@@ -237,16 +352,16 @@ function NavigationBar({
             onClick={() => setMenuOpen(false)}
             style={{ "--i": navItems.length }}
           >
-            <span className="mobile-nav-num">
-              {String(navItems.length + 1).padStart(2, "0")}.
-            </span>
-            <span className="mobile-nav-label" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <span
+              className="mobile-nav-label"
+              style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+            >
               {t("header.handbook")}
               <FiExternalLink size={12} aria-hidden="true" />
             </span>
           </a>
           <Link
-            to="/terminal"
+            to={terminalPath}
             className={`mobile-nav-item ${isTerminalActive ? "is-active" : ""}`}
             onClick={() => {
               setMenuOpen(false);
@@ -254,9 +369,6 @@ function NavigationBar({
             }}
             style={{ "--i": navItems.length + 1 }}
           >
-            <span className="mobile-nav-num">
-              {String(navItems.length + 2).padStart(2, "0")}.
-            </span>
             <span className="mobile-nav-label">{t("header.terminal")}</span>
           </Link>
         </nav>
@@ -278,8 +390,10 @@ function NavigationBar({
             onClick={(e) => handleLanguageChange(language === "en" ? "es" : "en", e)}
             className="mobile-nav-control-btn"
           >
-            <span className="font-mono text-sm font-semibold uppercase">{language === "en" ? "ES" : "EN"}</span>
-            <span>{language === "en" ? "Espa\u00f1ol" : "English"}</span>
+            <span className="font-mono text-sm font-semibold uppercase">
+              {language === "en" ? "ES" : "EN"}
+            </span>
+            <span>{language === "en" ? "Español" : "English"}</span>
           </button>
         </div>
 
@@ -288,8 +402,12 @@ function NavigationBar({
             href={`mailto:${socialLinks.email}`}
             className="font-mono text-[0.65rem] tracking-wider no-underline"
             style={{ color: "var(--text-tertiary)", transition: "color 0.25s" }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = "var(--accent)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-tertiary)"; }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--accent)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--text-tertiary)";
+            }}
           >
             {socialLinks.email}
           </a>
@@ -313,6 +431,14 @@ function NavigationBar({
           color: var(--accent);
           background: var(--accent-dim);
         }
+        /* Condensed pills on tablet (md–lg) so the full nav fits
+           without falling back to the hamburger. */
+        @media (min-width: 768px) and (max-width: 1023.98px) {
+          .nav-pill-link {
+            font-size: 0.65rem;
+            padding: 8px 8px;
+          }
+        }
         .nav-pill-external {
           display: inline-flex;
           align-items: center;
@@ -327,8 +453,8 @@ function NavigationBar({
         }
 
         .nav-control-btn {
-          width: 36px;
-          height: 36px;
+          width: 44px;
+          height: 44px;
           border-radius: 10px;
           border: none;
           display: flex;
@@ -344,7 +470,7 @@ function NavigationBar({
           background: var(--accent-dim);
         }
 
-        @media (min-width: 1024px) {
+        @media (min-width: 768px) {
           .mobile-hamburger {
             display: none !important;
           }
@@ -395,7 +521,7 @@ function NavigationBar({
           opacity: 1;
           pointer-events: auto;
         }
-        @media (min-width: 1024px) {
+        @media (min-width: 768px) {
           .mobile-nav-backdrop,
           .mobile-nav-panel {
             display: none !important;
@@ -415,12 +541,19 @@ function NavigationBar({
           flex-direction: column;
           padding: 80px 28px 28px;
           transform: translateX(100%);
-          transition: transform 0.45s var(--ease-out-expo);
+          visibility: hidden;
+          transition:
+            transform 0.45s var(--ease-out-expo),
+            visibility 0s 0.45s;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
         }
         .mobile-nav-panel.is-open {
           transform: translateX(0);
+          visibility: visible;
+          transition:
+            transform 0.45s var(--ease-out-expo),
+            visibility 0s 0s;
         }
         .mobile-nav-panel::before {
           content: '';
@@ -477,18 +610,6 @@ function NavigationBar({
         .mobile-nav-item.is-active {
           background: var(--accent-dim);
           color: var(--accent);
-        }
-        .mobile-nav-num {
-          font-family: var(--font-mono);
-          font-size: 0.7rem;
-          font-weight: 600;
-          color: var(--accent);
-          min-width: 24px;
-          opacity: 0.6;
-        }
-        .mobile-nav-item:hover .mobile-nav-num,
-        .mobile-nav-item.is-active .mobile-nav-num {
-          opacity: 1;
         }
         .mobile-nav-label {
           font-family: var(--font-display);

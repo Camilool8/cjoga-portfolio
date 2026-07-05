@@ -38,6 +38,7 @@ Most of the day-to-day was maintaining and extending an in-house deployment fram
 
 ```mermaid
 flowchart LR
+  accTitle: Deployment automation flow — a completed pull request fires a service hook into the build pipeline, framework templates detect project type, environment, and checks, and the deployment pipeline releases to the target environment
   PR["PR completed"] -->|service hook| Build["Build pipeline"]
   Build --> Templates["Framework templates<br/>detect type · env · checks"]
   Templates --> Deploy["Deployment pipeline"]

@@ -1,10 +1,12 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { sectionVariants } from "../../hooks/useMotion";
 import useTerminal from "./useTerminal";
 
 const PROMPT = "visitor@cjoga.cloud:~$ ";
 
 export default function Terminal() {
+  const { t } = useTranslation();
   const {
     history,
     currentInput,
@@ -19,7 +21,7 @@ export default function Terminal() {
 
   return (
     <section className="min-h-screen flex flex-col items-center justify-center py-24 px-4">
-      <motion.div
+      <m.div
         variants={sectionVariants}
         initial="hidden"
         animate="visible"
@@ -40,55 +42,60 @@ export default function Terminal() {
             className="terminal-body"
             onClick={focusInput}
           >
-            {history.map((entry, i) => (
-              <div key={i} className="terminal-line">
-                {entry.type === "input" ? (
-                  <>
-                    <span className="terminal-prompt">{PROMPT}</span>
-                    <span className="terminal-cmd">{entry.content}</span>
-                  </>
-                ) : (
-                  <pre
-                    className={`terminal-output ${
-                      entry.outputType === "error"
-                        ? "terminal-output-error"
-                        : entry.outputType === "info"
-                        ? "terminal-output-info"
-                        : ""
-                    }`}
-                  >
-                    {entry.content}
-                  </pre>
-                )}
-              </div>
-            ))}
+            <div role="log" aria-live="polite">
+              {history.map((entry, i) => (
+                <div key={i} className="terminal-line">
+                  {entry.type === "input" ? (
+                    <>
+                      <span className="terminal-prompt">{PROMPT}</span>
+                      <span className="terminal-cmd">{entry.content}</span>
+                    </>
+                  ) : (
+                    <pre
+                      className={`terminal-output ${
+                        entry.outputType === "error"
+                          ? "terminal-output-error"
+                          : entry.outputType === "info"
+                          ? "terminal-output-info"
+                          : ""
+                      }`}
+                    >
+                      {entry.content}
+                    </pre>
+                  )}
+                </div>
+              ))}
 
-            {isProcessing ? (
-              <div className="terminal-line">
-                <span className="terminal-prompt">{PROMPT}</span>
-                <span className="terminal-cursor">_</span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="terminal-line terminal-input-line">
-                <span className="terminal-prompt">{PROMPT}</span>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={currentInput}
-                  onChange={(e) => setCurrentInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  className="terminal-input"
-                  autoFocus
-                  spellCheck={false}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                />
-              </form>
-            )}
+              {isProcessing && (
+                <div className="terminal-line">
+                  <span className="terminal-output-info">
+                    {t("terminal.loading", "querying cluster…")}
+                  </span>
+                  <span className="terminal-cursor">_</span>
+                </div>
+              )}
+            </div>
+
+            <form onSubmit={handleSubmit} className="terminal-line terminal-input-line">
+              <span className="terminal-prompt">{PROMPT}</span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={currentInput}
+                onChange={(e) => setCurrentInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="terminal-input"
+                aria-label={t("terminal.inputLabel", "terminal command input")}
+                disabled={isProcessing}
+                spellCheck={false}
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+              />
+            </form>
           </div>
         </div>
-      </motion.div>
+      </m.div>
 
       <style>{`
         .terminal-window {

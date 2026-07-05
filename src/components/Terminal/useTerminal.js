@@ -1,10 +1,21 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { resolveClientCommand } from "./commands";
 import terminalApi from "../../services/terminalApi";
 
+const TAB_COMPLETIONS = [
+  "help", "whoami", "neofetch", "hostname", "pwd", "date",
+  "uname -a", "ls", "ls -la", "cat resume.txt", "sudo hire-me",
+  "clear", "exit", "history", "echo", "top", "uptime", "id",
+  "kubectl get pods", "kubectl get deployments", "kubectl get services",
+  "kubectl get nodes", "kubectl get namespaces", "kubectl get pods -n ",
+  "kubectl get deploy -n ", "kubectl get svc -n ",
+];
+
 export default function useTerminal() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [history, setHistory] = useState([
     { type: "output", content: `${t("terminal.messages.welcome")}\n${t("terminal.messages.welcomeHelp")}\n`, outputType: "info" },
   ]);
@@ -14,6 +25,7 @@ export default function useTerminal() {
   const [isProcessing, setIsProcessing] = useState(false);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
+  const wasProcessingRef = useRef(false);
 
   useEffect(() => {
     if (terminalRef.current) {
@@ -26,6 +38,16 @@ export default function useTerminal() {
       inputRef.current.focus();
     }
   }, []);
+
+  // Restore focus after a command finishes: the input stays mounted but is
+  // disabled while processing, which drops focus. Only refocus on the
+  // processing -> idle transition so we never steal focus on route entry.
+  useEffect(() => {
+    if (wasProcessingRef.current && !isProcessing) {
+      focusInput();
+    }
+    wasProcessingRef.current = isProcessing;
+  }, [isProcessing, focusInput]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -53,7 +75,10 @@ export default function useTerminal() {
             { type: "output", content: result.output, outputType: "info" },
           ]);
           setTimeout(() => {
-            window.location.href = "/";
+            const home = window.location.pathname.startsWith("/es")
+              ? "/es"
+              : "/";
+            navigate(home);
           }, 1500);
           return;
         }
@@ -72,9 +97,15 @@ export default function useTerminal() {
       setIsProcessing(true);
       try {
         const response = await terminalApi.execute(input);
-        const content = response.errorKey
-          ? t(`terminal.messages.${response.errorKey}`)
-          : response.output;
+        let content = response.output;
+        if (response.errorKey === "timeout") {
+          content = t(
+            "terminal.errors.timeout",
+            "cluster did not respond — try again in a moment"
+          );
+        } else if (response.errorKey) {
+          content = t(`terminal.messages.${response.errorKey}`);
+        }
         setHistory((prev) => [
           ...prev,
           {
@@ -96,7 +127,7 @@ export default function useTerminal() {
         setIsProcessing(false);
       }
     },
-    [currentInput, commandHistory, t]
+    [currentInput, commandHistory, t, navigate]
   );
 
   const handleKeyDown = useCallback(
@@ -118,18 +149,19 @@ export default function useTerminal() {
         setHistoryIndex(newIndex);
         setCurrentInput(commandHistory[commandHistory.length - 1 - newIndex]);
       } else if (e.key === "Tab") {
-        e.preventDefault();
+        // Never trap keyboard users (WCAG 2.1.2): Shift+Tab always moves
+        // focus backwards out of the terminal, and a plain Tab only stays
+        // in the input when it actually completes something.
+        if (e.shiftKey) return;
         const partial = currentInput.toLowerCase().trim();
-        const completions = [
-          "help", "whoami", "neofetch", "hostname", "pwd", "date",
-          "uname -a", "ls", "ls -la", "cat resume.txt", "sudo hire-me",
-          "clear", "exit", "history", "echo", "top", "uptime", "id",
-          "kubectl get pods", "kubectl get deployments", "kubectl get services",
-          "kubectl get nodes", "kubectl get namespaces", "kubectl get pods -n ",
-          "kubectl get deploy -n ", "kubectl get svc -n ",
-        ];
-        const match = completions.find((c) => c.startsWith(partial) && c !== partial);
-        if (match) setCurrentInput(match);
+        if (!partial) return;
+        const match = TAB_COMPLETIONS.find(
+          (c) => c.startsWith(partial) && c !== partial
+        );
+        if (match) {
+          e.preventDefault();
+          setCurrentInput(match);
+        }
       } else if (e.key === "l" && e.ctrlKey) {
         e.preventDefault();
         setHistory([]);

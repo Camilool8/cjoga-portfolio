@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 
 export default function SectionDivider() {
   const ref = useRef(null);
@@ -20,7 +20,7 @@ export default function SectionDivider() {
       style={{ zIndex: 2 }}
       aria-hidden="true"
     >
-      <motion.div
+      <m.div
         className="h-px"
         style={{
           width: "40%",
@@ -30,7 +30,7 @@ export default function SectionDivider() {
           background: "var(--gradient-accent)",
         }}
       />
-      <motion.div
+      <m.div
         className="absolute w-1 h-1 rounded-full"
         style={{
           background: "var(--accent)",
