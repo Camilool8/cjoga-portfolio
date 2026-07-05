@@ -17,7 +17,7 @@ const mermaidConfig = {
     // Node fills
     primaryColor: "#1a2332",
     primaryTextColor: "#e2e8f0",
-    primaryBorderColor: "#3ee07f",
+    primaryBorderColor: "#64ffda",
     // Secondary fills (edge labels, alt shapes)
     secondaryColor: "#111827",
     secondaryTextColor: "#cbd5e1",
@@ -31,7 +31,7 @@ const mermaidConfig = {
     textColor: "#cbd5e1",
     // Misc
     mainBkg: "#1a2332",
-    nodeBorder: "#3ee07f",
+    nodeBorder: "#64ffda",
     titleColor: "#e2e8f0",
     clusterBkg: "#0e1626",
     clusterBorder: "#334155",
