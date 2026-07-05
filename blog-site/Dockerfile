@@ -4,6 +4,16 @@
 FROM node:25-alpine AS builder
 WORKDIR /app
 
+# rehype-mermaid renders diagrams to static SVG at build time and needs a
+# real browser. Use the distro chromium instead of a playwright download —
+# the SKIP env must be set BEFORE `npm ci` (the playwright package downloads
+# browsers in its postinstall), and the executable path is wired through
+# rehype-mermaid's launchOptions in docusaurus.config.js (unset locally, so
+# dev machines keep using the playwright cache).
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+    PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser
+RUN apk add --no-cache chromium nss freetype harfbuzz ca-certificates ttf-freefont
+
 # Install deps first for layer caching; cache mount keeps repeat
 # builds off the network.
 COPY package.json package-lock.json ./

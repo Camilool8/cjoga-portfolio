@@ -1,11 +1,32 @@
-/* DiagramZoom — only the inline hover affordance is styled here.
-   The modal, toolbar, animations, and zoom UI are handled by
-   yet-another-react-lightbox. */
+/* DiagramZoom — card treatment for build-time mermaid SVGs plus the inline
+   hover affordance applied by the mermaidZoom client module. The modal,
+   toolbar, animations, and zoom UI are handled by yet-another-react-lightbox. */
+
+/* Diagrams are rendered once with the dark brand theme, so the card behind
+   them stays dark in BOTH color modes — this is what keeps them legible on
+   the light theme. Global (unhashed) so it applies pre-JS, before the client
+   module wraps the img. The `margin: 0 !important` guards against the
+   Docusaurus `.markdown img` margin rule once the img is wrapped. */
+:global(img.mermaid-diagram) {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  padding: 1rem 1.1rem;
+  background: #0b0f1a;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 10px;
+}
+
+.inlineWrap :global(img.mermaid-diagram) {
+  margin: 0 !important;
+}
 
 .inlineWrap {
   position: relative;
+  margin-bottom: 1.5rem;
   cursor: zoom-in;
-  border-radius: 8px;
+  border-radius: 10px;
   outline: 1px solid transparent;
   outline-offset: 0;
   transition: outline-color 0.2s var(--ease-out, ease-out),
@@ -32,8 +53,8 @@
   gap: 0.45rem;
   padding: 0.4rem 0.65rem;
   background: rgba(15, 15, 20, 0.78);
-  color: var(--text-primary, #fff);
-  border: 1px solid var(--border-medium, rgba(255, 255, 255, 0.18));
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 6px;
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.65rem;
@@ -48,10 +69,10 @@
   -webkit-backdrop-filter: blur(6px);
 }
 
-html[data-theme='light'] .affordance {
-  background: rgba(255, 255, 255, 0.85);
-  color: var(--text-primary);
-  border-color: var(--border-medium);
+.affordance svg {
+  width: 0.85em;
+  height: 0.85em;
+  fill: currentColor;
 }
 
 .inlineWrap:hover .affordance,

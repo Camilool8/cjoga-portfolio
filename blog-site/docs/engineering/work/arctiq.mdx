@@ -54,6 +54,7 @@ We migrated and consolidated as we went. Each team got one namespace for their a
 
 ```mermaid
 flowchart LR
+  accTitle: GitOps platform flow — per-team app and IaC repos merge through GitLab CI and Terraform into AWS EKS, FluxCD reconciles each team's namespace, and OpenTelemetry feeds Grafana, Loki, and traces
   subgraph Repos[Per-team repos]
     A[(App repo)]
     I[(IaC repo)]
