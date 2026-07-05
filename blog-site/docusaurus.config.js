@@ -34,6 +34,28 @@ const config = {
       tagName: "link",
       attributes: { rel: "me", href: "https://cjoga.cloud/" },
     },
+    // Web fonts. Loaded as head links (not a CSS @import in custom.css)
+    // so the browser can preconnect and fetch in parallel instead of
+    // blocking on the stylesheet chain.
+    {
+      tagName: "link",
+      attributes: { rel: "preconnect", href: "https://fonts.googleapis.com" },
+    },
+    {
+      tagName: "link",
+      attributes: {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossorigin: "anonymous",
+      },
+    },
+    {
+      tagName: "link",
+      attributes: {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap",
+      },
+    },
   ],
 
   future: {
@@ -106,6 +128,8 @@ const config = {
           priority: 0.5,
           filename: "sitemap.xml",
           ignorePatterns: ["/tags/**", "/search/**"],
+          // Emit <lastmod> from each doc's `last_update` frontmatter.
+          lastmod: "date",
         },
       }),
     ],
@@ -143,7 +167,6 @@ const config = {
         },
         { name: "robots", content: "index, follow, max-image-preview:large" },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:site", content: "@cjoga_cloud" },
         { property: "og:type", content: "website" },
         { property: "og:site_name", content: "blog.cjoga.cloud" },
         { property: "og:locale", content: "en_US" },

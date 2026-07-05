@@ -52,7 +52,13 @@ function PathBlock({ path }) {
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout title={siteConfig.title} description={siteConfig.tagline}>
+    <Layout
+      // Docusaurus appends " | cjoga.cloud" (siteConfig.title) automatically,
+      // so no site name here — a descriptive homepage title instead of the
+      // bare domain, which collided with the portfolio in SERPs.
+      title="Camilo's Handbook — DevOps Opinions, K3s Lab & Cert Guides"
+      description={siteConfig.tagline}
+    >
       <main className={styles.main}>
         <div className={styles.backdrop} aria-hidden="true">
           <div className={`${styles.orb} ${styles.orbAccent}`} />
