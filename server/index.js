@@ -74,10 +74,26 @@ if (isProduction) {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          // 'unsafe-inline' stays for the theme bootstrap; 'unsafe-eval'
-          // is not needed by the Vite production build.
-          scriptSrc: ["'self'", "'unsafe-inline'"],
-          connectSrc: ["'self'", "data:", "https://cdnjs.cloudflare.com"],
+          // 'unsafe-inline' stays for the theme bootstrap. Full 'unsafe-eval'
+          // is still not needed by the Vite production build — but
+          // @react-pdf/renderer compiles yoga-layout from WebAssembly, which
+          // CSP gates behind the narrow 'wasm-unsafe-eval' keyword (WASM
+          // compilation only, no eval()/new Function()).
+          // static.cloudflareinsights.com is the Web Analytics beacon that
+          // Cloudflare injects at the edge.
+          scriptSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            "'wasm-unsafe-eval'",
+            "https://static.cloudflareinsights.com",
+          ],
+          connectSrc: [
+            "'self'",
+            "data:",
+            "https://cdnjs.cloudflare.com",
+            // The beacon reports RUM data here.
+            "https://cloudflareinsights.com",
+          ],
           fontSrc: [
             "'self'",
             "https://fonts.gstatic.com",

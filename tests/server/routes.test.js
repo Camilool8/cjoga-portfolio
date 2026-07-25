@@ -90,8 +90,26 @@ describe("HTTP hardening (production mode)", () => {
     const res = await request(app).get("/");
     const csp = res.headers["content-security-policy"];
     expect(csp).toBeDefined();
-    expect(csp).not.toContain("'unsafe-eval'");
+    // The narrow 'wasm-unsafe-eval' is allowed; blanket 'unsafe-eval' is not.
+    expect(csp).not.toMatch(/(^|[\s;])'unsafe-eval'/);
     expect(csp).toMatch(/script-src [^;]*'unsafe-inline'/);
+  });
+
+  it("allows WebAssembly compilation for the PDF renderer", async () => {
+    const res = await request(app).get("/");
+    const csp = res.headers["content-security-policy"];
+    expect(csp).toMatch(/script-src [^;]*'wasm-unsafe-eval'/);
+  });
+
+  it("allows the Cloudflare Web Analytics beacon", async () => {
+    const res = await request(app).get("/");
+    const csp = res.headers["content-security-policy"];
+    expect(csp).toMatch(
+      /script-src [^;]*https:\/\/static\.cloudflareinsights\.com/
+    );
+    expect(csp).toMatch(
+      /connect-src [^;]*https:\/\/cloudflareinsights\.com/
+    );
   });
 
   it("serves hashed assets with a 1y immutable cache", async () => {
