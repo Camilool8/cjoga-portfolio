@@ -423,6 +423,8 @@ export default async function createConfigAsync() {
             items: [
               { to: "/learn/rhcsa", label: "RHCSA (EX200) guide" },
               { to: "/learn/rhce", label: "RHCE (EX294) guide" },
+              { to: "/learn/ckad", label: "CKAD guide" },
+              { to: "/learn/kubestronaut-sim", label: "kubestronaut-sim" },
             ],
           },
           {

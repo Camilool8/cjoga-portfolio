@@ -94,7 +94,7 @@ const sidebars = {
       link: { type: "doc", id: "learn/index" },
       collapsible: true,
       collapsed: false,
-      items: ["learn/rhcsa", "learn/rhce"],
+      items: ["learn/rhcsa", "learn/rhce", "learn/ckad", "learn/kubestronaut-sim"],
     },
   ],
 };

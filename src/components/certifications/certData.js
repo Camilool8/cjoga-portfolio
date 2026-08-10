@@ -8,7 +8,7 @@ import {
 
 // Bento — every tile gets a live animation. All tiles are 2 rows tall.
 //   lg (6 cols × 6 rows = 36 cells):
-//     [KCNA 3×2 — 2026]      [AWS 3×2 — 2025]
+//     [CNCF 3×2 — 2026]      [AWS 3×2 — 2025]
 //     [HCTA 2×2] [Dyna 2×2] [Partner 2×2]   ← 2023+
 //     [RedHat 2×2 — 2024]     [GitLab 4×2 — 2022]
 //
@@ -24,9 +24,13 @@ export const CERT_GROUPS = [
     color: "#326ce5",
     size: "featured",
     liveTile: "kubestronaut",
-    progress: { current: 1, inProgress: 1, total: 5 },
+    progress: { current: 2, inProgress: 1, total: 5 },
     spanClasses: "md:col-span-2 md:row-span-2 lg:col-span-3",
     certs: [
+      {
+        key: "ckad",
+        link: "https://www.credly.com/badges/9998f19f-fc7f-48e2-9b79-056a0ccd7662/public_url",
+      },
       {
         key: "kcna",
         link: "https://www.credly.com/badges/bc307278-2a6d-4065-a1b5-5b1b7bda61bd",
@@ -34,8 +38,8 @@ export const CERT_GROUPS = [
     ],
     inProgressCerts: [
       {
-        key: "ckad",
-        link: "https://www.cncf.io/training/certification/ckad/",
+        key: "cka",
+        link: "https://www.cncf.io/training/certification/cka/",
       },
     ],
   },
@@ -153,5 +157,5 @@ export const CERT_GROUPS = [
   },
 ];
 
-// Earned certifications only — inProgressCerts (CKAD) stay excluded.
+// Earned certifications only — inProgressCerts (CKA) stay excluded.
 export const CERT_COUNT = CERT_GROUPS.flatMap((g) => g.certs).length;

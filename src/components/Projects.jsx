@@ -11,6 +11,8 @@ import {
   SiArgo,
   SiDotnet,
   SiCloudflare,
+  SiGo,
+  SiReact,
 } from "react-icons/si";
 import {
   sectionVariants,
@@ -26,6 +28,13 @@ const HANDBOOK_URL = "https://blog.cjoga.cloud";
 // No fake screenshots — what you see is the stack the project actually runs on.
 // Every card links to the handbook case study that tells the full story.
 const projects = [
+  {
+    key: "kubestronautSim",
+    color: "#326ce5",
+    accent: "#7ea6f0",
+    icons: [SiKubernetes, SiGo, SiReact],
+    caseStudy: `${HANDBOOK_URL}/learn/kubestronaut-sim`,
+  },
   {
     key: "cicd",
     color: "#ff9900",

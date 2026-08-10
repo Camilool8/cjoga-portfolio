@@ -22,13 +22,17 @@ const PATHS = [
     intro:
       "Honest cert guides — my experience, my tips, and the runbooks I'd hand to a friend.",
     rows: [
+      { to: "/learn/ckad", label: "CKAD guide" },
       { to: "/learn/rhcsa", label: "RHCSA (EX200) guide" },
       { to: "/learn/rhce", label: "RHCE (EX294) guide" },
     ],
   },
   {
     eyebrow: "If you're curious about the lab",
-    rows: [{ to: "/engineering/lab/overview", label: "The K3s setup" }],
+    rows: [
+      { to: "/engineering/lab/overview", label: "The K3s setup" },
+      { to: "/learn/kubestronaut-sim", label: "kubestronaut-sim" },
+    ],
   },
 ];
 

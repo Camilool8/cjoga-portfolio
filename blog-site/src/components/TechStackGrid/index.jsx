@@ -46,6 +46,9 @@ import {
   SiVirtualbox,
   SiGnubash,
   SiPodman,
+  SiGo,
+  SiHelm,
+  SiTypescript,
 } from 'react-icons/si';
 import {
   VscAzure,
@@ -74,6 +77,8 @@ const TECH = {
   AKS: { Icon: SiKubernetes, color: '#326CE5' },
   Kubernetes: { Icon: SiKubernetes, color: '#326CE5' },
   K3s: { Icon: SiKubernetes, color: '#326CE5' },
+  kind: { Icon: SiKubernetes, color: '#326CE5' },
+  Helm: { Icon: SiHelm, color: '#0F1689' },
   'Entra ID': { Icon: FaMicrosoft, color: '#0078D4' },
   'Key Vault': { Icon: VscAzure, color: '#0078D4' },
   Synapse: { Icon: VscAzure, color: '#0078D4' },
@@ -118,6 +123,8 @@ const TECH = {
   // Languages / runtimes / frameworks
   PowerShell: { Icon: VscTerminalPowershell, color: '#5391FE' },
   '.NET': { Icon: SiDotnet, color: '#512BD4' },
+  Go: { Icon: SiGo, color: '#00ADD8' },
+  TypeScript: { Icon: SiTypescript, color: '#3178C6' },
   'Vue.js': { Icon: SiVuedotjs, color: '#4FC08D' },
   React: { Icon: SiReact, color: '#61DAFB' },
   'Next.js': { Icon: SiNextdotjs, color: null },
