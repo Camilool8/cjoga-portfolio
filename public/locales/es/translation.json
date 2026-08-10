@@ -130,7 +130,7 @@
     "readCaseStudy": "Lee el caso de estudio",
     "kubestronautSim": {
       "title": "Simulador de Exámenes Kubestronaut",
-      "description": "Simulador de exámenes open source para la ruta Kubestronaut — un comando levanta un clúster real de Kubernetes, sortea un intento entre 141 preguntas originales y califica el comportamiento, no el YAML. Deliberadamente más difícil que los exámenes reales.",
+      "description": "Simulador de exámenes open source para la ruta Kubestronaut — un comando levanta un clúster real de Kubernetes, sortea cada intento desde un banco creciente de preguntas originales y califica el comportamiento, no el YAML. Deliberadamente más difícil que los exámenes reales.",
       "tech": [
         "Go",
         "React",

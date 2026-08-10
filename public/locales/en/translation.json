@@ -130,7 +130,7 @@
     "readCaseStudy": "Read the case study",
     "kubestronautSim": {
       "title": "Kubestronaut Exam Simulator",
-      "description": "Open-source exam simulator for the Kubestronaut path — one command boots a real Kubernetes cluster, draws an attempt from 141 original questions, and grades on behavior, not YAML. Deliberately harder than the real exams.",
+      "description": "Open-source exam simulator for the Kubestronaut path — one command boots a real Kubernetes cluster, draws every attempt fresh from a growing pool of original questions, and grades on behavior, not YAML. Deliberately harder than the real exams.",
       "tech": [
         "Go",
         "React",

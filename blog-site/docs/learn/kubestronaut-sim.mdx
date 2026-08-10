@@ -40,12 +40,12 @@ Four Go services with zero third-party dependencies, a React SPA, eight containe
 
 ## What's live
 
-| Bank | Engine | Pool | Drawn per attempt | Time | Pass |
-|---|---|---|---|---|---|
-| CKAD | Hands-on | 44 questions | 17 | 120 min | 66% |
-| KCNA | Multiple choice | 97 questions | 65 | 90 min | 75% |
+| Bank | Engine | Time | Pass |
+|---|---|---|---|
+| CKAD | Hands-on | 120 min | 66% |
+| KCNA | Multiple choice | 90 min | 75% |
 
-All 141 questions are original — no exam dumps, enforced as a repository rule, not a promise. CKA, KCSA, and CKS sit in the catalog as coming soon; the CKA bank is next.
+Each attempt is exam-length, drawn from a pool several times that size — and the pools keep moving: new questions land, and questions are retired as the features they test deprecate, so the exact counts live in the repository, not here. Every question is original — no exam dumps, enforced as a repository rule, not a promise. CKA, KCSA, and CKS sit in the catalog as coming soon; the CKA bank is next.
 
 ## Two engines, one format
 
@@ -61,7 +61,7 @@ Each sitting draws its questions from the bigger pool, stratified to the publish
 
 ## Graded on behavior, not YAML
 
-Hands-on grading runs 143 shell validators against your cluster: a policy that actually denies, an Ingress the controller really routes, a second replica that really serves. When a check fails, the report shows your cluster's actual state beside the expected state, with a sentence on why it matters — a failing check teaches instead of just deducting.
+Hands-on grading runs each question's shell validators against your cluster: a policy that actually denies, an Ingress the controller really routes, a second replica that really serves. When a check fails, the report shows your cluster's actual state beside the expected state, with a sentence on why it matters — a failing check teaches instead of just deducting.
 
 ## Three modes
 
