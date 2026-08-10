@@ -53,7 +53,7 @@ What mattered for me on the clock:
 
 - **Imperative first.** `kubectl run`, `create`, `expose` with `--dry-run=client -o yaml` generate almost every manifest the exam asks for. Write YAML from scratch only when no generator fits.
 - **Switch context first, every task.** Each task names its cluster and shows the command — run it before reading the rest of the task, every time.
-- **`kubectl explain` over the docs tab** for field names. It's faster than searching kubernetes.io and it can't take you off on a tangent.
+- **`kubectl explain` for field names, the docs for templates.** When the task has no generator — NetworkPolicy, CronJob, volumes, PersistentVolumes, storage classes — don't assemble the manifest from `explain` output. The Kubernetes docs ship a copy-paste template for each of those: paste it, delete what the task doesn't need, edit what it does. `explain` is for confirming a field name or its nesting, not for scaffolding.
 - **Verify end state, not effort.** After applying, confirm the pod is Running, curl the service, check the rollout. The exam grades what's in the cluster, not what you typed.
 - **Time-box and flag.** More than a few minutes stuck: flag the question and move on — easy points first, the grid brings you back.
 - The 48 minutes I had left weren't speed for its own sake. They were the compound interest of hundreds of graded tasks across KodeKloud, killer.sh, and the sim — by exam day, nothing on the screen was new.
