@@ -1,0 +1,69 @@
+---
+sidebar_position: 4
+title: CKAD guide
+image: img/og/learn-ckad.png
+description: How I passed the CKAD at 98% with 48 minutes to spare — Mumshad Mannambeth's course, KodeKloud labs, killer.sh, and a simulator I built to be harder than the exam.
+slug: /learn/ckad
+keywords: [ckad, kubernetes, certification, kubestronaut, kubectl, cncf, linux foundation, exam]
+date: "2026-08-10"
+---
+
+# CKAD guide
+
+I passed the [Certified Kubernetes Application Developer](https://www.cncf.io/training/certification/ckad/) in August 2026 with **98%**, submitting with 48 minutes left on a two-hour clock. The pass mark is 66%. [Verification is on Credly.](https://www.credly.com/badges/9998f19f-fc7f-48e2-9b79-056a0ccd7662/public_url) This page is the prep that produced that margin — the course, the simulators, and where [kubestronaut-sim](/learn/kubestronaut-sim) fits. It's the sibling of the [RHCSA](/learn/rhcsa) and [RHCE](/learn/rhce) guides — same philosophy, different vendor.
+
+## What the exam is
+
+CKAD is performance-based: two hours in a live Kubernetes environment, solving tasks against real clusters — no multiple choice. The lens is the application author: pods, deployments, services, configuration, probes, jobs, network policies, and the kubectl fluency to move through them fast. The official Kubernetes documentation stays open during the exam, which sounds generous until you learn that reading docs is where slow candidates lose the clock.
+
+It's step two on the [Kubestronaut](https://www.cncf.io/training/kubestronaut/) path — KCNA, CKAD, CKA, KCSA, CKS. KCNA is theory and came first for me; nothing about CKAD requires it.
+
+## The prep stack
+
+Four things carried the preparation, in the order they entered:
+
+**[Mumshad Mannambeth's CKAD course](https://www.udemy.com/course/certified-kubernetes-application-developer/) on Udemy.** The backbone. Mumshad is one of the clearest Kubernetes teachers there is — every concept lands with a browser-based lab attached, so you're never watching for long before you're typing. The course includes KodeKloud practice tests, which are the real value: hands-on labs in your browser, no local setup, immediate grading.
+
+**The day job.** Years of AKS and EKS work meant the concepts weren't new — but daily Kubernetes is not timed Kubernetes. Familiarity tells you *what* to do; only reps under a clock make you fast at doing it.
+
+**[killer.sh](https://killer.sh/).** Two sessions come with the exam registration. It's the closest replica of the real exam interface, and deliberately harder than the real thing. Do one in the final week.
+
+**[kubestronaut-sim](/learn/kubestronaut-sim).** The gap I hit: every simulator above has a fixed number of runs, and by the end the money was spent. What existed beyond them was question dumps and closed-source repos. Nothing open covered the whole Kubestronaut path — so I built it: one command, a real cluster, unlimited attempts, every question original.
+
+## The simulator as the final gate
+
+The sim draws each CKAD attempt fresh from a pool several times exam length, stratified across the five exam domains with a quick/core/deep difficulty mix, on the real 120-minute clock — and it's built to be harder than the exam. My last sim attempt before exam day scored 86% with 10 minutes left. The real exam came back 98% with 48 minutes to spare. That gap is the design: pass here, be comfortable there.
+
+How I'd use it for CKAD:
+
+1. **Finish the course first.** The sim assumes you can already do the tasks slowly; it exists to make you fast and complete under pressure.
+2. **Training mode while topics are fresh** — untimed, hints available, solutions live. Work a domain until the tasks stop feeling novel.
+3. **Drill your weak domains.** Every graded attempt is kept, and the progress view orders your domains weakest-first with a one-click drill.
+4. **Mastery mode, then Exam mode.** Half clock, then full clock, no hints on either. When a full Exam-mode sitting clears the pass mark with time left, book the real one.
+5. **Read the failing checks.** The grader shows your cluster state beside the expected state — that diff is the lesson; don't skip it on the way to the score.
+
+## What no simulator gives you
+
+- **The proctoring experience.** ID checks, a room scan, a locked-down browser, a camera on you for two hours. Know it's coming so it costs you nothing on the day.
+- **kubectl muscle memory.** That comes from the volume of tasks typed, not from any single tool. Course labs, killer.sh, the sim — the total number of reps is the variable that matters.
+
+## Day-of guidance
+
+What mattered for me on the clock:
+
+- **Imperative first.** `kubectl run`, `create`, `expose` with `--dry-run=client -o yaml` generate almost every manifest the exam asks for. Write YAML from scratch only when no generator fits.
+- **Switch context first, every task.** Each task names its cluster and shows the command — run it before reading the rest of the task, every time.
+- **`kubectl explain` for field names, the docs for templates.** When the task has no generator — NetworkPolicy, CronJob, volumes, PersistentVolumes, storage classes — don't assemble the manifest from `explain` output. The Kubernetes docs ship a copy-paste template for each of those: paste it, delete what the task doesn't need, edit what it does. `explain` is for confirming a field name or its nesting, not for scaffolding.
+- **Verify end state, not effort.** After applying, confirm the pod is Running, curl the service, check the rollout. The exam grades what's in the cluster, not what you typed.
+- **Time-box and flag.** More than a few minutes stuck: flag the question and move on — easy points first, the grid brings you back.
+- The 48 minutes I had left weren't speed for its own sake. They were the compound interest of hundreds of graded tasks across KodeKloud, killer.sh, and the sim — by exam day, nothing on the screen was new.
+
+## If you want my opinion on the cert itself
+
+CKAD is the daily-driver certification. RHCE changed how I describe fleets; CKAD sharpened the thing I do most hours of most days — moving through a cluster quickly and correctly. The fluency outlives the badge, which is the only durable reason to sit any of these exams (more on that in [Certifications expire, and that's the point](/me/opinions/certifications-expire)).
+
+CKA is next. The simulator is open source — [run it, or write a bank for it](/learn/kubestronaut-sim), and chase your own margin.
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />

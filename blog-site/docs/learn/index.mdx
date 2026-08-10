@@ -9,6 +9,7 @@ keywords: [learn, certifications, study guide]
 
 import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
 import { FaRedhat } from 'react-icons/fa';
+import { SiKubernetes } from 'react-icons/si';
 
 # Learn
 
@@ -30,6 +31,20 @@ This section is for anyone studying for a cert I've passed and decided was worth
     iconColor="#EE0000"
     title="RHCE (EX294)"
     description="Red Hat Certified Engineer — a seven-VM Ansible lab with an exam-style grader, and how to study in it."
+  />
+  <SectionCard
+    href="/learn/ckad"
+    icon={SiKubernetes}
+    iconColor="#326CE5"
+    title="CKAD"
+    description="Certified Kubernetes Application Developer — the prep path that produced a 98%, and where the simulator fits."
+  />
+  <SectionCard
+    href="/learn/kubestronaut-sim"
+    icon={SiKubernetes}
+    iconColor="#326CE5"
+    title="kubestronaut-sim"
+    description="An open-source exam simulator for the Kubestronaut path — a real cluster, fresh draws every attempt, graded on behavior."
   />
 </SectionCardGrid>
 

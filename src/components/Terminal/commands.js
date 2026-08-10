@@ -49,8 +49,9 @@ function buildResumeText(t) {
   --------------
   * AWS Certified Solutions Architect
   * HashiCorp Certified Terraform Associate
-  * Kubernetes & Cloud Native Associate (KCNA)  // on the road to kubestronaut
-  * Certified Kubernetes Application Developer (CKAD)  // in progress
+  * Certified Kubernetes Application Developer (CKAD)  // kubestronaut path: 2 of 5
+  * Kubernetes & Cloud Native Associate (KCNA)
+  * Certified Kubernetes Administrator (CKA)  // in progress
   * RHCSA & RHCE
   * Dynatrace Associate
   * GitLab Certified (4x)

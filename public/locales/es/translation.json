@@ -27,7 +27,7 @@
       "operational": "sistemas en línea",
       "checking": "verificando sistemas…",
       "unavailable": "sistemas fuera de línea",
-      "certs": "11 certs obtenidas",
+      "certs": "12 certs obtenidas",
       "opportunities": "abierto a oportunidades"
     },
     "terminalHint": "prueba la terminal en vivo →"
@@ -128,6 +128,16 @@
     "title": "Proyectos",
     "heading": "Lo que he construido.",
     "readCaseStudy": "Lee el caso de estudio",
+    "kubestronautSim": {
+      "title": "Simulador de Exámenes Kubestronaut",
+      "description": "Simulador de exámenes open source para la ruta Kubestronaut — un comando levanta un clúster real de Kubernetes, sortea cada intento desde un banco creciente de preguntas originales y califica el comportamiento, no el YAML. Deliberadamente más difícil que los exámenes reales.",
+      "tech": [
+        "Go",
+        "React",
+        "Kubernetes",
+        "Docker"
+      ]
+    },
     "cicd": {
       "title": "Migración de Plataforma a EKS",
       "description": "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS, con FluxCD para la entrega GitOps y Terraform para la nube subyacente.",
@@ -240,6 +250,11 @@
     },
     "ckad": {
       "name": "Certified Kubernetes Application Developer (CKAD)",
+      "issuer": "The Linux Foundation",
+      "date": "2026"
+    },
+    "cka": {
+      "name": "Certified Kubernetes Administrator (CKA)",
       "issuer": "The Linux Foundation",
       "date": "2026"
     },

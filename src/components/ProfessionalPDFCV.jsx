@@ -347,6 +347,20 @@ const ProfessionalPDFCV = () => {
               )}
             </Text>
           </View>
+
+          <View style={styles.project}>
+            <Text style={styles.projectTitle}>
+              {t("projects.kubestronautSim.title")}
+            </Text>
+            <Text style={styles.projectDescription}>
+              {t("projects.kubestronautSim.description")}
+            </Text>
+            <Text style={styles.projectTech}>
+              {t("projects.kubestronautSim.tech", { returnObjects: true }).join(
+                ", ",
+              )}
+            </Text>
+          </View>
         </View>
 
         <View style={styles.section}>
@@ -386,7 +400,16 @@ const ProfessionalPDFCV = () => {
                 {t("certifications.ckad.name")}
               </Text>
               <Text style={styles.certIssuer}>
-                {t("certifications.ckad.issuer")} ({t("certifications.inProgress")})
+                {t("certifications.ckad.issuer")},{" "}
+                {t("certifications.ckad.date")}
+              </Text>
+            </View>
+            <View style={styles.certItem}>
+              <Text style={styles.certName}>
+                {t("certifications.cka.name")}
+              </Text>
+              <Text style={styles.certIssuer}>
+                {t("certifications.cka.issuer")} ({t("certifications.inProgress")})
               </Text>
             </View>
             <View style={styles.certItem}>

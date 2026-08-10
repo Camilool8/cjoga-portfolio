@@ -1,0 +1,99 @@
+---
+sidebar_position: 5
+title: kubestronaut-sim
+image: img/og/learn-kubestronaut-sim.png
+description: An open-source exam simulator for the Kubestronaut certifications — one command boots a real Kubernetes cluster on your machine, draws a fresh exam every attempt, and grades on behavior, not YAML.
+slug: /learn/kubestronaut-sim
+keywords: [kubestronaut, kubernetes, exam simulator, ckad, kcna, cka, kcsa, cks, kind, open source]
+date: "2026-08-10"
+---
+
+import TechStackGrid from '@site/src/components/TechStackGrid';
+
+# kubestronaut-sim
+
+The simulator lives on GitHub at **[Camilool8/kubestronaut-sim](https://github.com/Camilool8/kubestronaut-sim)**, with a landing page at [camilool8.github.io/kubestronaut-sim](https://camilool8.github.io/kubestronaut-sim/). It exists because I wanted to sit the Kubernetes exams as many times as I needed, on a real cluster, without paying per attempt — and nothing open source covered the [Kubestronaut](https://www.cncf.io/training/kubestronaut/) path. This page is the framing: what it is, how it grades, and how to run it. The README and docs on GitHub stay the source of truth.
+
+## What it is
+
+**Goal.** A full exam sitting on your own machine — a real countdown, a real cluster, retakes without limit — and deliberately harder than the real exams, so passing here means being comfortable there.
+
+**Approach.** One command brings up the stack with Docker Compose: an exam UI in the browser, a Kubernetes cluster built with kind inside Docker-in-Docker, two SSH instances like the real terminal, and a desktop with Firefox locked to the documentation allowlist. Nothing is built until you choose an exam — picking a certification is what creates its cluster. Every graded attempt is kept, so you can see which domains are weak.
+
+**Stack.**
+
+<TechStackGrid
+  compact
+  items={[
+    { name: 'Go', href: 'https://go.dev/' },
+    { name: 'TypeScript', href: 'https://www.typescriptlang.org/' },
+    { name: 'React', href: 'https://react.dev/' },
+    { name: 'Kubernetes', href: 'https://kubernetes.io/' },
+    { name: 'kind', href: 'https://kind.sigs.k8s.io/' },
+    { name: 'Docker', href: 'https://www.docker.com/' },
+    { name: 'Helm', href: 'https://helm.sh/' },
+    { name: 'Bash', href: 'https://www.gnu.org/software/bash/' },
+  ]}
+/>
+
+Four Go services with zero third-party dependencies, a React SPA, eight container images, and a bash launcher shipped in PowerShell parity for Windows.
+
+## What's live
+
+| Bank | Engine | Time | Pass |
+|---|---|---|---|
+| CKAD | Hands-on | 120 min | 66% |
+| KCNA | Multiple choice | 90 min | 75% |
+
+Each attempt is exam-length, drawn from a pool several times that size — and the pools keep moving: new questions land, and questions are retired as the features they test deprecate, so the exact counts live in the repository, not here. Every question is original — no exam dumps, enforced as a repository rule, not a promise. CKA, KCSA, and CKS sit in the catalog as coming soon; the CKA bank is next.
+
+## Two engines, one format
+
+Both engines share one `exam.yaml` schema and everything around it — the draw, the timer, the modes, the weighted scoring, the attempt history.
+
+The **hands-on engine** (CKAD) boots a real kind cluster. It runs Calico instead of the default kindnet specifically so NetworkPolicy questions can be graded on whether traffic is actually denied, plus ingress-nginx, a local Helm repository, and an in-cluster registry. You work over SSH in a desktop terminal, exactly like the exam.
+
+The **MCQ engine** (KCNA) has nothing to boot — an attempt starts in seconds and the exam screen works on a phone. The answer key stays server-side, and every solution explains why the right answer is right and why each distractor is wrong.
+
+## Every attempt is a fresh draw
+
+Each sitting draws its questions from the bigger pool, stratified to the published curriculum weights — every domain contributes exactly its share, every time. CKAD adds a second axis: a quick/core/deep difficulty mix, so a draw is never a wall of long multi-step tasks. Draws are seeded and replayable after the fact, which means you train on real skill under changing situations, not on memorizing a fixed question list.
+
+## Graded on behavior, not YAML
+
+Hands-on grading runs each question's shell validators against your cluster: a policy that actually denies, an Ingress the controller really routes, a second replica that really serves. When a check fails, the report shows your cluster's actual state beside the expected state, with a sentence on why it matters — a failing check teaches instead of just deducting.
+
+## Three modes
+
+| Mode | Clock | Hints | Solutions |
+|---|---|---|---|
+| Training | None | Two tiers | Live |
+| Mastery | Half the exam | No | After grading |
+| Exam | The real duration | No | After grading |
+
+The score report gives two numbers — curriculum-weighted percent against the bank's pass mark, and raw points — plus per-question verdicts with the exact checks that scored them, a domain breakdown ordered weakest-first, and a pacing breakdown by difficulty tier. Across attempts, a weakest-domains list offers a one-click drill.
+
+## Run it
+
+```bash
+git clone https://github.com/Camilool8/kubestronaut-sim
+cd kubestronaut-sim
+./sim doctor   # preflight: RAM, disk, tools
+./sim up       # then open http://localhost:8080
+```
+
+Requirements: Docker Desktop (or docker + compose v2) and about 9 GB of free RAM. On Windows the launcher is `.\sim.ps1` with the same subcommands. There is no account and no hosted service — everything binds to loopback on your machine.
+
+A Helm chart also ships for hosting the simulator multi-user: a hub with GitHub sign-in, a capped seat pool with a queue, and the full exam stack stamped out as one pod per candidate. That mode exists for study groups and teams; the local mode is the product.
+
+## Contributing a bank
+
+The bank format is a documented, validated spec — YAML, Markdown, and shell — and the same CI gates that check the shipped banks check community ones. Questions must be original: the repository bans exam-dump content outright. Code is Apache-2.0; the question banks are CC BY-SA 4.0, so contributions stay open.
+
+If you're prepping the CKAD specifically, the [CKAD guide](/learn/ckad) is the meta-guide: the full prep path I walked, and where the simulator fits in it.
+
+*kubestronaut-sim is a community project, not affiliated with or endorsed by the Cloud Native Computing Foundation or the Linux Foundation.*
+
+import AuthorCard from '@site/src/components/AuthorCard';
+
+<AuthorCard />
