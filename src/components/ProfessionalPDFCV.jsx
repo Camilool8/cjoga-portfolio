@@ -28,22 +28,22 @@ const styles = StyleSheet.create({
     padding: 30,
     fontFamily: "Roboto",
     fontSize: 10,
-    lineHeight: 1.3,
+    lineHeight: 1.25,
   },
   header: {
     textAlign: "center",
-    marginBottom: 15,
-    paddingBottom: 10,
+    marginBottom: 10,
+    paddingBottom: 8,
     borderBottom: "1pt solid #000",
   },
   name: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 3,
+    marginBottom: 2,
   },
   title: {
     fontSize: 14,
-    marginBottom: 8,
+    marginBottom: 6,
   },
   contactRow: {
     flexDirection: "row",
@@ -59,15 +59,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     textTransform: "uppercase",
-    marginBottom: 6,
+    marginBottom: 4,
     paddingBottom: 2,
     borderBottom: "0.5pt solid #000",
   },
   section: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   paragraph: {
-    marginBottom: 6,
+    marginBottom: 4,
     fontSize: 10,
   },
   skillsGrid: {
@@ -75,8 +75,9 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   skillCategory: {
-    width: "50%",
-    marginBottom: 6,
+    width: "33.33%",
+    marginBottom: 4,
+    paddingRight: 8,
   },
   skillCategoryTitle: {
     fontWeight: "bold",
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   jobEntry: {
-    marginBottom: 8,
+    marginBottom: 6,
   },
   jobTitle: {
     fontWeight: "bold",
@@ -100,29 +101,29 @@ const styles = StyleSheet.create({
   jobPeriod: {
     fontStyle: "italic",
     fontSize: 9,
-    marginBottom: 3,
+    marginBottom: 2,
   },
   jobResponsibilities: {
     paddingLeft: 10,
   },
   jobResponsibility: {
     fontSize: 9,
-    marginBottom: 2,
+    marginBottom: 1,
   },
   bulletPoint: {
     width: 10,
   },
   project: {
-    marginBottom: 6,
+    marginBottom: 5,
   },
   projectTitle: {
     fontWeight: "bold",
     fontSize: 10,
-    marginBottom: 2,
+    marginBottom: 1,
   },
   projectDescription: {
     fontSize: 9,
-    marginBottom: 2,
+    marginBottom: 1,
   },
   projectTech: {
     fontSize: 8,
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
   },
   certItem: {
     width: "50%",
-    marginBottom: 4,
+    marginBottom: 2,
     fontSize: 9,
   },
   certName: {
@@ -188,6 +189,8 @@ const ProfessionalPDFCV = () => {
               <View style={styles.skillList}>
                 <Text style={styles.skillItem}>• {t("skills.aws")}</Text>
                 <Text style={styles.skillItem}>• {t("skills.azure")}</Text>
+                <Text style={styles.skillItem}>• {t("skills.eks")}</Text>
+                <Text style={styles.skillItem}>• {t("skills.aks")}</Text>
               </View>
             </View>
 
@@ -212,8 +215,21 @@ const ProfessionalPDFCV = () => {
                 <Text style={styles.skillItem}>
                   • {t("skills.azureDevops")}
                 </Text>
+                <Text style={styles.skillItem}>
+                  • {t("skills.githubActions")}
+                </Text>
                 <Text style={styles.skillItem}>• {t("skills.jenkins")}</Text>
                 <Text style={styles.skillItem}>• {t("skills.argo")}</Text>
+              </View>
+            </View>
+
+            <View style={styles.skillCategory}>
+              <Text style={styles.skillCategoryTitle}>
+                {t("cv.ai", "AI & Agents")}
+              </Text>
+              <View style={styles.skillList}>
+                <Text style={styles.skillItem}>• {t("skills.claudeCode")}</Text>
+                <Text style={styles.skillItem}>• {t("skills.mcp")}</Text>
               </View>
             </View>
 

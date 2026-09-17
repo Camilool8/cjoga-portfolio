@@ -61,6 +61,7 @@ function buildResumeText(t) {
   AWS | Azure | Terraform | Ansible | Kubernetes
   Docker | GitLab CI | ArgoCD | Prometheus | Grafana
   Linux | Python | Bash | Git | Helm
+  Claude Code | MCP | GitHub Actions | GitOps
 
   ${t("terminal.messages.resumeHireTip")}
 `;
