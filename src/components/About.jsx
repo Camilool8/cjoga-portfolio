@@ -4,8 +4,10 @@ import { m } from "framer-motion";
 import { FaAws, FaMicrosoft, FaDocker } from "react-icons/fa";
 import {
   SiTerraform, SiAnsible, SiKubernetes, SiGitlab,
-  SiJenkins, SiDynatrace, SiPowershell,
+  SiJenkins, SiDynatrace, SiGithubactions,
+  SiClaude, SiModelcontextprotocol,
 } from "react-icons/si";
+import { VscTerminalPowershell } from "react-icons/vsc";
 import {
   sectionVariants, itemVariants, cardVariants,
   useParallax, viewportConfig,
@@ -27,10 +29,13 @@ function About() {
     { name: "Docker", icon: <FaDocker /> },
     { name: "GitLab CI", icon: <SiGitlab /> },
     { name: "Azure DevOps", icon: <FaMicrosoft /> },
+    { name: "GitHub Actions", icon: <SiGithubactions /> },
     { name: "Jenkins", icon: <SiJenkins /> },
     { name: "ArgoCD", icon: <SiKubernetes /> },
     { name: "Dynatrace", icon: <SiDynatrace /> },
-    { name: "PowerShell", icon: <SiPowershell /> },
+    { name: "PowerShell", icon: <VscTerminalPowershell /> },
+    { name: "Claude Code", icon: <SiClaude /> },
+    { name: "MCP Servers", icon: <SiModelcontextprotocol /> },
   ];
 
   return (

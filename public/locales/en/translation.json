@@ -18,7 +18,7 @@
       "Automation Engineer",
       "Kubernetes Specialist"
     ],
-    "description": "I'm a DevOps & Cloud Engineer who builds and runs Kubernetes platforms on AWS and Azure. My work centers on Infrastructure as Code, GitOps delivery, and observability — turning sprawling, manually-managed environments into automated, self-service platforms teams can run themselves.",
+    "description": "I'm a DevOps & Cloud Engineer who builds and runs Kubernetes platforms on AWS and Azure. My work centers on Infrastructure as Code, GitOps delivery, observability, and AI agents wired into CI/CD — turning sprawling, manually-managed environments into self-service platforms teams run themselves.",
     "cta": {
       "work": "View My Work",
       "contact": "Get In Touch"
@@ -61,10 +61,13 @@
     "docker": "Docker",
     "gitlab": "GitLab CI",
     "azureDevops": "Azure DevOps",
+    "githubActions": "GitHub Actions",
     "jenkins": "Jenkins",
     "argo": "ArgoCD & Kustomize",
     "dynatrace": "Dynatrace",
-    "powershell": "PowerShell"
+    "powershell": "PowerShell",
+    "claudeCode": "Claude Code",
+    "mcp": "MCP Servers"
   },
   "experience": {
     "title": "Experience",
@@ -76,12 +79,15 @@
       "company": "INSPYR Global Solutions",
       "period": "March 2025 - Present",
       "responsibilities": [
-        "Operate a multi-region Azure platform of 300+ services on AKS, with releases driven by Azure DevOps pipelines and PowerShell",
-        "Led consolidation of every alert and dashboard into a single alerts-as-code repository and GitOps release pipeline spanning all environments and regions",
+        "Operate a multi-region Azure platform — 300+ services on AKS, released through Azure DevOps pipelines and PowerShell",
+        "Led the consolidation of every alert and dashboard into one alerts-as-code repository and GitOps release pipeline covering all environments and regions",
         "Maintain and extend the Bicep infrastructure platform, shipping new services through what-if and release pipelines",
         "Enabled managed data infrastructure for developer teams — Azure Synapse and Databricks with Unity Catalog governance, deployed entirely as code",
-        "Drive an in-flight migration of AKS clusters onto Cilium and replace manual incident remediation with self-healing automation",
-        "Led a self-service web app giving developers audited, PII-masked access to Azure SQL and MongoDB across environments — gated by a one-click admin approval queue — plus self-service Kubernetes operations (workload restarts, resource and replica changes) for load-testing teams"
+        "Drive an in-flight migration of AKS clusters onto Cilium, and replace manual incident remediation with self-healing automation",
+        "Led a self-service web app for audited, PII-masked access to Azure SQL and MongoDB behind a one-click admin approval queue, plus gated Kubernetes operations — restarts, resource and replica changes — for load-testing teams",
+        "Embedded Claude agents into the CI/CD platform — an autonomous security agent scans repositories, files GitHub issues under its own identity, then blocks any later PR touching that code until the issue it raised is resolved",
+        "Built the agent tooling — skills, hooks, and sub-agent personas that turn Snyk output into a readable PR comment, and MCP servers exposing internal tooling — running on AKS as GitHub Apps with short-lived scoped tokens and Workload Identity into Key Vault",
+        "Automated GitHub Copilot enablement across multiple orgs under one enterprise — seats, access, per-org budget — plus workflow-dispatch and variable orchestration that keeps pipeline structure consistent across teams"
       ]
     },
     "kodepull": {
@@ -89,11 +95,11 @@
       "company": "KODEPULL SRL",
       "period": "2025 - Present",
       "responsibilities": [
-        "Co-founded the company in 2025 — it delivers enterprise-grade engineering to businesses without enterprise budgets",
-        "Own the entire technical side as CTO: architecture, infrastructure design, platform and vendor decisions, and the quality bar every project ships under",
-        "Lead hands-on engineering and technical delivery across web, custom software, cloud, and mobile work",
-        "Scale specialist engineers, designers, and partners onto each engagement based on what the work actually needs",
-        "Partner with the CEO on technical strategy, keeping delivery mapped to real business outcomes"
+        "Co-founded the company in 2025 to deliver enterprise-grade engineering to businesses without enterprise budgets",
+        "Own the technical side as CTO: architecture, infrastructure design, platform and vendor decisions, and the quality bar every project ships under",
+        "Lead hands-on engineering and delivery across web, custom software, cloud, and mobile",
+        "Scale specialist engineers, designers, and partners onto each engagement as the work needs them",
+        "Partner with the CEO on technical strategy, keeping delivery mapped to business outcomes"
       ]
     },
     "flBetances": {
@@ -102,10 +108,10 @@
       "period": "June 2024 - December 2025",
       "responsibilities": [
         "Embedded in a banking institution's core DevOps team, supporting 50+ engineering teams and a continuous automation backlog",
-        "Maintained and extended an in-house deployment framework on Azure DevOps — YAML templates that detect project type, target environment, and required policy checks",
+        "Maintained and extended an in-house Azure DevOps deployment framework — YAML templates that detect project type, target environment, and required policy checks",
         "Ran nightly deployment operations across all teams, tracing failed deploys through ArgoCD and AKS to the policy or template at fault",
         "Built Power Automate flows for the approval, notification, and ticket-lifecycle processes around DevOps work",
-        "Led an internal Terraform module library that let teams self-provision cloud resources within bank policy; handed off near-complete at contract end"
+        "Led an internal Terraform module library letting teams self-provision cloud resources within bank policy; handed off near-complete at contract end"
       ]
     },
     "arctiq": {
@@ -115,12 +121,13 @@
       "responsibilities": [
         "Designed and led the migration of 60+ applications from a hand-built Rancher setup to a managed AWS EKS platform — FluxCD, GitLab CI, and Terraform",
         "Consolidated branch-per-team sprawl into per-team namespaces, cutting 5–8× of redundant deployed surface",
-        "Rolled out SSO-based access with AWS Identity Center and Entra ID, retiring IAM users in favor of assumed roles and OIDC for pipelines",
+        "Rolled out SSO with AWS Identity Center and Entra ID, retiring IAM users for assumed roles and pipeline OIDC",
         "Built observability from zero — OpenTelemetry instrumentation with Grafana, Loki, and distributed traces across every application",
         "Led Terraform workshops moving dev teams to self-service infrastructure; promoted to local team mentor",
-        "Embedded SOC2 compliance into delivery — automated CI/CD checks, IaC policy, and merge-request gating on GitLab across lower and production environments",
-        "Standardized resource governance with Kubernetes LimitRanges across every environment, and documented the EKS architecture as code with D2 diagrams",
-        "Led a week-long Azure enablement workshop for a client team — from cloud fundamentals and governance through networking, compute, data and AI, and operations"
+        "Embedded SOC2 compliance into delivery — automated CI/CD checks, IaC policy, and GitLab merge-request gating across lower and production environments",
+        "Standardized resource governance with Kubernetes LimitRanges across every environment, and documented the EKS architecture as code in D2",
+        "Run containerized agent workloads on Terraform-provisioned EKS and Fargate — IRSA for pod-level AWS access, GitOps delivery with CI audit on the managed repo",
+        "Led a week-long Azure enablement workshop for a client team — cloud fundamentals and governance through networking, compute, data and AI, and operations"
       ]
     }
   },
@@ -130,7 +137,7 @@
     "readCaseStudy": "Read the case study",
     "kubestronautSim": {
       "title": "Kubestronaut Exam Simulator",
-      "description": "Open-source exam simulator for the Kubestronaut path — one command boots a real Kubernetes cluster, draws every attempt fresh from a growing pool of original questions, and grades on behavior, not YAML. Deliberately harder than the real exams.",
+      "description": "Open-source exam simulator for the Kubestronaut path — one command boots a real Kubernetes cluster, draws each attempt from a growing pool of original questions, and grades behavior, not YAML. Deliberately harder than the real exams.",
       "tech": [
         "Go",
         "React",
@@ -140,7 +147,7 @@
     },
     "cicd": {
       "title": "EKS Platform Migration",
-      "description": "Designed and led the migration of 60+ applications from a hand-built Rancher setup to a managed AWS EKS platform, with FluxCD for GitOps delivery and Terraform for the cloud underneath.",
+      "description": "Designed and led the migration of 60+ applications from a hand-built Rancher setup to a managed AWS EKS platform — FluxCD for GitOps delivery, Terraform for the cloud underneath.",
       "tech": [
         "AWS EKS",
         "FluxCD",
@@ -150,7 +157,7 @@
     },
     "iac": {
       "title": "Multi-Cloud Infrastructure as Code",
-      "description": "Modular Terraform and Bicep platforms for AWS and Azure — networking, compute, storage, and security — with a plan or what-if check running on every change.",
+      "description": "Modular Terraform and Bicep platforms for AWS and Azure — networking, compute, storage, and security — with a plan or what-if check on every change.",
       "tech": [
         "Terraform",
         "Bicep",
@@ -160,7 +167,7 @@
     },
     "monitoring": {
       "title": "Observability from Zero",
-      "description": "Built observability for a platform that started with none — OpenTelemetry instrumentation feeding Grafana, Loki, and distributed traces, with dashboards and alerts on every application.",
+      "description": "Observability for a platform that started with none — OpenTelemetry feeding Grafana, Loki, and distributed traces, with dashboards and alerts on every application.",
       "tech": [
         "OpenTelemetry",
         "Grafana",
@@ -312,6 +319,7 @@
     "infrastructure": "Infrastructure",
     "cicd": "CI/CD & DevOps",
     "monitoring": "Monitoring & Scripting",
+    "ai": "AI & Agents",
     "experience": "PROFESSIONAL EXPERIENCE",
     "projects": "KEY PROJECTS",
     "certifications": "CERTIFICATIONS"

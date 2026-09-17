@@ -18,7 +18,7 @@
       "Ingeniero de Automatización",
       "Especialista en Kubernetes"
     ],
-    "description": "Soy Ingeniero DevOps y Cloud que construye y opera plataformas de Kubernetes sobre AWS y Azure. Mi trabajo se centra en la Infraestructura como Código, la entrega GitOps y la observabilidad — convirtiendo entornos dispersos y gestionados a mano en plataformas automatizadas y autogestionadas que los equipos pueden operar por sí mismos.",
+    "description": "Soy Ingeniero DevOps y Cloud que construye y opera plataformas de Kubernetes sobre AWS y Azure. Mi trabajo se centra en la Infraestructura como Código, la entrega GitOps, la observabilidad y los agentes de IA integrados en CI/CD — convirtiendo entornos dispersos y gestionados a mano en plataformas autogestionadas que los equipos operan por sí mismos.",
     "cta": {
       "work": "Ver Mi Trabajo",
       "contact": "Contáctame"
@@ -61,10 +61,13 @@
     "docker": "Docker",
     "gitlab": "GitLab CI",
     "azureDevops": "Azure DevOps",
+    "githubActions": "GitHub Actions",
     "jenkins": "Jenkins",
     "argo": "ArgoCD & Kustomize",
     "dynatrace": "Dynatrace",
-    "powershell": "PowerShell"
+    "powershell": "PowerShell",
+    "claudeCode": "Claude Code",
+    "mcp": "Servidores MCP"
   },
   "experience": {
     "title": "Experiencia",
@@ -76,12 +79,15 @@
       "company": "INSPYR Global Solutions",
       "period": "Marzo 2025 - Presente",
       "responsibilities": [
-        "Opero una plataforma Azure multi-región de más de 300 servicios sobre AKS, con despliegues gestionados por pipelines de Azure DevOps y PowerShell",
-        "Lideré la consolidación de todas las alertas y dashboards en un único repositorio de alertas como código y un pipeline de despliegue GitOps que abarca todos los entornos y regiones",
+        "Opero una plataforma Azure multi-región — más de 300 servicios sobre AKS, desplegados mediante pipelines de Azure DevOps y PowerShell",
+        "Lideré la consolidación de todas las alertas y dashboards en un único repositorio de alertas como código y un pipeline GitOps que cubre todos los entornos y regiones",
         "Mantengo y extiendo la plataforma de infraestructura en Bicep, desplegando nuevos servicios mediante pipelines de what-if y de release",
         "Habilité infraestructura de datos gestionada para equipos de desarrollo — Azure Synapse y Databricks con gobernanza vía Unity Catalog, desplegados íntegramente como código",
-        "Impulso una migración en curso de clusters de AKS hacia Cilium y reemplazo la remediación manual de incidentes con automatización de auto-recuperación",
-        "Lideré una aplicación web de autoservicio que da a los desarrolladores acceso auditado y con PII enmascarada a Azure SQL y MongoDB en todos los entornos — controlado por una cola de aprobación con un clic para administradores — además de operaciones de Kubernetes de autoservicio (reinicios de cargas de trabajo, cambios de recursos y réplicas) para los equipos de pruebas de carga"
+        "Impulso la migración en curso de clusters de AKS hacia Cilium, y reemplazo la remediación manual de incidentes con automatización de auto-recuperación",
+        "Lideré una aplicación web de autoservicio para acceso auditado y con PII enmascarada a Azure SQL y MongoDB tras una cola de aprobación con un clic, además de operaciones de Kubernetes controladas — reinicios, cambios de recursos y réplicas — para los equipos de pruebas de carga",
+        "Integré agentes de Claude en la plataforma de CI/CD — un agente de seguridad autónomo escanea repositorios, abre issues en GitHub bajo su propia identidad y luego bloquea cualquier PR posterior que toque ese código hasta resolver el issue que levantó",
+        "Construí el tooling de los agentes — skills, hooks y sub-agentes con personas propias que convierten la salida de Snyk en un comentario legible en el PR, y servidores MCP que exponen herramientas internas — corriendo sobre AKS como GitHub Apps con tokens de alcance limitado y corta duración y Workload Identity hacia Key Vault",
+        "Automaticé la habilitación de GitHub Copilot en múltiples organizaciones bajo una misma instancia enterprise — licencias, accesos y presupuesto por organización — más orquestación de workflow dispatch y variables que mantiene consistente la estructura de los pipelines entre equipos"
       ]
     },
     "kodepull": {
@@ -89,11 +95,11 @@
       "company": "KODEPULL SRL",
       "period": "2025 - Presente",
       "responsibilities": [
-        "Cofundé la empresa en 2025 — ofrece ingeniería de nivel empresarial a negocios sin presupuesto de gran empresa",
-        "Dirijo todo el lado técnico como CTO: arquitectura, diseño de infraestructura, decisiones de plataforma y proveedores, y el estándar de calidad con el que se entrega cada proyecto",
-        "Lidero la ingeniería práctica y la entrega técnica en proyectos de web, software a medida, nube y móvil",
-        "Incorporo ingenieros, diseñadores y socios especialistas a cada proyecto según lo que el trabajo realmente requiere",
-        "Colaboro con el CEO en la estrategia técnica, manteniendo la entrega alineada con resultados de negocio reales"
+        "Cofundé la empresa en 2025 para ofrecer ingeniería de nivel empresarial a negocios sin presupuesto de gran empresa",
+        "Dirijo el lado técnico como CTO: arquitectura, diseño de infraestructura, decisiones de plataforma y proveedores, y el estándar de calidad con el que se entrega cada proyecto",
+        "Lidero la ingeniería y la entrega técnica en web, software a medida, nube y móvil",
+        "Incorporo ingenieros, diseñadores y socios especialistas a cada proyecto según lo que el trabajo requiere",
+        "Colaboro con el CEO en la estrategia técnica, manteniendo la entrega alineada con resultados de negocio"
       ]
     },
     "flBetances": {
@@ -103,8 +109,8 @@
       "responsibilities": [
         "Me integré al equipo central de DevOps de una institución bancaria, dando soporte a más de 50 equipos de ingeniería y a un backlog continuo de automatización",
         "Mantuve y extendí un framework de despliegue interno sobre Azure DevOps — plantillas YAML que detectan el tipo de proyecto, el entorno destino y las verificaciones de política requeridas",
-        "Operé los despliegues nocturnos de todos los equipos, rastreando los despliegues fallidos a través de ArgoCD y AKS hasta la política o plantilla causante",
-        "Construí flujos en Power Automate para los procesos de aprobación, notificación y ciclo de vida de tickets en torno al trabajo de DevOps",
+        "Operé los despliegues nocturnos de todos los equipos, rastreando los fallos a través de ArgoCD y AKS hasta la política o plantilla causante",
+        "Construí flujos en Power Automate para los procesos de aprobación, notificación y ciclo de vida de tickets del trabajo de DevOps",
         "Lideré una librería interna de módulos de Terraform que permitió a los equipos autoaprovisionar recursos en la nube dentro de la política del banco; entregada casi completa al finalizar el contrato"
       ]
     },
@@ -114,12 +120,13 @@
       "period": "Julio 2022 - Presente",
       "responsibilities": [
         "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS — FluxCD, GitLab CI y Terraform",
-        "Consolidé la dispersión de \"una rama por equipo\" en namespaces por equipo, recortando entre 5 y 8 veces la superficie desplegada redundante",
-        "Implementé el acceso basado en SSO con AWS Identity Center y Entra ID, retirando los usuarios IAM en favor de roles asumidos y OIDC para los pipelines",
+        "Consolidé la dispersión de “una rama por equipo” en namespaces por equipo, recortando entre 5 y 8 veces la superficie desplegada redundante",
+        "Implementé el acceso SSO con AWS Identity Center y Entra ID, retirando los usuarios IAM en favor de roles asumidos y OIDC para los pipelines",
         "Construí observabilidad desde cero — instrumentación con OpenTelemetry y Grafana, Loki y trazas distribuidas en cada aplicación",
         "Impartí talleres de Terraform para llevar a los equipos de desarrollo a la infraestructura autogestionada; ascendido a mentor del equipo local",
-        "Integré el cumplimiento de SOC2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en los entornos inferiores y de producción",
-        "Estandaricé la gobernanza de recursos con Kubernetes LimitRanges en todos los entornos, y documenté la arquitectura de EKS como código con diagramas D2",
+        "Integré el cumplimiento de SOC2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en entornos inferiores y de producción",
+        "Estandaricé la gobernanza de recursos con Kubernetes LimitRanges en todos los entornos, y documenté la arquitectura de EKS como código en D2",
+        "Opero cargas de agentes en contenedores sobre EKS y Fargate aprovisionados con Terraform — IRSA para el acceso a AWS a nivel de pod, entrega GitOps con auditoría de CI en el repositorio gestionado",
         "Impartí un taller de habilitación en Azure de una semana para el equipo de un cliente — desde fundamentos de la nube y gobernanza hasta redes, cómputo, datos e IA, y operaciones"
       ]
     }
@@ -140,7 +147,7 @@
     },
     "cicd": {
       "title": "Migración de Plataforma a EKS",
-      "description": "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS, con FluxCD para la entrega GitOps y Terraform para la nube subyacente.",
+      "description": "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS — FluxCD para la entrega GitOps y Terraform para la nube subyacente.",
       "tech": [
         "AWS EKS",
         "FluxCD",
@@ -150,7 +157,7 @@
     },
     "iac": {
       "title": "Infraestructura como Código Multi-Nube",
-      "description": "Plataformas modulares de Terraform y Bicep para AWS y Azure — redes, cómputo, almacenamiento y seguridad — con una verificación de plan o what-if que se ejecuta en cada cambio.",
+      "description": "Plataformas modulares de Terraform y Bicep para AWS y Azure — redes, cómputo, almacenamiento y seguridad — con una verificación de plan o what-if en cada cambio.",
       "tech": [
         "Terraform",
         "Bicep",
@@ -160,7 +167,7 @@
     },
     "monitoring": {
       "title": "Observabilidad desde Cero",
-      "description": "Construí la observabilidad de una plataforma que partía de nada — instrumentación con OpenTelemetry alimentando Grafana, Loki y trazas distribuidas, con dashboards y alertas en cada aplicación.",
+      "description": "Observabilidad para una plataforma que partía de nada — OpenTelemetry alimentando Grafana, Loki y trazas distribuidas, con dashboards y alertas en cada aplicación.",
       "tech": [
         "OpenTelemetry",
         "Grafana",
@@ -312,6 +319,7 @@
     "infrastructure": "Infraestructura",
     "cicd": "CI/CD y DevOps",
     "monitoring": "Monitoreo y Scripting",
+    "ai": "IA y Agentes",
     "experience": "EXPERIENCIA PROFESIONAL",
     "projects": "PROYECTOS CLAVE",
     "certifications": "CERTIFICACIONES"
