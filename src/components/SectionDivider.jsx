@@ -35,7 +35,6 @@ export default function SectionDivider() {
         style={{
           background: "var(--accent)",
           opacity,
-          boxShadow: "0 0 10px var(--accent)",
         }}
       />
     </div>

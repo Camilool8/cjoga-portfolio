@@ -29,7 +29,7 @@
       "operational": "Sistemas en línea",
       "unavailable": "Clúster en vivo en espera"
     },
-    "terminalHint": "Prueba la terminal en vivo →",
+    "terminalHint": "Prueba la terminal en vivo",
     "pillars": {
       "multicloud": {
         "title": "Multinube",
@@ -49,7 +49,9 @@
     "languageSelector": "Selector de idioma",
     "skipToContent": "Saltar al contenido",
     "openMenu": "Abrir menú",
-    "closeMenu": "Cerrar menú"
+    "closeMenu": "Cerrar menú",
+    "elsewhere": "Perfiles y correo",
+    "email": "Correo electrónico"
   },
   "about": {
     "title": "Sobre Mí",

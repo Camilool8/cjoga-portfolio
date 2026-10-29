@@ -1,12 +1,15 @@
+import { useTranslation } from "react-i18next";
 import { FaGithub, FaLinkedinIn, FaEnvelope } from "react-icons/fa";
 
 function SideElements() {
+  const { t } = useTranslation();
+  const newTab = t("certifications.opensInNewTab");
   const sideStyle = {
     position: "fixed",
     bottom: 0,
     gap: "20px",
     zIndex: 100,
-    animation: "hReveal 0.8s 2s var(--ease-out-expo) forwards",
+    animation: "hReveal 0.6s calc(1s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
     opacity: 0,
   };
 
@@ -24,7 +27,9 @@ function SideElements() {
   };
 
   return (
-    <>
+    // One landmark for both rails, so their links are not stray content
+    // outside the page structure. Fixed children keep their positions.
+    <aside aria-label={t("nav.elsewhere")}>
       <div
         className="hidden xl:flex flex-col items-center"
         style={{ ...sideStyle, left: "28px" }}
@@ -33,7 +38,7 @@ function SideElements() {
           href="https://github.com/Camilool8"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="GitHub"
+          aria-label={`GitHub ${newTab}`}
           style={linkStyle}
           onMouseEnter={(e) => {
             e.currentTarget.style.color = "var(--accent)";
@@ -50,7 +55,7 @@ function SideElements() {
           href="https://www.linkedin.com/in/cjoga"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="LinkedIn"
+          aria-label={`LinkedIn ${newTab}`}
           style={linkStyle}
           onMouseEnter={(e) => {
             e.currentTarget.style.color = "var(--accent)";
@@ -65,7 +70,7 @@ function SideElements() {
         </a>
         <a
           href="mailto:josejoga.opx@gmail.com"
-          aria-label="Email"
+          aria-label={t("nav.email")}
           style={linkStyle}
           onMouseEnter={(e) => {
             e.currentTarget.style.color = "var(--accent)";
@@ -92,7 +97,7 @@ function SideElements() {
             fontFamily: "var(--font-body)",
             fontSize: "0.8rem",
             writingMode: "vertical-rl",
-            letterSpacing: "0.1em",
+            letterSpacing: "0.05em",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.color = "var(--accent)";
@@ -107,7 +112,7 @@ function SideElements() {
         </a>
         <div style={lineStyle} />
       </div>
-    </>
+    </aside>
   );
 }
 

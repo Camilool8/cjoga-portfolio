@@ -42,13 +42,42 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Fonts: preconnect early; load with display=swap to avoid invisible text. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,200..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,200..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
+    <!-- Fonts are self-hosted (see @font-face in src/styles/global.css),
+         discovered from the stylesheet. Not preloaded: on a slow link a
+         96 KB font preload competes with the render-blocking CSS and
+         delays first paint, while the font itself arrives no sooner. -->
+
+    <!-- Motion safety net. Section reveals start hidden and are faded in
+         by the app; if scripts are off, or the app has not mounted within
+         4s (blocked or failed bundle), show everything in <main> as is. -->
+    <style>
+      .motion-fallback main [style*="opacity:0"],
+      .motion-fallback main [style*="opacity: 0"] {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+    </style>
+    <noscript>
+      <style>
+        main [style*="opacity:0"],
+        main [style*="opacity: 0"] {
+          opacity: 1 !important;
+          transform: none !important;
+          filter: none !important;
+        }
+      </style>
+    </noscript>
+    <script>
+      // First frame ≈ when the prerendered hero's CSS entrance starts;
+      // main.jsx uses it to resume, not replay, that entrance.
+      requestAnimationFrame(function () {
+        window.__t0 = performance.now();
+      });
+      setTimeout(function () {
+        if (!window.__appReady) document.documentElement.classList.add("motion-fallback");
+      }, 4000);
+    </script>
 
     <!-- Structured data: Person + WebSite — feeds rich-result eligibility
          and helps disambiguate the name across search results. -->

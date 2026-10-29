@@ -19,6 +19,7 @@ import {
   cardVariants,
   viewportConfig,
 } from "../hooks/useMotion";
+import { FiArrowUpRight } from "react-icons/fi";
 import SectionHeading from "./SectionHeading";
 import ClusterMap from "./uishots/ClusterMap";
 import SimWorkspace from "./uishots/SimWorkspace";
@@ -270,13 +271,11 @@ function Projects() {
                   <span className="group-hover:underline underline-offset-4">
                     {t(`projects.links.${project.link}`)}
                   </span>
-                  <span
+                  <FiArrowUpRight
                     aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:translate-x-1"
+                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     style={{ color: project.color }}
-                  >
-                    →
-                  </span>
+                  />
                 </div>
               </div>
             </m.a>

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { m, useInView } from "framer-motion";
-import { FaArrowRight } from "react-icons/fa";
+import { FiArrowRight } from "react-icons/fi";
 import PlanetScene from "../hero/PlanetScene";
 import SectionHeading from "../SectionHeading";
 import { localizePath } from "../../utils/i18n";
@@ -245,7 +245,7 @@ loki-0                      1/1     Running   1          30d`,
             }}
           >
             {t("terminal.cta")}
-            <FaArrowRight size={12} />
+            <FiArrowRight aria-hidden="true" />
           </Link>
         </m.div>
       </div>

@@ -35,11 +35,19 @@ function useLoopPath(trackRef) {
       }
       const box = track.getBoundingClientRect();
       const tip = (stage) => {
-        const r = stage.querySelector(".stack-chips").lastElementChild.getBoundingClientRect();
+        const last = stage.querySelector(".stack-chips")?.lastElementChild;
+        if (!last) return null;
+        const r = last.getBoundingClientRect();
         return [r.left + r.width / 2 - box.left, r.bottom - box.top + 4];
       };
-      const [x1, y1] = tip(stages[0]);
-      const [x2, y2] = tip(stages[stages.length - 1]);
+      const first = tip(stages[0]);
+      const end = tip(stages[stages.length - 1]);
+      if (!first || !end) {
+        setLoop(null);
+        return;
+      }
+      const [x1, y1] = first;
+      const [x2, y2] = end;
       const ol = track.querySelector(".stack-flow").getBoundingClientRect();
       const yb = ol.bottom - box.top + 26;
       const r = 14;
@@ -108,10 +116,10 @@ function About() {
                 <SectionHeading title={t("about.heading")} muted={t("about.headingMuted")} />
 
                 <m.div variants={itemVariants}>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px" }}>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px", textWrap: "pretty" }}>
                     {t("about.paragraph1")}
                   </p>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px" }}>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px", textWrap: "pretty" }}>
                     {t("about.paragraph2")}
                   </p>
                 </m.div>
@@ -149,6 +157,8 @@ function About() {
                     height="560"
                     style={{ filter: "grayscale(0.8) contrast(1.05)" }}
                     loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
                   />
                   <div
                     className="absolute top-[-1px] left-[-1px] w-10 h-10 z-10"

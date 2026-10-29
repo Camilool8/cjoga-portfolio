@@ -29,7 +29,7 @@
       "operational": "Systems operational",
       "unavailable": "Live cluster on standby"
     },
-    "terminalHint": "Try the live terminal →",
+    "terminalHint": "Try the live terminal",
     "pillars": {
       "multicloud": {
         "title": "Multi-cloud",
@@ -49,7 +49,9 @@
     "languageSelector": "Language selector",
     "skipToContent": "Skip to content",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "elsewhere": "Profiles and email",
+    "email": "Email"
   },
   "about": {
     "title": "About",

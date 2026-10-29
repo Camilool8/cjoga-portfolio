@@ -70,6 +70,9 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
     const ctx = canvas.getContext("2d");
+    // A blocked or unsupported canvas leaves the section without its
+    // backdrop rather than throwing.
+    if (!ctx) return undefined;
     const reduced =
       quiet || still || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const host = canvas.parentElement;
@@ -466,7 +469,7 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
       raf = visible && !document.hidden ? requestAnimationFrame(loop) : null;
     };
     const play = () => {
-      if (reduced || raf !== null) return;
+      if (reduced || !started || raf !== null) return;
       raf = requestAnimationFrame(loop);
     };
     const stop = () => {
@@ -474,27 +477,41 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
       raf = null;
     };
 
-    resize();
-    frame(performance.now());
-    // The web font can widen the copy once it loads; measure again then,
-    // while the scene is still fading in.
+    // The first frame paints the planet's cached light layers, the most
+    // expensive work here. It waits for an idle moment after the page's
+    // own startup; the scene is still fading in, so nothing is missed.
     let alive = true;
-    if (avoid && document.fonts) {
-      document.fonts.ready.then(() => alive && measureAvoid());
-    }
-
-    const io = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      if (visible) play();
-      else stop();
-    });
-    io.observe(canvas);
-
-    const ro = new ResizeObserver(() => {
+    let started = false;
+    let io = null;
+    let ro = null;
+    const begin = () => {
+      if (!alive) return;
+      started = true;
       resize();
       frame(performance.now());
-    });
-    ro.observe(canvas);
+
+      io = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) play();
+        else stop();
+      });
+      io.observe(canvas);
+
+      ro = new ResizeObserver(() => {
+        resize();
+        frame(performance.now());
+      });
+      ro.observe(canvas);
+    };
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback(begin, { timeout: 700 })
+      : window.setTimeout(begin, 200);
+
+    // The web font can widen the copy once it loads; measure again then,
+    // while the scene is still fading in.
+    if (avoid && document.fonts) {
+      document.fonts.ready.then(() => alive && started && measureAvoid());
+    }
 
     const onPointer = (e) => {
       pointer.tx = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -511,6 +528,7 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
       colors.light = isLightGround(colors.void);
       accent = hexToRgb(colors.accent);
       ink = hexToRgb(colors.ink);
+      if (!started) return;
       paintStars();
       frame(performance.now());
     });
@@ -518,9 +536,11 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
 
     return () => {
       alive = false;
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
       stop();
-      io.disconnect();
-      ro.disconnect();
+      io?.disconnect();
+      ro?.disconnect();
       mo.disconnect();
       window.removeEventListener("pointermove", onPointer);
       document.removeEventListener("visibilitychange", onVisibility);

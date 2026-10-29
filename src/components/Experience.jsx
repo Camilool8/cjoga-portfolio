@@ -145,7 +145,9 @@ function Experience() {
                     background: "var(--bg-surface)",
                     border: `2px solid ${meta.color}`,
                     boxShadow: `0 0 0 4px var(--bg-void), 0 4px 14px ${meta.color}40`,
-                    color: meta.color,
+                    // The brand colour carries the ring; the letter stays in
+                    // ink so it reads on either theme.
+                    color: "var(--text-primary)",
                     fontFamily: "var(--font-display)",
                     fontWeight: 700,
                     fontSize: "0.85rem",
@@ -179,7 +181,7 @@ function Experience() {
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: "0.8rem",
-                        color: "var(--accent)",
+                        color: "var(--accent-ink)",
                         background: "var(--accent-dim)",
                         fontVariantNumeric: "tabular-nums",
                       }}

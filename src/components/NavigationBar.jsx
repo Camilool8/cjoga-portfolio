@@ -179,7 +179,7 @@ function NavigationBar({ theme, toggleTheme }) {
   return (
     <>
       <nav
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-0.5 py-1.5 px-2 glass rounded-2xl transition-all duration-500 max-w-[calc(100vw-32px)] ${
+        className={`fixed top-[max(1rem,env(safe-area-inset-top))] left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-0.5 py-1.5 px-2 glass rounded-2xl transition-all duration-500 max-w-[calc(100vw-32px)] ${
           isScrolled ? "shadow-lg" : ""
         }`}
         style={{
@@ -424,9 +424,16 @@ function NavigationBar({ theme, toggleTheme }) {
           transition: all 0.25s var(--ease-out-expo);
           white-space: nowrap;
         }
+        @media (pointer: coarse) {
+          .nav-pill-link {
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+          }
+        }
         .nav-pill-link:hover,
         .nav-pill-link.nav-pill-active {
-          color: var(--accent);
+          color: var(--accent-ink);
           background: var(--accent-dim);
         }
         /* Condensed pills on tablet (md–lg) so the full nav fits
@@ -464,7 +471,7 @@ function NavigationBar({ theme, toggleTheme }) {
           color: var(--text-secondary);
         }
         .nav-control-btn:hover {
-          color: var(--accent);
+          color: var(--accent-ink);
           background: var(--accent-dim);
         }
 
@@ -537,7 +544,11 @@ function NavigationBar({ theme, toggleTheme }) {
           border-left: 1px solid var(--border-subtle);
           display: flex;
           flex-direction: column;
-          padding: 80px 28px 28px;
+          padding:
+            max(80px, calc(env(safe-area-inset-top) + 64px))
+            max(28px, env(safe-area-inset-right))
+            max(28px, env(safe-area-inset-bottom))
+            28px;
           transform: translateX(100%);
           visibility: hidden;
           transition:
@@ -607,7 +618,7 @@ function NavigationBar({ theme, toggleTheme }) {
         .mobile-nav-item:active,
         .mobile-nav-item.is-active {
           background: var(--accent-dim);
-          color: var(--accent);
+          color: var(--accent-ink);
         }
         .mobile-nav-label {
           font-family: var(--font-display);
@@ -646,7 +657,7 @@ function NavigationBar({ theme, toggleTheme }) {
         .mobile-nav-control-btn:hover,
         .mobile-nav-control-btn:active {
           background: var(--accent-dim);
-          color: var(--accent);
+          color: var(--accent-ink);
         }
 
         .mobile-nav-footer {

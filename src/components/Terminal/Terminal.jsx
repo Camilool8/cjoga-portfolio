@@ -149,6 +149,7 @@ export default function Terminal() {
                 disabled={isProcessing}
                 spellCheck={false}
                 autoComplete="off"
+                maxLength={200}
                 autoCorrect="off"
                 autoCapitalize="off"
                 enterKeyHint="send"

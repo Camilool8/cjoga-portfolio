@@ -94,16 +94,9 @@ if (isProduction) {
             // The beacon reports RUM data here.
             "https://cloudflareinsights.com",
           ],
-          fontSrc: [
-            "'self'",
-            "https://fonts.gstatic.com",
-            "https://cdnjs.cloudflare.com",
-          ],
-          styleSrc: [
-            "'self'",
-            "'unsafe-inline'",
-            "https://fonts.googleapis.com",
-          ],
+          // Fonts are self-hosted under /fonts.
+          fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
           imgSrc: ["'self'", "data:"],
         },
       },

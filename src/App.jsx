@@ -17,6 +17,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import HandbookCallout from "./components/HandbookCallout";
 import SectionDivider from "./components/SectionDivider";
+import DeferredSection from "./components/DeferredSection";
 import PrintButton from "./components/PrintButton";
 import ScrollProgress from "./components/ScrollProgress";
 import SideElements from "./components/SideElements";
@@ -45,7 +46,6 @@ function RouteFallback() {
           className="w-2 h-2 rounded-full"
           style={{
             background: "var(--accent)",
-            boxShadow: "0 0 8px var(--accent)",
             animation: "pulse 1.2s ease-in-out infinite",
           }}
         />
@@ -111,27 +111,6 @@ function MainLayout({ theme, toggleTheme, children }) {
       </main>
       <Footer />
       <PrintButton />
-      <style>{`
-        .skip-link {
-          position: fixed;
-          top: 12px;
-          left: 12px;
-          z-index: 2000;
-          padding: 10px 16px;
-          border-radius: 10px;
-          background: var(--bg-elevated, #1a2332);
-          color: var(--accent);
-          font-family: var(--font-body);
-          font-size: 0.8rem;
-          text-decoration: none;
-          border: 1px solid var(--border-medium, currentColor);
-          transform: translateY(-200%);
-        }
-        .skip-link:focus-visible,
-        .skip-link:focus {
-          transform: translateY(0);
-        }
-      `}</style>
     </div>
   );
 }
@@ -145,13 +124,19 @@ function Home() {
       <SectionDivider />
       <Experience />
       <SectionDivider />
-      <Projects />
+      <DeferredSection id="projects">
+        <Projects />
+      </DeferredSection>
       <SectionDivider />
-      <Certifications />
+      <DeferredSection id="certifications">
+        <Certifications />
+      </DeferredSection>
       <SectionDivider />
       <HandbookCallout />
       <SectionDivider />
-      <TerminalPromo />
+      <DeferredSection id="terminal-promo">
+        <TerminalPromo />
+      </DeferredSection>
       <SectionDivider />
       <Contact />
     </>

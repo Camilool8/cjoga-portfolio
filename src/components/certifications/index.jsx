@@ -66,9 +66,13 @@ function CountUp({ value, duration = 1.1 }) {
 }
 
 function CertRow({ cert, t, featured, divider, inProgress }) {
+  // The icon rides on the last word, so a wrapped name never leaves it
+  // stranded at the end of the first line.
+  const name = t(`certifications.${cert.key}.name`);
+  const cut = name.lastIndexOf(" ") + 1;
   return (
     <div
-      className="flex items-center justify-between gap-3 py-2"
+      className="cert-row flex items-center justify-between gap-3 py-2"
       style={{
         borderTop: divider ? "1px solid var(--border-subtle)" : "none",
       }}
@@ -87,24 +91,29 @@ function CertRow({ cert, t, featured, divider, inProgress }) {
               href={cert.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-baseline gap-1.5 transition-opacity hover:opacity-70"
+              className="cert-link transition-opacity hover:opacity-70"
               style={{ color: "inherit", textDecoration: "none" }}
             >
-              <span>{t(`certifications.${cert.key}.name`)}</span>
+              {name.slice(0, cut)}
+              <span style={{ whiteSpace: "nowrap" }}>
+                {name.slice(cut)}
+                <FaExternalLinkAlt
+                  aria-hidden="true"
+                  style={{
+                    display: "inline",
+                    fontSize: "0.55rem",
+                    opacity: 0.5,
+                    marginLeft: "0.45em",
+                    verticalAlign: "0.1em",
+                  }}
+                />
+              </span>
               <span className="sr-only">
                 {t("certifications.opensInNewTab", "(opens in new tab)")}
               </span>
-              <FaExternalLinkAlt
-                aria-hidden="true"
-                style={{
-                  fontSize: "0.55rem",
-                  opacity: 0.5,
-                  flexShrink: 0,
-                }}
-              />
             </a>
           ) : (
-            t(`certifications.${cert.key}.name`)
+            name
           )}
         </div>
       </div>
@@ -115,7 +124,7 @@ function CertRow({ cert, t, featured, divider, inProgress }) {
             fontFamily: "var(--font-body)",
             fontSize: "0.75rem",
             fontWeight: 600,
-            color: "var(--accent)",
+            color: "var(--accent-ink)",
             background: "var(--accent-dim)",
             padding: "3px 10px",
             borderRadius: "6px",
@@ -175,17 +184,14 @@ function Certifications() {
                 fontFamily: "var(--font-body)",
                 fontSize: "0.75rem",
                 fontWeight: 500,
-                color: "var(--accent)",
+                color: "var(--accent-ink)",
                 background: "var(--accent-dim)",
                 border: "1px solid var(--border-subtle)",
               }}
             >
               <span
                 className="w-1.5 h-1.5 rounded-full"
-                style={{
-                  background: "#22c55e",
-                  boxShadow: "0 0 6px #22c55e",
-                }}
+                style={{ background: "var(--accent)" }}
                 aria-hidden="true"
               />
               <CountUp value={CERT_COUNT} />

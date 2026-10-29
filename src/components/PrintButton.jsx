@@ -83,7 +83,7 @@ function PrintButton() {
 
   return (
     <div
-      className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 xl:right-20 z-40 print:hidden flex flex-col items-end gap-2"
+      className="fixed bottom-[max(1.5rem,calc(env(safe-area-inset-bottom)_+_0.75rem))] right-[max(1rem,env(safe-area-inset-right))] sm:bottom-[max(2rem,calc(env(safe-area-inset-bottom)_+_0.75rem))] sm:right-[max(1.5rem,env(safe-area-inset-right))] xl:right-20 z-40 print:hidden flex flex-col items-end gap-2"
       style={{
         opacity: pastHero ? 1 : 0,
         visibility: pastHero ? "visible" : "hidden",

@@ -8,52 +8,26 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import { FiDownload } from "react-icons/fi";
+import { FiArrowRight, FiDownload } from "react-icons/fi";
 import { EASE_SMOOTH } from "../hooks/useMotion";
 import PlanetScene from "./hero/PlanetScene";
 import useCvDownload from "../hooks/useCvDownload";
 
 const ROLE_PERIOD = 4000;
 
+// The name arrives word by word: blur, drop and fade, in CSS so it plays
+// from the prerendered HTML without waiting for the bundle (see .h-word).
 function BlurWords({ words, baseDelay = 0, className = "", style = {} }) {
-  const reduced = useReducedMotion();
-  // On coarse pointers (phones/tablets), skip the blur filter — paint cost on
-  // multi-word headlines was visibly stuttering. opacity+translate covers it.
-  const coarse =
-    typeof window !== "undefined" &&
-    window.matchMedia("(pointer: coarse), (max-width: 768px)").matches;
-  return words.map((word, i) => {
-    const initial = reduced
-      ? { opacity: 0 }
-      : coarse
-        ? { opacity: 0, y: -10 }
-        : { opacity: 0, filter: "blur(8px)", y: -14 };
-    const animate = reduced
-      ? { opacity: 1 }
-      : coarse
-        ? { opacity: 1, y: 0 }
-        : { opacity: 1, filter: "blur(0px)", y: 0 };
-    return [
-      i > 0 ? " " : null,
-      <m.span
-        key={`${word}-${i}`}
-        className={className}
-        style={{
-          display: "inline-block",
-          ...style,
-        }}
-        initial={initial}
-        animate={animate}
-        transition={{
-          duration: 0.7,
-          delay: baseDelay + i * 0.11,
-          ease: EASE_SMOOTH,
-        }}
-      >
-        {word}
-      </m.span>,
-    ];
-  });
+  return words.map((word, i) => [
+    i > 0 ? " " : null,
+    <span
+      key={`${word}-${i}`}
+      className={`h-word ${className}`.trim()}
+      style={{ ...style, "--d": `${baseDelay + i * 0.08}s` }}
+    >
+      {word}
+    </span>,
+  ]);
 }
 
 function Hero() {
@@ -102,7 +76,7 @@ function Hero() {
       ref={heroRef}
       id="hero"
       className="hero-grain min-h-[100dvh] flex flex-col justify-center relative overflow-hidden"
-      style={{ background: "var(--gradient-hero)", padding: "clamp(108px, 15vh, 128px) 0 60px" }}
+      style={{ background: "var(--gradient-hero)", padding: "var(--hero-pt, clamp(108px, 15vh, 128px)) 0 60px" }}
     >
       <m.div
         className="hero-scene"
@@ -119,13 +93,13 @@ function Hero() {
         style={{ opacity: heroOpacity, y: heroY }}
       >
         <p
-          className="mb-5"
+          className="hero-whoami"
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: "0.85rem",
             color: "var(--accent)",
             opacity: 0,
-            animation: "hReveal 0.6s 0.3s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.5s calc(0.05s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
           <span style={{ color: "var(--accent)" }}>~/camilo</span> $ whoami
@@ -156,11 +130,11 @@ function Hero() {
             textWrap: "balance",
           }}
         >
-          <BlurWords words={["José", "Camilo"]} baseDelay={0.45} />{" "}
+          <BlurWords words={["José", "Camilo"]} baseDelay={0.12} />{" "}
           <br />
           <BlurWords
             words={["Joga", "Guerrero."]}
-            baseDelay={0.7}
+            baseDelay={0.28}
             style={{
               background: "var(--gradient-accent)",
               WebkitBackgroundClip: "text",
@@ -171,6 +145,7 @@ function Hero() {
         </h1>
 
         <div
+          className="hero-role"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(1.2rem, 3.5vw, 2.2rem)",
@@ -179,7 +154,7 @@ function Hero() {
             marginBottom: "clamp(14px, 3.5vh, 28px)",
             minHeight: "1.4em",
             opacity: 0,
-            animation: "hReveal 0.8s 1.1s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.6s calc(0.5s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
           {reduced ? (
@@ -210,7 +185,7 @@ function Hero() {
             marginBottom: "clamp(22px, 5vh, 40px)",
             textWrap: "pretty",
             opacity: 0,
-            animation: "hReveal 0.8s 1.25s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.6s calc(0.6s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
           {(() => {
@@ -224,7 +199,7 @@ function Hero() {
           className="hero-actions flex items-center gap-4 flex-wrap"
           style={{
             opacity: 0,
-            animation: "hReveal 0.8s 1.45s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.6s calc(0.72s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
           <button
@@ -241,23 +216,10 @@ function Hero() {
           </a>
           <Link
             to={i18n.language === "es" ? "/es/terminal" : "/terminal"}
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "0.9375rem",
-              color: "var(--text-tertiary)",
-              textDecoration: "none",
-              borderBottom: "1px dashed var(--border-medium)",
-              paddingBottom: "2px",
-              transition: "color 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--accent)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "var(--text-tertiary)";
-            }}
+            className="hero-terminal-link"
           >
             {t("hero.terminalHint")}
+            <FiArrowRight aria-hidden="true" className="hero-terminal-link__icon" />
           </Link>
           {hasError && (
             <p role="alert" className="w-full m-0" style={{ fontSize: "0.9375rem", color: "var(--text-secondary)" }}>
@@ -270,7 +232,7 @@ function Hero() {
           className="hero-telemetry"
           style={{
             opacity: 0,
-            animation: "hReveal 0.8s 1.7s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.6s calc(0.85s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
           <ul className="hero-pillars">
