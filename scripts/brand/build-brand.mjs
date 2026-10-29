@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Build brand assets — favicons, app icons, and OG cards — for both the
- * portfolio and the blog from a single set of source SVGs.
+ * portfolio and the blog. Icons come from mark.svg / maskable.svg; the two
+ * default social cards come from the shared card template (og-card.mjs).
  *
  * Usage:
  *   node scripts/brand/build-brand.mjs
@@ -31,6 +32,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import pngToIco from "png-to-ico";
+import { renderCards, WORDMARK } from "./og-card.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(__dirname, "..", "..");
@@ -51,14 +53,6 @@ async function svgToPng(svgPath, size) {
     .toBuffer();
 }
 
-async function svgToPngBox(svgPath, w, h) {
-  const svg = await readFile(svgPath);
-  return sharp(svg, { density: 220 })
-    .resize(w, h, { fit: "fill" })
-    .png({ compressionLevel: 9 })
-    .toBuffer();
-}
-
 async function writePng(buf, dest) {
   await ensureDir(dirname(dest));
   await writeFile(dest, buf);
@@ -70,8 +64,6 @@ async function build() {
 
   const markSvg = join(BRAND, "mark.svg");
   const maskableSvg = join(BRAND, "maskable.svg");
-  const ogPortfolio = join(BRAND, "og-portfolio.svg");
-  const ogBlog = join(BRAND, "og-blog-default.svg");
 
   // 1. Master SVG mark — copied verbatim to both sites.
   const markRaw = await readFile(markSvg);
@@ -111,17 +103,28 @@ async function build() {
   await writePng(maskable, join(PORTFOLIO_PUBLIC, "icons", "icon-maskable-512.png"));
   await writePng(maskable, join(BLOG_STATIC, "icon-maskable-512.png"));
 
-  // 7. OG images — portfolio.
-  const ogP = await svgToPngBox(ogPortfolio, 1200, 630);
-  await writePng(ogP, join(PORTFOLIO_PUBLIC, "images", "og-image.png"));
+  // 7–8. Default social cards: the portfolio's and the handbook's.
+  const [ogP, ogB] = await renderCards([
+    {
+      wordmark: WORDMARK.portfolio,
+      titleHtml: 'José Camilo <span class="muted">Joga Guerrero.</span>',
+      description: "DevOps & Cloud Engineer",
+      domain: "cjoga.cloud",
+    },
+    {
+      wordmark: WORDMARK.handbook,
+      titleHtml: 'Opinions, the lab, <span class="muted">and cert guides.</span>',
+      domain: "blog.cjoga.cloud",
+    },
+  ]);
+
+  await writePng(await sharp(ogP).png({ compressionLevel: 9 }).toBuffer(), join(PORTFOLIO_PUBLIC, "images", "og-image.png"));
   await sharp(ogP)
     .webp({ quality: 88 })
     .toFile(join(PORTFOLIO_PUBLIC, "images", "og-image.webp"));
   console.log("  → public/images/og-image.webp");
 
-  // 8. OG images — blog default.
-  const ogB = await svgToPngBox(ogBlog, 1200, 630);
-  await writePng(ogB, join(BLOG_STATIC, "og-default.png"));
+  await writePng(await sharp(ogB).png({ compressionLevel: 9 }).toBuffer(), join(BLOG_STATIC, "og-default.png"));
   await sharp(ogB)
     .webp({ quality: 88 })
     .toFile(join(BLOG_STATIC, "og-default.webp"));
