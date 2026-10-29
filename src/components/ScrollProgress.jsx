@@ -15,7 +15,6 @@ function ScrollProgress() {
       style={{
         scaleX,
         background: "var(--gradient-accent)",
-        boxShadow: "0 0 12px var(--accent-glow)",
       }}
       aria-hidden="true"
     />

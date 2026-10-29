@@ -4,39 +4,42 @@ export const EASE_SMOOTH = [0.25, 1, 0.5, 1];
 
 export const SPRING_CONFIG = { stiffness: 50, damping: 25, mass: 1 };
 
+// Section reveals support the content, they are not the show: short,
+// a small rise, no scale. The hero globe and the stack pipeline's
+// signal are the authored moments; everything else just arrives.
 export const sectionVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.98 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 1.2,
+      duration: 0.6,
       ease: EASE_SMOOTH,
-      staggerChildren: 0.15,
+      staggerChildren: 0.08,
     },
   },
 };
 
 export const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 12 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 1.0, ease: EASE_SMOOTH },
+    transition: { duration: 0.6, ease: EASE_SMOOTH },
   },
 };
 
+// Cards stagger as a list, capped so the last of a long grid is not
+// left waiting: at most 5 steps of 60ms.
 export const cardVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.96 },
-  visible: (i) => ({
+  hidden: { opacity: 0, y: 14 },
+  visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.9,
+      duration: 0.6,
       ease: EASE_SMOOTH,
-      delay: i * 0.12,
+      delay: Math.min(i, 5) * 0.06,
     },
   }),
 };

@@ -35,18 +35,18 @@ export const techIcons = {
 };
 
 export const seoMetadata = {
-  title: "Jose Camilo Joga Guerrero | DevOps & Cloud Engineer",
+  title: "Jose Camilo Joga Guerrero | Platform & DevOps Engineer",
   description:
-    "Professional portfolio of Jose Camilo Joga Guerrero, DevOps & Cloud Engineer specializing in automation, CI/CD, Infrastructure as Code, and hybrid cloud environments.",
+    "Professional portfolio of Jose Camilo Joga Guerrero, Platform & DevOps Engineer with a cloud engineering foundation, specializing in automation, CI/CD, Infrastructure as Code, and hybrid cloud environments.",
   keywords:
-    "DevOps, Cloud Engineer, AWS, Azure, Kubernetes, CI/CD, Infrastructure as Code, Terraform, Ansible, Docker",
+    "Platform Engineer, DevOps, Cloud Engineer, AWS, Azure, Kubernetes, CI/CD, Infrastructure as Code, Terraform, Ansible, Docker",
   ogImage: "/images/og-image.webp",
   twitterHandle: "@yourhandle",
 };
 
 export const cvMetadata = {
   name: "Jose Camilo Joga Guerrero",
-  title: "DevOps & Cloud Engineer",
+  title: "Platform & DevOps Engineer",
   email: "josejoga.opx@gmail.com",
   phone: "+1 (809) 881-7982",
   linkedin: "www.linkedin.com/in/cjoga",

@@ -8,63 +8,33 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
+import { FiArrowRight, FiDownload } from "react-icons/fi";
 import { EASE_SMOOTH } from "../hooks/useMotion";
-import { CERT_COUNT } from "./certifications/certData";
+import PlanetScene from "./hero/PlanetScene";
+import useCvDownload from "../hooks/useCvDownload";
 
 const ROLE_PERIOD = 4000;
 
-const HEALTH_DOT = {
-  checking: "var(--text-tertiary)",
-  operational: "var(--accent)",
-  unavailable: "var(--accent-warm)",
-};
-
+// The name arrives word by word: blur, drop and fade, in CSS so it plays
+// from the prerendered HTML without waiting for the bundle (see .h-word).
 function BlurWords({ words, baseDelay = 0, className = "", style = {} }) {
-  const reduced = useReducedMotion();
-  // On coarse pointers (phones/tablets), skip the blur filter — paint cost on
-  // multi-word headlines was visibly stuttering. opacity+translate covers it.
-  const coarse =
-    typeof window !== "undefined" &&
-    window.matchMedia("(pointer: coarse), (max-width: 768px)").matches;
-  return words.map((word, i) => {
-    const initial = reduced
-      ? { opacity: 0 }
-      : coarse
-        ? { opacity: 0, y: -10 }
-        : { opacity: 0, filter: "blur(8px)", y: -14 };
-    const animate = reduced
-      ? { opacity: 1 }
-      : coarse
-        ? { opacity: 1, y: 0 }
-        : { opacity: 1, filter: "blur(0px)", y: 0 };
-    return (
-      <m.span
-        key={`${word}-${i}`}
-        className={className}
-        style={{
-          display: "inline-block",
-          marginRight: i === words.length - 1 ? 0 : "0.22em",
-          ...style,
-        }}
-        initial={initial}
-        animate={animate}
-        transition={{
-          duration: 0.7,
-          delay: baseDelay + i * 0.11,
-          ease: EASE_SMOOTH,
-        }}
-      >
-        {word}
-      </m.span>
-    );
-  });
+  return words.map((word, i) => [
+    i > 0 ? " " : null,
+    <span
+      key={`${word}-${i}`}
+      className={`h-word ${className}`.trim()}
+      style={{ ...style, "--d": `${baseDelay + i * 0.08}s` }}
+    >
+      {word}
+    </span>,
+  ]);
 }
 
 function Hero() {
   const { t, i18n } = useTranslation();
   const reduced = useReducedMotion();
+  const { download, isGenerating, hasError } = useCvDownload();
   const [roleIndex, setRoleIndex] = useState(0);
-  const [health, setHealth] = useState("checking");
 
   const heroRef = useRef(null);
 
@@ -75,7 +45,9 @@ function Hero() {
   // Drive parallax directly off scrollYProgress (compositor-friendly transforms).
   // Dropped the useSpring wrapper — it keeps interpolating after scroll stops
   // and adds main-thread cost without a visible benefit on a one-way exit fade.
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  // Fade only once the hero is mostly gone, so the bottom row stays
+  // readable while the visitor scrolls down to it.
+  const heroOpacity = useTransform(scrollYProgress, [0.55, 0.95], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 0.8], [0, -60]);
   const gridY = useTransform(scrollYProgress, [0, 1], [0, -20]);
 
@@ -96,80 +68,38 @@ function Hero() {
     return () => clearTimeout(timer);
   }, [reduced, roleIndex, textArray.length]);
 
-  // Real health for the status strip — one fetch on mount, no polling.
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/health", { signal: AbortSignal.timeout(5000) })
-      .then((res) => {
-        if (!cancelled) setHealth(res.ok ? "operational" : "unavailable");
-      })
-      .catch(() => {
-        if (!cancelled) setHealth("unavailable");
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   const currentRole =
     textArray.length > 0 ? textArray[roleIndex % textArray.length] : "";
-
-  const healthLabel = {
-    checking: t("hero.status.checking", "checking systems…"),
-    operational: t("hero.status.operational", "systems operational"),
-    unavailable: t("hero.status.unavailable", "systems unreachable"),
-  }[health];
 
   return (
     <section
       ref={heroRef}
       id="hero"
-      className="min-h-[100dvh] flex flex-col justify-center relative overflow-hidden"
-      style={{ background: "var(--gradient-hero)", padding: "100px 0 60px" }}
+      className="hero-grain min-h-[100dvh] flex flex-col justify-center relative overflow-hidden"
+      style={{ background: "var(--gradient-hero)", padding: "var(--hero-pt, clamp(108px, 15vh, 128px)) 0 60px" }}
     >
       <m.div
-        aria-hidden="true"
-        className="hero-orb hero-orb-accent absolute pointer-events-none"
-        initial={reduced ? { opacity: 0.4, scale: 1 } : { opacity: 0, scale: 0.6 }}
-        animate={{ opacity: 0.45, scale: 1 }}
-        transition={{ duration: reduced ? 0 : 1.6, ease: EASE_SMOOTH }}
-      />
-      <m.div
-        aria-hidden="true"
-        className="hero-orb hero-orb-warm absolute pointer-events-none"
-        initial={reduced ? { opacity: 0.25, scale: 1 } : { opacity: 0, scale: 0.6 }}
-        animate={{ opacity: 0.3, scale: 1 }}
-        transition={{ duration: reduced ? 0 : 1.8, delay: 0.2, ease: EASE_SMOOTH }}
-      />
-
-      <m.div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          y: gridY,
-          backgroundImage:
-            "linear-gradient(var(--border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          maskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 100%)",
-          opacity: 0.4,
-        }}
-        aria-hidden="true"
-      />
+        className="hero-scene"
+        initial={reduced ? false : { opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: reduced ? 0 : 2.2, ease: EASE_SMOOTH }}
+        style={{ y: gridY }}
+      >
+        <PlanetScene avoid="#hero .hero-telemetry, #hero h1, #hero .hero-actions" />
+      </m.div>
 
       <m.div
         className="section-inner relative z-10"
         style={{ opacity: heroOpacity, y: heroY }}
       >
         <p
-          className="mb-5"
+          className="hero-whoami"
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: "0.85rem",
             color: "var(--accent)",
             opacity: 0,
-            animation: "hReveal 0.6s 0.3s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.5s calc(0.05s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
           <span style={{ color: "var(--accent)" }}>~/camilo</span> $ whoami
@@ -188,18 +118,23 @@ function Hero() {
         <h1
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(2rem, 5.5vw, 3.8rem)",
+            // Capped by viewport height too, so a short window still shows
+            // the action buttons above the fold.
+            fontSize: "clamp(2rem, min(6.4vw, 8vh), 4.75rem)",
             fontWeight: 800,
+            fontStretch: "125%",
+            fontVariationSettings: "'wdth' 125",
             lineHeight: 1.05,
-            letterSpacing: "-0.04em",
+            letterSpacing: "-0.03em",
             marginBottom: "8px",
             textWrap: "balance",
           }}
         >
-          <BlurWords words={["Jose", "Camilo"]} baseDelay={0.45} />
+          <BlurWords words={["José", "Camilo"]} baseDelay={0.12} />{" "}
+          <br />
           <BlurWords
             words={["Joga", "Guerrero."]}
-            baseDelay={0.7}
+            baseDelay={0.28}
             style={{
               background: "var(--gradient-accent)",
               WebkitBackgroundClip: "text",
@@ -210,15 +145,16 @@ function Hero() {
         </h1>
 
         <div
+          className="hero-role"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(1.2rem, 3.5vw, 2.2rem)",
             fontWeight: 600,
             color: "var(--text-secondary)",
-            marginBottom: "28px",
+            marginBottom: "clamp(14px, 3.5vh, 28px)",
             minHeight: "1.4em",
             opacity: 0,
-            animation: "hReveal 0.8s 1.1s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.6s calc(0.5s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
           {reduced ? (
@@ -231,7 +167,7 @@ function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: EASE_SMOOTH }}
+                transition={{ duration: 0.28, ease: EASE_SMOOTH }}
               >
                 {currentRole}
               </m.span>
@@ -239,104 +175,78 @@ function Hero() {
           )}
         </div>
 
+        {/* One sentence: the title and what it means. The rest of the
+            description is the CV summary; on the page the statements
+            below carry it. */}
         <p
-          className="max-w-[560px]"
+          className="hero-lede max-w-[560px]"
           style={{
-            fontSize: "1.05rem",
-            lineHeight: 1.7,
-            color: "var(--text-secondary)",
-            marginBottom: "40px",
+            color: "var(--text-primary)",
+            marginBottom: "clamp(22px, 5vh, 40px)",
             textWrap: "pretty",
             opacity: 0,
-            animation: "hReveal 0.8s 1.25s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.6s calc(0.6s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
-          {t("hero.description")}
+          {(() => {
+            const text = t("hero.description");
+            const cut = text.indexOf(". ");
+            return cut < 0 ? text : text.slice(0, cut + 1);
+          })()}
         </p>
 
         <div
-          className="flex items-center gap-4 flex-wrap"
+          className="hero-actions flex items-center gap-4 flex-wrap"
           style={{
             opacity: 0,
-            animation: "hReveal 0.8s 1.45s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.6s calc(0.72s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
-          <a href="#projects" className="btn btn-primary">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={download}
+            disabled={isGenerating}
+          >
+            <FiDownload aria-hidden="true" />
+            {isGenerating ? t("print.generating") : t("print.button")}
+          </button>
+          <a href="#projects" className="btn btn-outline">
             {t("hero.cta.work")}
-          </a>
-          <a href="#contact" className="btn btn-outline">
-            {t("hero.cta.contact")}
           </a>
           <Link
             to={i18n.language === "es" ? "/es/terminal" : "/terminal"}
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.8rem",
-              color: "var(--text-tertiary)",
-              textDecoration: "none",
-              borderBottom: "1px dashed var(--border-medium)",
-              paddingBottom: "2px",
-              transition: "color 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--accent)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "var(--text-tertiary)";
-            }}
+            className="hero-terminal-link"
           >
-            {t("hero.terminalHint", "try the live terminal →")}
+            {t("hero.terminalHint")}
+            <FiArrowRight aria-hidden="true" className="hero-terminal-link__icon" />
           </Link>
+          {hasError && (
+            <p role="alert" className="w-full m-0" style={{ fontSize: "0.9375rem", color: "var(--text-secondary)" }}>
+              {t("print.error")}
+            </p>
+          )}
         </div>
 
         <div
-          className="flex items-center gap-5 mt-[60px] pt-8 flex-wrap"
+          className="hero-telemetry"
           style={{
-            borderTop: "1px solid var(--border-subtle)",
             opacity: 0,
-            animation: "hReveal 0.8s 1.7s var(--ease-out-expo) forwards",
+            animation: "hReveal 0.6s calc(0.85s - var(--hero-t, 0s)) var(--ease-out-expo) forwards",
           }}
         >
-          <div
-            className="flex items-center gap-2"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.72rem",
-              color: "var(--text-tertiary)",
-            }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-              style={{
-                background: HEALTH_DOT[health],
-                boxShadow:
-                  health === "checking"
-                    ? "none"
-                    : `0 0 6px ${HEALTH_DOT[health]}`,
-              }}
-              aria-hidden="true"
-            />
-            <span>{healthLabel}</span>
-          </div>
-          <span
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.72rem",
-              color: "var(--text-tertiary)",
-              fontVariantNumeric: "tabular-nums",
-            }}
-          >
-            {t("hero.status.certs", { count: CERT_COUNT })}
-          </span>
-          <span
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.72rem",
-              color: "var(--text-tertiary)",
-            }}
-          >
-            {t("hero.status.opportunities", "open to opportunities")}
-          </span>
+          <ul className="hero-pillars">
+            {["multicloud", "global", "agents"].map((id) => (
+              <li key={id} className="hero-pillar">
+                <span className="hero-pillar__title">{t(`hero.pillars.${id}.title`)}</span>
+                <span className="hero-pillar__text">{t(`hero.pillars.${id}.text`)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="hero-status">
+            <span className="hero-status__dot" aria-hidden="true" />
+            <span>{t("hero.status.opportunities")}</span>
+          </p>
         </div>
       </m.div>
     </section>

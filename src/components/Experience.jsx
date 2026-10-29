@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import SectionHeading from "./SectionHeading";
 import {
   sectionVariants,
   itemVariants,
@@ -16,9 +17,14 @@ const COMPANY_META = {
   arctiq: { initial: "A", color: "#10b981" },
 };
 
+// Each role leads with its three strongest lines; the rest open on
+// demand so the section reads in a minute and still holds the record.
+const LEAD_LINES = 3;
+
 function Experience() {
   const { t } = useTranslation();
   const timelineRef = useRef(null);
+  const [expanded, setExpanded] = useState({});
 
   const { scrollYProgress } = useScroll({
     target: timelineRef,
@@ -43,14 +49,10 @@ function Experience() {
           whileInView="visible"
           viewport={viewportConfig}
         >
-          <m.div variants={itemVariants}>
-            <span className="section-label">
-              {t("experience.title", "Experience")}
-            </span>
-            <h2 className="section-heading">
-              {t("experience.heading", "Where I've worked.")}
-            </h2>
-          </m.div>
+          <SectionHeading title={t("experience.heading")} muted={t("experience.headingMuted")} />
+          <m.p variants={itemVariants} className="section-lede">
+            {t("experience.lede")}
+          </m.p>
         </m.div>
 
         <div
@@ -87,9 +89,40 @@ function Experience() {
           {companyKeys.map((key, index) => {
             const active = isActive(key);
             const meta = COMPANY_META[key] || { initial: "•", color: "var(--accent)" };
+            const lines = t(`experience.${key}.responsibilities`, { returnObjects: true });
+            const list = Array.isArray(lines) ? lines : [];
+            const isOpen = Boolean(expanded[key]);
+            const extra = list.length - LEAD_LINES;
+            const renderLine = (item) => (
+              <li
+                key={item}
+                className="relative pl-5 mb-2.5"
+                style={{
+                  fontSize: "0.95rem",
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.6,
+                  maxWidth: "72ch",
+                }}
+              >
+                <span
+                  className="absolute left-0"
+                  style={{
+                    color: "var(--text-tertiary)",
+                    fontWeight: 700,
+                    fontSize: "1.1rem",
+                    lineHeight: 1.5,
+                  }}
+                  aria-hidden="true"
+                >
+                  ›
+                </span>
+                {item}
+              </li>
+            );
             return (
               <m.div
                 key={key}
+                id={`exp-${key}`}
                 custom={index}
                 variants={cardVariants}
                 initial="hidden"
@@ -112,7 +145,9 @@ function Experience() {
                     background: "var(--bg-surface)",
                     border: `2px solid ${meta.color}`,
                     boxShadow: `0 0 0 4px var(--bg-void), 0 4px 14px ${meta.color}40`,
-                    color: meta.color,
+                    // The brand colour carries the ring; the letter stays in
+                    // ink so it reads on either theme.
+                    color: "var(--text-primary)",
                     fontFamily: "var(--font-display)",
                     fontWeight: 700,
                     fontSize: "0.85rem",
@@ -133,9 +168,7 @@ function Experience() {
                   />
                 )}
 
-                <m.div
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "tween", duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
+                <div
                   className="timeline-card rounded-2xl p-6 md:p-7 transition-colors duration-300"
                   style={{
                     background: "var(--bg-surface)",
@@ -146,55 +179,15 @@ function Experience() {
                     <span
                       className="py-1 px-2.5 rounded-md"
                       style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.72rem",
-                        color: "var(--accent)",
+                        fontFamily: "var(--font-body)",
+                        fontSize: "0.8rem",
+                        color: "var(--accent-ink)",
                         background: "var(--accent-dim)",
                         fontVariantNumeric: "tabular-nums",
                       }}
                     >
                       {t(`experience.${key}.period`)}
                     </span>
-                    {active ? (
-                      <span
-                        className="flex items-center gap-1.5"
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.65rem",
-                          color: "#22c55e",
-                          letterSpacing: "0.05em",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        <span
-                          className="w-[5px] h-[5px] rounded-full"
-                          style={{
-                            background: "#22c55e",
-                            boxShadow: "0 0 6px #22c55e",
-                          }}
-                          aria-hidden="true"
-                        />
-                        {t("experience.active", "Active")}
-                      </span>
-                    ) : (
-                      <span
-                        className="flex items-center gap-1.5"
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.65rem",
-                          color: "var(--text-tertiary)",
-                          letterSpacing: "0.05em",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        <span
-                          className="w-[5px] h-[5px] rounded-full"
-                          style={{ background: "var(--text-tertiary)" }}
-                          aria-hidden="true"
-                        />
-                        {t("experience.past", "Past")}
-                      </span>
-                    )}
                   </div>
 
                   <h3
@@ -213,43 +206,42 @@ function Experience() {
                     className="mb-4"
                     style={{
                       fontSize: "1rem",
-                      color: meta.color,
-                      fontWeight: 500,
+                      color: "var(--text-secondary)",
+                      fontWeight: 600,
                     }}
                   >
                     {t(`experience.${key}.company`)}
                   </p>
 
-                  <ul className="list-none p-0">
-                    {t(`experience.${key}.responsibilities`, {
-                      returnObjects: true,
-                    }).map((item, i) => (
-                      <li
-                        key={i}
-                        className="relative pl-5 mb-2.5"
-                        style={{
-                          fontSize: "0.9rem",
-                          color: "var(--text-secondary)",
-                          lineHeight: 1.6,
-                        }}
+                  <ul className="list-none p-0 m-0">{list.slice(0, LEAD_LINES).map(renderLine)}</ul>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <m.ul
+                        id={`exp-${key}-more`}
+                        className="list-none p-0 m-0 overflow-hidden"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                       >
-                        <span
-                          className="absolute left-0"
-                          style={{
-                            color: meta.color,
-                            fontWeight: 700,
-                            fontSize: "1.1rem",
-                            lineHeight: 1.5,
-                          }}
-                          aria-hidden="true"
-                        >
-                          ›
-                        </span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </m.div>
+                        {list.slice(LEAD_LINES).map(renderLine)}
+                      </m.ul>
+                    )}
+                  </AnimatePresence>
+                  {extra > 0 && (
+                    <button
+                      type="button"
+                      className="exp-toggle"
+                      aria-expanded={isOpen}
+                      aria-controls={`exp-${key}-more`}
+                      onClick={() => setExpanded((prev) => ({ ...prev, [key]: !prev[key] }))}
+                    >
+                      {isOpen
+                        ? t("experience.showLess")
+                        : t("experience.showMore", { count: extra })}
+                    </button>
+                  )}
+                </div>
               </m.div>
             );
           })}

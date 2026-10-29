@@ -7,47 +7,68 @@
     "contact": "Contacto",
     "handbook": "Handbook (EN)",
     "terminal": "Terminal",
-    "cv-title": "Ingeniero DevOps/Cloud"
+    "cv-title": "Ingeniero de Plataformas y DevOps"
   },
   "hero": {
     "greeting": "Hola, mi nombre es",
     "title": "José Camilo Joga Guerrero.",
     "roles": [
-      "Ingeniero DevOps y Cloud",
+      "Ingeniero Cloud",
       "Arquitecto de Infraestructura",
       "Ingeniero de Automatización",
       "Especialista en Kubernetes"
     ],
-    "description": "Soy Ingeniero DevOps y Cloud que construye y opera plataformas de Kubernetes sobre AWS y Azure. Mi trabajo se centra en la Infraestructura como Código, la entrega GitOps, la observabilidad y los agentes de IA integrados en CI/CD — convirtiendo entornos dispersos y gestionados a mano en plataformas autogestionadas que los equipos operan por sí mismos.",
+    "description": "Soy ingeniero de plataformas y DevOps con base en ingeniería cloud: construyo y opero plataformas de Kubernetes sobre AWS y Azure. Mi trabajo se centra en la infraestructura como código, la entrega GitOps, la observabilidad y los agentes de IA integrados en CI/CD — convirtiendo entornos dispersos y gestionados a mano en plataformas autogestionadas que los equipos operan por sí mismos.",
     "cta": {
-      "work": "Ver Mi Trabajo",
+      "work": "Ver mi trabajo",
       "contact": "Contáctame"
     },
     "status": {
-      "operational": "sistemas en línea",
-      "checking": "verificando sistemas…",
-      "unavailable": "sistemas fuera de línea",
-      "certs": "12 certs obtenidas",
-      "opportunities": "abierto a oportunidades"
+      "opportunities": "Abierto a roles sénior y de liderazgo en plataformas",
+      "checking": "Verificando sistemas…",
+      "operational": "Sistemas en línea",
+      "unavailable": "Clúster en vivo en espera"
     },
-    "terminalHint": "prueba la terminal en vivo →"
+    "terminalHint": "Prueba la terminal en vivo",
+    "pillars": {
+      "multicloud": {
+        "title": "Multinube",
+        "text": "Plataformas en AWS y Azure, construidas como código y entregadas con GitOps."
+      },
+      "global": {
+        "title": "Escala global",
+        "text": "Arquitectura multirregión para cargas empresariales."
+      },
+      "agents": {
+        "title": "Agentes en el ciclo",
+        "text": "Agentes de IA trabajando dentro del CI/CD, no al lado."
+      }
+    }
   },
   "nav": {
     "languageSelector": "Selector de idioma",
     "skipToContent": "Saltar al contenido",
     "openMenu": "Abrir menú",
-    "closeMenu": "Cerrar menú"
+    "closeMenu": "Cerrar menú",
+    "elsewhere": "Perfiles y correo",
+    "email": "Correo electrónico"
   },
   "about": {
     "title": "Sobre Mí",
     "heading": "Construyendo sistemas que escalan.",
-    "paragraph1": "¡Hola! Soy José Camilo (llámame Camilo), Ingeniero en Ciencias de la Computación atraído por DevOps y la nube desde el inicio de mi carrera. Construyo infraestructura eficiente, escalable y automatizada — y me importa que la plataforma sea algo que los propios equipos puedan operar.",
-    "paragraph2": "He llevado entornos desde servidores gestionados a mano y clusters configurados clic a clic hasta plataformas de Kubernetes gestionadas sobre AWS y Azure, con entrega GitOps, Infraestructura como Código y observabilidad integradas. Lo que más disfruto es el trabajo de consolidación — reducir la dispersión a algo simple y autogestionado.",
-    "skills": "Estas son algunas de las tecnologías con las que he estado trabajando recientemente:",
-    "stats": {
-      "years": "Años Exp",
-      "certs": "Certs",
-      "clouds": "Nubes"
+    "paragraph1": "¡Hola! Soy José Camilo (llámame Camilo), ingeniero en Ciencias de la Computación atraído por DevOps y la nube desde el inicio de mi carrera. Construyo infraestructura eficiente, escalable y automatizada.",
+    "paragraph2": "He llevado entornos desde servidores gestionados a mano y clústeres configurados clic a clic hasta plataformas de Kubernetes gestionadas sobre AWS y Azure, con entrega GitOps, infraestructura como código y observabilidad integradas. Lo que más disfruto es el trabajo de consolidación — reducir la dispersión a algo simple y autogestionado.",
+    "headingMuted": "Plataformas que los equipos operan por sí mismos.",
+    "stack": {
+      "cloud": "Nube",
+      "platform": "Plataforma",
+      "delivery": "Entrega",
+      "observability": "Observabilidad",
+      "agents": "IA y automatización",
+      "scripting": "Scripting",
+      "title": "Cómo recorre un cambio mi stack",
+      "lane": "Junto a cada etapa",
+      "loop": "El monitoreo alimenta el siguiente cambio"
     }
   },
   "skills": {
@@ -72,18 +93,16 @@
   "experience": {
     "title": "Experiencia",
     "heading": "Dónde he trabajado.",
-    "active": "Activo",
-    "past": "Pasado",
     "inspyr": {
       "title": "Ingeniero DevOps",
       "company": "INSPYR Global Solutions",
-      "period": "Marzo 2025 - Presente",
+      "period": "marzo de 2025 – presente",
       "responsibilities": [
         "Opero una plataforma Azure multi-región — más de 300 servicios sobre AKS, desplegados mediante pipelines de Azure DevOps y PowerShell",
         "Lideré la consolidación de todas las alertas y dashboards en un único repositorio de alertas como código y un pipeline GitOps que cubre todos los entornos y regiones",
         "Mantengo y extiendo la plataforma de infraestructura en Bicep, desplegando nuevos servicios mediante pipelines de what-if y de release",
         "Habilité infraestructura de datos gestionada para equipos de desarrollo — Azure Synapse y Databricks con gobernanza vía Unity Catalog, desplegados íntegramente como código",
-        "Impulso la migración en curso de clusters de AKS hacia Cilium, y reemplazo la remediación manual de incidentes con automatización de auto-recuperación",
+        "Impulso la migración en curso de clústeres de AKS hacia Cilium, y reemplazo la remediación manual de incidentes con automatización de auto-recuperación",
         "Lideré una aplicación web de autoservicio para acceso auditado y con PII enmascarada a Azure SQL y MongoDB tras una cola de aprobación con un clic, además de operaciones de Kubernetes controladas — reinicios, cambios de recursos y réplicas — para los equipos de pruebas de carga",
         "Integré agentes de Claude en la plataforma de CI/CD — un agente de seguridad autónomo escanea repositorios, abre issues en GitHub bajo su propia identidad y luego bloquea cualquier PR posterior que toque ese código hasta resolver el issue que levantó",
         "Construí el tooling de los agentes — skills, hooks y sub-agentes con personas propias que convierten la salida de Snyk en un comentario legible en el PR, y servidores MCP que exponen herramientas internas — corriendo sobre AKS como GitHub Apps con tokens de alcance limitado y corta duración y Workload Identity hacia Key Vault",
@@ -93,7 +112,7 @@
     "kodepull": {
       "title": "Cofundador y CTO",
       "company": "KODEPULL SRL",
-      "period": "2025 - Presente",
+      "period": "2025 – presente",
       "responsibilities": [
         "Cofundé la empresa en 2025 para ofrecer ingeniería de nivel empresarial a negocios sin presupuesto de gran empresa",
         "Dirijo el lado técnico como CTO: arquitectura, diseño de infraestructura, decisiones de plataforma y proveedores, y el estándar de calidad con el que se entrega cada proyecto",
@@ -105,7 +124,7 @@
     "flBetances": {
       "title": "Ingeniero DevOps",
       "company": "FL Betances & Asociados",
-      "period": "Junio 2024 - Diciembre 2025",
+      "period": "junio de 2024 – diciembre de 2025",
       "responsibilities": [
         "Me integré al equipo central de DevOps de una institución bancaria, dando soporte a más de 50 equipos de ingeniería y a un backlog continuo de automatización",
         "Mantuve y extendí un framework de despliegue interno sobre Azure DevOps — plantillas YAML que detectan el tipo de proyecto, el entorno destino y las verificaciones de política requeridas",
@@ -117,7 +136,7 @@
     "arctiq": {
       "title": "Consultor DevOps",
       "company": "Arctiq",
-      "period": "Julio 2022 - Presente",
+      "period": "julio de 2022 – presente",
       "responsibilities": [
         "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS — FluxCD, GitLab CI y Terraform",
         "Consolidé la dispersión de “una rama por equipo” en namespaces por equipo, recortando entre 5 y 8 veces la superficie desplegada redundante",
@@ -129,14 +148,18 @@
         "Opero cargas de agentes en contenedores sobre EKS y Fargate aprovisionados con Terraform — IRSA para el acceso a AWS a nivel de pod, entrega GitOps con auditoría de CI en el repositorio gestionado",
         "Impartí un taller de habilitación en Azure de una semana para el equipo de un cliente — desde fundamentos de la nube y gobernanza hasta redes, cómputo, datos e IA, y operaciones"
       ]
-    }
+    },
+    "headingMuted": "Trabajo de plataformas sobre Azure y AWS.",
+    "lede": "Arctiq, INSPYR y KodePull corren en paralelo: consultoría, un rol de plataforma y la empresa que cofundé.",
+    "showMore": "Mostrar {{count}} más",
+    "showLess": "Mostrar menos"
   },
   "projects": {
     "title": "Proyectos",
     "heading": "Lo que he construido.",
     "readCaseStudy": "Lee el caso de estudio",
     "kubestronautSim": {
-      "title": "Simulador de Exámenes Kubestronaut",
+      "title": "Simulador de exámenes Kubestronaut",
       "description": "Simulador de exámenes open source para la ruta Kubestronaut — un comando levanta un clúster real de Kubernetes, sortea cada intento desde un banco creciente de preguntas originales y califica el comportamiento, no el YAML. Deliberadamente más difícil que los exámenes reales.",
       "tech": [
         "Go",
@@ -146,7 +169,7 @@
       ]
     },
     "cicd": {
-      "title": "Migración de Plataforma a EKS",
+      "title": "Migración de plataforma a EKS",
       "description": "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS — FluxCD para la entrega GitOps y Terraform para la nube subyacente.",
       "tech": [
         "AWS EKS",
@@ -156,7 +179,7 @@
       ]
     },
     "iac": {
-      "title": "Infraestructura como Código Multi-Nube",
+      "title": "Infraestructura como código multinube",
       "description": "Plataformas modulares de Terraform y Bicep para AWS y Azure — redes, cómputo, almacenamiento y seguridad — con una verificación de plan o what-if en cada cambio.",
       "tech": [
         "Terraform",
@@ -166,7 +189,7 @@
       ]
     },
     "monitoring": {
-      "title": "Observabilidad desde Cero",
+      "title": "Observabilidad desde cero",
       "description": "Observabilidad para una plataforma que partía de nada — OpenTelemetry alimentando Grafana, Loki y trazas distribuidas, con dashboards y alertas en cada aplicación.",
       "tech": [
         "OpenTelemetry",
@@ -176,7 +199,7 @@
       ]
     },
     "infrastructure": {
-      "title": "Pipeline de Alertas como Código",
+      "title": "Pipeline de alertas como código",
       "description": "Consolidé todas las alertas y dashboards en un único repositorio y un pipeline de despliegue GitOps que las despliega y reconcilia en todos los entornos, regiones y niveles de severidad.",
       "tech": [
         "Azure",
@@ -186,7 +209,7 @@
       ]
     },
     "portal": {
-      "title": "Portal de Infraestructura Autogestionada",
+      "title": "Portal de infraestructura autogestionada",
       "description": "Un portal en Vue.js y .NET que permite a los desarrolladores autoaprovisionar repositorios, gestionar permisos y solicitar infraestructura mediante plantillas y guardarraíles aprobados en lugar de tickets.",
       "tech": [
         "Vue.js",
@@ -196,26 +219,34 @@
       ]
     },
     "containerization": {
-      "title": "Homelab Distribuido de Kubernetes",
-      "description": "Un cluster K3s multi-nodo sobre hardware propio que ejecuta entrega GitOps, observabilidad y gestión de secretos detrás de un Envoy Gateway y un Cloudflare Tunnel — aloja este mismo sitio.",
+      "title": "Homelab distribuido de Kubernetes",
+      "description": "Un clúster K3s multinodo sobre hardware propio que ejecuta entrega GitOps, observabilidad y gestión de secretos detrás de un Envoy Gateway y un Cloudflare Tunnel — aloja este mismo sitio.",
       "tech": [
         "K3s",
         "Longhorn",
         "OpenBao",
         "Envoy"
       ]
+    },
+    "headingMuted": "Código abierto, mi laboratorio y trabajo de plataformas.",
+    "links": {
+      "sim": "Guía del simulador",
+      "lab": "Resumen del laboratorio",
+      "arctiq": "Relato de Arctiq",
+      "inspyr": "Relato de INSPYR"
+    },
+    "shots": {
+      "sim": "El simulador Kubestronaut en pleno examen: una tarea de CKAD a la izquierda y el escritorio del examen con una sesión de kubectl en vivo a la derecha.",
+      "lab": "Mapa de Headlamp del clúster K3s, filtrado a los namespaces de plataforma: External Secrets, cert-manager, Envoy Gateway, OpenBao y el simulador."
     }
   },
   "certifications": {
     "title": "Certificaciones",
-    "heading": "Credenciales y certs.",
+    "heading": "Certificaciones.",
     "opensInNewTab": "(se abre en una pestaña nueva)",
-    "chip": "{{count}} certificaciones obtenidas",
     "chipLabel": "certificaciones obtenidas",
     "inProgress": "En progreso",
-    "countLabel_one": "{{count}} certificación",
-    "countLabel_other": "{{count}} certificaciones",
-    "countInProgress": "· {{count}} en curso",
+    "countInProgress": "{{count}} en curso",
     "groups": {
       "kubestronaut": {
         "tagline": "Camino a Kubestronaut",
@@ -304,13 +335,16 @@
       "name": "Accredited Partner Technical Engineer",
       "issuer": "Technology Partners",
       "date": "2023"
-    }
+    },
+    "headingMuted": "Los fundamentos detrás del trabajo."
   },
   "contact": {
-    "subtitle": "¿Qué Sigue?",
-    "title": "Contáctame",
-    "text": "Mi correo está abierto. Preguntas sobre el trabajo, el laboratorio o una vacante — todas reciben respuesta.",
-    "cta": "Enviar Mensaje"
+    "title": "¿Buscas a alguien para tu equipo de plataforma?",
+    "text": "Busco roles sénior o de liderazgo en plataformas y DevOps, donde la ingeniería de plataformas se cruza con la automatización con IA. Escríbeme por correo o por LinkedIn; respondo en ambos.",
+    "terms": {
+      "workLabel": "Modalidad",
+      "work": "Remoto preferido · abierto a reubicación"
+    }
   },
   "cv": {
     "summary": "RESUMEN PROFESIONAL",
@@ -328,44 +362,33 @@
     "label": "Manual",
     "heading": "Un sitio aparte para la escritura.",
     "subheading": "Opiniones, el laboratorio K3s y guías de certificación — separados del portafolio para que puedan crecer por su cuenta en blog.cjoga.cloud.",
-    "eyebrow": "cjoga.cloud / manual",
-    "title": "Aquí es donde escribo las cosas.",
-    "ledeBefore": "Un manual de trabajo — opiniones, el laboratorio K3s que corre ",
-    "ledeCode": "cjoga.cloud",
-    "ledeAfter": ", el trabajo de consultoría que paga las cuentas y guías de los certificados que creo que valen tu tiempo. Nada aquí está a la venta. Lee lo que te sea útil.",
     "paths": {
       "hiring": {
-        "eyebrow": "Si estás contratando",
         "whoIAm": "Quién soy",
         "whatBuilt": "Lo que he construido"
       },
       "studying": {
-        "eyebrow": "Si estás estudiando",
-        "intro": "Guías honestas de certificación — mi experiencia, mis consejos y los runbooks que le pasaría a un amigo.",
         "rhcsa": "Guía RHCSA (EX200)"
       },
       "lab": {
-        "eyebrow": "Si te interesa el laboratorio",
         "k3s": "El setup de K3s"
       }
-    },
-    "signoff": "Las páginas nuevas aparecen cuando están listas, no en un calendario. Si algo aquí está mal, o quieres hablar del trabajo,",
-    "signoffLink": "el correo es el canal correcto"
+    }
   },
   "terminal": {
     "label": "Terminal",
-    "heading": "Explora mi infraestructura.",
-    "description": "Una terminal en vivo y de solo lectura conectada al clúster K3s que alimenta este sitio. Navega por namespaces, inspecciona pods y explora — es tu shell.",
-    "cta": "Abrir Terminal",
+    "heading": "El clúster detrás de esta página.",
+    "description": "Este sitio corre en un clúster K3s multinodo que construí y opero: entrega GitOps, observabilidad y secretos con OpenBao, detrás de Envoy Gateway y un Cloudflare Tunnel. La terminal se conecta en modo de solo lectura, así que puedes listar namespaces, inspeccionar pods y ver cómo está armado.",
+    "cta": "Abrir la terminal en vivo",
     "loading": "consultando el clúster…",
-    "inputLabel": "entrada de comandos de la terminal",
+    "inputLabel": "Comando de la terminal",
     "errors": {
       "timeout": "el clúster no respondió — intenta de nuevo en un momento"
     },
     "help": {
       "whoami": "¿Quién eres?",
       "neofetch": "Información del sistema",
-      "resume": "Ver mi currículum",
+      "resume": "Mostrar mi CV",
       "hire": "Sabes que quieres hacerlo",
       "ls": "Listar archivos",
       "lsLa": "Listar archivos (detallado)",
@@ -383,14 +406,14 @@
       "svc": "Listar servicios",
       "nodes": "Listar nodos del clúster",
       "defaultNs": "Namespace por defecto: web-development",
-      "hint": "Intenta: kubectl get ns, luego explora con -n <namespace>",
-      "footer": "¡Escribe cualquier comando para explorar!"
+      "hint": "Prueba kubectl get ns y luego kubectl get pods -n <namespace>",
+      "footer": "Todos los comandos son de solo lectura."
     },
     "messages": {
       "welcome": "Bienvenido a cjoga.cloud terminal v1.0",
       "welcomeHelp": "Escribe 'help' para ver los comandos disponibles.",
       "availableCommands": "Comandos disponibles:",
-      "connectionError": "Error: No se pudo conectar al servidor.",
+      "connectionError": "Error: no se puede contactar el clúster ahora mismo. Los comandos sin conexión siguen funcionando: help, neofetch, cat resume.txt, sudo hire-me.",
       "noHistory": "Sin historial aún.",
       "logout": "logout",
       "connectionClosed": "Conexión a cjoga.cloud cerrada.",
@@ -415,30 +438,39 @@
       "fileNotFound": "No existe el fichero o el directorio",
       "commandNotFound": "comando no encontrado: {{command}}.",
       "commandNotFoundHint": "Escribe 'help' para ver los comandos disponibles.",
-      "rateLimited": "Límite de solicitudes excedido. Espera antes de enviar más comandos.",
-      "resumeTitle": "Ingeniero DevOps y Cloud"
+      "rateLimited": "Demasiados comandos en el último minuto. Espera hasta un minuto y vuelve a intentarlo.",
+      "resumeTitle": "Ingeniero de Plataformas y DevOps"
+    },
+    "headingMuted": "En vivo, de solo lectura y abierto para ti.",
+    "replay": "Demo grabada",
+    "page": {
+      "title": "Terminal del clúster en vivo.",
+      "titleMuted": "De solo lectura y abierta para ti.",
+      "lede": "Escribe un comando o elige uno abajo. Se ejecuta contra el clúster K3s que sirve este sitio, con acceso de solo lectura: lista namespaces, inspecciona pods y nodos, o muestra el CV.",
+      "try": "Comandos sugeridos",
+      "readOnly": "Solo lectura"
     }
   },
   "footer": {
     "text1": "José Camilo Joga Guerrero",
-    "text2": "Ingeniero DevOps y Cloud",
-    "copyright": "Diseñado y Construido por José Camilo Joga Guerrero © 2026"
+    "text2": "Ingeniero de Plataformas y DevOps",
+    "copyright": "Diseñado y construido por Camilo © 2026"
   },
   "print": {
     "button": "Descargar CV",
-    "generating": "Generando...",
+    "generating": "Generando CV…",
     "error": "No se pudo generar el CV. Intenta de nuevo en un momento.",
     "phone": "Teléfono: +1 (809) 881-7982"
   },
   "theme": {
     "dark": "Modo Oscuro",
     "light": "Modo Claro",
-    "system": "Sistema",
     "aria": {
-      "system": "Tema del sistema — sigue el SO",
       "light": "Tema claro",
       "dark": "Tema oscuro"
-    }
+    },
+    "switchToLight": "Cambiar a tema claro",
+    "switchToDark": "Cambiar a tema oscuro"
   },
   "language": {
     "en": "Inglés",

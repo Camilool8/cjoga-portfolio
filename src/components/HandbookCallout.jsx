@@ -1,162 +1,56 @@
 import { useTranslation } from "react-i18next";
 import { m } from "framer-motion";
-import { FaCircle, FaExternalLinkAlt } from "react-icons/fa";
+import { FiArrowUpRight } from "react-icons/fi";
+import SectionHeading from "./SectionHeading";
 import {
   sectionVariants,
   itemVariants,
   viewportConfig,
 } from "../hooks/useMotion";
 
-// Browser-window framed preview of blog.cjoga.cloud's landing page.
-// Inner content mirrors the actual Docusaurus index (hero +
-// audience-paths + signoff). Hover applies an accent-border + glow
-// highlight.
+// The writing lives at blog.cjoga.cloud. Here: what it is in one line,
+// and the four pages a visitor is most likely to want, as direct links.
 
 const HANDBOOK_URL = "https://blog.cjoga.cloud";
 
-const PATHS = [
-  {
-    key: "hiring",
-    rows: [
-      { path: "/me/who-i-am", labelKey: "whoIAm" },
-      { path: "/engineering/work", labelKey: "whatBuilt" },
-    ],
-  },
-  {
-    key: "studying",
-    hasIntro: true,
-    rows: [{ path: "/learn/rhcsa", labelKey: "rhcsa" }],
-  },
-  {
-    key: "lab",
-    rows: [{ path: "/engineering/lab/overview", labelKey: "k3s" }],
-  },
+const LINKS = [
+  { path: "/me/who-i-am", labelKey: "handbook.paths.hiring.whoIAm" },
+  { path: "/engineering/work", labelKey: "handbook.paths.hiring.whatBuilt" },
+  { path: "/engineering/lab/overview", labelKey: "handbook.paths.lab.k3s" },
+  { path: "/learn/rhcsa", labelKey: "handbook.paths.studying.rhcsa" },
 ];
-
-function PathBlock({ pathBlock, t }) {
-  const { key, hasIntro, rows } = pathBlock;
-  return (
-    <div className="handbook-path-block">
-      <div className="handbook-eyebrow handbook-eyebrow-sm">
-        <span className="handbook-eyebrow-dot" aria-hidden="true" />
-        {t(`handbook.paths.${key}.eyebrow`)}
-      </div>
-      {hasIntro ? (
-        <p className="handbook-path-intro">
-          {t(`handbook.paths.${key}.intro`)}
-        </p>
-      ) : null}
-      <nav
-        className="handbook-rows"
-        aria-label={t(`handbook.paths.${key}.eyebrow`)}
-      >
-        {rows.map((row) => (
-          <a
-            key={row.path}
-            href={`${HANDBOOK_URL}${row.path}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="handbook-row"
-          >
-            <div className="handbook-row-label">
-              {t(`handbook.paths.${key}.${row.labelKey}`)}
-            </div>
-            <div className="handbook-row-arrow" aria-hidden="true">
-              →
-            </div>
-          </a>
-        ))}
-      </nav>
-    </div>
-  );
-}
 
 export default function HandbookCallout() {
   const { t } = useTranslation();
 
   return (
-    <section id="handbook" className="handbook-section">
+    <section id="handbook" className="handbook-section" aria-labelledby="handbook-title">
       <m.div
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
         viewport={viewportConfig}
-        className="handbook-section-inner"
+        className="handbook-section-inner handbook-band"
       >
-        <m.div variants={itemVariants} className="handbook-section-header">
-          <h2 className="section-heading">{t("handbook.heading")}</h2>
-          <p className="handbook-section-sub">{t("handbook.subheading")}</p>
-        </m.div>
+        <div>
+          <SectionHeading id="handbook-title" title={t("handbook.heading")} />
+          <m.p variants={itemVariants} className="section-lede handbook-band__lede">
+            {t("handbook.subheading")}
+          </m.p>
+        </div>
 
-        <m.div variants={itemVariants} className="handbook-window">
-          {/* Browser chrome */}
-          <div className="handbook-chrome">
-            <div className="handbook-chrome-dots">
-              <span className="handbook-dot" style={{ background: "#ff5f56" }} />
-              <span className="handbook-dot" style={{ background: "#ffbd2e" }} />
-              <span className="handbook-dot" style={{ background: "#27c93f" }} />
-            </div>
-            <a
-              href={HANDBOOK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="handbook-urlbar"
-              aria-label={t("handbook.windowAriaLabel")}
-            >
-              <FaCircle size={6} style={{ color: "#27c93f", opacity: 0.85 }} />
-              <span>blog.cjoga.cloud</span>
-            </a>
-            <a
-              href={HANDBOOK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="handbook-chrome-open"
-              aria-label={t("handbook.windowAriaLabel")}
-            >
-              <FaExternalLinkAlt size={11} />
-            </a>
-          </div>
-
-          {/* Window content — mirrors the Docusaurus landing */}
-          <div className="handbook-content">
-            <div className="handbook-hero">
-              <div className="handbook-eyebrow">
-                <span className="handbook-eyebrow-dot" aria-hidden="true" />
-                {t("handbook.eyebrow")}
-              </div>
-              {/* Preview of the handbook's own landing title — styled like a
-                  heading but rendered as a <p> so this section keeps a single
-                  <h2> in the document outline. */}
-              <p className="handbook-title">{t("handbook.title")}</p>
-              <p className="handbook-lede">
-                {t("handbook.ledeBefore")}
-                <code>{t("handbook.ledeCode")}</code>
-                {t("handbook.ledeAfter")}
-              </p>
-            </div>
-
-            <div className="handbook-paths">
-              {PATHS.map((pathBlock) => (
-                <PathBlock key={pathBlock.key} pathBlock={pathBlock} t={t} />
-              ))}
-            </div>
-
-            <div className="handbook-signoff">
-              <p>
-                {t("handbook.signoff")}{" "}
-                <a
-                  href={`${HANDBOOK_URL}/me/who-i-am#how-to-reach-me`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="handbook-signoff-link"
-                >
-                  {t("handbook.signoffLink")}
-                </a>
-                .
-              </p>
-            </div>
-          </div>
-        </m.div>
+        <m.ul variants={itemVariants} className="handbook-links">
+          {LINKS.map(({ path, labelKey }) => (
+            <li key={path}>
+              <a href={`${HANDBOOK_URL}${path}`} target="_blank" rel="noopener noreferrer" className="handbook-link">
+                <span>{t(labelKey)}</span>
+                <span className="handbook-link__path">blog.cjoga.cloud{path}</span>
+                <FiArrowUpRight aria-hidden="true" className="handbook-link__icon" />
+                <span className="sr-only">{t("certifications.opensInNewTab")}</span>
+              </a>
+            </li>
+          ))}
+        </m.ul>
       </m.div>
     </section>
   );

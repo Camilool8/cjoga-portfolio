@@ -1,42 +1,105 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { m } from "framer-motion";
 import { FaAws, FaMicrosoft, FaDocker } from "react-icons/fa";
 import {
   SiTerraform, SiAnsible, SiKubernetes, SiGitlab,
   SiJenkins, SiDynatrace, SiGithubactions,
-  SiClaude, SiModelcontextprotocol,
+  SiClaude, SiModelcontextprotocol, SiArgo, SiGrafana, SiOpentelemetry,
+  SiGnubash, SiAnthropic,
 } from "react-icons/si";
+import SectionHeading from "./SectionHeading";
 import { VscTerminalPowershell } from "react-icons/vsc";
 import {
-  sectionVariants, itemVariants, cardVariants,
+  sectionVariants, itemVariants,
   useParallax, viewportConfig,
 } from "../hooks/useMotion";
+
+// Desktop only: the monitoring loop as one path, from under the last
+// stage's last tool, along the bottom, up into the first stage's last
+// tool. One path gives even dots through the corners, and the signal
+// rides the same path (offset-path), so it rounds them too. Measured
+// from the layout, so it follows the columns at any width.
+function useLoopPath(trackRef) {
+  const [loop, setLoop] = useState(null);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return undefined;
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const measure = () => {
+      const stages = track.querySelectorAll(".stack-stage");
+      if (!wide.matches || stages.length < 2) {
+        setLoop(null);
+        return;
+      }
+      const box = track.getBoundingClientRect();
+      const tip = (stage) => {
+        const last = stage.querySelector(".stack-chips")?.lastElementChild;
+        if (!last) return null;
+        const r = last.getBoundingClientRect();
+        return [r.left + r.width / 2 - box.left, r.bottom - box.top + 4];
+      };
+      const first = tip(stages[0]);
+      const end = tip(stages[stages.length - 1]);
+      if (!first || !end) {
+        setLoop(null);
+        return;
+      }
+      const [x1, y1] = first;
+      const [x2, y2] = end;
+      const ol = track.querySelector(".stack-flow").getBoundingClientRect();
+      const yb = ol.bottom - box.top + 26;
+      const r = 14;
+      const f = (n) => Math.round(n * 10) / 10;
+      setLoop({
+        d: `M${f(x2)} ${f(y2)} V${f(yb - r)} A${r} ${r} 0 0 1 ${f(x2 - r)} ${f(yb)} H${f(x1 + r)} A${r} ${r} 0 0 1 ${f(x1)} ${f(yb - r)} V${f(y1)}`,
+        arrow: `M${f(x1 - 4.5)} ${f(y1 + 5)} L${f(x1)} ${f(y1 + 0.5)} L${f(x1 + 4.5)} ${f(y1 + 5)}`,
+      });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+    wide.addEventListener("change", measure);
+    return () => {
+      ro.disconnect();
+      wide.removeEventListener("change", measure);
+    };
+  }, [trackRef]);
+
+  return loop;
+}
 
 function About() {
   const { t } = useTranslation();
   const photoRef = useRef(null);
   const photoY = useParallax(photoRef, 30);
+  const [live, setLive] = useState(false);
+  const trackRef = useRef(null);
+  const loop = useLoopPath(trackRef);
 
-  const skills = [
-    { name: "AWS", icon: <FaAws /> },
-    { name: "Azure", icon: <FaMicrosoft /> },
-    { name: "Terraform", icon: <SiTerraform /> },
-    { name: "Ansible", icon: <SiAnsible /> },
-    { name: "Kubernetes", icon: <SiKubernetes /> },
-    { name: "EKS", icon: <FaAws /> },
-    { name: "AKS", icon: <FaMicrosoft /> },
-    { name: "Docker", icon: <FaDocker /> },
-    { name: "GitLab CI", icon: <SiGitlab /> },
-    { name: "Azure DevOps", icon: <FaMicrosoft /> },
-    { name: "GitHub Actions", icon: <SiGithubactions /> },
-    { name: "Jenkins", icon: <SiJenkins /> },
-    { name: "ArgoCD", icon: <SiKubernetes /> },
-    { name: "Dynatrace", icon: <SiDynatrace /> },
-    { name: "PowerShell", icon: <VscTerminalPowershell /> },
-    { name: "Claude Code", icon: <SiClaude /> },
-    { name: "MCP Servers", icon: <SiModelcontextprotocol /> },
+  // The stack in the order a change travels it, from a script to
+  // production and back through monitoring. AI and automation is not a
+  // stage: it runs alongside all of them.
+  const stages = [
+    { id: "scripting", items: [["Bash", SiGnubash, "#4eaa25"], ["PowerShell", VscTerminalPowershell, "#5391fe"]] },
+    { id: "delivery", items: [["ArgoCD", SiArgo, "#ef7b4d"], ["GitLab CI", SiGitlab, "#fc6d26"], ["GitHub Actions", SiGithubactions, "#2088ff"], ["Azure DevOps", FaMicrosoft, "#0078d4"], ["Jenkins", SiJenkins, "#d24939"]] },
+    { id: "platform", items: [["Kubernetes", SiKubernetes, "#326ce5"], ["Terraform", SiTerraform, "#7b42bc"], ["Ansible", SiAnsible, "#ee0000"], ["Docker", FaDocker, "#2496ed"]] },
+    { id: "cloud", items: [["AWS · EKS", FaAws, "#ff9900"], ["Azure · AKS", FaMicrosoft, "#0078d4"]] },
+    { id: "observability", items: [["OpenTelemetry", SiOpentelemetry, "#f5a800"], ["Grafana", SiGrafana, "#f46800"], ["Dynatrace", SiDynatrace, "#1496ff"]] },
   ];
+  const agents = [["Claude Code", SiClaude, "#d97757"], ["MCP servers", SiModelcontextprotocol, "#8b8bf5"], ["Agent Skills", SiAnthropic, "#d97757"]];
+
+  const chips = (items) => (
+    <ul className="stack-chips">
+      {items.map(([name, Icon, brand]) => (
+        <li key={name} className="about-stack__item" style={{ "--brand": brand }}>
+          <span aria-hidden="true"><Icon /></span>
+          {name}
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <section id="about">
@@ -50,46 +113,17 @@ function About() {
                 whileInView="visible"
                 viewport={viewportConfig}
               >
-                <m.div variants={itemVariants}>
-                  <h2 className="section-heading">
-                    {t("about.heading", "Building systems that scale.")}
-                  </h2>
-                </m.div>
+                <SectionHeading title={t("about.heading")} muted={t("about.headingMuted")} />
 
                 <m.div variants={itemVariants}>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px" }}>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px", textWrap: "pretty" }}>
                     {t("about.paragraph1")}
                   </p>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px" }}>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: 1.8, marginBottom: "20px", textWrap: "pretty" }}>
                     {t("about.paragraph2")}
                   </p>
                 </m.div>
 
-                <m.div variants={itemVariants} className="mt-8">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {skills.map((skill, i) => (
-                      <m.div
-                        key={skill.name}
-                        custom={i}
-                        variants={cardVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="skill-node flex items-center gap-2.5 py-2.5 px-3.5 rounded-[10px] cursor-default transition-all duration-300"
-                        style={{
-                          background: "var(--bg-surface)",
-                          border: "1px solid var(--border-subtle)",
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.72rem",
-                          color: "var(--text-secondary)",
-                        }}
-                      >
-                        <span className="text-base">{skill.icon}</span>
-                        {skill.name}
-                      </m.div>
-                    ))}
-                  </div>
-                </m.div>
               </m.div>
             </div>
 
@@ -119,8 +153,12 @@ function About() {
                     src="/images/camilo.webp"
                     alt="José Camilo Joga Guerrero"
                     className="photo-img w-full h-full object-cover object-top transition-[filter] duration-500"
+                    width="560"
+                    height="560"
                     style={{ filter: "grayscale(0.8) contrast(1.05)" }}
                     loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
                   />
                   <div
                     className="absolute top-[-1px] left-[-1px] w-10 h-10 z-10"
@@ -132,48 +170,66 @@ function About() {
                   />
                 </div>
               </m.div>
-
-              <div className="grid grid-cols-3 gap-2.5 mt-3.5">
-                {[
-                  { number: "4+", label: t("about.stats.years", "Years Exp") },
-                  { number: "12", label: t("about.stats.certs", "Certs") },
-                  { number: "2", label: t("about.stats.clouds", "Clouds") },
-                ].map((stat, i) => (
-                  <m.div
-                    key={stat.label}
-                    custom={i}
-                    variants={cardVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="stat-card text-center py-3.5 px-2 rounded-xl"
-                    style={{
-                      background: "var(--bg-surface)",
-                      border: "1px solid var(--border-subtle)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: "var(--font-display)", fontSize: "1.5rem", fontWeight: 700,
-                        color: "var(--accent)", lineHeight: 1,
-                      }}
-                    >
-                      {stat.number}
-                    </div>
-                    <div
-                      className="mt-1"
-                      style={{
-                        fontFamily: "var(--font-mono)", fontSize: "0.6rem",
-                        letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--text-tertiary)",
-                      }}
-                    >
-                      {stat.label}
-                    </div>
-                  </m.div>
-                ))}
-              </div>
             </m.div>
           </div>
+
+          {/* Full width under the text and the photo: the stack as a
+              pipeline. Phones read it down a vertical line; desktop lays
+              it out left to right. One signal travels the line the first
+              time it scrolls into view, lighting each stage it reaches. */}
+          <m.div
+            className={`stack-map${live ? " is-live" : ""}`}
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportConfig}
+            onViewportEnter={() => setLive(true)}
+          >
+            <h3 className="stack-map__title">{t("about.stack.title")}</h3>
+            <div className="stack-lane">
+              <p className="stack-lane__name">
+                {t("about.stack.agents")}
+                <span>{t("about.stack.lane")}</span>
+              </p>
+              {chips(agents)}
+            </div>
+            {/* The track holds the stages and the return line. On desktop
+                the loop leaves the last tool of the last stage and comes
+                back up into the last tool of the first. */}
+            <div className="stack-track" ref={trackRef}>
+              {loop && (
+                <svg className="stack-loop-line" aria-hidden="true">
+                  <path d={loop.d} />
+                  <path d={loop.arrow} className="stack-loop-line__arrow" />
+                </svg>
+              )}
+              {loop && (
+                <span className="stack-loop-dot" style={{ offsetPath: `path("${loop.d}")` }} aria-hidden="true" />
+              )}
+              <ol className="stack-flow">
+                {stages.map((stage, i) => (
+                  <li key={stage.id} className="stack-stage" style={{ "--i": i }}>
+                    {i < stages.length - 1 && (
+                      <span className="stack-stage__seg" aria-hidden="true">
+                        <i />
+                      </span>
+                    )}
+                    <span className="stack-stage__node" aria-hidden="true" />
+                    <p className="stack-stage__name">{t(`about.stack.${stage.id}`)}</p>
+                    {chips(stage.items)}
+                  </li>
+                ))}
+              </ol>
+              <p className="stack-loop">
+                <span>
+                  <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+                    <path d="M13 9a5 5 0 1 1-1.6-3.7M13 2.5v3h-3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  {t("about.stack.loop")}
+                </span>
+              </p>
+            </div>
+          </m.div>
         </div>
       </div>
     </section>

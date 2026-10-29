@@ -106,6 +106,7 @@ function AWSRegionsLive({ color }) {
                 r="1"
                 fill={color}
                 style={{ filter: `drop-shadow(0 0 2px ${color})` }}
+                initial={{ cx: 50, cy: 11, opacity: 0 }}
                 animate={{
                   cx: [50, 50, az.x, az.x],
                   cy: [11, 20, 20, 38],

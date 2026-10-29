@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FiSun, FiMoon, FiMonitor, FiExternalLink } from "react-icons/fi";
+import { FiSun, FiMoon, FiExternalLink } from "react-icons/fi";
 import { socialLinks } from "../data";
 import {
   SUPPORTED_LANGUAGES,
@@ -47,7 +47,7 @@ function SectionLink({
   );
 }
 
-function NavigationBar({ themePreference, cycleThemePreference }) {
+function NavigationBar({ theme, toggleTheme }) {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
@@ -139,20 +139,13 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
 
   // Render icon for the *current* preference (Docusaurus convention).
   // The button cycles preference → light → dark → system.
-  const ThemeIcon =
-    themePreference === "system"
-      ? FiMonitor
-      : themePreference === "light"
-        ? FiSun
-        : FiMoon;
-  const themeAriaLabel = t(
-    `theme.aria.${themePreference}`,
-    themePreference === "system"
-      ? "System theme"
-      : themePreference === "light"
-        ? "Light theme"
-        : "Dark theme",
-  );
+  // The button shows where it goes: a sun in the dark theme, a moon in
+  // the light one.
+  const ThemeIcon = theme === "dark" ? FiSun : FiMoon;
+  const themeAriaLabel =
+    theme === "dark"
+      ? t("theme.switchToLight", "Switch to light theme")
+      : t("theme.switchToDark", "Switch to dark theme");
 
   // Switching language navigates to the equivalent localized URL,
   // preserving any section hash. localStorage is only a first-visit
@@ -186,7 +179,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
   return (
     <>
       <nav
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-0.5 py-1.5 px-2 glass rounded-2xl transition-all duration-500 max-w-[calc(100vw-32px)] ${
+        className={`fixed top-[max(1rem,env(safe-area-inset-top))] left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-0.5 py-1.5 px-2 glass rounded-2xl transition-all duration-500 max-w-[calc(100vw-32px)] ${
           isScrolled ? "shadow-lg" : ""
         }`}
         style={{
@@ -206,7 +199,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
               : "smooth";
             window.scrollTo({ top: 0, behavior });
           }}
-          className="font-mono font-bold text-sm px-3 py-2 no-underline"
+          className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] font-bold text-sm px-3 no-underline"
           style={{ color: "var(--accent)" }}
         >
           CJ
@@ -246,7 +239,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
           style={{ borderLeft: "1px solid var(--border-subtle)" }}
         >
           <button
-            onClick={cycleThemePreference}
+            onClick={toggleTheme}
             aria-label={themeAriaLabel}
             title={themeAriaLabel}
             className="nav-control-btn"
@@ -266,7 +259,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
               aria-expanded={languageMenuOpen}
               className="nav-control-btn"
             >
-              <span className="font-mono text-xs font-medium uppercase">
+              <span className="text-xs font-medium uppercase">
                 {language}
               </span>
             </button>
@@ -333,7 +326,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
       >
         <div className="mobile-nav-header">
           <span
-            className="font-mono text-xs tracking-widest uppercase"
+            className="text-xs tracking-widest uppercase"
             style={{ color: "var(--text-tertiary)" }}
           >
             {t("header.navigation", "Navigation")}
@@ -387,21 +380,15 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
         <div className="mobile-nav-divider" />
 
         <div className="mobile-nav-controls">
-          <button onClick={cycleThemePreference} className="mobile-nav-control-btn">
-            <ThemeIcon size={18} />
-            <span>
-              {themePreference === "system"
-                ? t("theme.system", "System")
-                : themePreference === "light"
-                  ? t("theme.light", "Light")
-                  : t("theme.dark", "Dark")}
-            </span>
+          <button onClick={toggleTheme} className="mobile-nav-control-btn">
+            <ThemeIcon size={18} aria-hidden="true" />
+            <span>{themeAriaLabel}</span>
           </button>
           <button
             onClick={(e) => handleLanguageChange(language === "en" ? "es" : "en", e)}
             className="mobile-nav-control-btn"
           >
-            <span className="font-mono text-sm font-semibold uppercase">
+            <span className="text-sm font-semibold uppercase">
               {language === "en" ? "ES" : "EN"}
             </span>
             <span>{language === "en" ? "Español" : "English"}</span>
@@ -411,7 +398,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
         <div className="mobile-nav-footer">
           <a
             href={`mailto:${socialLinks.email}`}
-            className="font-mono text-[0.65rem] tracking-wider no-underline"
+            className="text-[0.75rem] tracking-wider no-underline"
             style={{ color: "var(--text-tertiary)", transition: "color 0.25s" }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = "var(--accent)";
@@ -427,8 +414,8 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
 
       <style>{`
         .nav-pill-link {
-          font-family: var(--font-mono);
-          font-size: 0.7rem;
+          font-family: var(--font-body);
+          font-size: 0.8rem;
           font-weight: 500;
           color: var(--text-secondary);
           text-decoration: none;
@@ -437,16 +424,23 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
           transition: all 0.25s var(--ease-out-expo);
           white-space: nowrap;
         }
+        @media (pointer: coarse) {
+          .nav-pill-link {
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+          }
+        }
         .nav-pill-link:hover,
         .nav-pill-link.nav-pill-active {
-          color: var(--accent);
+          color: var(--accent-ink);
           background: var(--accent-dim);
         }
         /* Condensed pills on tablet (md–lg) so the full nav fits
            without falling back to the hamburger. */
         @media (min-width: 768px) and (max-width: 1023.98px) {
           .nav-pill-link {
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             padding: 8px 8px;
           }
         }
@@ -477,7 +471,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
           color: var(--text-secondary);
         }
         .nav-control-btn:hover {
-          color: var(--accent);
+          color: var(--accent-ink);
           background: var(--accent-dim);
         }
 
@@ -550,7 +544,11 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
           border-left: 1px solid var(--border-subtle);
           display: flex;
           flex-direction: column;
-          padding: 80px 28px 28px;
+          padding:
+            max(80px, calc(env(safe-area-inset-top) + 64px))
+            max(28px, env(safe-area-inset-right))
+            max(28px, env(safe-area-inset-bottom))
+            28px;
           transform: translateX(100%);
           visibility: hidden;
           transition:
@@ -620,7 +618,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
         .mobile-nav-item:active,
         .mobile-nav-item.is-active {
           background: var(--accent-dim);
-          color: var(--accent);
+          color: var(--accent-ink);
         }
         .mobile-nav-label {
           font-family: var(--font-display);
@@ -659,7 +657,7 @@ function NavigationBar({ themePreference, cycleThemePreference }) {
         .mobile-nav-control-btn:hover,
         .mobile-nav-control-btn:active {
           background: var(--accent-dim);
-          color: var(--accent);
+          color: var(--accent-ink);
         }
 
         .mobile-nav-footer {

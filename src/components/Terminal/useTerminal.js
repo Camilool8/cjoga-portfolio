@@ -49,11 +49,11 @@ export default function useTerminal() {
     wasProcessingRef.current = isProcessing;
   }, [isProcessing, focusInput]);
 
-  const handleSubmit = useCallback(
-    async (e) => {
-      if (e) e.preventDefault();
-      const input = currentInput.trim();
-      if (!input) return;
+  // Runs one command line, typed or picked from the suggestions.
+  const runCommand = useCallback(
+    async (raw) => {
+      const input = raw.trim();
+      if (!input || isProcessing) return;
 
       setHistory((prev) => [...prev, { type: "input", content: input }]);
 
@@ -127,7 +127,15 @@ export default function useTerminal() {
         setIsProcessing(false);
       }
     },
-    [currentInput, commandHistory, t, navigate]
+    [isProcessing, commandHistory, t, navigate]
+  );
+
+  const handleSubmit = useCallback(
+    (e) => {
+      if (e) e.preventDefault();
+      runCommand(currentInput);
+    },
+    [runCommand, currentInput]
   );
 
   const handleKeyDown = useCallback(
@@ -176,6 +184,7 @@ export default function useTerminal() {
     setCurrentInput,
     isProcessing,
     handleSubmit,
+    runCommand,
     handleKeyDown,
     terminalRef,
     inputRef,
