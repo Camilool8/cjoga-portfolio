@@ -160,7 +160,7 @@ const ProfessionalPDFCV = () => {
         <View style={styles.header}>
           <Text style={styles.name}>{CV_NAME}</Text>
           <Text style={styles.title}>
-            {t("header.cv-title", "DevOps & Cloud Engineer")}
+            {t("header.cv-title")}
           </Text>
           <View style={styles.contactRow}>
             <Text style={styles.contactItem}>{cvMetadata.email}</Text>

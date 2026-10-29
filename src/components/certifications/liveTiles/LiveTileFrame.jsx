@@ -22,11 +22,16 @@ function LiveTileFrame({ brandColor, liveTile, progress, rawColor }) {
   return (
     <div
       ref={ref}
-      className="relative w-full mb-4 rounded-xl overflow-hidden"
+      // A dark "screen" in both themes: the tiles mimic vendor consoles,
+      // and their glows read as smudges on a light card.
+      className="chapter-dark relative w-full mb-4 rounded-xl overflow-hidden"
       style={{
         height: "140px",
-        background: `radial-gradient(ellipse at center, ${brandColor}14 0%, transparent 70%)`,
-        border: `1px solid ${brandColor}1a`,
+        // color-mix rather than hex+alpha: groups without a brand colour
+        // pass a CSS variable, and "var(--accent)1f" is invalid CSS that
+        // drops the whole background.
+        background: `radial-gradient(ellipse at center, color-mix(in srgb, ${brandColor} 12%, transparent) 0%, transparent 70%), var(--bg-void)`,
+        border: `1px solid color-mix(in srgb, ${brandColor} 15%, transparent)`,
       }}
     >
       {inView && liveTile === "aws" && <AWSRegionsLive color={brandColor} />}

@@ -16,7 +16,7 @@ export default function SectionDivider() {
   return (
     <div
       ref={ref}
-      className="relative h-24 md:h-32 flex items-center justify-center overflow-hidden pointer-events-none"
+      className="relative h-12 md:h-16 flex items-center justify-center overflow-hidden pointer-events-none"
       style={{ zIndex: 2 }}
       aria-hidden="true"
     >

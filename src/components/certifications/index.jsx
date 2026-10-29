@@ -16,6 +16,7 @@ import {
 } from "../../hooks/useMotion";
 import { CERT_GROUPS, CERT_COUNT } from "./certData";
 import LiveTileFrame from "./liveTiles/LiveTileFrame";
+import SectionHeading from "../SectionHeading";
 
 // English fallbacks for the per-group taglines — the real strings live in
 // the locale files under `certifications.groups.<groupId>.tagline`.
@@ -64,7 +65,7 @@ function CountUp({ value, duration = 1.1 }) {
   );
 }
 
-function CertRow({ cert, brandColor, accentBg, t, featured, divider, inProgress }) {
+function CertRow({ cert, t, featured, divider, inProgress }) {
   return (
     <div
       className="flex items-center justify-between gap-3 py-2"
@@ -106,26 +107,16 @@ function CertRow({ cert, brandColor, accentBg, t, featured, divider, inProgress 
             t(`certifications.${cert.key}.name`)
           )}
         </div>
-        <div
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.65rem",
-            color: "var(--text-tertiary)",
-            marginTop: "2px",
-          }}
-        >
-          {t(`certifications.${cert.key}.issuer`)}
-        </div>
       </div>
       {inProgress ? (
         <div
           className="flex-shrink-0 inline-flex items-center gap-1.5"
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.65rem",
-            fontWeight: 500,
-            color: brandColor,
-            background: accentBg,
+            fontFamily: "var(--font-body)",
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            color: "var(--accent)",
+            background: "var(--accent-dim)",
             padding: "3px 10px",
             borderRadius: "6px",
             letterSpacing: "0.03em",
@@ -134,7 +125,7 @@ function CertRow({ cert, brandColor, accentBg, t, featured, divider, inProgress 
         >
           <span
             className="w-1.5 h-1.5 rounded-full"
-            style={{ background: brandColor, boxShadow: `0 0 6px ${brandColor}` }}
+            style={{ background: "var(--accent)" }}
             aria-hidden="true"
           />
           {t("certifications.inProgress", "In progress")}
@@ -143,13 +134,14 @@ function CertRow({ cert, brandColor, accentBg, t, featured, divider, inProgress 
         <div
           className="flex-shrink-0"
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.7rem",
-            fontWeight: 500,
-            color: brandColor,
-            background: accentBg,
+            fontFamily: "var(--font-body)",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            color: "var(--text-secondary)",
+            background: "var(--bg-elevated)",
             padding: "3px 10px",
             borderRadius: "6px",
+            fontVariantNumeric: "tabular-nums",
           }}
         >
           {t(`certifications.${cert.key}.date`)}
@@ -171,17 +163,16 @@ function Certifications() {
           whileInView="visible"
           viewport={viewportConfig}
         >
-          <m.div variants={itemVariants}>
-            <h2 className="section-heading">
-              {t("certifications.heading", "Credentials & certs.")}
-            </h2>
-          </m.div>
+          <SectionHeading
+            title={t("certifications.heading")}
+            muted={t("certifications.headingMuted")}
+          />
 
           <m.div variants={itemVariants} className="mb-10">
             <span
               className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full"
               style={{
-                fontFamily: "var(--font-mono)",
+                fontFamily: "var(--font-body)",
                 fontSize: "0.75rem",
                 fontWeight: 500,
                 color: "var(--accent)",
@@ -206,8 +197,12 @@ function Certifications() {
           </m.div>
         </m.div>
 
-        <div
-          className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4"
+        <m.div
+          className="hairline-grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.6 }}
           style={{
             gridAutoFlow: "dense",
             gridAutoRows: "minmax(150px, auto)",
@@ -215,9 +210,6 @@ function Certifications() {
         >
           {CERT_GROUPS.map((group, groupIndex) => {
             const brandColor = group.color || "var(--accent)";
-            const accentBg = group.color
-              ? `${group.color}14`
-              : "var(--accent-dim)";
             const isFeatured = group.size === "featured";
             const isWide = group.size === "wide";
             const tagline = t(
@@ -233,42 +225,9 @@ function Certifications() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className={`cert-group-card relative rounded-2xl p-5 md:p-6 cursor-default flex flex-col ${group.spanClasses}`}
-                style={{
-                  background: "var(--bg-surface)",
-                  border: "1px solid var(--border-subtle)",
-                  borderLeft: `3px solid ${brandColor}`,
-                  "--brand-color": brandColor,
-                }}
-                whileHover={{
-                  boxShadow: `0 8px 30px ${
-                    group.color ? group.color + "1f" : "rgba(100,255,218,0.08)"
-                  }`,
-                }}
+                className={`cert-group-card relative p-5 md:p-6 cursor-default flex flex-col ${group.spanClasses}`}
+                style={{ "--brand-color": brandColor }}
               >
-                {isFeatured && (
-                  <m.div
-                    className="absolute inset-0 rounded-2xl pointer-events-none"
-                    style={{
-                      boxShadow: `0 0 0 0 ${
-                        group.color || "rgba(100,255,218,1)"
-                      }00`,
-                    }}
-                    initial={{ opacity: 0 }}
-                    whileInView={{
-                      opacity: [0, 1, 0],
-                      boxShadow: [
-                        `0 0 0 0 ${brandColor}00`,
-                        `0 0 40px 2px ${brandColor}55`,
-                        `0 0 0 0 ${brandColor}00`,
-                      ],
-                    }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ duration: 2.2, delay: 0.4 + groupIndex * 0.1, ease: "easeOut" }}
-                    aria-hidden="true"
-                  />
-                )}
-
                 {group.liveTile && (
                   <LiveTileFrame
                     brandColor={brandColor}
@@ -278,49 +237,29 @@ function Certifications() {
                   />
                 )}
 
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="min-w-0">
-                    <div
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontSize: isFeatured ? "1.05rem" : "0.95rem",
-                        fontWeight: 700,
-                        color: brandColor,
-                        lineHeight: 1.2,
-                      }}
-                    >
-                      {group.vendor}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.6rem",
-                        color: "var(--text-tertiary)",
-                        letterSpacing: "0.05em",
-                        textTransform: "uppercase",
-                        marginTop: "2px",
-                      }}
-                    >
-                      {t("certifications.countLabel", {
-                        count: group.certs.length,
-                        defaultValue_one: "{{count}} certification",
-                        defaultValue_other: "{{count}} certifications",
-                      })}
-                      {group.inProgressCerts?.length
-                        ? ` · ${t("certifications.countInProgress", {
-                            count: group.inProgressCerts.length,
-                            defaultValue: "{{count}} in progress",
-                          })}`
-                        : ""}
-                    </div>
-                  </div>
-                </div>
+                <h3
+                  className="flex items-center gap-2.5 mt-0 mb-1.5"
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: isFeatured ? "1.05rem" : "0.95rem",
+                    fontWeight: 700,
+                    color: "var(--text-primary)",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  <span
+                    className="w-2 h-2 flex-shrink-0"
+                    style={{ background: brandColor, borderRadius: "2px" }}
+                    aria-hidden="true"
+                  />
+                  {group.vendor}
+                </h3>
 
                 <div
                   className="mb-3"
                   style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.7rem",
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.8rem",
                     color: "var(--text-secondary)",
                     letterSpacing: "0.02em",
                   }}
@@ -343,8 +282,6 @@ function Certifications() {
                       <CertRow
                         key={cert.key}
                         cert={cert}
-                        brandColor={brandColor}
-                        accentBg={accentBg}
                         t={t}
                         featured={isFeatured}
                         divider={divider}
@@ -355,8 +292,6 @@ function Certifications() {
                     <CertRow
                       key={cert.key}
                       cert={cert}
-                      brandColor={brandColor}
-                      accentBg={accentBg}
                       t={t}
                       featured={isFeatured}
                       divider
@@ -383,11 +318,9 @@ function Certifications() {
                     >
                       <span
                         style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.62rem",
+                          fontFamily: "var(--font-body)",
+                          fontSize: "0.8125rem",
                           color: "var(--text-tertiary)",
-                          letterSpacing: "0.08em",
-                          textTransform: "uppercase",
                         }}
                       >
                         {t(
@@ -397,10 +330,10 @@ function Certifications() {
                       </span>
                       <span
                         style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.72rem",
+                          fontFamily: "var(--font-body)",
+                          fontSize: "0.8rem",
                           fontWeight: 600,
-                          color: brandColor,
+                          color: "var(--text-primary)",
                         }}
                       >
                         {group.progress.current} / {group.progress.total}
@@ -417,7 +350,7 @@ function Certifications() {
               </m.div>
             );
           })}
-        </div>
+        </m.div>
       </div>
     </section>
   );

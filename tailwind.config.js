@@ -49,11 +49,11 @@ export default {
         active: "var(--border-active)",
       },
       fontFamily: {
-        sans: ["Outfit", "Inter", "-apple-system", "system-ui", "sans-serif"],
-        heading: ["Syne", "sans-serif"],
+        sans: ["Mona Sans", "-apple-system", "system-ui", "sans-serif"],
+        heading: ["Mona Sans", "sans-serif"],
         mono: ["JetBrains Mono", "Fira Mono", "SF Mono", "monospace"],
-        body: ["Outfit", "sans-serif"],
-        display: ["Syne", "sans-serif"],
+        body: ["Mona Sans", "sans-serif"],
+        display: ["Mona Sans", "sans-serif"],
       },
       boxShadow: {
         "custom-light": "0 10px 30px -15px rgba(0, 0, 0, 0.1)",

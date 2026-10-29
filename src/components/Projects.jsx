@@ -16,20 +16,27 @@ import {
 } from "react-icons/si";
 import {
   sectionVariants,
-  itemVariants,
   cardVariants,
   viewportConfig,
 } from "../hooks/useMotion";
+import SectionHeading from "./SectionHeading";
+import ClusterMap from "./uishots/ClusterMap";
+import SimWorkspace from "./uishots/SimWorkspace";
 
 const HANDBOOK_URL = "https://blog.cjoga.cloud";
 
 // Each project gets a themed visual identity: a primary color, a gradient
 // background for the preview area, and a stack of tech icons rendered large.
 // No fake screenshots — what you see is the stack the project actually runs on.
-// Every card links to the handbook case study that tells the full story.
+// Every card links to the handbook write-up that tells the full story,
+// and names that destination. Spans tile the hairline grid with no
+// orphan cell: 2+6 on two columns, 2+1/3/1+2 on three.
 const projects = [
   {
     key: "kubestronautSim",
+    link: "sim",
+    shot: "sim",
+    span: "md:col-span-2",
     color: "#326ce5",
     accent: "#7ea6f0",
     icons: [SiKubernetes, SiGo, SiReact],
@@ -37,6 +44,8 @@ const projects = [
   },
   {
     key: "cicd",
+    link: "arctiq",
+    span: "",
     color: "#ff9900",
     accent: "#ffc266",
     icons: [FaAws, SiGitlab, SiKubernetes],
@@ -44,6 +53,8 @@ const projects = [
   },
   {
     key: "iac",
+    link: "inspyr",
+    span: "",
     color: "#7f4dff",
     accent: "#b08aff",
     icons: [SiTerraform, FaAws, FaMicrosoft],
@@ -51,6 +62,8 @@ const projects = [
   },
   {
     key: "monitoring",
+    link: "arctiq",
+    span: "",
     color: "#f46800",
     accent: "#f99d5c",
     icons: [SiGrafana, SiOpentelemetry, SiPrometheus],
@@ -58,6 +71,8 @@ const projects = [
   },
   {
     key: "infrastructure",
+    link: "inspyr",
+    span: "",
     color: "#0078d4",
     accent: "#5fb0ec",
     icons: [FaMicrosoft, SiGrafana, SiArgo],
@@ -65,6 +80,8 @@ const projects = [
   },
   {
     key: "portal",
+    link: "inspyr",
+    span: "",
     color: "#41b883",
     accent: "#7ed4a6",
     icons: [FaVuejs, SiDotnet, SiArgo],
@@ -72,6 +89,9 @@ const projects = [
   },
   {
     key: "containerization",
+    link: "lab",
+    shot: "lab",
+    span: "lg:col-span-2",
     color: "#ffc61c",
     accent: "#ffdd73",
     icons: [SiKubernetes, SiCloudflare, FaServer],
@@ -83,10 +103,12 @@ function ProjectPreview({ project }) {
   const [IconA, IconB, IconC] = project.icons;
   return (
     <div
-      className="project-preview relative w-full overflow-hidden"
+      // A dark "screen" in both themes, like the cert tiles: the brand glow
+      // reads as light on dark, and as a faint smudge on a pale card.
+      className="project-preview chapter-dark relative w-full overflow-hidden"
       style={{
         aspectRatio: "16 / 9",
-        background: `linear-gradient(135deg, ${project.color}22 0%, ${project.color}08 60%, transparent 100%)`,
+        background: `linear-gradient(135deg, ${project.color}2e 0%, ${project.color}0d 60%, transparent 100%), var(--bg-void)`,
         borderBottom: "1px solid var(--border-subtle)",
       }}
       aria-hidden="true"
@@ -154,14 +176,16 @@ function Projects() {
           whileInView="visible"
           viewport={viewportConfig}
         >
-          <m.div variants={itemVariants}>
-            <h2 className="section-heading">
-              {t("projects.heading", "Things I've built.")}
-            </h2>
-          </m.div>
+          <SectionHeading title={t("projects.heading")} muted={t("projects.headingMuted")} />
         </m.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
+        <m.div
+          className="hairline-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.6 }}
+        >
           {projects.map((project, index) => (
             <m.a
               key={project.key}
@@ -173,17 +197,21 @@ function Projects() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              whileHover={{ y: -6 }}
-              transition={{ type: "tween", duration: 0.28, ease: [0.25, 1, 0.5, 1] }}
-              className="project-card group flex flex-col rounded-2xl overflow-hidden no-underline"
-              style={{
-                background: "var(--bg-surface)",
-                border: "1px solid var(--border-subtle)",
-                boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
-                "--project-color": project.color,
-              }}
+              aria-label={`${t(`projects.${project.key}.title`)}: ${t(`projects.links.${project.link}`)} ${t("certifications.opensInNewTab")}`}
+              className={`project-card group relative flex flex-col overflow-hidden no-underline ${project.span}`}
+              style={{ "--project-color": project.color }}
             >
-              <ProjectPreview project={project} />
+              {project.shot ? (
+                <div className="uishot-card">
+                  {project.shot === "sim" ? (
+                    <SimWorkspace label={t("projects.shots.sim")} />
+                  ) : (
+                    <ClusterMap label={t("projects.shots.lab")} />
+                  )}
+                </div>
+              ) : (
+                <ProjectPreview project={project} />
+              )}
 
               <div className="flex flex-1 flex-col p-5 md:p-6">
                 <h3
@@ -219,8 +247,8 @@ function Projects() {
                       key={i}
                       className="tech-tag py-[3px] px-2 rounded-md transition-all duration-200"
                       style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.62rem",
+                        fontFamily: "var(--font-body)",
+                        fontSize: "0.75rem",
                         background: "var(--bg-elevated)",
                         color: "var(--text-secondary)",
                         border: "1px solid var(--border-subtle)",
@@ -234,13 +262,13 @@ function Projects() {
                 <div
                   className="mt-4 flex items-center gap-1.5 transition-colors duration-300"
                   style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.68rem",
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.8rem",
                     color: "var(--text-secondary)",
                   }}
                 >
                   <span className="group-hover:underline underline-offset-4">
-                    {t("projects.readCaseStudy", "Read the case study")}
+                    {t(`projects.links.${project.link}`)}
                   </span>
                   <span
                     aria-hidden="true"
@@ -253,7 +281,7 @@ function Projects() {
               </div>
             </m.a>
           ))}
-        </div>
+        </m.div>
       </div>
     </section>
   );

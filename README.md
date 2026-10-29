@@ -146,7 +146,7 @@ on-call clichés. Memoir voice is reserved for `/me/who-i-am`.
 
 ## Author
 
-**Jose Camilo Joga Guerrero** — DevOps & Cloud Engineer
+**Jose Camilo Joga Guerrero** — Platform & DevOps Engineer
 
 - [LinkedIn](https://www.linkedin.com/in/cjoga)
 - [GitHub](https://github.com/Camilool8)

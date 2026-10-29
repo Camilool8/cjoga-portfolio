@@ -12,7 +12,7 @@ function Footer() {
       <div className="section-inner">
         <p
           className="text-xs leading-relaxed"
-          style={{ fontFamily: "var(--font-mono)", color: "var(--text-tertiary)" }}
+          style={{ fontFamily: "var(--font-body)", color: "var(--text-tertiary)" }}
         >
           {t("footer.text1")}
           <br />
@@ -20,7 +20,7 @@ function Footer() {
         </p>
         <p
           className="text-xs mt-2"
-          style={{ fontFamily: "var(--font-mono)", color: "var(--text-tertiary)" }}
+          style={{ fontFamily: "var(--font-body)", color: "var(--text-tertiary)" }}
         >
           {t("footer.copyright").replace("2025", currentYear)}
         </p>

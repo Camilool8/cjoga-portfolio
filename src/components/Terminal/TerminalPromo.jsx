@@ -3,6 +3,9 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { m, useInView } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
+import PlanetScene from "../hero/PlanetScene";
+import SectionHeading from "../SectionHeading";
+import { localizePath } from "../../utils/i18n";
 import {
   sectionVariants,
   itemVariants,
@@ -17,7 +20,8 @@ const PAUSE_BETWEEN = 2200; // ms between command sequences
 const LOOP_PAUSE = 3500; // ms before restarting the entire loop
 
 export default function TerminalPromo() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const terminalPath = localizePath("/terminal", i18n.language === "es" ? "es" : "en");
   const [lines, setLines] = useState([]);
   const [currentTyping, setCurrentTyping] = useState("");
   const [showCursor, setShowCursor] = useState(true);
@@ -36,10 +40,10 @@ export default function TerminalPromo() {
     () => [
       {
         command: "kubectl get nodes",
-        output: `NAME             STATUS   ROLES                  AGE    VERSION
-k3s-master-01    Ready    control-plane,master   180d   v1.28.4+k3s1
-k3s-worker-01    Ready    worker                 180d   v1.28.4+k3s1
-k3s-worker-02    Ready    worker                 90d    v1.28.4+k3s1`,
+        output: `NAME            STATUS   ROLES           AGE    VERSION
+k3s-master-01   Ready    control-plane   180d   v1.33.5+k3s1
+k3s-worker-01   Ready    worker          180d   v1.33.5+k3s1
+k3s-worker-02   Ready    worker          90d    v1.33.5+k3s1`,
       },
       {
         command: "kubectl get pods -n monitoring",
@@ -65,6 +69,21 @@ loki-0                      1/1     Running   1          30d`,
     ],
     [t],
   );
+
+  // The window is sized to the whole recording: the font scales so the
+  // longest line fits the width (no sideways scroll), and the body is
+  // tall enough for every line, so the demo always plays end to end.
+  const { cols, rows } = useMemo(() => {
+    let widest = 0;
+    let total = 1; // the final prompt line
+    demoSequence.forEach(({ command, output }) => {
+      widest = Math.max(widest, PROMPT.length + command.length + 1);
+      const outLines = output.split("\n");
+      outLines.forEach((l) => (widest = Math.max(widest, l.length)));
+      total += 1 + outLines.length;
+    });
+    return { cols: widest, rows: total };
+  }, [demoSequence]);
 
   const sleep = (ms) =>
     new Promise((resolve) => {
@@ -137,24 +156,28 @@ loki-0                      1/1     Running   1          30d`,
   }, []);
 
   return (
-    <section id="terminal-promo" className="py-16 md:py-24 relative z-10">
-      <div className="section-inner">
+    // Full-bleed chapter (after SpaceX/Vast): always dark, the same
+    // world as the hero seen as a horizon, the live cluster as the subject.
+    <section id="terminal-promo" className="chapter chapter-dark hero-grain" aria-labelledby="terminal-promo-title">
+      <div className="chapter__scene" aria-hidden="true">
+        <PlanetScene variant="horizon" still />
+      </div>
+      <div className="section-inner chapter__inner">
         <m.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={viewportConfig}
-          className="mb-10"
+          className="chapter__copy"
         >
-          <m.div variants={itemVariants}>
-            <h2 className="section-heading">{t("terminal.heading")}</h2>
-            <p
-              className="max-w-2xl text-base leading-relaxed"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              {t("terminal.description")}
-            </p>
-          </m.div>
+          <SectionHeading
+            id="terminal-promo-title"
+            title={t("terminal.heading")}
+            muted={t("terminal.headingMuted")}
+          />
+          <m.p variants={itemVariants} className="section-lede">
+            {t("terminal.description")}
+          </m.p>
         </m.div>
 
         <m.div
@@ -167,15 +190,16 @@ loki-0                      1/1     Running   1          30d`,
         >
           <div className="tp-terminal">
             <div className="tp-titlebar">
-              <div className="tp-dots">
+              <div className="tp-dots" aria-hidden="true">
                 <span className="tp-dot tp-dot-red" />
                 <span className="tp-dot tp-dot-yellow" />
                 <span className="tp-dot tp-dot-green" />
               </div>
               <span className="tp-titlebar-text">visitor@cjoga.cloud: ~</span>
+              <span className="tp-replay">{t("terminal.replay")}</span>
             </div>
 
-            <div className="tp-body">
+            <div className="tp-body" style={{ "--tp-cols": cols, "--tp-rows": rows }}>
               {lines.map((line, i) => (
                 <div key={i} className="tp-line">
                   {line.type === "input" ? (
@@ -201,10 +225,7 @@ loki-0                      1/1     Running   1          30d`,
               </div>
             </div>
 
-            <div className="tp-scanline" />
           </div>
-
-          <div className="tp-glow" />
         </m.div>
 
         <m.div
@@ -212,11 +233,11 @@ loki-0                      1/1     Running   1          30d`,
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="text-center mt-10"
+          className="chapter__cta"
         >
           <Link
-            to="/terminal"
-            className="btn btn-outline"
+            to={terminalPath}
+            className="btn btn-primary"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -233,33 +254,19 @@ loki-0                      1/1     Running   1          30d`,
         .tp-wrapper {
           position: relative;
           margin: 0;
-          overflow: hidden;
-        }
-
-        .tp-glow {
-          position: absolute;
-          inset: -30%;
-          background: radial-gradient(
-            ellipse 60% 50% at 50% 50%,
-            rgba(var(--particle-color), 0.06) 0%,
-            transparent 70%
-          );
-          pointer-events: none;
-          z-index: 0;
         }
 
         .tp-terminal {
+          container-type: inline-size;
           position: relative;
           z-index: 1;
           background: var(--bg-surface);
           border: 1px solid var(--border-subtle);
           border-radius: 12px;
           overflow: hidden;
-          box-shadow:
-            0 24px 80px rgba(0, 0, 0, 0.35),
-            0 0 60px rgba(var(--particle-color), 0.04);
+          box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.7);
           font-family: var(--font-mono);
-          font-size: 0.78rem;
+          font-size: 0.8125rem;
           line-height: 1.65;
         }
 
@@ -285,16 +292,40 @@ loki-0                      1/1     Running   1          30d`,
         .tp-dot-yellow { background: #febc2e; }
         .tp-dot-green  { background: #28c840; }
 
+        .tp-replay {
+          margin-left: auto;
+          flex-shrink: 0;
+          white-space: nowrap;
+          font-family: var(--font-body);
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: var(--text-secondary);
+          padding: 2px 8px;
+          border: 1px solid var(--border-medium);
+          border-radius: 6px;
+        }
         .tp-titlebar-text {
-          font-size: 0.7rem;
+          min-width: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 0.75rem;
           color: var(--text-tertiary);
           letter-spacing: 0.02em;
         }
 
+        /* JetBrains Mono advances 0.6em per character, so this font size
+           fits --tp-cols characters across the window; the height holds
+           all --tp-rows lines at the 1.65 line height. */
         .tp-body {
-          padding: 18px 20px;
-          min-height: 380px;
-          max-height: 500px;
+          --tp-pad-x: 20px;
+          --tp-pad-y: 18px;
+          padding: var(--tp-pad-y) var(--tp-pad-x);
+          font-size: clamp(8px, calc((100cqw - 2 * var(--tp-pad-x)) / (var(--tp-cols) * 0.61)), 13px);
+          line-height: 1.65;
+          height: calc(var(--tp-rows) * 1.65em + 2 * var(--tp-pad-y));
           overflow: hidden;
         }
 
@@ -323,11 +354,7 @@ loki-0                      1/1     Running   1          30d`,
           font-size: inherit;
           line-height: inherit;
           color: var(--text-secondary);
-          max-width: 100%;
           min-width: 0;
-          overflow-x: auto;
-          overflow-y: hidden;
-          -webkit-overflow-scrolling: touch;
         }
 
         .tp-cursor {
@@ -336,29 +363,13 @@ loki-0                      1/1     Running   1          30d`,
           transition: opacity 0.08s;
         }
 
-        .tp-scanline {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 0, 0, 0.03) 2px,
-            rgba(0, 0, 0, 0.03) 4px
-          );
-          z-index: 2;
-        }
-
         @media (max-width: 640px) {
           .tp-terminal {
-            font-size: 0.62rem;
             border-radius: 8px;
           }
           .tp-body {
-            padding: 10px 12px;
-            min-height: 200px;
-            max-height: 280px;
+            --tp-pad-x: 12px;
+            --tp-pad-y: 12px;
           }
           .tp-dot {
             width: 9px;

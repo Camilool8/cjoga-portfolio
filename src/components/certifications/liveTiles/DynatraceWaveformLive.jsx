@@ -91,6 +91,7 @@ function DynatraceWaveformLive({ color }) {
                   fill="none"
                   stroke={nodeColor}
                   strokeWidth="0.5"
+                  initial={{ r: 2.6, opacity: 0.85 }}
                   animate={{ r: [2.6, 5.2, 2.6], opacity: [0.85, 0, 0.85] }}
                   transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
                 />

@@ -20,7 +20,7 @@ export default function AuthorCard() {
         <div className={styles.eyebrow}>Written by</div>
         <div className={styles.name}>Jose Camilo Joga Guerrero</div>
         <p className={styles.bio}>
-          DevOps &amp; Cloud Engineer, Dominican&ndash;US dual citizen. I run{" "}
+          Platform &amp; DevOps Engineer, Dominican&ndash;US dual citizen. I run{" "}
           <code>cjoga.cloud</code> on a 6-node K3s cluster split across Proxmox
           and bare metal, and write here when something&apos;s worth sharing.
         </p>

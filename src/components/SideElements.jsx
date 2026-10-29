@@ -89,8 +89,8 @@ function SideElements() {
           href="mailto:josejoga.opx@gmail.com"
           style={{
             ...linkStyle,
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.72rem",
+            fontFamily: "var(--font-body)",
+            fontSize: "0.8rem",
             writingMode: "vertical-rl",
             letterSpacing: "0.1em",
           }}

@@ -34,7 +34,7 @@ function AwardSparkleLive({ color }) {
           transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: `${CX}px ${CY}px` }}
         >
-          <text fill={accent} fontSize="2.6" fontFamily="monospace" letterSpacing="0.18em" opacity="0.7">
+          <text fill={accent} fontSize="2.6" fontFamily="monospace" letterSpacing="0.18em" opacity="0.9">
             <textPath href="#partner-arc">
               ACCREDITED · PARTNER · ENGINEER · ACCREDITED · PARTNER · ENGINEER ·
             </textPath>
@@ -43,7 +43,7 @@ function AwardSparkleLive({ color }) {
 
         {/* Inner stamp ring */}
         <circle cx={CX} cy={CY} r={RING_R} stroke={accent} strokeWidth="0.45" fill="none" opacity="0.45" />
-        <circle cx={CX} cy={CY} r={RING_R - 2.2} stroke={accent} strokeWidth="0.3" fill={`${accent}10`} opacity="0.7" />
+        <circle cx={CX} cy={CY} r={RING_R - 2.2} stroke={accent} strokeWidth="0.3" fill={`color-mix(in srgb, ${accent} 6%, transparent)`} opacity="0.7" />
 
         {/* Sequentially lighting tick marks */}
         {ticks.map((deg, i) => {

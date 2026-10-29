@@ -59,6 +59,7 @@ function KubestronautRingLive({ color, current = 1, inProgress = 0, total = 5 })
                   r="3"
                   fill={color}
                   opacity={0.35}
+                  initial={{ r: 3, opacity: 0.35 }}
                   animate={{ r: [3, 5.5, 3], opacity: [0.35, 0, 0.35] }}
                   transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                 />

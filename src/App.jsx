@@ -39,7 +39,7 @@ function RouteFallback() {
     >
       <div
         className="flex items-center gap-3"
-        style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}
+        style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem" }}
       >
         <span
           className="w-2 h-2 rounded-full"
@@ -79,7 +79,7 @@ function LanguageSync() {
 // gave them a new identity on every theme or language change and
 // remounted the whole tree (replayed hero intro, wiped terminal
 // history). Theme state flows in via props instead.
-function MainLayout({ themePreference, cycleThemePreference, children }) {
+function MainLayout({ theme, toggleTheme, children }) {
   const { t } = useTranslation();
   useHashScroll();
 
@@ -102,8 +102,8 @@ function MainLayout({ themePreference, cycleThemePreference, children }) {
       </a>
       <ScrollProgress />
       <NavigationBar
-        themePreference={themePreference}
-        cycleThemePreference={cycleThemePreference}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
       <SideElements />
       <main id="main" tabIndex={-1} className="relative z-[2] outline-none">
@@ -121,7 +121,7 @@ function MainLayout({ themePreference, cycleThemePreference, children }) {
           border-radius: 10px;
           background: var(--bg-elevated, #1a2332);
           color: var(--accent);
-          font-family: var(--font-mono);
+          font-family: var(--font-body);
           font-size: 0.8rem;
           text-decoration: none;
           border: 1px solid var(--border-medium, currentColor);
@@ -169,10 +169,11 @@ function TerminalPage() {
 function App() {
   const systemTheme = useSystemTheme();
   useScrollReveal();
-  // Three-state preference matching Docusaurus: "system" (default,
-  // follows OS dynamically), "light", or "dark". The bootstrap script
-  // in index.html applies the resolved theme to <html> before React
-  // mounts so there's no flash on first frame.
+  // The theme follows the OS until the visitor picks one; after that the
+  // pick is remembered. There is no "system" option to cycle through:
+  // the toggle always flips what's on screen, in one click. The
+  // bootstrap script in index.html applies the resolved theme to <html>
+  // before React mounts so there's no flash on first frame.
   const [themePreference, setThemePreference] = useState(() => {
     try {
       const stored = localStorage.getItem("theme");
@@ -197,6 +198,16 @@ function App() {
     }
   }, [theme]);
 
+  // Every fresh load or reload starts at the top of the page: the browser
+  // would otherwise restore the last scroll offset and open mid-page.
+  // A `#section` URL still lands on its section (useHashScroll).
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    if (!window.location.hash) window.scrollTo(0, 0);
+  }, []);
+
   // Signal the build-time prerenderer that i18n has resolved and the
   // first real frame is painted. App only renders once translations
   // for the URL-derived language are ready (react-i18next suspense),
@@ -214,27 +225,17 @@ function App() {
     };
   }, []);
 
-  // Cycle preference (system → light → dark → system), matching
-  // Docusaurus's `getNextColorMode` order. "system" clears localStorage
-  // so the user re-enters OS-following mode.
-  const cycleThemePreference = useCallback(() => {
-    setThemePreference((prev) => {
-      const next =
-        prev === "system" ? "light" : prev === "light" ? "dark" : "system";
-      try {
-        if (next === "system") {
-          localStorage.removeItem("theme");
-        } else {
-          localStorage.setItem("theme", next);
-        }
-      } catch {
-        // ignore — private browsing, etc.
-      }
-      return next;
-    });
-  }, []);
+  const toggleTheme = useCallback(() => {
+    const next = theme === "dark" ? "light" : "dark";
+    setThemePreference(next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      // ignore — private browsing, etc.
+    }
+  }, [theme]);
 
-  const layoutProps = { themePreference, cycleThemePreference };
+  const layoutProps = { theme, toggleTheme };
 
   return (
     <LazyMotion features={domAnimation} strict>

@@ -10,8 +10,36 @@ function PrintButton() {
   const toastTimerRef = useRef(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
+  // The floating button only shows between the hero and Contact, so it
+  // never sits next to another "Download CV" button.
+  const [pastHero, setPastHero] = useState(false);
 
   useEffect(() => () => clearTimeout(toastTimerRef.current), []);
+
+  useEffect(() => {
+    // Hidden while the hero or Contact is on screen: both carry their
+    // own "Download CV" button.
+    const targets = ["hero", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    // Off the home page (the terminal) there's no hero, and the pill
+    // would sit on top of the terminal output; the terminal has its own
+    // `cat resume.txt` and `sudo hire-me`.
+    if (!targets.length) {
+      setPastHero(false);
+      return undefined;
+    }
+    const onScreen = new Set();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => (e.isIntersecting ? onScreen.add(e.target) : onScreen.delete(e.target)));
+        setPastHero(onScreen.size === 0);
+      },
+      { threshold: 0 },
+    );
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   const handleDownloadPDF = async () => {
     if (isGenerating) return;
@@ -54,7 +82,15 @@ function PrintButton() {
   };
 
   return (
-    <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 xl:right-20 z-40 print:hidden flex flex-col items-end gap-2">
+    <div
+      className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 xl:right-20 z-40 print:hidden flex flex-col items-end gap-2"
+      style={{
+        opacity: pastHero ? 1 : 0,
+        visibility: pastHero ? "visible" : "hidden",
+        transform: pastHero ? "none" : "translateY(12px)",
+        transition: "opacity 0.35s, transform 0.35s var(--ease-out-expo), visibility 0s linear " + (pastHero ? "0s" : "0.35s"),
+      }}
+    >
       <div role="status">
         {showErrorToast && (
           <p
@@ -63,7 +99,7 @@ function PrintButton() {
               background: "var(--bg-elevated)",
               border: "1px solid var(--border-subtle)",
               color: "var(--text-secondary)",
-              fontFamily: "var(--font-mono)",
+              fontFamily: "var(--font-body)",
             }}
           >
             {t(
@@ -83,14 +119,14 @@ function PrintButton() {
         style={{
           background: "var(--accent)",
           color: "var(--bg-primary)",
-          fontFamily: "var(--font-mono)",
+          fontFamily: "var(--font-body)",
         }}
         aria-label={t("print.button")}
       >
         <MdFileDownload className="text-lg sm:mr-2" />
         <span className="hidden sm:inline text-sm font-medium">
           {isGenerating
-            ? t("print.generating", "Generating...")
+            ? t("print.generating")
             : t("print.button")}
         </span>
       </button>

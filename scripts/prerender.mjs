@@ -28,12 +28,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.resolve(__dirname, "../dist");
 const ORIGIN = "https://cjoga.cloud";
 
-const ES_TITLE = "Jose Camilo Joga Guerrero | Ingeniero DevOps y Cloud";
+const ES_TITLE = "Jose Camilo Joga Guerrero | Ingeniero de Plataformas y DevOps";
 // Derived from public/locales/es/translation.json hero.description (≤160).
 const ES_DESCRIPTION =
-  "Ingeniero DevOps y Cloud que construye plataformas de Kubernetes sobre " +
+  "Ingeniero de plataformas y DevOps que construye y opera Kubernetes en " +
   "AWS y Azure con Terraform, GitOps y observabilidad. Portafolio de Camilo Joga.";
-const ES_OG_TITLE = "Jose Camilo Joga Guerrero — Ingeniero DevOps y Cloud";
+const ES_OG_TITLE = "Jose Camilo Joga Guerrero — Ingeniero de Plataformas y DevOps";
 
 const ROUTES = [
   { route: "/", out: "index.html", lang: "en", canonical: `${ORIGIN}/` },
