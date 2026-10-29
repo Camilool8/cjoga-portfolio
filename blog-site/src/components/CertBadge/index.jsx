@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaRedhat, FaAward, FaAws } from 'react-icons/fa';
+import { FiArrowUpRight } from 'react-icons/fi';
 import {
   SiDynatrace,
   SiGitlab,
@@ -78,7 +79,8 @@ export default function CertBadge({
             target="_blank"
             rel="noopener noreferrer"
           >
-            Verify on Credly ↗
+            Verify on Credly
+            <FiArrowUpRight aria-hidden="true" />
           </a>
         )}
       </div>

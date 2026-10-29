@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
+import { FiArrowUpRight } from 'react-icons/fi';
 import styles from './styles.module.css';
 
 // Course card — bordered tile, matches the SectionCardGrid visual language.
@@ -74,7 +74,7 @@ export default function CourseCard({
         {link && (
           <span className={styles.linkAffordance} aria-hidden="true">
             <span>View course</span>
-            <FaArrowUpRightFromSquare />
+            <FiArrowUpRight />
           </span>
         )}
       </div>

@@ -1,10 +1,11 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
-import { FaArrowRight } from 'react-icons/fa';
+import { FiArrowRight } from 'react-icons/fi';
 import styles from './styles.module.css';
 
-// Section card grid — for top-level index pages.
-// Each card: icon + title + 1-line description, click anywhere → href.
+// Section rows — for top-level index pages, in the landing's hairline
+// link-list form. Each row: icon + title + 1-line description + arrow,
+// click anywhere → href.
 //
 // Usage:
 //   <SectionCardGrid>
@@ -54,7 +55,7 @@ export function SectionCard({
         <h3 className={styles.title}>{title}</h3>
         {description && <p className={styles.description}>{description}</p>}
       </div>
-      <FaArrowRight className={styles.arrow} aria-hidden="true" />
+      <FiArrowRight className={styles.arrow} aria-hidden="true" />
     </Link>
   );
 }

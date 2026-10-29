@@ -1,5 +1,4 @@
 // @ts-check
-import { themes as prismThemes } from "prism-react-renderer";
 
 // Mermaid renders to static SVG at build time (rehype-mermaid, img-svg
 // strategy) — no mermaid runtime ships to the client. Diagrams are drawn
@@ -50,6 +49,21 @@ const mermaidConfig = {
 // time (`div.mermaid-zoom-wrap`) so the wrapper ships in the static HTML: the
 // client module then only attaches listeners and an absolutely-positioned
 // affordance, avoiding the layout shift a runtime wrap would cause.
+// Prism theme from the brand tokens. Values are CSS variables, so one
+// theme serves both colour modes and follows scripts/brand/tokens.css:
+// comments in the tertiary tone, keywords and functions in sky, strings
+// in the accent, numbers and booleans in amber, the rest in ink.
+const prismTokenTheme = {
+  plain: { color: "var(--text-primary)", backgroundColor: "var(--bg-surface)" },
+  styles: [
+    { types: ["comment", "prolog", "doctype", "cdata"], style: { color: "var(--text-tertiary)", fontStyle: "normal" } },
+    { types: ["punctuation", "operator", "entity", "url"], style: { color: "var(--text-secondary)" } },
+    { types: ["property", "tag", "constant", "symbol", "deleted", "atrule", "keyword", "function", "class-name"], style: { color: "var(--accent-secondary)" } },
+    { types: ["selector", "attr-name", "string", "char", "builtin", "inserted", "attr-value"], style: { color: "var(--accent-ink)" } },
+    { types: ["boolean", "number", "regex", "important", "variable"], style: { color: "var(--accent-warm)" } },
+  ],
+};
+
 function rehypeMermaidImgAlt() {
   /** @param {any} n */
   const isMermaidImg = (n) =>
@@ -152,17 +166,7 @@ export default async function createConfigAsync() {
         rel: "preload",
         as: "font",
         type: "font/woff2",
-        href: "/fonts/syne-latin-var.woff2",
-        crossorigin: "anonymous",
-      },
-    },
-    {
-      tagName: "link",
-      attributes: {
-        rel: "preload",
-        as: "font",
-        type: "font/woff2",
-        href: "/fonts/outfit-latin-var.woff2",
+        href: "/fonts/mona-sans-latin.woff2",
         crossorigin: "anonymous",
       },
     },
@@ -457,8 +461,8 @@ export default async function createConfigAsync() {
         copyright: `© ${new Date().getFullYear()} Jose Camilo Joga Guerrero · handbook built with Docusaurus.`,
       },
       prism: {
-        theme: prismThemes.oneLight,
-        darkTheme: prismThemes.oneDark,
+        theme: prismTokenTheme,
+        darkTheme: prismTokenTheme,
         additionalLanguages: [
           "bash",
           "yaml",

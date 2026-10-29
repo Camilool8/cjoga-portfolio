@@ -17,8 +17,10 @@ export default function AuthorCard() {
         loading="lazy"
       />
       <div className={styles.body}>
-        <div className={styles.eyebrow}>Written by</div>
-        <div className={styles.name}>Jose Camilo Joga Guerrero</div>
+        <p className={styles.name}>
+          <span className={styles.muted}>Written by</span> Jose Camilo Joga
+          Guerrero
+        </p>
         <p className={styles.bio}>
           Platform &amp; DevOps Engineer, Dominican&ndash;US dual citizen. I run{" "}
           <code>cjoga.cloud</code> on a 6-node K3s cluster split across Proxmox
@@ -28,11 +30,9 @@ export default function AuthorCard() {
           <Link to="https://cjoga.cloud" className={styles.link}>
             Portfolio
           </Link>
-          <span aria-hidden="true">·</span>
           <Link to="https://github.com/Camilool8" className={styles.link}>
             GitHub
           </Link>
-          <span aria-hidden="true">·</span>
           <Link to="https://www.linkedin.com/in/cjoga" className={styles.link}>
             LinkedIn
           </Link>

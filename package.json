@@ -14,6 +14,8 @@
     "tokens:sync": "node scripts/brand/sync-tokens.mjs",
     "tokens:check": "node scripts/brand/sync-tokens.mjs --check",
     "contrast:check": "node scripts/brand/check-contrast.mjs",
+    "scene:sync": "node scripts/brand/sync-scene.mjs",
+    "scene:check": "node scripts/brand/sync-scene.mjs --check",
     "prerender": "node scripts/prerender.mjs",
     "server:dev": "nodemon server/index.js",
     "start": "node server/index.js",

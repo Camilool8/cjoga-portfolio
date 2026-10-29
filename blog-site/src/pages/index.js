@@ -1,24 +1,29 @@
 // Landing for blog.cjoga.cloud. Audience-first "start here" index:
 // hiring managers, learners, and homelab-curious readers each see the
-// path that's actually useful to them. Keeps the existing styling
-// (hero, orbs, typographic rows) intact.
+// path that's actually useful to them. The intro sits over a quiet
+// orbital band: the portfolio's planet scene seen as a horizon, masked
+// away from the copy (see OrbitalScene, synced from the portfolio).
 
 import React from "react";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { FiArrowRight } from "react-icons/fi";
+import PlanetScene from "@site/src/components/OrbitalScene/PlanetScene";
 import styles from "./index.module.css";
 
 const PATHS = [
   {
-    eyebrow: "If you're hiring",
+    id: "hiring",
+    title: "If you're hiring",
     rows: [
       { to: "/me/who-i-am", label: "Who I am" },
       { to: "/engineering/work", label: "What I've built" },
     ],
   },
   {
-    eyebrow: "If you're studying",
+    id: "studying",
+    title: "If you're studying",
     intro:
       "Honest cert guides — my experience, my tips, and the runbooks I'd hand to a friend.",
     rows: [
@@ -28,7 +33,8 @@ const PATHS = [
     ],
   },
   {
-    eyebrow: "If you're curious about the lab",
+    id: "lab",
+    title: "If you're curious about the lab",
     rows: [
       { to: "/engineering/lab/overview", label: "The K3s setup" },
       { to: "/learn/kubestronaut-sim", label: "kubestronaut-sim" },
@@ -37,21 +43,26 @@ const PATHS = [
 ];
 
 function PathBlock({ path }) {
+  const headingId = `path-${path.id}`;
   return (
-    <section className={styles.pathBlock}>
-      <div className={styles.eyebrow}>
-        <span className={styles.eyebrowDot} aria-hidden="true" />
-        {path.eyebrow}
+    <section className={styles.path} aria-labelledby={headingId}>
+      <div className={styles.pathHead}>
+        <h2 id={headingId} className={styles.pathTitle}>
+          {path.title}
+        </h2>
+        {path.intro ? <p className={styles.pathIntro}>{path.intro}</p> : null}
       </div>
-      {path.intro ? <p className={styles.pathIntro}>{path.intro}</p> : null}
-      <nav className={styles.sections} aria-label={path.eyebrow}>
+      <ul className={styles.links}>
         {path.rows.map((row) => (
-          <Link key={row.to} to={row.to} className={styles.row}>
-            <div className={styles.rowLabel}>{row.label}</div>
-            <div className={styles.rowArrow} aria-hidden="true">→</div>
-          </Link>
+          <li key={row.to}>
+            <Link to={row.to} className={styles.link}>
+              <span className={styles.linkLabel}>{row.label}</span>
+              <span className={styles.linkPath}>{row.to}</span>
+              <FiArrowRight className={styles.linkIcon} aria-hidden="true" />
+            </Link>
+          </li>
         ))}
-      </nav>
+      </ul>
     </section>
   );
 }
@@ -67,35 +78,32 @@ export default function Home() {
       description={siteConfig.tagline}
     >
       <main className={styles.main}>
-        <div className={styles.backdrop} aria-hidden="true">
-          <div className={`${styles.orb} ${styles.orbAccent}`} />
-          <div className={`${styles.orb} ${styles.orbBlue}`} />
-        </div>
-
-        <section className={styles.hero}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowDot} aria-hidden="true" />
-            cjoga.cloud / handbook
+        <section className={styles.intro} aria-labelledby="handbook-title">
+          <div className={styles.scene} aria-hidden="true">
+            <PlanetScene variant="horizon" />
           </div>
-          <h1 className={styles.title}>
-            This is where I write things down.
-          </h1>
-          <p className={styles.lede}>
-            A working handbook — opinions, the K3s lab that runs{" "}
-            <code>cjoga.cloud</code>, the consulting work that pays the bills,
-            and cert guides for the certs I think are worth your time. Nothing
-            here is for sale. Read whatever's useful.
-          </p>
+          <div className={styles.inner}>
+            <h1 id="handbook-title" className={styles.title}>
+              This is where I write things down.{" "}
+              <span className={styles.titleMuted}>A working handbook.</span>
+            </h1>
+            <p className={styles.lede}>
+              Opinions, the K3s lab that runs <code>cjoga.cloud</code>, the
+              consulting work that pays the bills, and cert guides for the
+              certs I think are worth your time. Nothing here is for sale.
+              Read whatever's useful.
+            </p>
+          </div>
         </section>
 
-        <div className={styles.paths}>
-          {PATHS.map((path) => (
-            <PathBlock key={path.eyebrow} path={path} />
-          ))}
-        </div>
+        <div className={styles.inner}>
+          <div className={styles.paths}>
+            {PATHS.map((path) => (
+              <PathBlock key={path.id} path={path} />
+            ))}
+          </div>
 
-        <footer className={styles.signoff}>
-          <p>
+          <p className={styles.signoff}>
             New pages land when they're ready, not on a schedule. If something
             here is wrong, or you want to talk about the work,{" "}
             <Link to="/me/who-i-am#how-to-reach-me" className={styles.signoffLink}>
@@ -103,7 +111,7 @@ export default function Home() {
             </Link>
             .
           </p>
-        </footer>
+        </div>
       </main>
     </Layout>
   );

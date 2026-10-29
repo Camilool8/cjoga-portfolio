@@ -1,56 +1,71 @@
-/* Certification badge — flat tile, vendor logo + cert metadata.
-   Matches the AuthorCard / CourseCard editorial aesthetic: minimal fill,
-   subtle borders, accent-color hover, mono-cased eyebrow rows. */
+/* Certification badges — a hairline grid (after Linear): cells divided
+   by 1px rules inside one rounded frame, vendor logo in a small raised
+   tile, year and status as a plain caption line. */
 
 .grid {
+  --hairline: color-mix(in srgb, var(--accent) 8%, var(--bg-void));
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
   margin: 1.75rem 0 2.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+:global([data-theme='light']) .grid {
+  --hairline: color-mix(in srgb, #0f172a 9%, var(--bg-void));
+}
+
+@media (min-width: 760px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* An odd last badge takes the full row instead of leaving a hole. */
+  .grid > .badge:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 
 .badge {
   display: grid;
-  grid-template-columns: 56px 1fr;
+  grid-template-columns: 48px minmax(0, 1fr);
   gap: 1rem;
   align-items: start;
   padding: 1.25rem;
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  background: transparent;
-  transition: border-color 0.2s var(--ease-out),
-    background 0.2s var(--ease-out);
+  background: var(--bg-void);
+  outline: 1px solid var(--hairline);
+  transition: background-color 0.2s var(--ease-out);
 }
 
 .badge:hover {
-  border-color: var(--border-medium);
-  background: var(--accent-dim);
+  background: var(--bg-surface);
 }
 
 .logoWrap {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border-subtle);
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--bg-surface);
   flex-shrink: 0;
 }
 
 .logo {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   display: block;
   flex-shrink: 0;
 }
 
 .logoFallback {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-ink);
   letter-spacing: -0.02em;
 }
 
@@ -59,13 +74,10 @@
 }
 
 .meta {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.4rem;
+  color: var(--text-tertiary);
+  margin-bottom: 0.3rem;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -73,20 +85,16 @@
 }
 
 .year {
-  color: var(--accent);
+  color: var(--text-secondary);
 }
 
 .dot {
   color: var(--text-tertiary);
-  font-weight: 400;
 }
 
 .status {
   color: var(--text-tertiary);
-}
-
-.status[data-status='earned'] {
-  color: var(--text-tertiary);
+  text-transform: capitalize;
 }
 
 .status[data-status='lapsed'] {
@@ -96,11 +104,11 @@
 .name {
   font-family: var(--font-display);
   font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
+  font-weight: 650;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
-  margin: 0 0 0.25rem;
-  line-height: 1.3;
+  margin: 0 0 0.2rem;
+  line-height: 1.35;
 }
 
 .nameLink {
@@ -115,27 +123,32 @@ a.nameLink:hover {
 }
 
 .issuer {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
   margin: 0 0 0.5rem;
 }
 
 .note {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
   margin: 0 0 0.5rem;
-  font-style: italic;
 }
 
 .verify {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 32px;
+  font-size: 0.875rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--accent-ink);
   text-decoration: none;
-  transition: color 0.2s var(--ease-out);
+}
+
+.verify svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s var(--ease-out);
 }
 
 .verify:hover {
@@ -143,10 +156,20 @@ a.nameLink:hover {
   text-decoration: none;
 }
 
+.verify:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.verify:focus-visible {
+  outline-offset: 2px;
+}
+
+/* The grid clips its cells, so a focus ring has to sit inside. */
+.badge :focus-visible {
+  outline-offset: -2px;
+}
+
 @media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
   .badge {
     padding: 1rem;
     gap: 0.85rem;

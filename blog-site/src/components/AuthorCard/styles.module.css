@@ -1,5 +1,5 @@
-/* Styled squared section, not a card — matches the typographic-row
-   aesthetic used on the landing. Flat, no fill, top + bottom border. */
+/* A sign-off band, not a card: hairlines above and below, like the
+   landing's rows. */
 .card {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -24,23 +24,21 @@
   min-width: 0;
 }
 
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-}
-
+/* One two-tone line, like the section headings: "Written by" muted,
+   the name in full ink. */
 .name {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  line-height: 1.3;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem;
+  text-wrap: balance;
+}
+
+.muted {
+  color: var(--text-tertiary);
 }
 
 .bio {
@@ -52,26 +50,22 @@
 }
 
 .bio code {
-  font-family: var(--font-mono);
-  font-size: 0.88em;
-  color: var(--accent);
-  background: var(--accent-dim);
-  padding: 1px 6px;
-  border-radius: 4px;
-  border: 1px solid var(--border-subtle);
+  font-size: 0.86em;
 }
 
 .links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--text-tertiary);
+  gap: 4px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.2s var(--ease-out);

@@ -7,11 +7,7 @@
 }
 
 .caption {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
   color: var(--text-tertiary);
   margin-bottom: 1rem;
 }
@@ -62,7 +58,6 @@
 .emphasis .dot {
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-dim);
 }
 
 .entryBody {
@@ -72,22 +67,15 @@
 }
 
 .year {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.emphasis .year {
-  color: var(--accent);
+  font-size: 0.8125rem;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-ink);
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--text-primary);
@@ -95,7 +83,6 @@
 }
 
 .emphasis .title {
-  font-size: 1.05rem;
   font-weight: 700;
 }
 
@@ -112,12 +99,10 @@
 }
 
 .body :global(a) {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.body :global(a):hover {
-  color: var(--accent-secondary);
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 600px) {
