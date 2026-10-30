@@ -199,10 +199,11 @@ function NavigationBar({ theme, toggleTheme }) {
               : "smooth";
             window.scrollTo({ top: 0, behavior });
           }}
-          className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] font-bold text-sm px-3 no-underline"
-          style={{ color: "var(--accent)" }}
+          className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-2 no-underline"
+          aria-label={t("nav.home")}
         >
-          CJ
+          {/* The brand mark (scripts/brand/mark.svg), already cached as the favicon. */}
+          <img src="/icons/logo.svg" alt="" width="28" height="28" className="block" />
         </Link>
 
         <div className="hidden md:flex items-center gap-0.5">

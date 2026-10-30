@@ -2,15 +2,27 @@
 sidebar_position: 2
 title: OpenBao — running static-key auto-unseal even in dev
 image: img/og/engineering-lab-tips-and-gotchas-openbao-auto-unseal.png
-description: Why my homelab OpenBao kept sealing itself, why the "auto-unseal is only for production" rule doesn't survive a homelab context, and the static-key seal I run instead.
+description: Why my homelab OpenBao kept sealing itself, why the "auto-unseal is only for production" rule doesn’t survive a homelab context, and the static-key seal I run instead.
 slug: /engineering/lab/tips-and-gotchas/openbao-auto-unseal
 keywords: [openbao, vault, auto-unseal, static-key, homelab, secrets]
 date: "2026-05-13"
+last_update:
+  date: "2026-10-30"
+  author: José Camilo Joga Guerrero
+# The Oct 30 change only corrected the page (the "Since then" note). The dateline says
+# "Corrected" and the landing's "Last updated" leaves this page out.
+last_update_kind: correction
 ---
 
 # OpenBao — running static-key auto-unseal even in dev
 
 [OpenBao](https://openbao.org/) ships sealed at startup. Every time a pod restarts, it comes up sealed and refuses requests until an operator provides unseal material. In a production deployment you accept that operational cost because the security benefit is real — the unseal keys never live in the cluster. In a homelab, that calculus collapses.
+
+:::note[Since then]
+
+The Longhorn migration runbook I wrote on May 27, 2026, two weeks after this page, still unseals each OpenBao pod by hand after it restarts. So the static seal described below may not have been in place at that point. Read this page as the design I chose, not as a record of what the cluster ran on a given day.
+
+:::
 
 ## What broke
 
@@ -22,7 +34,7 @@ Manual unseal during a recovery is exactly the moment you don't want a multi-ste
 
 OpenBao supports several auto-unseal back-ends — cloud KMS, transit, hardware HSMs — and a **static-key seal** that reads unseal material directly from configuration. Static-key is the only one of those options that doesn't require a separate cloud provider or another running OpenBao/Vault, which makes it the only auto-unseal back-end that's actually appropriate for a self-contained lab.
 
-I run OpenBao with the static seal configured. The key itself isn't in the cluster manifest — it's injected at deploy time from a separate, locked-down KODEPULL-managed store that is not the cluster I'm protecting with the vault. Bao restarts, reads the static key from its config, unseals itself, and rejoins HA. The pod restart is now invisible to everything that depends on it.
+I run OpenBao with the static seal configured. The key itself isn't in the cluster manifest — it's injected at deploy time from a separate, locked-down KodePull-managed store that is not the cluster I'm protecting with the vault. Bao restarts, reads the static key from its config, unseals itself, and rejoins HA. The pod restart is now invisible to everything that depends on it.
 
 ## The trade-off, named
 

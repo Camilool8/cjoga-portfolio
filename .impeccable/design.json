@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-29T00:00:00Z",
+  "title": "Design System: cjoga.cloud",
+  "extensions": {
+    "colorMeta": {
+      "signal-mint": { "role": "primary", "displayName": "Signal Mint", "canonical": "oklch(90.8% 0.141 174.3)", "tonalRamp": ["#001309", "#003222", "#00543e", "#00785c", "#009b7d", "#4abca0", "#88ddc5", "#befeeb"] },
+      "signal-mint-dim": { "role": "primary", "displayName": "Signal Mint Dim", "canonical": "rgba(100, 255, 218, 0.12)" },
+      "signal-mint-glow": { "role": "primary", "displayName": "Signal Mint Glow", "canonical": "rgba(100, 255, 218, 0.1)" },
+      "sky-gradient-end": { "role": "primary", "displayName": "Sky (gradient end)", "canonical": "oklch(75.4% 0.139 232.7)", "tonalRamp": ["#000d22", "#002a48", "#004971", "#006b9d", "#008ec2", "#55b1de", "#8dd4f9", "#c1f7ff"] },
+      "void": { "role": "neutral", "displayName": "Void", "canonical": "oklch(13.4% 0.012 264.7)", "tonalRamp": ["#0a0b0e", "#232529", "#3f4247", "#5e6168", "#7f8289", "#a2a5ab", "#c7c9ce", "#eceef3"] },
+      "deep-space": { "role": "neutral", "displayName": "Deep Space", "canonical": "oklch(17.0% 0.024 268.5)", "tonalRamp": ["#090b10", "#22252d", "#3e424c", "#5c616e", "#7d8290", "#a0a5b1", "#c5c9d3", "#ebeef7"] },
+      "hull": { "role": "neutral", "displayName": "Hull", "canonical": "oklch(21.0% 0.032 264.7)", "tonalRamp": ["#080b12", "#20252f", "#3b4250", "#596172", "#7a8295", "#9da5b5", "#c3c9d7", "#e9eff9"] },
+      "bulkhead": { "role": "neutral", "displayName": "Bulkhead", "canonical": "oklch(25.5% 0.031 260.4)", "tonalRamp": ["#080b12", "#1f252f", "#3b424f", "#586272", "#788394", "#9ca6b5", "#c2cad7", "#e9eff9"] },
+      "glass-dark": { "role": "neutral", "displayName": "Glass Dark", "canonical": "rgba(17, 24, 37, 0.72)" },
+      "hairline-dark": { "role": "neutral", "displayName": "Hairline Dark", "canonical": "rgba(100, 255, 218, 0.08)" },
+      "rule-dark": { "role": "neutral", "displayName": "Rule Dark", "canonical": "rgba(100, 255, 218, 0.15)" },
+      "starlight": { "role": "neutral", "displayName": "Starlight", "canonical": "oklch(92.9% 0.013 255.5)", "tonalRamp": ["#090b0e", "#222529", "#3f4247", "#5d6268", "#7e8389", "#a1a5ab", "#c6c9ce", "#eceff3"] },
+      "moon-gray": { "role": "neutral", "displayName": "Moon Gray", "canonical": "oklch(71.1% 0.035 256.8)", "tonalRamp": ["#070b12", "#1e2630", "#394351", "#566274", "#768396", "#9aa6b7", "#c0cad8", "#e7effa"] },
+      "dust-gray": { "role": "neutral", "displayName": "Dust Gray", "canonical": "oklch(66.4% 0.037 261.9)", "tonalRamp": ["#070b13", "#1f2531", "#394252", "#566275", "#778398", "#9ba6b8", "#c1cad9", "#e8effb"] },
+      "daylight-signal": { "role": "primary", "displayName": "Daylight Signal", "canonical": "oklch(52.0% 0.094 223.1)", "tonalRamp": ["#000e19", "#002b3a", "#004a5e", "#126b85", "#3e8ea8", "#70b0c7", "#9fd2e6", "#cef6ff"] },
+      "daylight-signal-ink": { "role": "primary", "displayName": "Daylight Signal Ink", "canonical": "oklch(44.5% 0.079 222.2)", "tonalRamp": ["#000e17", "#002a36", "#124959", "#296a7f", "#4d8ca2", "#7aaec1", "#a6d1e1", "#d3f5ff"] },
+      "daylight-signal-dim": { "role": "primary", "displayName": "Daylight Signal Dim", "canonical": "rgba(14, 116, 144, 0.1)" },
+      "daylight-gradient-start": { "role": "primary", "displayName": "Daylight Gradient Start", "canonical": "oklch(51.1% 0.086 186.4)", "tonalRamp": ["#00100e", "#002d29", "#004d48", "#177068", "#41928a", "#72b3ac", "#a1d5cf", "#d0f8f3"] },
+      "daylight-gradient-end": { "role": "primary", "displayName": "Daylight Gradient End", "canonical": "oklch(50.0% 0.119 242.7)", "tonalRamp": ["#000c21", "#002846", "#00466f", "#14679a", "#3e89bf", "#6facdb", "#9ed0f7", "#cdf4ff"] },
+      "high-altitude": { "role": "neutral", "displayName": "High Altitude", "canonical": "oklch(97.2% 0.006 255.5)", "tonalRamp": ["#0a0b0c", "#242527", "#404245", "#5f6164", "#808286", "#a3a5a8", "#c7c9cc", "#edeef0"] },
+      "stratus": { "role": "neutral", "displayName": "Stratus", "canonical": "oklch(95.7% 0.009 258.3)", "tonalRamp": ["#0a0b0d", "#232528", "#404246", "#5e6166", "#7f8387", "#a2a5aa", "#c7c9cd", "#edeff1"] },
+      "cloud-white": { "role": "neutral", "displayName": "Cloud White", "canonical": "oklch(100% 0 0)", "tonalRamp": ["#0b0b0b", "#252525", "#424242", "#616161", "#828282", "#a5a5a5", "#c9c9c9", "#eeeeee"] },
+      "haze": { "role": "neutral", "displayName": "Haze", "canonical": "oklch(94.1% 0.011 256.7)", "tonalRamp": ["#0a0b0d", "#232528", "#3f4247", "#5e6267", "#7e8388", "#a2a5aa", "#c6c9ce", "#eceff2"] },
+      "glass-light": { "role": "neutral", "displayName": "Glass Light", "canonical": "rgba(255, 255, 255, 0.82)" },
+      "hairline-light": { "role": "neutral", "displayName": "Hairline Light", "canonical": "rgba(15, 23, 42, 0.09)" },
+      "rule-light": { "role": "neutral", "displayName": "Rule Light", "canonical": "rgba(15, 23, 42, 0.17)" },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "oklch(20.8% 0.040 265.8)", "tonalRamp": ["#070b13", "#1f2532", "#3a4253", "#576177", "#788299", "#9ca5b9", "#c1c9da", "#e8effc"] },
+      "slate": { "role": "neutral", "displayName": "Slate", "canonical": "oklch(44.6% 0.037 257.3)", "tonalRamp": ["#070b13", "#1e2631", "#384352", "#556275", "#758397", "#9aa6b8", "#c0cad9", "#e7effb"] },
+      "graphite": { "role": "neutral", "displayName": "Graphite", "canonical": "oklch(46.8% 0.034 259.5)", "tonalRamp": ["#070b12", "#1f2530", "#3a4251", "#576274", "#778396", "#9ba6b6", "#c1cad8", "#e8effa"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The hero name only, at 125% width; the surname carries the accent gradient." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings, written as a two-tone sentence." },
+      "title": { "displayName": "Title", "purpose": "Card titles for roles and projects." },
+      "lede": { "displayName": "Lede", "purpose": "The paragraph under a section heading, max 62ch." },
+      "body": { "displayName": "Body", "purpose": "Running text." },
+      "label": { "displayName": "Label", "purpose": "Buttons, nav links, figure captions, chips and status lines." },
+      "mono": { "displayName": "Mono", "purpose": "Real code only: prompts, the terminal, CLI output and code blocks." }
+    },
+    "shadows": [
+      { "name": "signal-glow", "value": "0 8px 30px var(--accent-glow)", "purpose": "Primary button hover, with a 2px lift." },
+      { "name": "daylight-lift", "value": "0 1px 2px rgba(15, 23, 42, 0.04), 0 14px 32px -18px rgba(15, 23, 42, 0.22)", "purpose": "Timeline cards and hairline grids, light theme only." },
+      { "name": "chapter-inset", "value": "0 30px 60px -30px rgba(2, 6, 23, 0.45)", "purpose": "The dark chapter panel in the light theme." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The single easing for reveals, hovers and entrances." },
+      { "name": "reveal", "value": "opacity + translateY(40px), 0.8s ease-out-expo, 60ms stagger", "purpose": "Scroll reveals." },
+      { "name": "hero-word", "value": "opacity + blur(8px) + translateY(-14px), 0.6s ease-out-expo", "purpose": "The hero name, word by word; no blur on touch or narrow screens." },
+      { "name": "hover", "value": "0.2s to 0.4s ease-out-expo, translateY(-2px) on buttons", "purpose": "Interactive state changes." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "hero-narrow", "value": "760px" },
+      { "name": "md", "value": "768px" },
+      { "name": "contact-stack", "value": "860px" },
+      { "name": "chapter-split", "value": "961px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one primary action per screen, such as Download CV.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><polyline points=\"7 10 12 15 17 10\"/><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"/></svg>Download CV</button>",
+      "css": ".ds-btn { font-family: var(--font-body, 'Mona Sans', sans-serif); font-size: 0.8rem; font-weight: 500; padding: 14px 28px; border-radius: 12px; border: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary { background: var(--accent, #64ffda); color: var(--bg-primary, #0b0f1a); } .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow, rgba(100, 255, 218, 0.1)); } .ds-btn-primary:focus-visible { outline: 2px solid var(--accent, #64ffda); outline-offset: 3px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary actions next to the primary button.",
+      "html": "<button class=\"ds-btn-outline\">Get in touch</button>",
+      "css": ".ds-btn-outline { font-family: var(--font-body, 'Mona Sans', sans-serif); font-size: 0.8rem; font-weight: 500; padding: 14px 28px; border-radius: 12px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; background: transparent; color: var(--accent, #64ffda); border: 1px solid var(--border-medium, rgba(100, 255, 218, 0.15)); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-outline:hover { color: var(--accent-ink, #64ffda); background: var(--accent-dim, rgba(100, 255, 218, 0.12)); border-color: var(--accent, #64ffda); transform: translateY(-2px); } .ds-btn-outline:focus-visible { outline: 2px solid var(--accent, #64ffda); outline-offset: 3px; }"
+    },
+    {
+      "name": "Floating Nav",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "The fixed glass pill nav; hover and active fill with the dim accent.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-link--active\" href=\"#\">About</a><a class=\"ds-nav-link\" href=\"#\">Experience</a><a class=\"ds-nav-link\" href=\"#\">Projects</a><a class=\"ds-nav-link\" href=\"#\">Terminal</a></nav>",
+      "css": ".ds-nav { display: inline-flex; align-items: center; gap: 2px; padding: 6px 8px; border-radius: 16px; background: var(--bg-glass, rgba(17, 24, 37, 0.72)); backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); border: 1px solid var(--border-subtle, rgba(100, 255, 218, 0.08)); } .ds-nav-link { font-family: var(--font-body, 'Mona Sans', sans-serif); font-size: 0.8rem; font-weight: 500; color: var(--text-secondary, #94a3b8); text-decoration: none; padding: 8px 12px; border-radius: 10px; white-space: nowrap; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav-link:hover, .ds-nav-link--active { color: var(--accent-ink, #64ffda); background: var(--accent-dim, rgba(100, 255, 218, 0.12)); } .ds-nav-link:focus-visible { outline: 2px solid var(--accent, #64ffda); outline-offset: 3px; }"
+    },
+    {
+      "name": "Period Chip",
+      "kind": "chip",
+      "refersTo": "chip-period",
+      "description": "Dates on experience cards, in tabular numerals.",
+      "html": "<span class=\"ds-chip-period\">2024 — Present</span>",
+      "css": ".ds-chip-period { display: inline-block; padding: 4px 10px; border-radius: 6px; font-family: var(--font-body, 'Mona Sans', sans-serif); font-size: 0.8rem; font-variant-numeric: tabular-nums; color: var(--accent-ink, #64ffda); background: var(--accent-dim, rgba(100, 255, 218, 0.12)); }"
+    },
+    {
+      "name": "Tech Tag",
+      "kind": "chip",
+      "refersTo": "chip-tech",
+      "description": "Technology tags on project cards; strengthen on card hover.",
+      "html": "<span class=\"ds-chip-tech\">Kubernetes</span>",
+      "css": ".ds-chip-tech { display: inline-block; padding: 3px 8px; border-radius: 6px; font-family: var(--font-body, 'Mona Sans', sans-serif); font-size: 0.75rem; background: var(--bg-elevated, #1a2332); color: var(--text-secondary, #94a3b8); border: 1px solid var(--border-subtle, rgba(100, 255, 218, 0.08)); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-chip-tech:hover { border-color: var(--border-medium, rgba(100, 255, 218, 0.15)); color: var(--text-primary, #e2e8f0); }"
+    },
+    {
+      "name": "Timeline Card",
+      "kind": "card",
+      "refersTo": "card-timeline",
+      "description": "An experience entry: period chip, role title, employer and copy.",
+      "html": "<article class=\"ds-card-timeline\"><span class=\"ds-card-timeline__period\">2023 — 2024</span><h3 class=\"ds-card-timeline__title\">Role title</h3><p class=\"ds-card-timeline__text\">One line of measured impact from the role.</p></article>",
+      "css": ".ds-card-timeline { max-width: 520px; padding: 28px; border-radius: 16px; background: var(--bg-surface, #111827); border: 1px solid var(--border-subtle, rgba(100, 255, 218, 0.08)); transition: background-color 0.4s, border-color 0.4s, box-shadow 0.4s; } .ds-card-timeline__period { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-variant-numeric: tabular-nums; color: var(--accent-ink, #64ffda); background: var(--accent-dim, rgba(100, 255, 218, 0.12)); } .ds-card-timeline__title { margin: 12px 0 4px; font-family: var(--font-display, 'Mona Sans', sans-serif); font-size: 1.2rem; font-weight: 700; color: var(--text-primary, #e2e8f0); } .ds-card-timeline__text { margin: 0; font-size: 0.875rem; line-height: 1.65; color: var(--text-secondary, #94a3b8); }"
+    },
+    {
+      "name": "Two-Tone Heading",
+      "kind": "custom",
+      "refersTo": "headline",
+      "description": "A section heading as one sentence: the claim in full ink, the continuation muted.",
+      "html": "<h2 class=\"ds-heading\">Platform work at enterprise scale. <span class=\"ds-heading__muted\">Built, migrated and kept running.</span></h2>",
+      "css": ".ds-heading { margin: 0; max-width: 22ch; font-family: var(--font-display, 'Mona Sans', sans-serif); font-size: clamp(1.75rem, 3.6vw, 2.75rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--text-primary, #e2e8f0); text-wrap: balance; } .ds-heading__muted { color: var(--text-tertiary, #8794ab); }"
+    },
+    {
+      "name": "Hairline Grid",
+      "kind": "card",
+      "refersTo": "card-pillar",
+      "description": "Cells separated by 1px rules instead of floating cards.",
+      "html": "<div class=\"ds-hairline-grid\"><div class=\"ds-hairline-cell\"><strong>GitOps</strong><span>Cluster state reconciled from Git.</span></div><div class=\"ds-hairline-cell\"><strong>Observability</strong><span>Metrics, logs and traces from day one.</span></div><div class=\"ds-hairline-cell\"><strong>Secrets</strong><span>OpenBao with External Secrets.</span></div></div>",
+      "css": ".ds-hairline-grid { --ds-hairline: color-mix(in srgb, var(--accent, #64ffda) 8%, var(--bg-void, #06080d)); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--ds-hairline); border-radius: 12px; overflow: hidden; } .ds-hairline-cell { display: grid; gap: 6px; padding: 16px; background: var(--bg-void, #06080d); outline: 1px solid var(--ds-hairline); font-family: var(--font-body, 'Mona Sans', sans-serif); } .ds-hairline-cell strong { font-size: 0.9375rem; font-weight: 700; color: var(--text-primary, #e2e8f0); } .ds-hairline-cell span { font-size: 0.875rem; line-height: 1.45; color: var(--text-secondary, #94a3b8); }"
+    },
+    {
+      "name": "Link List Row",
+      "kind": "custom",
+      "refersTo": "body",
+      "description": "Handbook and contact rows between hairline rules, with an arrow that nudges on hover.",
+      "html": "<ul class=\"ds-links\"><li><a class=\"ds-link\" href=\"#\">Homelab write-ups<span class=\"ds-link__path\">blog.cjoga.cloud/docs/lab</span><svg class=\"ds-link__icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><line x1=\"7\" y1=\"17\" x2=\"17\" y2=\"7\"/><polyline points=\"7 7 17 7 17 17\"/></svg></a></li></ul>",
+      "css": ".ds-links { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-subtle, rgba(100, 255, 218, 0.08)); } .ds-link { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 16px; row-gap: 2px; min-height: 64px; padding: 12px 0; border-bottom: 1px solid var(--border-subtle, rgba(100, 255, 218, 0.08)); color: var(--text-primary, #e2e8f0); font-family: var(--font-body, 'Mona Sans', sans-serif); font-size: 1rem; font-weight: 600; text-decoration: none; transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-link__path { grid-column: 1; font-size: 0.8125rem; font-weight: 400; color: var(--text-tertiary, #8794ab); } .ds-link__icon { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; color: var(--text-tertiary, #8794ab); transition: color 0.2s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); } .ds-link:hover, .ds-link:focus-visible { color: var(--accent, #64ffda); } .ds-link:hover .ds-link__icon { color: var(--accent, #64ffda); transform: translate(2px, -2px); } .ds-link:focus-visible { outline: 2px solid var(--accent, #64ffda); outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Orbit",
+    "overview": "The site is a view from orbit at night. A planet limb, banded rings, dotted orbits and slow satellites move behind the page, and the work sits in front of them in plain, confident type. The motion is there to give depth and a sense of place. It never carries information, never competes with the copy, and stops cleanly when the visitor asks for reduced motion.\n\nDensity is low and composed. One centered column (64rem) carries the content; sections size to their content, and a thin scroll-scrubbed hairline marks the pause between them. Structure comes from 1px rules and tonal steps between near-black surfaces, after Linear: hairline grids instead of floating cards, two-tone headings where a claim in full ink continues in a muted tone, short captions under real product views. One full-bleed dark chapter opens a window onto the live cluster and terminal. Mint is the only accent, used for what is live or actionable.\n\nThe light theme keeps the same world in daylight rather than switching to paper. The ground is a cool tinted blue-gray, cards are white and lift on soft offset shadows, the accent deepens to a teal from the same family as the mint, and the dark chapter becomes an inset panel. The lineage is Brittany Chiang's v4 portfolio, refined. The \"Launch webcast\" replacement world was rejected and does not return.",
+    "keyCharacteristics": [
+      "Orbital scene behind the hero: graphics and motion only, no labels or data.",
+      "Two-tone headings, hairline grids, figure captions.",
+      "Mona Sans for everything readable; JetBrains Mono only for real code, prompts and CLI output.",
+      "Single mint accent (#64ffda dark, #0e7490 light) on near-black or tinted-daylight grounds.",
+      "Tonal layering in dark; soft offset shadows in light.",
+      "Long, decelerating easing (expo-out) on every reveal and hover."
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "Mint (teal in daylight) is the only accent, and it means \"live or actionable\". Nothing decorative is mint except the planet's rim light and orbit dashes.", "section": "colors" },
+      { "name": "The Always-Dark Chapter Rule", "body": "The homelab and terminal chapter pins the dark palette in both themes. In light it becomes an inset dark panel with a clean edge, not a fade from white.", "section": "colors" },
+      { "name": "The Paired Theme Rule", "body": "Every pair must clear WCAG AA in both themes; `npm run contrast:check` is the gate.", "section": "colors" },
+      { "name": "The Two-Tone Rule", "body": "A section heading is one sentence: the claim in full ink, the continuation in the tertiary tone. Never two stacked headings.", "section": "typography" },
+      { "name": "The Mono-Means-Machine Rule", "body": "JetBrains Mono appears only where the text is real code, a prompt or command output. Never for eyebrows, labels or decoration.", "section": "typography" },
+      { "name": "The 12px Floor Rule", "body": "No text below 0.75rem (12px).", "section": "typography" },
+      { "name": "The Flat-At-Night Rule", "body": "In dark, surfaces are flat at rest; depth comes from tone and the scene, never from drop shadows.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do write section headings as one two-tone sentence: claim in Starlight/Ink, continuation in Dust Gray/Graphite.",
+      "Do use 1px hairline rules and tonal steps for structure before reaching for a card.",
+      "Do keep mint (teal in daylight) for live or actionable things: links, the primary button, prompts, status, focus.",
+      "Do show real artifacts (the cluster, CLI output, a vendor's own logo or dashboard) and caption them.",
+      "Do use expo-out (`cubic-bezier(0.16, 1, 0.3, 1)`) for every transition, and land everything on its end state under reduced motion.",
+      "Do keep touch targets at least 44px on coarse pointers and focus rings at 2px accent.",
+      "Do check both themes; the light theme is daylight from orbit, not a different site."
+    ],
+    "donts": [
+      "Don't put labels, numbers or data into the orbital scene, or set copy over its motion on phones.",
+      "Don't use a flat paper-white ground in the light theme; the ground is High Altitude (#f3f6fa) and cards are white.",
+      "Don't use JetBrains Mono for eyebrows, labels or ornament; it is for real code only.",
+      "Don't add a second accent color or spread the accent gradient beyond the hero surname, the section divider and the scroll-progress bar.",
+      "Don't use drop shadows in the dark theme at rest.",
+      "Don't illustrate vendors or tools with abstract metaphors.",
+      "Don't set text below 12px.",
+      "Don't bring back the rejected \"Launch webcast\" world."
+    ]
+  }
+}

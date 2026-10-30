@@ -30,6 +30,28 @@
   src: url("/fonts/mona-sans-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+/* Metric-matched fallback for Mona Sans: a local Arial-class face scaled
+   to Mona Sans's width and line box (measured in Chromium: +3.5% width at
+   regular, +1.7% at bold; ascent 1.09em, descent 0.32em), so text keeps
+   its line breaks when the web font swaps in — no layout shift. */
+@font-face {
+  font-family: "Mona Sans Fallback";
+  font-weight: 100 549;
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica Neue"), local("Helvetica");
+  size-adjust: 103.5%;
+  ascent-override: 105.3%;
+  descent-override: 30.9%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Mona Sans Fallback";
+  font-weight: 550 900;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Helvetica Neue Bold"), local("Helvetica Bold");
+  size-adjust: 101.7%;
+  ascent-override: 107.2%;
+  descent-override: 31.5%;
+  line-gap-override: 0%;
+}
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
@@ -75,55 +97,17 @@
   --text-secondary: #94a3b8;
   --text-tertiary: #8794ab;
   --gradient-accent: linear-gradient(135deg, #64ffda, #38bdf8);
-  --font-display: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Mona Sans", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Mona Sans", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] {
-  --bg-void: #ffffff;
-  --bg-primary: #f8fafc;
-  --bg-surface: #f1f5f9;
-  --bg-elevated: #e2e8f0;
-  --bg-glass: rgba(255, 255, 255, 0.85);
-  --border-subtle: rgba(3, 105, 161, 0.12);
-  --border-medium: rgba(3, 105, 161, 0.25);
-  --border-active: rgba(3, 105, 161, 0.5);
-  --accent: #0369a1;
-  --accent-dim: rgba(3, 105, 161, 0.1);
-  --accent-ink: #0b5d73;
-  --accent-glow: rgba(3, 105, 161, 0.1);
-  --accent-secondary: #0e7490;
-  --accent-warm: #b45309;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #64748b;
-  --gradient-accent: linear-gradient(135deg, #0369a1, #0e7490);
-}
-/* @brand-tokens:end */
-
-/* Portfolio-only tokens (outside the shared brand block).
-   One family for everything: Mona Sans sets the name, headings, body
-   and UI; --font-mono (JetBrains Mono) is reserved for real code —
-   the terminal, prompts, CLI output and code blocks. The handbook still
-   reads the shared Syne/Outfit values above. */
-:root {
-  --font-display: "Mona Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: "Mona Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --gradient-hero: linear-gradient(135deg, #0b0f1a 0%, #0f172a 40%, #0b1628 100%);
-}
-
-/* Light theme — "daylight from orbit". The shared light palette was a
-   flat white with a sky-blue accent: the space world vanished, cards
-   melted into the page, and the dark cluster chapter landed like a cut.
-   The portfolio's light mode instead keeps the same world in daylight:
-   a cool tinted ground (not paper white) so white cards lift, a
-   teal accent from the same family as the dark theme's mint, a dark
-   planet that stays the hero's subject, and soft fades into the dark
-   chapter. */
-[data-theme="light"] {
+  /* "Daylight from orbit": the same world in daylight. A cool tinted
+     ground (not paper white) so white cards lift, and a teal accent from
+     the same family as the dark theme's mint. */
   --bg-void: #f3f6fa;
   --bg-primary: #edf1f7;
   --bg-surface: #ffffff;
@@ -137,10 +121,25 @@
   --accent-ink: #0b5d73;
   --accent-glow: rgba(14, 116, 144, 0.16);
   --accent-secondary: #0369a1;
-  --gradient-accent: linear-gradient(135deg, #0f766e, #0369a1);
-  --gradient-hero: linear-gradient(180deg, #e3eaf3 0%, #edf2f8 55%, #f3f6fa 100%);
-  /* The shared #64748b reads 4.34:1 on surfaces; this clears 4.5:1 on all. */
+  --accent-warm: #b45309;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  /* #64748b read 4.34:1 on surfaces; this clears 4.5:1 on all. */
   --text-tertiary: #4f5b6e;
+  --gradient-accent: linear-gradient(135deg, #0f766e, #0369a1);
+}
+/* @brand-tokens:end */
+
+/* Portfolio-only tokens (outside the shared brand block). The shared
+   block sets one family for everything (Mona Sans) and the "daylight
+   from orbit" light theme; --font-mono (JetBrains Mono) is reserved for
+   real code — the terminal, prompts, CLI output and code blocks. */
+:root {
+  --gradient-hero: linear-gradient(135deg, #0b0f1a 0%, #0f172a 40%, #0b1628 100%);
+}
+
+[data-theme="light"] {
+  --gradient-hero: linear-gradient(180deg, #e3eaf3 0%, #edf2f8 55%, #f3f6fa 100%);
   --page-ground: #f3f6fa;
 }
 

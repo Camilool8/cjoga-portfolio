@@ -1,0 +1,259 @@
+/* /atom.xml opened in a browser (plugins/docs-feed.js links this file).
+   The feed is plain Atom plus a few XHTML elements (h|…) that a browser
+   renders as real HTML: the heading, the "this is a feed" note, a link
+   and a dateline per entry. Atom's own elements are hidden here except
+   each entry's summary. Same-origin only; brand tokens copied from
+   src/css/custom.css; the theme follows the system (no toggle here). */
+
+@namespace atom url("http://www.w3.org/2005/Atom");
+@namespace h url("http://www.w3.org/1999/xhtml");
+
+@font-face {
+  font-family: "Mona Sans";
+  font-style: normal;
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+  font-display: swap;
+  src: url("/fonts/mona-sans-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin-var.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: light;
+  /* Daylight */
+  --bg: #f3f6fa;
+  --rule: rgba(15, 23, 42, 0.09);
+  --accent: #0e7490;
+  --accent-ink: #0b5d73;
+  --ink: #0f172a;
+  --ink-2: #475569;
+  --ink-3: #4f5b6e;
+  --font: "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --measure: 40rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #06080d;
+    --rule: rgba(100, 255, 218, 0.08);
+    --accent: #64ffda;
+    --accent-ink: #64ffda;
+    --ink: #e2e8f0;
+    --ink-2: #94a3b8;
+    --ink-3: #8794ab;
+  }
+}
+
+/* ─── Page ─────────────────────────────────────────────────────────── */
+
+atom|feed {
+  display: block;
+  min-height: 100vh;
+  padding: 0 1rem 5rem;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+/* Atom's own metadata is for feed readers. */
+atom|id,
+atom|title,
+atom|subtitle,
+atom|link,
+atom|updated,
+atom|published,
+atom|author,
+atom|icon,
+atom|category,
+h|meta,
+h|link,
+h|title {
+  display: none;
+}
+
+h|a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+
+h|a:hover {
+  text-decoration-color: currentColor;
+}
+
+h|a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── Bar and opening ──────────────────────────────────────────────── */
+
+/* The bar runs edge to edge; its brand sits on the column. */
+.feed-bar {
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+h|a.feed-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: fit-content;
+  min-height: 60px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+@media (min-width: 42rem) {
+  h|a.feed-brand {
+    margin-left: calc((100% - var(--measure)) / 2);
+  }
+}
+
+.feed-brand h|img {
+  display: block;
+  border-radius: 7px;
+}
+
+.feed-muted {
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.feed-intro,
+atom|entry {
+  display: block;
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+.feed-intro {
+  padding-top: 2.5rem;
+}
+
+.feed-title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.875rem, 5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.feed-lede {
+  max-width: 36em;
+  margin: 0 0 1rem;
+  font-size: 1.0625rem;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* The address is machine text: mono, on a hairline frame, selected in
+   one tap, so it reads as the thing to copy. */
+.feed-address {
+  display: grid;
+  gap: 0.25rem;
+  margin: 1.5rem 0;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+}
+
+.feed-label {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+}
+
+.feed-address h|code {
+  font-family: var(--mono);
+  font-size: 0.9375rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.feed-h2 {
+  margin: 3rem 0 0;
+  padding-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Entries: the handbook's link rows ────────────────────────────── */
+/* Hairlines between, the title over a quiet dateline, the description
+   under it. */
+
+atom|entry {
+  padding: 1rem 0 1.125rem;
+  border-top: 1px solid var(--rule);
+}
+
+atom|entry:last-of-type {
+  border-bottom: 1px solid var(--rule);
+}
+
+.feed-entry-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+}
+
+.feed-entry-title h|a {
+  color: var(--ink);
+  text-decoration-color: transparent;
+}
+
+.feed-entry-title h|a:hover {
+  color: var(--accent-ink);
+  text-decoration-color: currentColor;
+}
+
+@media (pointer: coarse) {
+  .feed-entry-title h|a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
+.feed-date {
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+atom|summary {
+  display: block;
+  max-width: 36em;
+  margin-top: 0.375rem;
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}

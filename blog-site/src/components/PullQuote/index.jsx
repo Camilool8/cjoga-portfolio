@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.module.css';
 
 // Hero pull-quote — hairline rules above and below match the text column;
-// quote text centered and balanced inside. No box, no background, no
+// quote text on the column's left edge, balanced inside. No box, no background, no
 // nested blockquote (to avoid inheriting Docusaurus's default styling).
 //
 // Usage:

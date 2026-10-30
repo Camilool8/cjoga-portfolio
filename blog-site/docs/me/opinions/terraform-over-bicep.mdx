@@ -8,19 +8,16 @@ keywords: [opinions, terraform, bicep, azure, iac, infrastructure-as-code, state
 date: "2026-05-13"
 last_update:
   date: "2026-07-04"
-  author: Jose Camilo Joga Guerrero
+  author: José Camilo Joga Guerrero
 ---
 
 import PullQuote from '@site/src/components/PullQuote';
-import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # Why I run Terraform on Azure
 
 <PullQuote>
   Pick for the boundary you might cross, not the one you are standing inside.
 </PullQuote>
-
-<TechStackGrid compact items={['Terraform', 'Bicep']} />
 
 On Azure, with every incentive pointing at the Microsoft-native option, I still reach for [Terraform](https://www.terraform.io) over [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview). I have used both in production, I hold the [HashiCorp Certified Terraform Associate (004)](https://www.hashicorp.com/certification/terraform-associate), and I run Terraform on my own K3s homelab as well as in client engagements. The case for Bicep is not weak, so it goes first.
 
@@ -35,7 +32,3 @@ The third reason is small but it captures the philosophy gap. Bicep's [`what-if`
 There is a place where Bicep is the right answer, and I want to name it. Small Azure-only shops where nobody is ever leaving Azure. Teams already deep in ARM templates where the migration cost of Terraform exceeds the marginal benefit. Scenarios where being first to a new Azure resource API matters more than portability — niche, but real. I am not arguing Terraform is universally correct.
 
 The discipline is to pick the tool that fits where you are going, not just where you are. If there is any chance you will ever run a workload outside Azure — another cloud, a Kubernetes cluster, a SaaS provider you need to configure as code — Terraform was already the right choice on day one. Pick for the boundary you might cross, not the one you are standing inside.
-
-import AuthorCard from '@site/src/components/AuthorCard';
-
-<AuthorCard />

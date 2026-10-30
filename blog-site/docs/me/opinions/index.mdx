@@ -8,52 +8,46 @@ keywords: [opinions, essays, devops, tools]
 ---
 
 import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
-import { FaQuoteLeft } from 'react-icons/fa';
 
 # Opinions
 
 This is where I write things I believe — not hedge-everything corporate posts, just the takes I'd defend in a code review.
 
+{/* No dates: the list is in reading order (the sidebar's), not by
+    date, so a date column would read as out of order. */}
 <SectionCardGrid>
   <SectionCard
     href="/me/opinions/keep-it-stupidly-simple"
-    icon={FaQuoteLeft}
     title="Keep it stupidly simple"
     description="The simplest solution usually wins, the one place that rule breaks, and the question I ask before reaching for an abstraction."
   />
   <SectionCard
     href="/me/opinions/devops-title-2026"
-    icon={FaQuoteLeft}
     title="The DevOps title is losing value in 2026"
-    description="Why &ldquo;DevOps Engineer&rdquo; as a job description is fading, and what's actually rising in its place."
+    description="Why &ldquo;DevOps Engineer&rdquo; as a job description is fading, and what’s actually rising in its place."
   />
   <SectionCard
     href="/me/opinions/ai-in-devops-power-user"
-    icon={FaQuoteLeft}
     title="AI in DevOps — be a power user, not a casual one"
     description="The gap between casual and skilled AI use is already wide and compounds every month."
   />
   <SectionCard
     href="/me/opinions/certifications-expire"
-    icon={FaQuoteLeft}
-    title="Certifications expire, and that's the point"
+    title="Certifications expire, and that’s the point"
     description="Why renewal cadence keeps the credential honest, and the certs I have chosen not to renew."
   />
   <SectionCard
     href="/me/opinions/terraform-over-bicep"
-    icon={FaQuoteLeft}
     title="Why I run Terraform on Azure"
     description="Bicep has real strengths, but portability and explicit state management win for me."
   />
   <SectionCard
     href="/me/opinions/openbao-over-vault"
-    icon={FaQuoteLeft}
     title="OpenBao over Vault — same docs, more freedom"
     description="Why OSS governance matters for foundational infra, and where Vault still wins."
   />
   <SectionCard
     href="/me/opinions/self-hosting-privilege"
-    icon={FaQuoteLeft}
     title="Self-hosting is a privilege, and worth it if you have it"
     description="The honest cost of running your own stack, and why the return on understanding it compounds."
   />

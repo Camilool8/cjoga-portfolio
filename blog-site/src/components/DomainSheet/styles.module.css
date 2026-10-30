@@ -1,0 +1,655 @@
+/* Hairline rows, like the fact sheet at the top of the guide: a Rule on
+   top, a Hairline under each domain, no frame. Sized in em so the sheet
+   sits on the prose measure (36em, from `article .markdown > *`). */
+.sheet {
+  container-type: inline-size;
+  margin: 1.5rem 0 1.75rem;
+  border-top: 1px solid var(--border-medium);
+}
+
+/* The index: the fact sheet's label column, then the domains as plain
+   links in one or two columns, no numbers, no icons. It is the sheet's
+   head, so a Hairline closes it like a domain row. */
+.index {
+  display: grid;
+  grid-template-columns: 6.25em minmax(0, 1fr);
+  column-gap: 1rem;
+  align-items: baseline;
+  padding: 0.75rem 0 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.indexList {
+  column-gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Over the article's list spacing: the rows set their own rhythm. A
+   domain never splits across the two columns. */
+.index .indexList > li {
+  margin: 0;
+  break-inside: avoid;
+}
+
+/* Full ink, not the accent: a list of seventeen mint links would shout.
+   They rest with the article links' quiet underline (40% of the ink), so
+   they read as links before any hover, with a mouse as on touch; hover,
+   focus and a press bring the accent and the full underline. */
+.indexLink {
+  display: block;
+  padding: 0.2rem 0;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-wrap: balance;
+  transition:
+    color 0.2s var(--ease-out),
+    text-decoration-color 0.2s var(--ease-out);
+}
+
+.indexLink:is(:hover, :focus-visible, :active) {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.indexLink code {
+  font-size: 0.9em;
+}
+
+/* "Print this sheet": a quiet text button under the list, in the
+   label's tone, the accent on hover. */
+.printRow {
+  grid-column: 2;
+  margin: 0.35rem 0 0;
+}
+
+.print {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  margin: 0;
+  padding: 0.2rem 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s var(--ease-out);
+}
+
+.print:hover {
+  color: var(--accent-ink);
+}
+
+.print:focus-visible,
+.backLink:focus-visible,
+.stepLink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.icon {
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+}
+
+/* Two columns down to a phone, so seventeen domains take nine rows. The
+   list runs down the first column and on down the second, in sheet
+   order, so reading down a column follows the sheet, and Tab follows
+   the reading (it is DOM order). A grid filled by column rather than
+   newspaper columns: the two columns share their rows, so a name that
+   wraps ("Config and security" at 360px) makes its row taller on both
+   sides and the rows stay level. */
+@container (min-width: 18rem) {
+  .indexList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(var(--index-rows, 1), auto);
+    grid-auto-flow: column;
+  }
+}
+
+/* On touch each domain is a 44px row, and so are the sheet's buttons. */
+@media (pointer: coarse) {
+  .indexLink,
+  .print,
+  .backLink,
+  .stepLink {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.35rem 0;
+  }
+
+  .print,
+  .backLink,
+  .stepLink {
+    display: inline-flex;
+  }
+
+  /* A name's first line sits where a one-line name would, centred in
+     its 44px, so beside a name that wraps the two columns still read
+     across on their first lines. */
+  .indexLink {
+    align-items: flex-start;
+    padding: calc((44px - 1lh) / 2) 0 0.35rem;
+  }
+}
+
+.domain {
+  padding: 1.25rem 0 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* The row's last line, its steps, in the label's tone: the previous and
+   next domains by name on the left ("← SELinux · Boot configuration →"),
+   "All domains", back to the index, at the right edge. A sheet without
+   an index has no use for any of them. */
+.back {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  column-gap: 1rem;
+  margin: 0;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.5rem;
+  margin-right: auto;
+  font-size: 0.8125rem;
+}
+
+/* Below 997px the band lists the domains (its open list, read from
+   inside the sheet), so the steps are the desktop's alone. */
+@media (max-width: 996px) {
+  .steps {
+    display: none;
+  }
+}
+
+/* Spoken with the step's name ("Previous domain: SELinux"); the arrow
+   says it to the eye. */
+.srText {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.sheet:not(:has(.index)) .back {
+  display: none;
+}
+
+/* On a phone the band lists the domains (its open list, read from inside
+   the sheet), so seventeen "All domains" add a refrain and no new way
+   back. Gone, not faded: nothing hidden stays in the Tab order. */
+@media (max-width: 996px) and (pointer: coarse) {
+  .back {
+    display: none;
+  }
+}
+
+.backLink,
+.stepLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.15rem 0;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s var(--ease-out);
+}
+
+.backLink {
+  margin-left: auto;
+}
+
+.backLink:hover,
+.stepLink:hover {
+  color: var(--accent-ink);
+  text-decoration: none;
+}
+
+/* Seventeen of them would be a refrain, so with a mouse they rest a
+   step quieter, in the tertiary tone: there to be found, never louder
+   than the rows above them. The domain under the pointer or holding
+   focus brings them to the label's tone, and the link itself to the
+   accent. Only the colour changes, so nothing moves. */
+@media (hover: hover) and (pointer: fine) {
+  .backLink,
+  .stepLink,
+  .steps > .sep {
+    color: var(--text-tertiary);
+  }
+
+  .domain:is(:hover, :focus-within) :is(.backLink, .stepLink) {
+    color: var(--text-secondary);
+  }
+
+  .domain .backLink:is(:hover, :focus-visible),
+  .domain .stepLink:is(:hover, :focus-visible) {
+    color: var(--accent-ink);
+  }
+}
+
+/* The index's label takes focus from "All domains" (focusHeading); a
+   jump lands with the label clear of the bar, and on phones of the band. */
+.index .label {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 2rem);
+  border-radius: 6px;
+}
+
+.index .label:focus {
+  outline: none;
+}
+
+.index .label:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+@media (max-width: 996px) {
+  :global(html:has(.toc-mobile)) .index .label {
+    scroll-margin-top: calc(var(--toc-band-clear) + 1.5rem);
+  }
+}
+
+/* A reference row, not a section: body size at 650 in full ink, so the
+   H2 above stays the section and the code stays the content. The
+   heading's own anchor class sets where a jump lands (below the bar,
+   and below the band on phones). */
+.title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  border-radius: 6px;
+}
+
+.title code {
+  font-size: 0.9em;
+}
+
+/* A jump lands with room above the name for the arrival tint (phones
+   keep the band's own offset, set on the heading's anchor class). */
+.domain .title {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1.25rem);
+}
+
+/* The old full-title anchor, just before the heading: a link to it lands
+   where a link to the heading does. */
+.alias {
+  display: block;
+  height: 0;
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1.25rem);
+}
+
+@media (max-width: 996px) {
+  :global(html:has(.toc-mobile)) .alias {
+    scroll-margin-top: calc(var(--toc-band-clear) + 0.75rem);
+  }
+}
+
+/* The shorthand line under a domain's name ("Shorthand  k is kubectl"):
+   the label rows' tone and size, run in, tucked under the name so it
+   reads as the domain's caption, not a row of its own. */
+.shorthand {
+  margin: -0.3rem 0 0.65rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.shorthand > .label {
+  margin-right: 0.6em;
+}
+
+.shorthand code {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* A step said in words before the code (the GRUB menu's "e"): row text. */
+.domain > div > p:not(.shorthand) {
+  margin: 0 0 0.6rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+/* Focus lands here from the index (focusHeading): the ring only when it
+   came from the keyboard. */
+.title:focus {
+  outline: none;
+}
+
+.title:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Arriving from a search hit or the index (see useArrivalCue): the dim
+   accent behind the domain's name, fading out, so the eye finds where
+   the jump landed. Drawn as a spread shadow, so nothing moves. */
+.arrived {
+  animation: sheetArrive 2s var(--ease-out) both;
+}
+
+@keyframes sheetArrive {
+  0%,
+  35% {
+    background-color: var(--accent-dim);
+    box-shadow: 0 0 0 0.4rem var(--accent-dim);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 0.4rem transparent;
+  }
+}
+
+/* Without motion the cue is a state, not a fade: the tint holds for the
+   same two seconds, then goes at once. */
+@media (prefers-reduced-motion: reduce) {
+  .arrived {
+    animation: none;
+    background-color: var(--accent-dim);
+    box-shadow: 0 0 0 0.4rem var(--accent-dim);
+  }
+}
+
+/* Blocks inside a row sit closer than in running prose, and a config
+   block followed by commands reads as one step. */
+.domain :global(.theme-code-block) {
+  margin: 0 0 0.75rem;
+}
+
+/* Label rows: the fact sheet's idiom, label in the secondary tone in a
+   6.25em column and the text in full ink. A <dl> of <dt>/<dd> pairs. */
+.rows {
+  margin: 0;
+  padding: 0;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 6.25em minmax(0, 1fr);
+  column-gap: 1rem;
+  align-items: baseline;
+  margin: 0;
+  padding: 0.3rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+/* The shorthand row under the index sits on its own Hairline. */
+.sheet > .rows {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.label {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.text {
+  margin: 0;
+  color: var(--text-primary);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+/* Commands inside a row: mono in full ink with no chip, so a row of
+   three commands reads as a sentence, not a stack of boxes. The font is
+   the signal; the chip is for commands in running prose. */
+.line .text code,
+.index .indexLink code {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.sep {
+  color: var(--text-tertiary);
+}
+
+/* For text readers only (see Row). */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Wrapped code breaks at its spaces only: a run of characters with a
+   hyphen or slash in it stays whole (keepWords), and a word is never cut
+   (over the code blocks' own overflow-wrap: anywhere). A long run wider
+   than the line breaks after a "/" "=" or "," first, and after a "."
+   only inside a piece that is itself wider than the line (.run, below,
+   nested); a piece wider than the line still goes on under the edge
+   fade. */
+.word {
+  white-space: nowrap;
+}
+
+.sheet:global(.domain-sheet) .domain :global(.theme-code-block) code {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* A long run cut into pieces (keepLine) is one box while code wraps, at
+   its full width: it moves to the next line whole (or below the buttons'
+   float) while it fits there, and only a run wider than the line wraps,
+   at its <wbr>s, from that line's hanging indent. A first-tier piece
+   with dots in it is a box of the same kind inside it, so its dots are
+   used only when the piece alone is wider than the line. A run that
+   starts the line hangs its own continuation. Unwrapped, it is plain
+   inline text that scrolls. */
+:global(html:not([data-code-wrap-sheet="off"])) .run {
+  display: inline-block;
+  width: max-content;
+  max-width: 100%;
+  text-indent: 0;
+}
+
+/* Chromium breaks at a <wbr> even where white-space forbids wrapping, so
+   on screen with wrap off they go (paper always wraps). */
+@media screen {
+  :global(html[data-code-wrap-sheet="off"]) .run > wbr {
+    display: none;
+  }
+}
+
+:global(html:not([data-code-wrap-sheet="off"])) :global(.token-line) > .run:first-child {
+  /* It starts 1.2em left of the line's indent, so it has that much more. */
+  max-width: calc(100% + 1.2em);
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+
+/* A command's words stay whole (see Command). */
+.nobreak {
+  white-space: nowrap;
+}
+
+/* On the narrowest phones a long command's kept-together words can be
+   wider than the row; there they break between words like prose. */
+@container (max-width: 22rem) {
+  .nobreak {
+    white-space: normal;
+  }
+}
+
+/* Below a tablet column the label goes above its text, so the commands
+   in it get the full width of the phone. */
+@container (max-width: 30rem) {
+  .line,
+  .index {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+    padding: 0.35rem 0;
+  }
+
+  .index {
+    padding: 0.6rem 0 0.5rem;
+  }
+
+  .printRow {
+    grid-column: auto;
+  }
+}
+
+/* Placeholders (<ns>, <server2>): the warm tone code already uses for
+   variables, on a dotted rule like a blank to fill in. Painted by the
+   CSS Custom Highlight API; the text itself is untouched, so copy and
+   selection give the exact command. */
+.sheet ::highlight(sheet-placeholder) {
+  color: var(--accent-warm);
+  text-decoration: underline dotted 1px;
+  text-underline-offset: 0.2em;
+}
+
+/* The printed sheet's header, on paper only (see usePrintHead). */
+.printHead {
+  display: none;
+}
+
+/* On paper the sheet is the point: code wraps instead of hiding past the
+   edge, and the buttons go. The index, "All domains" and each domain's
+   shorthand line are for the screen (the shorthand prints once, under
+   the header). A domain's name stays with its code and a code block
+   stays whole (custom.css), but a domain may break between its code and
+   its rows: kept whole, a long one left half a page blank. */
+@media print {
+  .index,
+  .back,
+  .shorthand {
+    display: none;
+  }
+
+  .line {
+    break-inside: avoid;
+  }
+
+  .run {
+    display: inline-block;
+    width: max-content;
+    max-width: 100%;
+    text-indent: 0;
+  }
+
+  :global(.token-line) > .run:first-child {
+    max-width: calc(100% + 1.2em);
+    padding-left: 1.2em;
+    text-indent: -1.2em;
+  }
+
+  /* The path in the repo, over the article's whole-URL rule. */
+  .domain .text a[data-print-path][href]::after {
+    content: " (" attr(data-print-path) ")";
+  }
+
+  .title,
+  .arrived {
+    break-after: avoid;
+    animation: none;
+    background: none;
+    box-shadow: none;
+  }
+
+  .title :global(.hash-link) {
+    display: none;
+  }
+
+  .domain :global(.theme-code-block pre),
+  .domain :global(.theme-code-block code) {
+    white-space: pre-wrap;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .domain :global(.theme-code-block [class*="buttonGroup"]) {
+    display: none;
+  }
+
+  .text a {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* "Print this sheet": under html[data-print-sheet] the page prints the
+   sheet alone. Everything that neither holds the sheet nor sits inside
+   it goes, so the sheet starts on the first page; its header names the
+   page and where it lives. */
+@media print {
+  :global(html[data-print-sheet] body) *:not(:has(.sheet)):not(.sheet):not(.sheet *) {
+    display: none !important;
+  }
+
+  :global(html[data-print-sheet]) .sheet {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-top: 0;
+  }
+
+  /* Nor does the page's own space below it: a sheet that ends near the
+     foot of a page would otherwise print one more, blank. */
+  :global(html[data-print-sheet] body) *:has(.sheet) {
+    min-height: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  :global(html[data-print-sheet]) .printHead {
+    display: block;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-medium);
+  }
+
+  .printTitle {
+    margin: 0;
+    font-size: 1.375rem;
+    font-weight: 650;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .printMeta {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+}

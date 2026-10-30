@@ -8,19 +8,16 @@ keywords: [opinions, openbao, vault, hashicorp, secrets-management, oss, license
 date: "2026-05-13"
 last_update:
   date: "2026-07-04"
-  author: Jose Camilo Joga Guerrero
+  author: José Camilo Joga Guerrero
 ---
 
 import PullQuote from '@site/src/components/PullQuote';
-import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # OpenBao over Vault — same docs, more freedom
 
 <PullQuote>
   I would still pick Vault if I were running infrastructure for a bank. I'm not running infrastructure for a bank.
 </PullQuote>
-
-<TechStackGrid compact items={['OpenBao', 'Vault']} />
 
 In my homelab and across everything I run personally on cjoga.cloud, the secrets engine is [OpenBao](https://openbao.org/), not [HashiCorp Vault](https://www.vaultproject.io/). Three replicas in the `openbao` namespace, fronted by [External Secrets Operator](https://external-secrets.io/), backing every workload on the cluster that needs a credential. I picked it deliberately, I know the trade-offs, and I would still pick Vault if I were running infrastructure for a bank. I'm not running infrastructure for a bank.
 
@@ -35,7 +32,3 @@ Where Vault still wins is at enterprise scale, and I want to be honest about tha
 The disclaimer I owe anyone reading this: OpenBao is younger as a project than Vault is. Some enterprise features lag, some integrations may not exist yet, and the support model is community-based — meaning when something breaks you read the source and the issue tracker, not a support contract. For a homelab and personal infrastructure, that's fine. It's part of the appeal. For regulated production with compliance gates on your back, weigh it against what a supported product gives you, and don't let OSS preference make the decision for you.
 
 The operational homework is real, though. The sibling entry on [OpenBao auto-unseal](/engineering/lab/tips-and-gotchas/openbao-auto-unseal) covers the first piece of it: cloud KMS and the other auto-unseal back-ends are the wrong abstraction for a self-contained lab, so mine unseals from a static-key seal. That trade-off is the price of the freedom — paid in my own hours instead of a license.
-
-import AuthorCard from '@site/src/components/AuthorCard';
-
-<AuthorCard />

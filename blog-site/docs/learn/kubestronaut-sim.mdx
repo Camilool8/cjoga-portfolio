@@ -12,7 +12,13 @@ import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # kubestronaut-sim
 
-The simulator lives on GitHub at **[Camilool8/kubestronaut-sim](https://github.com/Camilool8/kubestronaut-sim)**, with a landing page at [camilool8.github.io/kubestronaut-sim](https://camilool8.github.io/kubestronaut-sim/). It exists because I wanted to sit the Kubernetes exams as many times as I needed, on a real cluster, without paying per attempt — and nothing open source covered the [Kubestronaut](https://www.cncf.io/training/kubestronaut/) path. This page is the framing: what it is, how it grades, and how to run it. The README and docs on GitHub stay the source of truth.
+The simulator lives on GitHub at [Camilool8/kubestronaut-sim](https://github.com/Camilool8/kubestronaut-sim), with a landing page at [camilool8.github.io/kubestronaut-sim](https://camilool8.github.io/kubestronaut-sim/). It exists because I wanted to sit the Kubernetes exams as many times as I needed, on a real cluster, without paying per attempt — and nothing open source covered the [Kubestronaut](https://www.cncf.io/training/kubestronaut/) path. This page is the framing: what it is, how it grades, and how to run it. The README and docs on GitHub stay the source of truth.
+
+<GuideSource
+  repo="Camilool8/kubestronaut-sim"
+  href="https://github.com/Camilool8/kubestronaut-sim"
+  note="The simulator; its README and docs stay the source of truth"
+/>
 
 ## What it is
 
@@ -75,14 +81,18 @@ The score report gives two numbers — curriculum-weighted percent against the b
 
 ## Run it
 
+Requirements: Docker Desktop (or docker + compose v2) and about 9 GB of free RAM.
+
+Clone the repository, run the preflight check of RAM, disk, and tools (`./sim doctor`), then start the stack (`./sim up`):
+
 ```bash
 git clone https://github.com/Camilool8/kubestronaut-sim
 cd kubestronaut-sim
-./sim doctor   # preflight: RAM, disk, tools
-./sim up       # then open http://localhost:8080
+./sim doctor
+./sim up
 ```
 
-Requirements: Docker Desktop (or docker + compose v2) and about 9 GB of free RAM. On Windows the launcher is `.\sim.ps1` with the same subcommands. There is no account and no hosted service — everything binds to loopback on your machine.
+Then open `http://localhost:8080`. On Windows the launcher is `.\sim.ps1` with the same subcommands. There is no account and no hosted service — everything binds to loopback on your machine.
 
 A Helm chart also ships for hosting the simulator multi-user: a hub with GitHub sign-in, a capped seat pool with a queue, and the full exam stack stamped out as one pod per candidate. That mode exists for study groups and teams; the local mode is the product.
 

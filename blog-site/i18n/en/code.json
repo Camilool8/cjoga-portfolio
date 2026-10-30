@@ -1,0 +1,106 @@
+{
+  "theme.SearchBar.label": {
+    "message": "Search the handbook",
+    "description": "Placeholder of the navbar search input (@easyops-cn/docusaurus-search-local); its aria-label stays \"Search\""
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "See all results",
+    "description": "Link at the foot of the search dropdown to the /search page"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "No matches. Try a tool or exam name, like Kubernetes or RHCSA.",
+    "description": "Search dropdown, no results"
+  },
+  "theme.SearchBar.noMatches": {
+    "message": "No matches for “{query}”.",
+    "description": "Search dropdown, no results; example queries follow as options"
+  },
+  "theme.SearchBar.resultCount": {
+    "message": "1 result|{count} results",
+    "description": "Search dropdown, screen-reader status: rows in the panel (singular|plural)"
+  },
+  "theme.SearchBar.noResultsCount": {
+    "message": "No results",
+    "description": "Search dropdown, screen-reader status when nothing matches"
+  },
+  "theme.SearchBar.loading": {
+    "message": "Loading search…",
+    "description": "Search dropdown, screen-reader status while the search index downloads on first use"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Results for “{query}”",
+    "description": "Heading of the /search page when it has a query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Search the handbook",
+    "description": "Heading of the /search page without a query"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "1 match|{count} matches",
+    "description": "Matches (pages and sections) on the /search page"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "Nothing in the handbook matches “{query}”.",
+    "description": "The /search page, no results; example queries follow"
+  },
+  "theme.SearchPage.documentTitle": {
+    "message": "Search",
+    "description": "Tab title of the /search page; the site name follows"
+  },
+  "theme.SearchPage.documentTitleWithQuery": {
+    "message": "“{query}” – Search",
+    "description": "Tab title of the /search page with a query; the site name follows"
+  },
+  "theme.SearchPage.inputLabel": {
+    "message": "Search the handbook",
+    "description": "Accessible name of the /search page field"
+  },
+  "theme.SearchPage.loading": {
+    "message": "Loading the search index…",
+    "description": "The /search page while the index downloads"
+  },
+  "theme.SearchPage.resultSummary": {
+    "message": "{matches} in {pages}",
+    "description": "Result count on the /search page, e.g. \"7 matches in 3 pages\""
+  },
+  "theme.SearchPage.pagesFound.plurals": {
+    "message": "1 page|{count} pages",
+    "description": "Pages with matches on the /search page"
+  },
+  "theme.SearchPage.suggestions": {
+    "message": "Try a tool or exam name:",
+    "description": "Lead-in to example queries on the /search page"
+  },
+  "theme.Search.partialResults": {
+    "message": "No page has all of these words.",
+    "description": "Search: no page matches every word of a multi-word query; per-word results follow"
+  },
+  "theme.Search.termGroup": {
+    "message": "Pages matching “{term}”",
+    "description": "Search: label over the pages that match one word of a multi-word query"
+  },
+  "theme.SearchPage.moreSections": {
+    "message": "Show {count} more in this page",
+    "description": "/search: reveals the rest of one page's matched sections"
+  },
+  "theme.Search.corrected": {
+    "message": "Showing results for “{query}”",
+    "description": "Search dropdown: results are for the closest spelling of the query"
+  },
+  "theme.Search.correctedLong": {
+    "message": "No exact matches for “{typed}”. Showing results for “{query}”.",
+    "description": "/search: the query had no exact match; results for the closest spelling follow"
+  },
+  "theme.Search.expanded": {
+    "message": "Also searched for “{query}”",
+    "description": "Search: a shorthand in the query (k8s) was also searched spelled out"
+  },
+  "theme.Search.tagged": {
+    "message": "Tagged: {tags}",
+    "description": "Search: excerpt of a page found only by its front-matter keywords"
+  },
+  "theme.Search.missing": {
+    "message": "Not found: {words}",
+    "description": "Search: words of the query that no page holds; results for the other words follow"
+  }
+}

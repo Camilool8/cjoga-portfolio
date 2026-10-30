@@ -7,19 +7,26 @@ slug: /engineering/work/arctiq
 keywords: [work, devops, aws, eks, terraform, fluxcd, gitlab, arctiq, shadow-soft]
 date: "2026-05-12"
 last_update:
-  date: "2026-06-28"
-  author: Jose Camilo Joga Guerrero
+  date: "2026-10-30"
+  author: José Camilo Joga Guerrero
 ---
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # Arctiq
 
-**Role:** DevOps Consultant  
-**Employer:** [Arctiq](https://www.arctiq.com/) (formerly Shadow-Soft, rebranded March 2026)  
-**Since:** July 2022
+<FactSheet>
+  <Fact label="Role">DevOps Consultant</Fact>
+  <Fact label="Employer">[Arctiq](https://www.arctiq.com/) (formerly Shadow-Soft, rebranded March 2026)</Fact>
+  <Fact label="Since">April 2022, hired by Shadow-Soft</Fact>
+  <Fact label="Scale">60+ applications and 15+ teams</Fact>
+  <Fact label="Outcome">From manual Rancher to managed EKS, removing most of the 5–8x sprawl; SOC2 controls embedded directly into delivery</Fact>
+</FactSheet>
+
+Arctiq is where I learned this work. They found my CV at PUCMM in April 2022, interviewed me out of Atlanta, decided I was worth investing in, and trained me on the DevOps side from the ground up — CI/CD, IaC, security, cloud, Linux — while paying for the certifications along the way. They put me on an engagement that is still my main one more than four years later, and I've taken on plenty of smaller work in parallel.
 
 <TechStackGrid
+  inline
   caption="Main-engagement stack"
   items={[
     'AWS',
@@ -38,8 +45,6 @@ import TechStackGrid from '@site/src/components/TechStackGrid';
   ]}
 />
 
-Arctiq is where I learned this work. They found my CV at PUCMM in April 2022, interviewed me out of Atlanta, decided I was worth investing in, and trained me on the DevOps side from the ground up — CI/CD, IaC, security, cloud, Linux — while paying for the certifications along the way. They put me on an engagement that is still my main one almost four years later, and I've taken on plenty of smaller work in parallel.
-
 ## The main engagement
 
 When I joined, the client had 60+ applications and 15+ teams sharing them, with branch-per-team workflows that had been allowed to sprawl. Team A would have a branch on five of their own apps, but also three of Team B's apps and four of Team E's. Every branch ran as its own dedicated cloud instance with its own configuration and credentials. The result was five-to-eight times more deployed surface than the actual product needed, just to fit each team's workflow.
@@ -53,7 +58,7 @@ I went further than the brief. I built a proof-of-concept arguing that since the
 We migrated and consolidated as we went. Each team got one namespace for their apps, instead of the branch-per-team duplication. If Team B needed a change in a Team A app, the path was an MR in Team A's repo — not a fork-and-deploy in Team B's branch. That alone removed most of the 5–8x sprawl.
 
 ```mermaid
-flowchart LR
+flowchart TB
   accTitle: GitOps platform flow — per-team app and IaC repos merge through GitLab CI and Terraform into AWS EKS, FluxCD reconciles each team's namespace, and OpenTelemetry feeds Grafana, Loki, and traces
   subgraph Repos[Per-team repos]
     A[(App repo)]
@@ -101,7 +106,7 @@ Arctiq places me on more than the main engagement, and one of the most rewarding
 
 The arc ran from the ground up: cloud computing fundamentals and the IaaS / PaaS / SaaS models against on-premise, then Azure governance end to end — management groups, subscriptions, resource groups, and resources, with policy and RBAC across Entra ID and IAM. From there into networking and security, compute and storage, data and AI, and finally operations: monitoring, alerting, and backups. Each session closed with a Kahoot to check what landed, and the questions coming back were sharp. If another one comes up, the answer is yes.
 
-## Other work at Shadow-Soft
+## Other work at Shadow-Soft (now Arctiq)
 
 The main engagement is the one I've been on the longest, but it's not the only thing I've done here.
 

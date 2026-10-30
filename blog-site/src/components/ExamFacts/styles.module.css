@@ -1,0 +1,202 @@
+/* Hairline rows, like the landing's link rows and the article tables:
+   label in the muted tone on the left, value in full ink on the right.
+   Unframed on purpose: on a guide the framed row below it (GuideSource)
+   is the one action; this is reference. Sized in em so it sits at the
+   prose measure (36em, from `article .markdown > *`). */
+.facts {
+  container-type: inline-size;
+  margin: 1.5rem 0 1.75rem;
+  padding: 0;
+  border-top: 1px solid var(--border-medium);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 6.25em minmax(0, 1fr);
+  column-gap: 1rem;
+  align-items: baseline;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  /* Type size lives on the rows, not the list, so the list's 36em
+     measure resolves at the body size like the paragraphs around it. */
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.term {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.value {
+  margin: 0;
+  color: var(--text-primary);
+  text-wrap: pretty;
+}
+
+/* A value written as its own Markdown paragraph keeps the row's rhythm. */
+.value > p {
+  margin: 0;
+}
+
+/* The closing row's labels, one per line. */
+.termLine {
+  display: block;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* A row the official page doesn't answer ("Not published by Red Hat"):
+   the words step back to the secondary tone so stated values still lead
+   the scan. */
+.muted {
+  color: var(--text-secondary);
+}
+
+/* Where a value comes from ("· my sitting, 2024", "· checked Oct 30,
+   2026"): the label's size in the tertiary tone, so the value leads and
+   its provenance stays on the row. Kept whole; it wraps as one piece. */
+.source {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+/* The link holds its last word to the arrow (nowrap); the words before
+   it may still wrap. */
+.wrap {
+  white-space: normal;
+}
+
+/* Commands inside a value (ansible-doc, man) keep the inline-code look
+   but at the row's size, so the line height holds. */
+.value code {
+  font-size: 0.9em;
+}
+
+/* Two columns hold down to a 360px phone; only a column squeezed
+   further (zoom, split view) moves the label above its value. */
+@container (max-width: 17.5rem) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.15rem;
+  }
+}
+
+/* On paper the link writes its URL after it. The arrow's nowrap would
+   carry that URL past the margin, so the printed link wraps, anywhere
+   in the URL if it has to. */
+@media print {
+  .value a {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* The official page, once, as one line under the list in the label's
+   tone and size. The list gives up its bottom margin to it, so the pair
+   is one block. */
+.withNote {
+  margin: 1.5rem 0 1.75rem;
+}
+
+.withNote > .facts {
+  margin: 0;
+}
+
+.note {
+  margin: 0.6rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/* A jump to a fact (#fact-duration) lands with room above the row for
+   the arrival tint: under the bar, and on phones under the band (its
+   --toc-band-clear, custom.css). An alias sits inside the row's term,
+   below the row's top padding, so it lands that much lower. */
+.row[id] {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1.25rem);
+  border-radius: 2px;
+}
+
+.alias {
+  display: block;
+  height: 0;
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1.25rem + 0.6rem);
+}
+
+@media (max-width: 996px) {
+  :global(html:has(.toc-mobile)) .row[id] {
+    scroll-margin-top: calc(var(--toc-band-clear) + 0.75rem);
+  }
+
+  :global(html:has(.toc-mobile)) .alias {
+    scroll-margin-top: calc(var(--toc-band-clear) + 0.75rem + 0.6rem);
+  }
+}
+
+/* Focus lands on the row on arrival: the ring only when the reader came
+   by keyboard (html[data-quiet-focus] otherwise, custom.css). */
+.row:focus {
+  outline: none;
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Arriving on a fact: the dim accent behind the row, reaching half a rem
+   past the column on each side, fading out over two seconds. Drawn as
+   side shadows, so the hairlines above and below stay clean and nothing
+   moves. */
+.arrived {
+  animation: factArrive 2s var(--ease-out) both;
+}
+
+@keyframes factArrive {
+  0%,
+  35% {
+    background-color: var(--accent-dim);
+    box-shadow:
+      -0.5rem 0 var(--accent-dim),
+      0.5rem 0 var(--accent-dim);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow:
+      -0.5rem 0 transparent,
+      0.5rem 0 transparent;
+  }
+}
+
+/* Without motion the cue is a state, not a fade: the tint holds for the
+   same two seconds, then goes at once. */
+@media (prefers-reduced-motion: reduce) {
+  .arrived {
+    animation: none;
+    background-color: var(--accent-dim);
+    box-shadow:
+      -0.5rem 0 var(--accent-dim),
+      0.5rem 0 var(--accent-dim);
+  }
+}
+
+@media print {
+  .arrived {
+    animation: none;
+    background: none;
+    box-shadow: none;
+  }
+}

@@ -7,15 +7,37 @@ slug: /learn/rhcsa
 keywords: [rhcsa, ex200, red hat, linux, certification, lab, vagrant, virtualbox]
 date: "2026-05-12"
 last_update:
-  date: "2026-07-05"
-  author: Jose Camilo Joga Guerrero
+  date: "2026-10-30"
+  author: José Camilo Joga Guerrero
 ---
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # RHCSA (EX200) guide
 
-The lab itself lives on GitHub at **[Camilool8/RHCSA-LAB](https://github.com/Camilool8/RHCSA-LAB)** — three intentionally broken RHEL 9 servers you spin up locally with Vagrant. This page is the meta-guide: what the lab is, how to use it well, and the path I'd walk if I were starting from zero today.
+The lab itself lives on GitHub at [Camilool8/RHCSA-LAB](https://github.com/Camilool8/RHCSA-LAB) — three intentionally broken RHEL 9 servers you spin up locally with Vagrant. This page is the meta-guide: what the lab is, how to use it well, and the path I'd walk if I were starting from zero today. Red Hat's EX200 page doesn't list the exam's length or its pass mark. The length below is current as of October 2026; the pass mark is from my own sitting, in 2024.
+
+<ExamFacts
+  official={{
+    href: 'https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam',
+    name: "Red Hat’s EX200 page",
+    vendor: 'Red Hat',
+  }}
+  exam="EX200"
+  format={<>Hands-on and timed: you fix real systems. Open-book on the <code>man</code> pages.</>}
+  duration="3 hours"
+  passMark="210 of 300 points"
+  sources={{ duration: 'as of Oct 2026', passMark: 'my sitting, 2024' }}
+  version={{ exam: 'RHEL 10', lab: 'RHEL 9' }}
+  asOf="2026-10-30"
+/>
+
+<GuideSource
+  repo="Camilool8/RHCSA-LAB"
+  href="https://github.com/Camilool8/RHCSA-LAB"
+  note="Three broken RHEL 9 servers on Vagrant, the full task list and the answers"
+  sheet
+/>
 
 ## What the lab is
 
@@ -73,27 +95,249 @@ A workflow that works:
 5. **Verify the fix the way the exam would.** Reboot the VM and confirm the change persists. Anything that only works until the next reboot is wrong.
 6. **Snapshot again** if it was a hard one and you want a checkpoint at "fixed". Then break it again and re-fix from scratch a few days later.
 
-## What the lab maps to
+## Key commands by domain
 
-The lab's task list covers every domain on the [EX200 exam objectives](https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam), grouped roughly as:
+The lab's task list covers every domain on the [EX200 exam objectives](https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam). This is the sheet I'd hand a friend the night before: for each domain, the commands that do the work, how to check them, and the tasks in the repo that drill them. The full answers stay in the repo. Anything in angle brackets is yours to fill in.
 
-- System access, SSH, and key-based authentication
-- Network configuration — interfaces, hostnames, services
-- Repository and package management
-- User and group management, password policies
-- Privilege escalation with sudo and command aliases
-- File systems, mounting, autofs, NFS, permissions
-- Archives and backup with tar / star
-- Links, file attributes, setuid discovery
-- Scheduled tasks — at and cron
-- Shell scripting with conditional logic
-- Web services — troubleshooting and access
-- SELinux — contexts, booleans, troubleshooting
-- Boot configuration — GRUB, kernel parameters, recovery
-- System time and persistent journaling
-- Storage management — volume groups, LVM, swap, thin provisioning
-- Performance tuning — tuned profiles, process priority
-- Containerization — image build and rootless service deployment
+<DomainSheet>
+<Domain title="System access, SSH, and key-based authentication" short="System access and SSH keys" tasks={[{ label: 'Tasks 4–5', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L10' }]}>
+
+```text title="/etc/ssh/sshd_config"
+PermitRootLogin yes
+```
+
+```bash
+systemctl restart sshd
+ssh-keygen
+ssh-copy-id root@<server2>
+```
+
+<Verify>Log in to the other server as root. No password prompt means the key took.</Verify>
+
+</Domain>
+<Domain title="Network configuration — interfaces, hostnames, services" tasks={[{ label: 'Tasks 2–3', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L6' }]}>
+
+```bash
+nmcli con mod enp0s8 ipv4.method manual ipv4.addresses "<ip>/24" ipv4.gateway "<gateway>" ipv4.dns "<dns>"
+nmcli con up enp0s8
+nmcli general hostname <hostname>
+systemctl enable --now NetworkManager
+```
+
+<Verify>`nmcli con show enp0s8`, then reboot and check it again.</Verify>
+
+</Domain>
+<Domain title="Repository and package management" short="Repositories and packages" tasks={[{ label: 'Tasks 6–7', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L14' }]}>
+
+```ini title="/etc/yum.repos.d/local.repo"
+[BaseOS]
+name=BaseOS
+enabled=1
+baseurl=http://<repo-server>/repo/BaseOS/
+gpgcheck=0
+```
+
+```bash
+scp /etc/yum.repos.d/local.repo root@<server2>:/etc/yum.repos.d/
+```
+
+<Verify>Add the same stanza for AppStream, then install something: `dnf install -y tar gzip`.</Verify>
+
+</Domain>
+<Domain title="User and group management, password policies" short="Users, groups, password policy" tasks={[{ label: 'Tasks 9–13', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L20' }]}>
+
+```text title="/etc/login.defs"
+UMASK 007
+PASS_MAX_DAYS   60
+```
+
+```bash
+groupadd -g <gid> <group>
+useradd -u 1015 -G dba_intern,dba_staff cindy
+echo "<password>" | passwd --stdin <user>
+```
+
+<Verify>`tail /etc/passwd` and `egrep "it|dba" /etc/group`. The minimum length is `minlen = 8` in `/etc/security/pwquality.conf`, not in `login.defs`.</Verify>
+
+</Domain>
+<Domain title="Privilege escalation with sudo and command aliases" short="sudo and command aliases" tasks={[{ label: 'Tasks 14–16', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L38' }]}>
+
+```text
+Cmnd_Alias MESSAGES = /bin/tail -f /var/log/messages
+%dba_managers  ALL=(ALL)       ALL
+%dba_admin     ALL = SOFTWARE, SERVICES, PROCESSES
+%dba_intern    ALL = MESSAGES
+```
+
+<Verify>`su - jack`, then `sudo tail -f /var/log/messages` works and `sudo -i` fails.</Verify>
+
+</Domain>
+<Domain title="File systems, mounting, autofs, NFS, permissions" short="File systems, autofs, NFS" tasks={[{ label: 'Task 8', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L18' }, { label: 'Tasks 22–23', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L59' }]}>
+
+```text title="/etc/auto.home"
+* <repo-server>:/export/home/&
+```
+
+```bash
+systemctl enable --now autofs
+mount -a
+chmod 770 /mnt/dba_files
+chmod g+s,+t /mnt/dba_files
+```
+
+<Verify>`/etc/auto.master` needs `/mnt/autofs_home /etc/auto.home` too. `mount -a` must come back silent before you reboot.</Verify>
+
+</Domain>
+<Domain title="Archives and backup with tar / star" short="Archives with tar / star" tasks={[{ label: 'Tasks 17–18', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L49' }]}>
+
+```bash
+tar -czvf /archives/etc_archive.tar.gz /etc
+star -c -v -j file=/archives/doc_archive.star.bz2 /usr/share/doc
+```
+
+<Verify>`z` means gzip and `j` means bzip2 in both commands; the file name in each task says which one it needs.</Verify>
+
+</Domain>
+<Domain title="Links, file attributes, setuid discovery" short="Links, attributes, setuid" tasks={[{ label: 'Tasks 19–21', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L53' }]}>
+
+```bash
+ln -s /links/file01 /links/file02
+ln /links/file01 /links/file03
+find / -type f -perm -u+s > /root/suid.txt
+find /etc -type f -size +3M -exec cp {} /largefiles \; 2>/dev/null
+```
+
+<Verify>`ls -lai /links`: the hard link shares file01's inode number; the soft link has its own.</Verify>
+
+</Domain>
+<Domain title="Scheduled tasks — at and cron" tasks={[{ label: 'Tasks 24–25', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L63' }]}>
+
+```bash
+systemctl enable --now atd
+at now + 10 minutes
+```
+
+```text title="/etc/crontab"
+0 15 * * 2 root echo "Wow! I'm going to pass this test!" >> /var/log/messages
+```
+
+<Verify>`at` reads the job from the prompt; Ctrl-D queues it.</Verify>
+
+</Domain>
+<Domain title="Shell scripting with conditional logic" short="Shell scripting" tasks={[{ label: 'Task 11', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L24' }, { label: 'Task 26', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L67' }]}>
+
+```bash
+while IFS=":" read group gid ; do
+groupadd -g $gid $group
+done < grouplist.txt
+```
+
+```bash
+chmod +x /awesome.sh
+```
+
+<Verify>Run the script with every argument the task names, then with none: `/awesome.sh me`, `/awesome.sh`.</Verify>
+
+</Domain>
+<Domain title="Web services — troubleshooting and access" tasks={[{ label: 'Task 27', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L72' }]}>
+
+```bash
+systemctl status httpd
+grep httpd /var/log/messages
+firewall-cmd --add-port=85/tcp --permanent
+firewall-cmd --reload
+```
+
+<Verify>`curl http://127.0.0.1:85/file3` returns the page, not a 403. Then try it from server2.</Verify>
+
+</Domain>
+<Domain title="SELinux — contexts, booleans, troubleshooting" tasks={[{ label: 'Tasks 27–28', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L72' }]}>
+
+```bash
+ls -laZ /var/www/html
+restorecon /var/www/html/file3
+ausearch -c 'httpd' --raw | audit2allow -M my-httpd
+semodule -X 300 -i my-httpd.pp
+```
+
+<Verify>With `dnf install -y policycore* setrouble*` in place, `grep httpd /var/log/messages` names the denial and suggests the fix. Permissive mode goes in `/etc/selinux/config` as `SELINUX=permissive`.</Verify>
+
+</Domain>
+<Domain title="Boot configuration — GRUB, kernel parameters, recovery" tasks={[{ label: 'Task 1', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L4' }, { label: 'Task 29', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L76' }]}>
+
+GRUB menu: `e`, then append to the `linux` line:
+
+```text
+systemd.unit=multi-user.target rd.break enforcing=0
+```
+
+```bash
+mount -o rw,remount /sysroot
+chroot /sysroot
+passwd root
+systemctl set-default multi-user
+```
+
+<Verify>Log in after the reset and run `restorecon /etc/shadow`. For GRUB changes, `grub2-mkconfig -o /boot/grub2/grub.cfg`, then `systemctl reboot` and watch it boot. The repo marks task 1 as not working on the lab VM.</Verify>
+
+</Domain>
+<Domain title="System time and persistent journaling" short="Time and journaling" tasks={[{ label: 'Tasks 30–31', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L83' }]}>
+
+```text title="/etc/chrony.conf"
+pool us.pool.ntp.org iburst
+```
+
+```bash
+systemctl restart chronyd
+mkdir /var/log/journal
+journalctl --flush
+```
+
+<Verify>`journalctl -u chronyd` ends on a "Selected source" line naming the pool.</Verify>
+
+</Domain>
+<Domain title="Storage management — volume groups, LVM, swap, thin provisioning" tasks={[{ label: 'Tasks 32–39', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L87' }]}>
+
+```bash
+lvcreate -L 500M -n platforms_lv platforms_vg
+lvextend -L +500M -r /dev/mapper/platforms_vg-platforms_lv
+mkswap /dev/sdb2
+lvcreate --vdo -l 100%FREE -V 5T --name thin_vol thin_vg/thin_pool
+```
+
+```text title="/etc/fstab"
+UUID=<uuid_from_lsblk>  /mnt/platforms_lv  ext4  defaults  0 0
+UUID=<uuid_from_lsblk>  swap  swap  defaults  0 0
+```
+
+<Verify>`lsblk -f` for the UUID. `mount -a` and `swapon -a` must come back silent before you reboot.</Verify>
+
+</Domain>
+<Domain title="Performance tuning — tuned profiles, process priority" tasks={[{ label: 'Tasks 40–41', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L103' }]}>
+
+```bash
+systemctl enable --now tuned
+tuned-adm profile powersave virtual-guest
+nice -n 19 stress-ng -c 1 &
+pkill stress-ng
+```
+
+<Verify>To renice, open `top`, press `r`, enter the PID, then the new value.</Verify>
+
+</Domain>
+<Domain title="Containerization — image build and rootless service deployment" tasks={[{ label: 'Tasks 42–43', href: 'https://github.com/Camilool8/RHCSA-LAB/blob/main/lab/ordered-task-list.md?plain=1#L107' }]}>
+
+```bash
+podman build -t web_image <containerfile-url>
+podman run -d -p 8000:80 -v ~/web_files:/var/www/html:Z --name cindy_web localhost/web_image
+podman generate systemd --files --name cindy_web --new
+systemctl --user enable --now container-cindy_web.service
+```
+
+<Verify>As root, `loginctl enable-linger cindy` first, and log in as cindy directly, not with `su -`. After a reboot, `podman ps` shows `cindy_web` up.</Verify>
+
+</Domain>
+</DomainSheet>
 
 If any of those headings feel foreign, that's the topic to lead with.
 

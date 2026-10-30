@@ -12,7 +12,28 @@ import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # RHCE (EX294) guide
 
-The lab itself lives on GitHub at **[Camilool8/RHCE-LAB](https://github.com/Camilool8/RHCE-LAB)** — seven VMs, eighteen exam-style tasks, and a grader that scores you out of 300 the way EX294 does. This page is the meta-guide: what the lab is, how to use it well, and the path I'd walk from RHCSA to RHCE. It's the sibling of the [RHCSA guide](/learn/rhcsa) — same philosophy, bigger machine.
+The lab itself lives on GitHub at [Camilool8/RHCE-LAB](https://github.com/Camilool8/RHCE-LAB) — seven VMs, eighteen exam-style tasks, and a grader that scores you out of 300 the way EX294 does. This page is the meta-guide: what the lab is, how to use it well, and the path I'd walk from RHCSA to RHCE. It's the sibling of the [RHCSA guide](/learn/rhcsa) — same philosophy, bigger machine.
+
+<ExamFacts
+  official={{
+    href: 'https://www.redhat.com/en/services/training/ex294-red-hat-certified-engineer-rhce-exam-red-hat-enterprise-linux',
+    name: "Red Hat’s EX294 page",
+    vendor: 'Red Hat',
+  }}
+  exam="EX294"
+  format={<>Hands-on and offline, graded on converged state. <code>ansible-doc</code> and <code>man</code> are the only documentation.</>}
+  duration="4 hours"
+  passMark="210 of 300 points"
+  version={{ exam: 'RHEL 9 or RHEL 10', lab: 'RHEL 9' }}
+  asOf="mid-2026"
+/>
+
+<GuideSource
+  repo="Camilool8/RHCE-LAB"
+  href="https://github.com/Camilool8/RHCE-LAB"
+  note="Seven VMs, eighteen tasks, the reference solutions and the grader"
+  sheet
+/>
 
 ## What the lab is
 
@@ -86,21 +107,138 @@ The part I'd call the lab's centerpiece: `~/verify/verify-all.sh` on the control
 
 Early on, grade per task while you learn. In the final weeks, do full timed runs: eighteen tasks, four hours, grader at the end. Treat 210 as the bar and the gap above it as your margin for a bad morning.
 
-## What the lab maps to
+## Key commands by domain
 
-The eighteen tasks cover the [EX294 exam objectives](https://www.redhat.com/en/services/training/ex294-red-hat-certified-engineer-rhce-exam-red-hat-enterprise-linux), grouped roughly as:
+The eighteen tasks cover the [EX294 exam objectives](https://www.redhat.com/en/services/training/ex294-red-hat-certified-engineer-rhce-exam-red-hat-enterprise-linux). This is the sheet I'd hand a friend the night before: for each domain, the commands that run and check the work from `~/ansible/` on the control node, and the task in the repo that drills it. The playbooks themselves are the answers, and they stay in the repo. Anything in angle brackets is yours to fill in.
 
-- Control node setup — inventory groups and `ansible.cfg`
-- Repository configuration and package management by playbook
-- RHEL system roles — timesync and SELinux
-- Writing your own role, and consuming roles from Galaxy with `requirements.yml`
-- File management — directories, symlinks, SELinux contexts, setgid
-- Ansible Vault — creating, using, and rekeying encrypted files
-- Jinja2 templating — a hosts file, a hardware report, per-group `/etc/issue`
-- User management with vaulted passwords and `password_hash`
-- Scheduled tasks with the cron module
-- Storage — LVM with a rescue fallback, partitioning with runtime device discovery
-- `ansible-navigator` and execution environments throughout
+<DomainSheet>
+<Domain title={<>Control node setup — inventory groups and <code>ansible.cfg</code></>} short="Control node setup" tasks={[{ label: 'Task 1', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-01.md' }]}>
+
+```bash
+ansible all -m ping
+ansible-inventory --graph
+ansible-navigator doc -l --mode stdout | grep -i dnf
+```
+
+<Verify>`ansible-inventory --graph` shows `prod` under `webservers`, and `ansible all -m ping` works with no extra flags.</Verify>
+
+</Domain>
+<Domain title="Repository configuration and package management by playbook" short="Repositories and packages" tasks={[{ label: 'Task 2', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-02.md' }, { label: 'Task 3', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-03.md' }]}>
+
+```bash
+ansible-navigator run yum-repo.yml --mode stdout
+ansible all -b -a 'dnf repolist --all'
+ansible dev,test,prod -b -m shell -a 'rpm -q php mariadb'
+```
+
+<Verify>Run each playbook twice. The second run must report `changed=0`.</Verify>
+
+</Domain>
+<Domain title="RHEL system roles — timesync and SELinux" tasks={[{ label: 'Task 4', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-04.md' }, { label: 'Task 18', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-18.md' }]}>
+
+```bash
+sudo dnf install -y rhel-system-roles
+ansible-navigator run timesync.yml --mode stdout
+ansible all -b -a 'chronyc -n sources'
+ansible all -b -a 'grep ^SELINUX= /etc/selinux/config'
+```
+
+<Verify>`getenforce` is the runtime state; `/etc/selinux/config` is what survives a reboot. Check both.</Verify>
+
+</Domain>
+<Domain title={<>Writing your own role, and consuming roles from Galaxy with <code>requirements.yml</code></>} short="Your own roles and Galaxy roles" tasks={[{ label: 'Tasks 5–7', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-05.md' }]}>
+
+```bash
+ansible-galaxy role init apache --init-path=./roles/
+ansible-galaxy install -r roles/requirements.yml -p ./roles/
+ansible-galaxy role list -p ./roles
+```
+
+<Verify>`ansible webservers -b -a "systemctl is-enabled httpd"`: enabled means it comes back after a reboot.</Verify>
+
+</Domain>
+<Domain title="File management — directories, symlinks, SELinux contexts, setgid" tasks={[{ label: 'Task 8', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-08.md' }]}>
+
+```bash
+ansible-navigator run test.yml --mode stdout
+ansible test -b -a 'stat -c "%a %A %G" /webtest'
+ansible test -b -m shell -a 'readlink /var/www/html/webtest'
+```
+
+<Verify>The `stat` line reads `2775 drwxrwsr-x webtest`; the `s` is the setgid bit.</Verify>
+
+</Domain>
+<Domain title="Ansible Vault — creating, using, and rekeying encrypted files" tasks={[{ label: 'Task 9', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-09.md' }, { label: 'Task 13', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-13.md' }]}>
+
+```bash
+chmod 600 password.txt
+ansible-vault create vault.yml --vault-password-file=./password.txt
+ansible-vault view vault.yml --vault-password-file=./password.txt
+ansible-vault rekey vault.yml
+```
+
+<Verify>`head -1 vault.yml` starts with `$ANSIBLE_VAULT;1.1;AES256`. Change it with `ansible-vault edit`, never with `vi`.</Verify>
+
+</Domain>
+<Domain title={<>Jinja2 templating — a hosts file, a hardware report, per-group <code>/etc/issue</code></>} short="Jinja2 templating" tasks={[{ label: 'Tasks 10–12', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-10.md' }]}>
+
+```bash
+ansible node1 -m setup -a 'filter=ansible_interfaces'
+ansible-navigator run gen_hosts.yml --mode stdout
+ansible dev -b -a 'cat /etc/myhosts'
+ansible all -b -a 'cat /root/hwreport.txt'
+```
+
+<Verify>Only the group the task names gets the file: check one group that shouldn't have it, too.</Verify>
+
+</Domain>
+<Domain title={<>User management with vaulted passwords and <code>password_hash</code></>} short="Users with vaulted passwords" tasks={[{ label: 'Task 14', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-14.md' }]}>
+
+```yaml
+password: "{{ dev_pass | password_hash('sha512', pwd_salt) }}"
+```
+
+```bash
+ansible-playbook create_user.yml --vault-password-file=./password.txt
+ansible dev,test -b -m shell -a 'id adam lucifer; getent shadow adam | cut -d: -f2 | head -c 3'
+```
+
+<Verify>The hash starts with `$6$` (SHA-512). Without a fixed salt the hash changes on every run, so the second run never reports `changed=0`.</Verify>
+
+</Domain>
+<Domain title="Scheduled tasks with the cron module" short="Scheduled tasks with cron" tasks={[{ label: 'Task 15', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-15.md' }]}>
+
+```bash
+ansible-navigator run cron.yml --mode stdout
+ansible all -b -a 'crontab -l -u natasha'
+```
+
+<Verify>A few minutes later the message is in the journal: `journalctl -t natasha --since "5 min ago"`.</Verify>
+
+</Domain>
+<Domain title="Storage — LVM with a rescue fallback, partitioning with runtime device discovery" tasks={[{ label: 'Task 16', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-16.md' }, { label: 'Task 17', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-17.md' }]}>
+
+```bash
+ansible-galaxy collection install community.general -p ./mycollection/
+ansible all -b -a 'lvs research/data'
+ansible prod -b -a 'findmnt /srv'
+```
+
+<Verify>`lvs research/data` on every node; `/srv` mounted on prod only, with its line in `/etc/fstab`.</Verify>
+
+</Domain>
+<Domain title={<><code>ansible-navigator</code> and execution environments throughout</>} short={<><code>ansible-navigator</code> and execution environments</>} tasks={[{ label: 'Task 1', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-01.md' }, { label: 'Task 18', href: 'https://github.com/Camilool8/RHCE-LAB/blob/main/lab/tasks/task-18.md' }]}>
+
+```bash
+ansible-navigator run selinux2.yml --mode stdout
+ansible-navigator doc ansible.builtin.yum_repository --mode stdout
+ansible-navigator collections --mode stdout
+```
+
+<Verify>Score one task as you finish it: `~/verify/verify-all.sh --task <n>`.</Verify>
+
+</Domain>
+</DomainSheet>
 
 One design detail worth knowing: each node carries two extra disks sized 2 GB and 1 GB on purpose. The LVM task asks for a volume the 1 GB disk can't hold, so your `rescue` block has to actually fire — the lab makes you practice the failure branch, not just the happy path.
 
