@@ -2,28 +2,29 @@
 sidebar_position: 1
 title: Who I am
 image: img/og/me-who-i-am.png
-description: The origin story — where I'm from, how I got into DevOps, what drives me, and how I work.
+description: The origin story — where I’m from, how I got into DevOps, what drives me, and how I work.
 slug: /me/who-i-am
 keywords: [about, bio, origin, dominican republic, devops]
 date: "2026-05-12"
 last_update:
-  date: "2026-07-04"
-  author: Jose Camilo Joga Guerrero
+  date: "2026-10-30"
+  author: José Camilo Joga Guerrero
 ---
 
 import Timeline, { TimelineEntry } from '@site/src/components/Timeline';
 
 # Who I am
 
-DevOps engineer, born and based in Santo Domingo. This page is the long version of how I got here.
-
-<div style={{ textAlign: 'center', margin: '2rem 0 2.5rem' }}>
+{/* Portrait beside the intro, so the timeline starts in the first screen. */}
+<div>
   <img
     src="/img/camilo-portrait.jpg"
-    alt="Jose Camilo Joga Guerrero"
-    width={320}
-    style={{ maxWidth: '100%', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}
+    alt="José Camilo Joga Guerrero"
+    width={800}
+    height={979}
+    style={{ float: 'right', width: 'clamp(5.5rem, 16vw, 9.5rem)', height: 'auto', margin: '0.3rem 0 1rem 1.25rem', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}
   />
+  <p>Senior Platform &amp; DevOps Engineer, born and based in Santo Domingo. This page is the long version of how I got here.</p>
 </div>
 
 <Timeline caption="The short version">
@@ -49,11 +50,11 @@ DevOps engineer, born and based in Santo Domingo. This page is the long version 
   />
   <TimelineEntry
     year="2025"
-    title="Co-founded KODEPULL SRL with Fernando Reyes"
+    title="Co-founded KodePull SRL with Fernando Reyes"
   />
   <TimelineEntry
     year="Today"
-    title="DevOps Engineer in Santo Domingo — Arctiq, INSPYR, KodePull"
+    title="Senior Platform & DevOps Engineer in Santo Domingo — Arctiq, INSPYR, KodePull"
     emphasis
   />
 </Timeline>
@@ -109,7 +110,3 @@ Two languages depending on what fits: English for the precise and technical, Spa
 Email is the right channel: [josejoga.opx@gmail.com](mailto:josejoga.opx@gmail.com).
 
 For everything else, [LinkedIn](https://www.linkedin.com/in/cjoga) and [GitHub](https://github.com/Camilool8).
-
-import AuthorCard from '@site/src/components/AuthorCard';
-
-<AuthorCard />

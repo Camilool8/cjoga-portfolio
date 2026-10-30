@@ -2,7 +2,7 @@
 sidebar_position: 4
 title: CKAD guide
 image: img/og/learn-ckad.png
-description: How I passed the CKAD at 98% with 48 minutes to spare — Mumshad Mannambeth's course, KodeKloud labs, killer.sh, and a simulator I built to be harder than the exam.
+description: How I passed the CKAD at 98% with 48 minutes to spare — Mumshad Mannambeth’s course, KodeKloud labs, killer.sh, and a simulator I built to be harder than the exam.
 slug: /learn/ckad
 keywords: [ckad, kubernetes, certification, kubestronaut, kubectl, cncf, linux foundation, exam]
 date: "2026-08-10"
@@ -11,6 +11,27 @@ date: "2026-08-10"
 # CKAD guide
 
 I passed the [Certified Kubernetes Application Developer](https://www.cncf.io/training/certification/ckad/) in August 2026 with **98%**, submitting with 48 minutes left on a two-hour clock. The pass mark is 66%. [Verification is on Credly.](https://www.credly.com/badges/9998f19f-fc7f-48e2-9b79-056a0ccd7662/public_url) This page is the prep that produced that margin — the course, the simulators, and where [kubestronaut-sim](/learn/kubestronaut-sim) fits. It's the sibling of the [RHCSA](/learn/rhcsa) and [RHCE](/learn/rhce) guides — same philosophy, different vendor.
+
+<ExamFacts
+  official={{
+    href: 'https://training.linuxfoundation.org/certification/certified-kubernetes-application-developer-ckad/',
+    name: "the Linux Foundation’s CKAD page",
+    vendor: 'the Linux Foundation',
+  }}
+  format="Performance-based and proctored, in a live Kubernetes environment. The official Kubernetes docs stay open."
+  duration="2 hours"
+  passMark="66%"
+  sources={{ duration: 'my sitting, Aug 2026', passMark: 'my sitting, Aug 2026' }}
+  version={{ exam: 'Kubernetes v1.37' }}
+  asOf="2026-10-30"
+/>
+
+<GuideSource
+  repo="Camilool8/kubestronaut-sim"
+  href="https://github.com/Camilool8/kubestronaut-sim"
+  note="The simulator I used as the final gate: practice tasks and their solutions"
+  sheet
+/>
 
 ## What the exam is
 
@@ -46,6 +67,84 @@ How I'd use it for CKAD:
 
 - **The proctoring experience.** ID checks, a room scan, a locked-down browser, a camera on you for two hours. Know it's coming so it costs you nothing on the day.
 - **kubectl muscle memory.** That comes from the volume of tasks typed, not from any single tool. Course labs, killer.sh, the sim — the total number of reps is the variable that matters.
+
+## Key commands by domain
+
+This is the sheet I'd hand a friend the night before: for each of the five CKAD domains, the commands that do the work, how to check them, and a question in the simulator's bank that drills them. The solutions stay in the repo. The first row sets up the `k` and `$do` shorthands; every row after it uses them. Anything in angle brackets is yours to fill in.
+
+<DomainSheet shorthand={[['k', 'kubectl'], ['$do', '--dry-run=client -o yaml']]}>
+<Domain title="Before the first task — terminal setup" short="Terminal setup" tasks={[{ label: 'CKAD exam tips', href: 'https://github.com/Camilool8/kubestronaut-sim/blob/main/banks/ckad-mock-01/tips.md' }]}>
+
+```bash
+alias k=kubectl
+source <(kubectl completion bash)
+complete -o default -F __start_kubectl k
+export do="--dry-run=client -o yaml"
+```
+
+<Verify>Type `k -n`, a space, then Tab: the namespaces complete.</Verify>
+
+</Domain>
+<Domain title="Application Design and Build" short="Design and build" tasks={[{ label: 'CronJob and Job', href: 'https://github.com/Camilool8/kubestronaut-sim/blob/main/banks/ckad-mock-01/q04/question.md' }]}>
+
+```bash
+k create job report --image=busybox:1.37 $do -- sh -c 'echo done' > job.yaml
+k create cj nightly --image=busybox:1.37 --schedule='0 2 * * *' $do -- sh -c 'echo done' > cj.yaml
+k -n <ns> wait --for=condition=Complete job/<name> --timeout=120s
+```
+
+<Verify>`k -n <ns> get job <name> -o jsonpath='{.status.succeeded}'` matches the completions the task asked for.</Verify>
+
+</Domain>
+<Domain title="Application Deployment" short="Deployment" tasks={[{ label: 'Roll out, then roll back', href: 'https://github.com/Camilool8/kubestronaut-sim/blob/main/banks/ckad-mock-01/q12/question.md' }, { label: 'Helm release management', href: 'https://github.com/Camilool8/kubestronaut-sim/blob/main/banks/ckad-mock-01/q11/question.md' }]}>
+
+```bash
+k -n <ns> set image deploy/<name> <container>=<image>
+k -n <ns> rollout undo deploy/<name>
+helm -n <ns> upgrade <release> <chart> --version <version>
+kubectl -n <ns> apply -k <overlay-dir>
+```
+
+<Verify>`k -n <ns> rollout status deploy/<name> --timeout=60s`, then `k -n <ns> rollout history deploy/<name>`.</Verify>
+
+</Domain>
+<Domain title="Application Environment, Configuration and Security" short="Config and security" tasks={[{ label: 'Grant a ServiceAccount only what it needs', href: 'https://github.com/Camilool8/kubestronaut-sim/blob/main/banks/ckad-mock-01/q30/question.md' }]}>
+
+```bash
+k create cm app-config --from-literal=LOG_LEVEL=debug $do > cm.yaml
+k create secret generic <name> --from-literal=<key>=<value> $do > secret.yaml
+k -n <ns> create role <role> --verb=get --verb=list --verb=watch --resource=configmaps
+k -n <ns> create rolebinding <binding> --role=<role> --serviceaccount=<ns>:<sa>
+```
+
+<Verify>`k auth can-i <verb> <resource> -n <ns> --as=<user>` for what it should do, and for one thing it shouldn't.</Verify>
+
+</Domain>
+<Domain title="Application Observability and Maintenance" short="Observability" tasks={[{ label: 'Debug a Pod you cannot get into', href: 'https://github.com/Camilool8/kubestronaut-sim/blob/main/banks/ckad-mock-01/q25/question.md' }]}>
+
+```bash
+k -n <ns> describe pod <name>
+k -n <ns> logs <name> --previous
+k -n <ns> debug <pod> -it --image=busybox:1.37 -c debugger --target=<container> --profile=general -- sh
+k explain deploy.spec.template.spec.containers.readinessProbe
+```
+
+<Verify>`describe` shows events only for a single named object; for a selector, add `--show-events`.</Verify>
+
+</Domain>
+<Domain title="Services and Networking" short="Networking" tasks={[{ label: 'A Service that reaches nothing', href: 'https://github.com/Camilool8/kubestronaut-sim/blob/main/banks/ckad-mock-01/q19/question.md' }, { label: 'NetworkPolicy lockdown', href: 'https://github.com/Camilool8/kubestronaut-sim/blob/main/banks/ckad-mock-01/q03/question.md' }]}>
+
+```bash
+k expose deploy web --port=80 --target-port=8080 $do > svc.yaml
+k create ingress web --rule='site.local/*=web:80' $do > ing.yaml
+k -n <ns> get endpointslice -l kubernetes.io/service-name=<svc>
+k -n <ns> get svc <svc> -o jsonpath='{.spec.selector}'
+```
+
+<Verify>Empty endpoints mean the selector matches no Pod: compare it with `k -n <ns> get pod --show-labels`.</Verify>
+
+</Domain>
+</DomainSheet>
 
 ## Day-of guidance
 

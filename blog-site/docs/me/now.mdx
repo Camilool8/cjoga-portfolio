@@ -2,17 +2,19 @@
 sidebar_position: 3
 title: Now
 image: img/og/me-now.png
-description: What I'm working on, learning, and building right now. Dated; updated occasionally.
+description: What I’m working on, learning, and building right now. Dated; updated occasionally.
 slug: /me/now
 keywords: [now, current, learning, building]
 date: "2026-05-12"
 last_update:
   date: "2026-08-10"
-  author: Jose Camilo Joga Guerrero
+  author: José Camilo Joga Guerrero
+# Goes stale fast ("this month"): the dateline says so once the latest
+# date is more than 45 days old.
+time_bound: 45
 ---
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
-import AuthorCard from '@site/src/components/AuthorCard';
 
 # Now
 
@@ -52,5 +54,3 @@ Next is **CKA** — step 3 on the [Kubestronaut](https://www.cncf.io/training/ku
 **Shipped: [kubestronaut-sim](https://github.com/Camilool8/kubestronaut-sim).** An open-source exam simulator for the Kubestronaut certifications — one command boots a real Kubernetes cluster on your machine, draws an exam from a pool of original questions, and grades on behavior: a NetworkPolicy that actually denies, an Ingress the controller really routes. KCNA and CKAD banks are live; CKA, KCSA, and CKS are scaffolded. It was my final gate before the real CKAD — the sim is deliberately harder, and the score gap proved it. The [project page](/learn/kubestronaut-sim) has the full story, and the bank format is documented so anyone can contribute questions.
 
 Earlier this year: the RHCE lab and its guide — [the guide](/learn/rhce) and [the lab](https://github.com/Camilool8/RHCE-LAB): seven VMs, eighteen exam-style tasks, and a 300-point grader that scores you the way the real EX294 does.
-
-<AuthorCard />

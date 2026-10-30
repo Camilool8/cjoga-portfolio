@@ -62,10 +62,13 @@ function isLightGround(hex) {
 // content itself is the activity, like the terminal.
 // avoid: selector for content the orbits must stay clear of; linework
 // only fades in to the right of those elements' measured right edge.
+// sink: horizon variant only — how far the planet's centre sits below the
+// frame, in planet radii (default 0.74, or 0.9 when quiet). Higher sinks
+// the limb lower, for a shorter band.
 // still: draw a single frame (no animation loop, no pointer tracking).
 // Used behind the terminals, where the content is the activity and a
 // full-section animated canvas cost too many frames.
-export default function PlanetScene({ variant = "hero", quiet = false, still = false, avoid = "" }) {
+export default function PlanetScene({ variant = "hero", quiet = false, still = false, avoid = "", sink: sinkProp }) {
   const canvasRef = useRef(null);
   const starsRef = useRef(null);
 
@@ -97,7 +100,7 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
     // One dotted globe everywhere. The horizon (cluster chapter, terminal
     // page) is the same world seen up close: no tilt, dots only in the
     // band of latitudes on screen, and lower arcs so they stay off the copy.
-    const sink = quiet ? 0.9 : 0.74;
+    const sink = sinkProp ?? (quiet ? 0.9 : 0.74);
     const globe =
       variant === "hero"
         ? buildGlobe(seeded(4099), lowPower)
@@ -548,7 +551,7 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
       window.removeEventListener("pointermove", onPointer);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [variant, quiet, still, avoid]);
+  }, [variant, quiet, still, avoid, sinkProp]);
 
   return (
     <>

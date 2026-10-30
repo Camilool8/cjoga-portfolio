@@ -2,15 +2,27 @@
 sidebar_position: 1
 title: Longhorn — replica scheduling and right-sizing for a homelab
 image: img/og/engineering-lab-tips-and-gotchas-longhorn-replicas.png
-description: How Longhorn engine processes pile up on under-spec'd nodes, why I scope replicas with node labels, and why three-replica defaults don't make sense on a homelab.
+description: How Longhorn engine processes pile up on under-spec’d nodes, why I scope replicas with node labels, and why three-replica defaults don’t make sense on a homelab.
 slug: /engineering/lab/tips-and-gotchas/longhorn-replicas
 keywords: [longhorn, kubernetes, storage, homelab, replicas, node-labels, memory]
 date: "2026-05-13"
+last_update:
+  date: "2026-10-30"
+  author: José Camilo Joga Guerrero
+# The Oct 30 change only corrected the page (the "Since then" note). The dateline says
+# "Corrected" and the landing's "Last updated" leaves this page out.
+last_update_kind: correction
 ---
 
 # Longhorn — replica scheduling and right-sizing for a homelab
 
 [Longhorn](https://longhorn.io/) defaults to three replicas of every PVC and assumes any worker node can host one. Both defaults are fine in a production setup with homogeneous nodes and budget headroom. On a homelab with uneven hardware, they cost me twice — once in scheduling pressure, once in raw memory — before I changed them.
+
+:::note[Since then]
+
+I've since taken Longhorn out of this cluster. On May 27, 2026 I wrote a runbook to move every volume onto `local-path` storage and uninstall Longhorn, to free memory on nodes that were running close to full. By August 29, 2026 the `longhorn-system` namespace was gone. The page stays as written: the two changes below still apply if you run Longhorn on uneven hardware.
+
+:::
 
 ## What broke
 

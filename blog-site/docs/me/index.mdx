@@ -2,19 +2,12 @@
 sidebar_position: 0
 title: Me
 image: img/og/me.png
-description: Who I am, what I'm doing now, what I read, and what I've earned.
+description: Who I am, what I’m doing now, what I read, and what I’ve earned.
 slug: /me
 keywords: [about, bio, opinions, credentials]
 ---
 
 import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
-import {
-  FaUser,
-  FaQuoteLeft,
-  FaClock,
-  FaBookOpen,
-  FaCertificate,
-} from 'react-icons/fa';
 
 # Me
 
@@ -23,31 +16,26 @@ The personal section of the handbook — written first-person, on purpose.
 <SectionCardGrid>
   <SectionCard
     href="/me/who-i-am"
-    icon={FaUser}
     title="Who I am"
-    description="The origin story — where I'm from, how I got into DevOps, and how I work."
-  />
-  <SectionCard
-    href="/me/opinions"
-    icon={FaQuoteLeft}
-    title="Opinions"
-    description="Strong takes on the tools and practices I work with — things I'd defend in a code review."
+    description="The origin story — where I’m from, how I got into DevOps, and how I work."
   />
   <SectionCard
     href="/me/now"
-    icon={FaClock}
     title="Now"
-    description="What I'm focused on this quarter — current engagements, study, and side projects."
+    description="What I’m focused on this quarter — current engagements, study, and side projects."
+  />
+  <SectionCard
+    href="/me/opinions"
+    title="Opinions"
+    description="Strong takes on the tools and practices I work with — things I’d defend in a code review."
   />
   <SectionCard
     href="/me/reading-and-tools"
-    icon={FaBookOpen}
     title="Learning and tools"
     description="How I learn — Udemy, lab, AI tooling — and the tools and hardware I use every day."
   />
   <SectionCard
     href="/me/credentials"
-    icon={FaCertificate}
     title="Credentials"
     description="Every certification earned, in order, with verification links."
   />

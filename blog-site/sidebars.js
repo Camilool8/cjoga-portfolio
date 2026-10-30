@@ -49,7 +49,9 @@ const sidebars = {
       items: [
         {
           type: "category",
-          label: "Lab",
+          // "Homelab", not "Lab": the Learn guides have exam labs too.
+          // The slug stays /engineering/lab, so links don't move.
+          label: "Homelab",
           link: { type: "doc", id: "engineering/lab/index" },
           collapsible: true,
           collapsed: false,

@@ -29,21 +29,35 @@
 
 /* ─── Intro over the orbital band ──────────────────────────────────── */
 /* --band is the reserved strip under the copy where the planet's limb
-   rises; the mask is measured from the bottom in the same units, so the
+   rises (the scene sinks the planet to fit it: sink 0.86); it stays short
+   so the reader paths start inside the first screen; the mask is measured from the bottom in the same units, so the
    motion stays inside the band at every width and never under the copy.
    --band-fade is how the planet meets the page below it: a long fade at
    night, a short one in daylight, where a dark body fading into a light
-   ground reads as haze. */
+   ground reads as haze (the shorter the fade, the cleaner the body). */
 .intro {
-  --band: clamp(190px, 24vw, 320px);
-  --band-fade: calc(var(--band) * 0.3);
+  --band: clamp(130px, 14vw, 210px);
+  --band-fade: calc(var(--band) * 0.35);
   position: relative;
   isolation: isolate;
-  padding: clamp(4rem, 11vh, 7rem) 0 var(--band);
+  padding: clamp(2.5rem, 7vh, 4.5rem) 0 var(--band);
 }
 
 [data-theme="light"] .intro {
-  --band-fade: 28px;
+  --band-fade: calc(var(--band) * 0.18);
+}
+
+/* Phones: the first route belongs in the first screen. The intro keeps
+   its heading, lede and horizon, each a step tighter: less air above
+   the heading, a shorter band, and a lede a size down. The band stays a
+   horizon, not a strip: at 96px the limb filled it edge to edge and read
+   as a sliver; 128px gives the orbits room above the limb, and the first
+   route still starts inside a 390x844 screen. */
+@media (max-width: 639px) {
+  .intro {
+    --band: 128px;
+    padding-top: 1.75rem;
+  }
 }
 
 .scene {
@@ -56,15 +70,62 @@
     transparent 0,
     #000 var(--band-fade),
     #000 calc(var(--band) * 0.9),
-    transparent calc(var(--band) + 40px)
+    transparent calc(var(--band) + 12px)
   );
   mask-image: linear-gradient(
     to top,
     transparent 0,
     #000 var(--band-fade),
     #000 calc(var(--band) * 0.9),
-    transparent calc(var(--band) + 40px)
+    transparent calc(var(--band) + 12px)
   );
+}
+
+/* The still: the scene's horizon geometry in CSS (radius max(0.8W,
+   0.9H) — 80vw, or ~460px on phones — centred at 62% across and sunk to
+   0.86 of a radius below the band), a dark body with a mint rim. It sits
+   under the canvas and fades once the scene is live. */
+.poster {
+  --r: max(80vw, 460px);
+  position: absolute;
+  left: calc(62% - var(--r));
+  top: calc(100% - var(--r) * 0.14);
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, #64ffda 80%, transparent);
+  background: linear-gradient(180deg, #16283f 0%, #0b1626 12%, #06080d 30%);
+  box-shadow: 0 -10px 60px -20px rgba(100, 255, 218, 0.25);
+  transition: opacity 0.8s var(--ease-out-expo);
+}
+
+[data-theme="light"] .poster {
+  border-color: color-mix(in srgb, #0e7490 70%, transparent);
+  background: linear-gradient(180deg, #2b4a6f 0%, #16283f 14%, #0b1626 30%);
+  box-shadow: 0 -10px 60px -20px rgba(14, 116, 144, 0.25);
+}
+
+/* In daylight the dark planet is the heaviest mass on the page and pulls
+   the eye from the heading, so it recedes by position, not by fading:
+   it sits lower (its children shift down inside the fixed mask, a
+   deeper sink without touching the synced scene). It keeps full
+   strength: at 70% the navy body went slate and the teal rim washed
+   into the halo, a grey haze instead of a limb. Canvas and still move
+   together, so the still still matches. Night keeps the band as it is. */
+[data-theme="light"] .scene > * {
+  transform: translateY(calc(var(--band) * 0.22));
+}
+
+/* On a phone the planet is small and sits under the lede, not beside the
+   heading; sunk the full step, only a thin cap of it showed. */
+@media (max-width: 639px) {
+  [data-theme="light"] .scene > * {
+    transform: translateY(calc(var(--band) * 0.1));
+  }
+}
+
+.posterGone {
+  opacity: 0;
 }
 
 .scene :global(.planet-scene) {
@@ -80,7 +141,7 @@
 }
 
 .title {
-  max-width: 22ch;
+  max-width: 13.6em; /* ≈22ch in Mona Sans; em, not ch, so the measure holds while the fallback font shows */
   margin: 0 0 1.5rem;
   font-family: var(--font-display);
   font-size: clamp(2.25rem, 5vw, 3.5rem);
@@ -96,7 +157,7 @@
 }
 
 .lede {
-  max-width: 62ch;
+  max-width: 38em; /* ≈62ch in Mona Sans; em, not ch, so the measure holds while the fallback font shows */
   margin: 0;
   font-size: 1.125rem;
   line-height: 1.7;
@@ -104,122 +165,36 @@
   text-wrap: pretty;
 }
 
-/* ─── Audience paths (hiring / studying / the lab) ─────────────────── */
-/* Each path is a row between hairlines: its heading on the left, its
-   links on the right from 997px (Docusaurus's desktop breakpoint);
-   stacked below. */
-.paths {
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.path {
-  display: grid;
-  gap: 12px;
-  padding: 28px 0 32px;
-  border-top: 1px solid var(--border-subtle);
-}
-
-@media (min-width: 997px) {
-  .path {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: 64px;
-    padding: 36px 0 40px;
-  }
-}
-
-.pathTitle {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-
-.pathIntro {
-  max-width: 40ch;
-  margin: 8px 0 0;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--text-secondary);
-  text-wrap: pretty;
-}
-
-.links {
-  margin: 0;
+/* A name in the lede is part of the sentence: the mono face alone marks
+   it, with no chip (as in an article's first paragraph). */
+.lede code {
   padding: 0;
-  list-style: none;
+  border: 0;
+  background: none;
+  font-size: 0.9em;
+  font-weight: 450;
+  color: inherit;
 }
 
-.links li + li .link {
-  border-top: 1px solid var(--border-subtle);
-}
+/* Phones: the heading a step down (four lines at 360px became three:
+   "A working handbook." keeps a line of its own down to 360px) and
+   the lede at body size, so the first study row is whole inside a
+   360x740 screen, not under the fold. */
+@media (max-width: 639px) {
+  .title {
+    margin-bottom: 0.75rem;
+    font-size: min(2rem, 8.6vw);
+  }
 
-.link {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  column-gap: 16px;
-  row-gap: 2px;
-  min-height: 64px;
-  padding: 12px 0;
-  color: var(--text-primary);
-  text-decoration: none;
-  transition: color 0.2s var(--ease-out-expo);
-}
-
-.link:hover {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.link:focus-visible {
-  color: var(--accent);
-  outline-offset: 2px;
-}
-
-.linkLabel {
-  grid-column: 1;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.linkPath {
-  grid-column: 1;
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  overflow-wrap: anywhere;
-}
-
-.linkIcon {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  width: 18px;
-  height: 18px;
-  color: var(--text-tertiary);
-  transition:
-    color 0.2s var(--ease-out-expo),
-    transform 0.25s var(--ease-out-expo);
-}
-
-.link:hover .linkIcon,
-.link:focus-visible .linkIcon {
-  color: var(--accent);
-  transform: translateX(3px);
-}
-
-@media (min-width: 997px) {
-  /* Align the first link's rule-free top with the heading's cap. */
-  .links {
-    margin-top: -12px;
+  .lede {
+    font-size: 1rem;
+    line-height: 1.55;
   }
 }
 
 /* ─── Signoff ──────────────────────────────────────────────────────── */
 .signoff {
-  max-width: 62ch;
+  max-width: 38em; /* ≈62ch in Mona Sans; em, not ch, so the measure holds while the fallback font shows */
   margin: 0;
   padding: 2rem 0 6rem;
   font-size: 0.9375rem;
@@ -227,18 +202,19 @@
   color: var(--text-tertiary);
 }
 
+/* Set as an article link: the accent ink, underlined at rest at 40% of
+   its colour (1px, 3px offset), full on hover. */
 .signoffLink {
-  color: var(--text-secondary);
+  color: var(--accent-ink);
   text-decoration: underline;
-  text-decoration-color: var(--border-medium);
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
   text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
   transition:
     color 0.2s var(--ease-out-expo),
     text-decoration-color 0.2s var(--ease-out-expo);
 }
 
 .signoffLink:hover {
-  color: var(--accent);
   text-decoration-color: currentColor;
 }

@@ -1,13 +1,14 @@
 /* Pull-quote — hairline rules span the article text column so the unit
-   reads as part of the text flow, not a floating box. Centered display-
-   font text inside, balanced wrapping. No fill, no rail, no border-radius. */
+   reads as part of the text flow, not a floating box. The quote keeps the
+   column's one left edge (centred, it was the only thing on the page off
+   that edge), set in the display face with balanced wrapping. No fill,
+   no rail, no border-radius. */
 
 .figure {
   margin: 2.5rem 0;
   padding: 1.5rem 0;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
-  text-align: center;
 }
 
 .eyebrow {
@@ -24,7 +25,7 @@
   letter-spacing: -0.02em;
   line-height: 1.35;
   color: var(--text-primary);
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   max-width: 32em;
   text-wrap: balance;
@@ -35,7 +36,13 @@
   padding: 0;
 }
 
-/* Quote marks in the muted tone: punctuation, not ornament. */
+/* Quote marks in the muted tone: punctuation, not ornament. The opening
+   mark hangs into the margin so the words, not the mark, sit on the
+   column's edge. */
+.quote p {
+  text-indent: -0.42em;
+}
+
 .quote p::before {
   content: '\201C';
   color: var(--text-tertiary);

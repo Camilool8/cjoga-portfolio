@@ -1,0 +1,211 @@
+/* Same column, gutters and heading as the landing page. */
+.main {
+  padding: clamp(2.5rem, 7vh, 4.5rem) 0 6rem;
+}
+
+.inner {
+  --gutter: 1rem;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left));
+  padding-right: max(var(--gutter), env(safe-area-inset-right));
+}
+
+@media (min-width: 640px) {
+  .inner {
+    --gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .inner {
+    --gutter: 2rem;
+  }
+}
+
+.title {
+  max-width: 13.6em; /* ≈22ch in Mona Sans; em, not ch, so the measure holds while the fallback font shows */
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.titleMuted {
+  color: var(--text-tertiary);
+}
+
+/* Everything under the heading depends on the address, which is only
+   known once the page runs; until then it is held invisible, so the
+   closest pages arriving never push the rest down (index.js). Only
+   when scripts run (the theme's inline script sets data-theme), and
+   never for long: if the bundle fails, it shows anyway. */
+:global(html[data-theme]) .body[data-pending] {
+  visibility: hidden;
+  animation: reveal 0s linear 2.5s forwards;
+}
+
+@keyframes reveal {
+  to {
+    visibility: visible;
+  }
+}
+
+/* The address that wasn't found leads, in full ink at the larger size;
+   what to do about it (.lede) follows a step down. At the same size the
+   lede, longer and unbroken, outweighed it on phones, where the address
+   wraps around its code chip. */
+.address {
+  max-width: 38em; /* ≈62ch in Mona Sans; em, not ch, so the measure holds while the fallback font shows */
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+/* The echoed path wraps only after a "/" or "-" (<wbr> there), never
+   inside a word; a single word wider than the line still breaks rather
+   than push the page sideways. */
+.path {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* The closest pages: reader-path rows between hairlines, under a quiet
+   label in the search label's voice. */
+.matches {
+  max-width: 38rem;
+  margin: 1.5rem 0 1.75rem;
+}
+
+.matchesTitle {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--text-secondary);
+}
+
+.matchPath {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--text-tertiary);
+  overflow-wrap: break-word;
+}
+
+.lede {
+  max-width: 42em; /* ≈62ch in Mona Sans at this size; em, not ch, so the measure holds while the fallback font shows */
+  margin: 0 0 1.75rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/* ─── Search, prefilled with the address's words ───────────────────── */
+/* The navbar field's look at reading size: a hairline field on the
+   surface tone with the accent caret, and the outline button beside it. */
+.search {
+  max-width: 34rem;
+  margin: 0 0 3rem;
+}
+
+.searchLabel {
+  display: block;
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.searchRow {
+  display: flex;
+  gap: 8px;
+}
+
+.searchField {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 16px;
+  height: 16px;
+  color: var(--text-tertiary);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px 0 40px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-primary);
+  caret-color: var(--accent);
+  background: var(--bg-surface);
+  /* Neutral, not the accent hairline: the field's edge has to read at
+     rest (≈3:1), and accent here would say "focused" before it is. */
+  border: 1px solid color-mix(in srgb, var(--text-tertiary) 60%, transparent);
+  border-radius: 10px;
+  transition: border-color 0.25s var(--ease-out);
+}
+
+.searchInput:hover {
+  border-color: var(--border-active);
+}
+
+.searchInput:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* Shown when the address named nothing to search for (index.js). */
+.searchInput::placeholder {
+  color: var(--text-tertiary);
+  opacity: 1;
+}
+
+/* The browser's own clear (x) glyph would sit off the palette. */
+.searchInput::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.searchButton {
+  flex: 0 0 auto;
+  height: 44px;
+  padding: 0 20px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--accent-ink);
+  background: transparent;
+  border: 1px solid var(--border-medium);
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out);
+}
+
+.searchButton:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+}

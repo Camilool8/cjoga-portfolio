@@ -1,0 +1,169 @@
+/* Reader paths (studying / hiring / the lab / opinions): the landing's
+   entry points, reused by the 404 page. The link rows come from
+   rows.module.css. */
+/* Each path is a row between hairlines: its heading on the left, its
+   links on the right from 997px (Docusaurus's desktop breakpoint);
+   stacked below. */
+.paths {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.path {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: 28px 0 32px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Each reader's section opens like an article section: the
+   section-divider dot (4px, Signal Mint) on the rule where its heading
+   starts. */
+.path::before {
+  content: "";
+  position: absolute;
+  top: -2.5px;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+@media (min-width: 997px) {
+  .path {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 64px;
+    padding: 28px 0 32px;
+  }
+}
+
+.pathTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.pathIntro {
+  max-width: 24.5em; /* ≈40ch in Mona Sans; em, not ch, so the measure holds while the fallback font shows */
+  margin: 8px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.whole {
+  white-space: nowrap;
+}
+
+@media (min-width: 997px) {
+  /* Align the first link's rule-free top with the heading's cap. */
+  .path .links {
+    margin-top: -12px;
+  }
+}
+
+/* From 1200px the four readers sit two by two, studying and hiring on
+   the first row, so a hiring manager's group starts beside the
+   learner's, inside the first screen, instead of a screen below it.
+   Each path stacks its heading and intro over its rows; the pair in a
+   row share their row tracks (subgrid), so both lists start on one line
+   whatever their intros' lengths. DOM order is reading order: left, then
+   right, then the next row. */
+@media (min-width: 1200px) {
+  .paths {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 64px;
+  }
+
+  .path {
+    grid-row: span 2;
+    grid-template-columns: none;
+    grid-template-rows: subgrid;
+    gap: 12px;
+  }
+
+  .path .links {
+    margin-top: 0;
+  }
+
+  /* The intro takes its half's width: two lines, not three, so more of
+     each list shows in the first screen. */
+  .pathIntro {
+    max-width: none;
+  }
+}
+
+
+/* Last updated (landing only): a coda under the paths, on the same
+   columns, in a smaller step than a path: a quieter heading and no dot,
+   so it reads as a note on the list above, not a fifth reader. Its rows
+   are the paths' own rows (rows.module.css): hairlines between them, the
+   arrow, and the date as a line under each title. */
+.recent {
+  display: grid;
+  gap: 4px;
+  padding: 20px 0 0;
+}
+
+@media (min-width: 997px) {
+  .recent {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 64px;
+  }
+}
+
+/* Two by two above, so the coda's rows take the right-hand column. */
+@media (min-width: 1200px) {
+  .recent {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Level with the first row, not centred on the list. */
+.recentHead {
+  align-self: start;
+}
+
+.recentTitle {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* The rows' shared day, said once (a date on each of three identical
+   rows read as one batch anyway). Pulled up under the heading's 44px
+   line box to the heading's own leading. */
+.recentCaption {
+  margin: -10px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The first row's text level with the heading's line. */
+@media (min-width: 997px) {
+  .recentList {
+    margin-top: -6px;
+  }
+}
+
+/* A step under a path's labels: these are pages, not routes. (Three
+   classes: rows.module.css sets the label with two.) */
+.recentList .recentLabel.recentLabel {
+  font-size: 1rem;
+  font-weight: 500;
+}

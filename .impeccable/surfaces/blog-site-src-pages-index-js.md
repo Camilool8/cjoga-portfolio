@@ -23,6 +23,10 @@ DESIGN.md ("The Quiet Orbit") is the authority, expressed as precision and restr
 - **Phase 2 (articles):** reading column, dateline, TOC, pagination, code blocks and Prism, inline code, admonitions, tags, Mermaid (both themes), and the MDX components (AuthorCard, CertBadge, CourseCard, DiagramZoom, PullQuote, SectionCardGrid, TechStackGrid, Timeline). Added by the owner 2026-10-29: the social cards for both sites (`scripts/brand/og-portfolio.svg`, `og-blog-default.svg`, and the per-page cards from `build-doc-og.mjs`) get a new layout in the system.
 - **Done after Phase 1 (2026-10-29):** the "Orbit C" brand mark replaced the cloud + CJ icon on both sites, including the portfolio navbar.
 
+## Owner decisions after Phase 2 (2026-10-30)
+- Reader paths reordered for the primary reader: studying (RHCSA, RHCE, CKAD, kubestronaut-sim) first, then hiring, the lab, and a new opinions group. One source: `blog-site/src/data/readerPaths.js`.
+- Navbar dropdowns cut to index-level items (Me: 5, Engineering: 3); index pages and the sidebar list individual pages, with doc titles as the single source of names.
+
 ## Boundaries
 Untouched: the portfolio, `docs/` content, routes, sidebar structure, SEO metadata. Anti-goals: mono for labels or ornament, the full-strength homepage hero, a floating pill nav, blurred orbs, paper-white light grounds, text under 12px.
 

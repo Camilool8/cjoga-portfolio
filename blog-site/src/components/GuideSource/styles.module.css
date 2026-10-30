@@ -1,0 +1,142 @@
+/* One hairline frame, like the landing's link rows, framed because it
+   holds the guide's shortcuts: the repo (the one outbound action) and,
+   on a guide with a sheet, the jump to it, under a hairline. */
+.frame {
+  margin: 1.5rem 0 2rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.frame:has(:hover) {
+  border-color: var(--border-medium);
+}
+
+/* Each row is its own link. Its corners follow the frame's, so the
+   hover tint and the focus ring (drawn inside) stay within it. */
+.source,
+.jump {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  border-radius: 11px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background-color 0.2s var(--ease-out);
+}
+
+.source {
+  min-height: 56px;
+}
+
+.source:hover,
+.jump:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.source:focus-visible,
+.jump:focus-visible {
+  outline-offset: -2px;
+  border-radius: 11px;
+}
+
+/* The jump: one quieter line under the repo, its words on the repo
+   name's column, its arrow under the repo's. In-page, so it points down. */
+.jump {
+  min-height: 44px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.source:has(+ .jump) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.jump {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.jumpLabel {
+  grid-column: 2;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  transition: color 0.2s var(--ease-out);
+}
+
+.jump:hover .jumpLabel,
+.jump:focus-visible .jumpLabel {
+  color: var(--text-primary);
+}
+
+.mark {
+  width: 22px;
+  height: 22px;
+  color: var(--text-primary);
+}
+
+.body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.repo {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+
+.note {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.arrow {
+  grid-column: 3;
+  width: 18px;
+  height: 18px;
+  color: var(--text-tertiary);
+  transition:
+    color 0.2s var(--ease-out),
+    transform 0.25s var(--ease-out);
+}
+
+.source:hover .arrow,
+.source:focus-visible .arrow {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+.jump:hover .arrow,
+.jump:focus-visible .arrow {
+  color: var(--accent);
+  transform: translateY(2px);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* On paper the page is the sheet's own document; a jump within it
+   means nothing there. */
+@media print {
+  .jump {
+    display: none;
+  }
+}

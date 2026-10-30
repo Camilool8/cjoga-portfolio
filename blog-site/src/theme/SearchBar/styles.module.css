@@ -1,0 +1,179 @@
+/* Rows of the navbar search dropdown (rowTemplate in index.jsx). The
+   row box itself (padding, hairline, active fill) is the plugin's
+   suggestion element, styled in custom.css (Search). */
+
+.hit {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 0;
+}
+
+.primary,
+.excerpt,
+.page,
+.group {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* The matched heading, or the page title when the page itself matched. */
+.primary {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.excerpt {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* The page a heading belongs to: quiet, above the heading on the first
+   row of each page. Later rows of the same page keep it for screen
+   readers only. */
+.page {
+  order: -1;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--text-tertiary);
+}
+
+/* Matched terms: accent and weight, never the yellow <mark>. */
+.hit mark {
+  padding: 0;
+  font-weight: 650;
+  color: var(--accent);
+  background: none;
+}
+
+/* Per-word fallback (a multi-word query no page matches whole): the
+   panel's note above the rows, and the label on each word's first row,
+   above its page name. Sentence case, the body face. */
+.partial {
+  margin: 0;
+  padding: 12px 14px 10px;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* What the results are for when it is not the query as typed ("Showing
+   results for “kubernetes”"): the partial note's rule and type, less
+   padding, since the rows under it answer the reader anyway. */
+.note {
+  margin: 0;
+  padding: 9px 14px 8px;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.group {
+  order: -2;
+  margin-bottom: 2px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-secondary);
+}
+
+.groupStart {
+  padding-top: 11px;
+}
+
+/* No matches: the note's lead-in to the example queries, and the
+   queries themselves, as one-line rows with a search mark in front. */
+.lead {
+  color: var(--text-tertiary);
+}
+
+.exampleIcon {
+  flex: none;
+  display: flex;
+  color: var(--text-tertiary);
+}
+
+.example .primary {
+  font-weight: 500;
+}
+
+:global([class*="suggestion_"][class*="cursor_"]) .exampleIcon {
+  color: var(--accent-ink);
+}
+
+.enter {
+  flex: none;
+  display: flex;
+  color: var(--accent-ink);
+  visibility: hidden;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* A page's later rows: no rule above, so the page reads as one group. */
+:global(html .navbar__search [class*="dropdownMenu_"]) :global([class*="suggestion_"]):has(> .continues) {
+  border-top: 0;
+}
+
+:global(html .navbar__search [class*="dropdownMenu_"]) :global([class*="suggestion_"]):has(> .continues) .hit {
+  padding-top: 5px;
+}
+
+/* The active row: dim accent fill. Tertiary falls under 4.5:1 on the
+   fill in dark, so the quiet lines step up to secondary; matched terms
+   and the Enter mark take accent-ink. */
+:global([class*="suggestion_"][class*="cursor_"]) .enter {
+  visibility: visible;
+}
+
+:global([class*="suggestion_"][class*="cursor_"]) .page {
+  color: var(--text-secondary);
+}
+
+:global(html .navbar__search [class*="suggestion_"][class*="cursor_"]) .hit mark {
+  color: var(--accent-ink) !important;
+  text-decoration: none;
+}
+
+/* Phones and tablets: the panel is full width, so excerpts get two
+   lines before they clip, and long headings wrap once. */
+@media (max-width: 996px) {
+  .primary,
+  .excerpt {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  /* The panel runs edge to edge here; text keeps the page gutter. */
+  .partial,
+  .note {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+
+/* The phone overlay's Cancel (index.jsx): hidden except while that
+   overlay is open (custom.css, Search, below 997px). */
+:global(.search-cancel) {
+  display: none;
+}

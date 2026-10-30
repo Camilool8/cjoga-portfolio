@@ -1,12 +1,13 @@
 import React from 'react';
 import { FaRedhat, FaAward, FaAws } from 'react-icons/fa';
-import { FiArrowUpRight } from 'react-icons/fi';
+import { FiArrowUpRight, FiArrowRight } from 'react-icons/fi';
 import {
   SiDynatrace,
   SiGitlab,
   SiTerraform,
   SiKubernetes,
 } from 'react-icons/si';
+import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
 
 // Issuer → react-icon + brand color. Mirrors the portfolio's
@@ -28,15 +29,12 @@ export default function CertBadge({
   href,
   status,
   note,
+  noteHref,
 }) {
   const vendor = VENDOR_ICONS[issuer];
   const Icon = vendor?.Icon;
   const iconColor = vendor?.color || 'var(--accent)';
 
-  const TitleTag = href ? 'a' : 'span';
-  const titleProps = href
-    ? { href, target: '_blank', rel: 'noopener noreferrer' }
-    : {};
 
   return (
     <div className={styles.badge}>
@@ -54,34 +52,57 @@ export default function CertBadge({
         )}
       </div>
       <div className={styles.body}>
-        <div className={styles.meta}>
+        <h3 className={styles.name}>{name}</h3>
+        {/* Year and issuer on one caption line. "Earned" is what the whole
+            list is, so the status shows only when it says something else
+            (lapsed). */}
+        <p className={styles.issuer}>
           {year && <span className={styles.year}>{year}</span>}
-          {status && (
+          {year && issuer && <span className={styles.dot}> · </span>}
+          {issuer}
+          {status && status !== 'earned' && (
             <>
-              <span className={styles.dot}>·</span>
+              <span className={styles.dot}> · </span>
               <span className={styles.status} data-status={status}>
                 {status}
               </span>
             </>
           )}
-        </div>
-        <h3 className={styles.name}>
-          <TitleTag className={styles.nameLink} {...titleProps}>
-            {name}
-          </TitleTag>
-        </h3>
-        <p className={styles.issuer}>{issuer}</p>
-        {note && <p className={styles.note}>{note}</p>}
-        {href && (
-          <a
-            className={styles.verify}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Verify on Credly
-            <FiArrowUpRight aria-hidden="true" />
-          </a>
+        </p>
+        {(href || note) && (
+          <div className={styles.actions}>
+            {href && (
+              // The name starts with the visible label (WCAG 2.5.3), then
+              // says which credential: every card has the same link text.
+              <a
+                className={styles.link}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Verify on Credly: ${name} (opens in a new tab)`}
+              >
+                Verify on Credly
+                <FiArrowUpRight aria-hidden="true" />
+              </a>
+            )}
+            {/* A space for text readers (search excerpts); flex drops it. */}
+            {href && note ? ' ' : null}
+            {note &&
+              (noteHref ? (
+                // Same pattern as Verify: visible label first, then which
+                // credential, so three "Study guide" links stay distinct.
+                <Link
+                  className={styles.link}
+                  to={noteHref}
+                  aria-label={`${note}: ${name}`}
+                >
+                  {note}
+                  <FiArrowRight aria-hidden="true" />
+                </Link>
+              ) : (
+                <span className={styles.note}>{note}</span>
+              ))}
+          </div>
         )}
       </div>
     </div>

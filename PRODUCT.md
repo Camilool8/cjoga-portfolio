@@ -39,7 +39,7 @@ The site is itself the proof. It runs on a multi-node K3s cluster he built and o
 ## Brand Commitments
 
 - Writing follows `STYLE.md`: declarative, active and concrete, with no filler, cliché framing ("explore", "dive in") or hedges.
-- Never name end clients. Employers can be named: Arctiq, INSPYR Global Solutions, FL Betances & Asociados, KODEPULL.
+- Never name end clients. Employers can be named: Arctiq, INSPYR Global Solutions, FL Betances & Asociados, KodePull.
 - Vendor visuals use the real product's logo, CLI output or dashboard, never abstract metaphors.
 - Red Hat's official courses are always presented as complements to the lab, never dismissed.
 - Name: José Camilo Joga Guerrero, who goes by "Camilo".
@@ -48,7 +48,7 @@ The site is itself the proof. It runs on a multi-node K3s cluster he built and o
 ## Evidence on Hand
 
 - Live K3s cluster hosting the site, plus the read-only terminal (`src/components/Terminal/`, `server/routes/terminal.js`).
-- 12 certifications, among them CKA, CKAD, KCNA (Kubestronaut path), AWS SA, Terraform Associate, RHCSA, RHCE, Dynatrace and GitLab. The vendor-idiom live tiles are in `src/components/certifications/liveTiles/`.
+- 12 certifications earned, matching the handbook's credentials page: CKAD and KCNA (The Linux Foundation, Kubestronaut path), Terraform Associate (004), AWS Certified Solutions Architect, RHCE, RHCSA, Dynatrace Associate, Accredited Partner Technical Engineer (Technology Partners) and four from GitLab (Implementation Services Specialist, Services Engineer Professional, Migration Specialist, CI/CD Associate). CKA is in progress, not earned: step three on the Kubestronaut path. The vendor-idiom live tiles are in `src/components/certifications/liveTiles/`.
 - Experience with real numbers is in `public/locales/*/translation.json`: INSPYR (300+ services, alerts-as-code, Claude agents in CI/CD), Arctiq (60+ apps to EKS, 5–8× less redundant surface, observability from zero, SOC2 gating), FL Betances (50+ teams), and KodePull (co-founder & CTO).
 - Projects: the open-source Kubestronaut exam simulator, plus platform work written up in the handbook.
 - Photo: `public/images/camilo.webp`.

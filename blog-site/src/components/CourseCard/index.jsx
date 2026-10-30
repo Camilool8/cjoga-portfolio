@@ -46,7 +46,14 @@ export default function CourseCard({
     <Wrapper {...wrapperProps}>
       {image && (
         <div className={styles.thumbnail}>
-          <img src={image} alt={title} loading="lazy" />
+          <img
+            src={image}
+            alt=""
+            width="480"
+            height="270"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       )}
 

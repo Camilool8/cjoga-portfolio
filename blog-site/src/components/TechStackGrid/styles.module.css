@@ -41,6 +41,12 @@
     background 0.2s var(--ease-out), color 0.2s var(--ease-out);
 }
 
+/* A tile without a link is a label, not a control: no frame. */
+div.tile {
+  border-color: transparent;
+  padding-left: 0;
+}
+
 a.tile:hover {
   border-color: var(--border-medium);
   background: var(--bg-surface);
@@ -54,6 +60,13 @@ a.tile:hover {
   flex-shrink: 0;
   display: block;
   object-fit: contain;
+  /* Per-theme brand color set inline by TechTile (already lifted to 3:1);
+     marks without a brand color keep the label's tone. */
+  color: var(--mark-dark, currentColor);
+}
+
+:global([data-theme='light']) .logo {
+  color: var(--mark-light, currentColor);
 }
 
 .imgWrap {
@@ -80,21 +93,6 @@ a.tile:hover .maskLogo {
   background-color: var(--text-primary);
 }
 
-.textChip {
-  width: 22px;
-  height: 22px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  color: var(--accent-ink);
-  background: var(--accent-dim);
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
 .label {
   font-size: 0.875rem;
   font-weight: 500;
@@ -113,4 +111,130 @@ a.tile:hover .label {
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
+}
+
+/* Inline variant: the stack as one wrapped line of small labelled marks
+   under a caption. No tiles, no rules: the H2 that follows already draws
+   the section hairline, so the line reads as a reference, not a feature. */
+.line {
+  margin: 1.5rem 0 2rem;
+}
+
+.lineCaption {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  margin-bottom: 0.375rem;
+}
+
+.lineList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1rem;
+  min-width: 0;
+}
+
+.lineItem {
+  display: flex;
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.mark .logo {
+  width: 16px;
+  height: 16px;
+}
+
+.mark .label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* A run of names under one mark (AWS, EKS): the names follow the mark
+   as a short comma list. They wrap under the first name, never under
+   the mark, so a wrapped run still reads as one group. */
+.runNames {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.3em;
+  min-width: 0;
+}
+
+.runNames > .label:not(:last-child)::after {
+  content: "," / "";
+  color: var(--text-tertiary);
+}
+
+a.mark {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+
+a.mark:hover .label,
+a.mark:hover {
+  color: var(--text-primary);
+  text-decoration-color: currentColor;
+}
+
+/* ─── Retired: named on the page, no longer running ───────────────── */
+/* Its own row after the stack, the same columns, set a gap further off
+   than the stack's rows so it reads as a note, not the next tile. */
+.retiredGrid {
+  margin-top: 1rem;
+}
+
+.tileText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* The mark steps back to a grey ghost (it is decorative; the words carry
+   the state), the name to the tertiary tone. */
+.retired .logo,
+.retired .logo img,
+.retired img.logo {
+  color: var(--text-tertiary);
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+.retired .maskLogo {
+  background-color: var(--text-tertiary);
+}
+
+.retired .label {
+  color: var(--text-tertiary);
+}
+
+.retiredNote {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.retired.mark .retiredNote {
+  margin-left: 0.125rem;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }

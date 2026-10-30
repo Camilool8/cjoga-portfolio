@@ -14,10 +14,10 @@ import styles from './styles.module.css';
 
 export default function Timeline({ children, caption }) {
   return (
-    <div className={styles.wrap}>
-      {caption && <div className={styles.caption}>{caption}</div>}
+    <figure className={styles.wrap}>
+      {caption && <figcaption className={styles.caption}>{caption}</figcaption>}
       <ol className={styles.timeline}>{children}</ol>
-    </div>
+    </figure>
   );
 }
 

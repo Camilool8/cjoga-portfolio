@@ -1,112 +1,153 @@
-/* Section rows — the landing page's hairline link list: rows between
-   1px rules, icon on the left, title over a one-line description, an
-   arrow that nudges on hover. No floating cards. */
+/* Section rows: the row look itself lives in ../ReaderPaths/rows.module.css,
+   shared with the landing and the 404. This only places the list on the
+   index page, at the prose measure under the intro.
 
-.grid {
-  display: grid;
+   The doubled class outranks the article's own list rule
+   (`article .markdown > ul`), which would indent the rows. */
+
+ul.grid.grid {
   margin: 2rem 0 2.5rem;
+  padding: 0;
+}
+
+/* A row with a secondary link: the row's link gives up most of its
+   bottom air and the secondary link takes it, on the row's text column,
+   so the pair still reads as one row between two hairlines. */
+.withSecondary {
+  padding-bottom: 10px;
+}
+
+.withSecondary > a:first-child {
+  padding-bottom: 4px;
+}
+
+/* Quiet: the secondary tone with the article links' 40% underline, the
+   accent ink on hover. 32px tall with a pointer, 44px on touch. */
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: color 0.2s var(--ease-out-expo);
+}
+
+.secondary:hover {
+  color: var(--accent-ink);
+  text-decoration-color: currentColor;
+}
+
+@media (pointer: coarse) {
+  .secondary {
+    min-height: 44px;
+  }
+
+  .withSecondary {
+    padding-bottom: 4px;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Grouped rows (SectionGroup): each group opens like a reader path, on
+   a hairline with the section-divider dot where its heading starts; the
+   last group closes on one. The heading is a step quieter than the rows
+   (smaller, secondary tone): it names the group and links its hub, and
+   the pages under it lead. */
+.group {
+  position: relative;
+  margin: 0;
+  padding: 12px 0 8px;
   border-top: 1px solid var(--border-subtle);
 }
 
-.card {
-  display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: 1.1rem;
-  min-height: 72px;
-  padding: 1rem 0.25rem;
+.group:not(.group + .group) {
+  margin-top: 2rem;
+}
+
+.group:not(:has(+ .group)) {
+  margin-bottom: 2.5rem;
   border-bottom: 1px solid var(--border-subtle);
-  text-decoration: none;
-  color: inherit;
-  transition: background-color 0.2s var(--ease-out);
 }
 
-.card:hover {
-  background: color-mix(in srgb, var(--bg-surface) 70%, transparent);
-  text-decoration: none;
-  color: inherit;
+.group::before {
+  content: "";
+  position: absolute;
+  top: -2.5px;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
-.iconWrap {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  background: var(--bg-surface);
-  flex-shrink: 0;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-  color: var(--accent);
-}
-
-.monogram {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--accent-ink);
-  line-height: 1;
-}
-
-.body {
-  min-width: 0;
-}
-
-.title {
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  margin: 0 0 0.15rem;
-  line-height: 1.3;
-  transition: color 0.2s var(--ease-out);
-}
-
-.description {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: var(--text-secondary);
+/* Doubled: outranks the global heading rules (h2 margins, tracking). */
+.groupTitle.groupTitle {
   margin: 0;
-  text-wrap: pretty;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
 }
 
-.arrow {
-  width: 18px;
-  height: 18px;
-  color: var(--text-tertiary);
-  flex-shrink: 0;
-  transition: color 0.2s var(--ease-out), transform 0.25s var(--ease-out);
+/* 44px tall at every pointer; the chevron says the heading goes
+   somewhere, and nudges like the rows' arrows. Like a row, it reaches
+   8px past the column (padding in, margin out) so the focus ring, drawn
+   inside it, clears the text. */
+.groupLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  margin: 0 -8px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-out-expo);
 }
 
-.card:hover .title,
-.card:hover .arrow {
+.groupLink:hover,
+.groupLink:focus-visible {
   color: var(--accent);
+  text-decoration: none;
 }
 
-.card:hover .arrow {
-  transform: translateX(3px);
+.groupLink:focus-visible {
+  outline-offset: -2px;
 }
 
-/* Index pages sometimes add their own heading spacing; keep the rows
-   tight to it. */
-.grid :global(h3) {
-  margin-top: 0;
+.groupArrow {
+  width: 16px;
+  height: 16px;
+  color: var(--text-tertiary);
+  transition:
+    color 0.2s var(--ease-out-expo),
+    transform 0.25s var(--ease-out-expo);
 }
 
-@media (max-width: 600px) {
-  .card {
-    grid-template-columns: 36px minmax(0, 1fr) auto;
-    column-gap: 0.9rem;
-  }
-  .iconWrap {
-    width: 36px;
-    height: 36px;
-  }
+.groupLink:hover .groupArrow,
+.groupLink:focus-visible .groupArrow {
+  color: var(--accent);
+  transform: translateX(2px);
+}
+
+/* The rows sit straight under the heading, hairlines between them. */
+ul.groupList.groupList {
+  margin: 0;
+  padding: 0;
 }

@@ -33,8 +33,8 @@
   --text-secondary: #94a3b8;
   --text-tertiary: #8794ab;
   --gradient-accent: linear-gradient(135deg, #64ffda, #38bdf8);
-  --font-display: "Mona Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: "Mona Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Mona Sans", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Mona Sans", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

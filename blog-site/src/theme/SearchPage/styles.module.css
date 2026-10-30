@@ -1,0 +1,308 @@
+/* The /search page. The field and the column width live in custom.css
+   (Search), beside the navbar field they mirror; this file holds the
+   result list. */
+
+/* Named for the custom.css rules that style the field (and hold the
+   column's height) through [class*="searchQueryInput_"]. */
+.searchQueryInput {
+  display: block;
+  width: 100%;
+}
+
+/* The heading is "Search the handbook" in the static page and becomes
+   "Results for …" once the query is read in the browser, and changes
+   again as the reader types. It holds exactly two lines at every width,
+   so neither it nor the field below moves when it changes (layout
+   shift) or while the reader types in the field. A longer query is cut
+   to two lines with "…"; the whole of it is in the field right below,
+   and screen readers hear the heading in full. A word too long for the
+   column breaks. */
+.heading {
+  height: 2lh;
+}
+
+/* A step under the article title on phones, so a query of three words
+   still fits its two lines whole. */
+@media (max-width: 996px) {
+  .heading {
+    font-size: 2rem;
+  }
+}
+
+.headingText {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* The result line. One line is held even while it is empty, so the
+   list does not jump when the count arrives. */
+.status {
+  min-height: 1.5em;
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+
+/* Nothing to count yet (no query): no gap under the field. */
+.status:empty {
+  min-height: 0;
+  margin: 0;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+}
+
+/* Example queries: hairline-framed links on the page's 8px corner (the
+   sections and "Show more" below share it), never a pill. */
+.suggestion {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  text-decoration: none;
+  transition:
+    color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+.suggestion:hover {
+  color: var(--accent-ink);
+  background: var(--accent-dim);
+  border-color: var(--border-active);
+  text-decoration: none;
+}
+
+.results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Per-word fallback: one list per word, each under its own heading. */
+.group + .group {
+  margin-top: 2.25rem;
+}
+
+.groupTitle {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* One entry per page, between hairlines. */
+.page {
+  margin: 0;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.page:last-child {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.pageTitle a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-out);
+}
+
+.pageTitle a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.pageTitle a:hover mark {
+  color: inherit;
+}
+
+/* Where the page sits: its parents only, the title is right above. */
+.crumbs {
+  margin: 2px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--text-tertiary);
+}
+
+.excerpt {
+  margin: 6px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+/* The page's matched sections: indented under a hairline, each a link
+   that carries its heading and excerpt. */
+.sections {
+  margin: 0.625rem 0 0;
+  padding: 0 0 0 0.5rem;
+  list-style: none;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.sections > li + li {
+  margin-top: 2px;
+}
+
+.section {
+  display: block;
+  padding: 6px 10px;
+  color: inherit;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.2s var(--ease-out);
+}
+
+.section:hover {
+  color: inherit;
+  background: var(--accent-dim);
+  text-decoration: none;
+}
+
+.sectionTitle {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.section .excerpt {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.875rem;
+}
+
+/* Matched terms: accent and weight, never the yellow <mark>. On the
+   hover fill they take accent-ink, which holds 4.5:1 there. */
+.results mark {
+  padding: 0;
+  font-weight: 650;
+  color: var(--accent);
+  background: none;
+}
+
+.section:hover mark {
+  color: var(--accent-ink);
+}
+
+/* Touch: 44px targets. Below 997px too, as the navbar does. */
+@media (pointer: coarse), (max-width: 996px) {
+  .suggestion {
+    min-height: 44px;
+    padding: 0 16px;
+  }
+
+  .suggestionsLead {
+    flex-basis: 100%;
+  }
+
+  .page {
+    padding-top: 0.75rem;
+  }
+
+  .pageTitle a {
+    display: block;
+    padding: 10px 0;
+  }
+
+  .crumbs {
+    margin-top: -6px;
+  }
+
+  .section {
+    min-height: 44px;
+    padding: 8px 10px;
+  }
+}
+
+/* Phones: two lines of excerpt, then an ellipsis. */
+@media (max-width: 996px) {
+  .excerpt,
+  .section .excerpt {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* "Show N more in this page": a quiet text button under the sections,
+   in line with them, a 44px target on touch. */
+.more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  margin: 4px 0 0 0.5rem;
+  padding: 0 10px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--accent-ink);
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease-out);
+}
+
+.more:hover {
+  background: var(--accent-dim);
+}
+
+.more:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse), (max-width: 996px) {
+  .more {
+    min-height: 44px;
+  }
+}
+
+/* What the results are for when it is not the query as typed: its own
+   line in the result line, one step louder than the count. */
+.note {
+  display: block;
+  color: var(--text-secondary);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

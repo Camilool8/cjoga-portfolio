@@ -6,7 +6,9 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  /* Two cards across the article measure, one beside the TOC or on a
+     phone: the grid sizes from its own width, not the viewport. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
   gap: 1rem;
   margin: 2rem 0 2.5rem;
 }
@@ -61,6 +63,8 @@
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   margin: 0 !important;
   padding: 0;
   border: 0;

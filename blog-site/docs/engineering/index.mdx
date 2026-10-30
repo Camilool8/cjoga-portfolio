@@ -7,26 +7,51 @@ slug: /engineering
 keywords: [engineering, homelab, work, devops, kubernetes]
 ---
 
-import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
-import { SiKubernetes } from 'react-icons/si';
-import { FaBriefcase } from 'react-icons/fa';
+import { SectionCard, SectionGroup } from '@site/src/components/SectionCardGrid';
 
 # Engineering
 
 The technical side of the handbook — what I run, and the work that pays for it.
 
-<SectionCardGrid>
+<SectionGroup title="Homelab" href="/engineering/lab">
   <SectionCard
     href="/engineering/lab/overview"
-    icon={SiKubernetes}
-    iconColor="#326CE5"
-    title="Lab"
-    description="The six-node K3s cluster behind cjoga.cloud — how it's wired, how it got here, and what runs on it now."
+    title="Homelab overview"
+    description="The full tour — six nodes, three iterations, the stack, and what runs on it now."
   />
   <SectionCard
-    href="/engineering/work/arctiq"
-    icon={FaBriefcase}
-    title="Work"
-    description="Engagements past and present — Arctiq, INSPYR, FL Betances, and KODEPULL."
+    dated
+    href="/engineering/lab/tips-and-gotchas/longhorn-replicas"
+    title="Longhorn — replica scheduling and right-sizing for a homelab"
+    description="Why three replicas of every PVC is a bad default on uneven hardware, and how I scope replicas with node labels."
   />
-</SectionCardGrid>
+  <SectionCard
+    dated
+    href="/engineering/lab/tips-and-gotchas/openbao-auto-unseal"
+    title="OpenBao — running static-key auto-unseal even in dev"
+    description="Why a homelab vault sealing itself constantly forced me past the &ldquo;auto-unseal is production-only&rdquo; rule, and the trade-off I named instead."
+  />
+</SectionGroup>
+
+<SectionGroup title="Work" href="/engineering/work">
+  <SectionCard
+    href="/engineering/work/arctiq"
+    title="Arctiq"
+    description="DevOps Consultant · Jul 2022 – present. Where I learned this work — four years on a single long-running engagement."
+  />
+  <SectionCard
+    href="/engineering/work/inspyr-global-solutions"
+    title="INSPYR Global Solutions"
+    description="DevOps Engineer · Mar 2025 – present. Multi-region Azure platform, 300+ microservices, AKS to Cilium in flight."
+  />
+  <SectionCard
+    href="/engineering/work/fl-betances"
+    title="FL Betances & Asociados"
+    description="DevOps Engineer · Jun 2024 – Dec 2025. Eighteen months inside a banking institution’s DevOps team."
+  />
+  <SectionCard
+    href="/engineering/work/kodepull"
+    title="KodePull SRL"
+    description="Co-founder & CTO · 2025 – present. The software company I help own, with Fernando Reyes."
+  />
+</SectionGroup>

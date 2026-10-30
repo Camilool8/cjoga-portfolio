@@ -84,13 +84,13 @@ async function walk(dir) {
 }
 
 // ── Section label from the slug: the top-level part (Me / Engineering /
-//    Learn), plus the group below it when there is one (Opinions, Lab, Work).
+//    Learn), plus the group below it when there is one (Opinions, Homelab, Work).
 const SECTION_NAMES = {
   me: "Me",
   engineering: "Engineering",
   learn: "Learn",
   opinions: "Opinions",
-  lab: "Lab",
+  lab: "Homelab",
   work: "Work",
 };
 

@@ -2,47 +2,38 @@
 sidebar_position: 1
 title: Learn
 image: img/og/learn.png
-description: Curated certification guides — my experience, my tips, and the runbooks I've built.
+description: Curated certification guides — my experience, my tips, and the runbooks I’ve built.
 slug: /learn
 keywords: [learn, certifications, study guide]
 ---
 
 import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
-import { FaRedhat } from 'react-icons/fa';
-import { SiKubernetes } from 'react-icons/si';
 
 # Learn
 
 This section is for anyone studying for a cert I've passed and decided was worth a real guide. Each guide is the honest version — how I studied, what tripped me up, and what I'd hand to a friend the night before the exam.
 
-## Available guides
-
 <SectionCardGrid>
   <SectionCard
     href="/learn/rhcsa"
-    icon={FaRedhat}
-    iconColor="#EE0000"
-    title="RHCSA (EX200)"
+    title="RHCSA (EX200) guide"
     description="Red Hat Certified System Administrator — what the exam tests, how I prepped, and the lab setup."
+    secondary={{ href: '/learn/rhcsa#domain-sheet-index', label: 'Key commands by domain' }}
   />
   <SectionCard
     href="/learn/rhce"
-    icon={FaRedhat}
-    iconColor="#EE0000"
-    title="RHCE (EX294)"
+    title="RHCE (EX294) guide"
     description="Red Hat Certified Engineer — a seven-VM Ansible lab with an exam-style grader, and how to study in it."
+    secondary={{ href: '/learn/rhce#domain-sheet-index', label: 'Key commands by domain' }}
   />
   <SectionCard
     href="/learn/ckad"
-    icon={SiKubernetes}
-    iconColor="#326CE5"
-    title="CKAD"
+    title="CKAD guide"
     description="Certified Kubernetes Application Developer — the prep path that produced a 98%, and where the simulator fits."
+    secondary={{ href: '/learn/ckad#domain-sheet-index', label: 'Key commands by domain' }}
   />
   <SectionCard
     href="/learn/kubestronaut-sim"
-    icon={SiKubernetes}
-    iconColor="#326CE5"
     title="kubestronaut-sim"
     description="An open-source exam simulator for the Kubestronaut path — a real cluster, fresh draws every attempt, graded on behavior."
   />

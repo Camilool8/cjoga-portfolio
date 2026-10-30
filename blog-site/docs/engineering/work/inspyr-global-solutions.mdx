@@ -8,18 +8,25 @@ keywords: [work, devops, azure, aks, bicep, inspyr, arroyo]
 date: "2026-05-12"
 last_update:
   date: "2026-07-04"
-  author: Jose Camilo Joga Guerrero
+  author: José Camilo Joga Guerrero
 ---
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
 
 # INSPYR Global Solutions
 
-**Role:** DevOps Engineer  
-**Employer:** [INSPYR Global Solutions](https://www.inspyrsolutions.com/) (formerly Arroyo Consulting)  
-**Since:** March 2025
+<FactSheet>
+  <Fact label="Role">DevOps Engineer</Fact>
+  <Fact label="Employer">[INSPYR Global Solutions](https://www.inspyrsolutions.com/) (formerly Arroyo Consulting)</Fact>
+  <Fact label="Since">March 2025</Fact>
+  <Fact label="Scale">300+ services and microservices on AKS, multi-region</Fact>
+  <Fact label="Outcome">Alerts and dashboards consolidated into one repository and a single release pipeline</Fact>
+</FactSheet>
+
+I'm on a long-term engagement with a very large multi-region Azure platform: 300+ services and microservices running on [AKS](https://learn.microsoft.com/en-us/azure/aks/), with releases driven by [Azure DevOps](https://azure.microsoft.com/en-us/products/devops) pipelines. The CI and scripting side is PowerShell — the natural choice for a stack this deep in the Microsoft ecosystem.
 
 <TechStackGrid
+  inline
   caption="Platform stack"
   items={[
     'Azure',
@@ -36,8 +43,6 @@ import TechStackGrid from '@site/src/components/TechStackGrid';
   ]}
 />
 
-I'm on a long-term engagement with a very large multi-region Azure platform: 300+ services and microservices running on [AKS](https://learn.microsoft.com/en-us/azure/aks/), with releases driven by [Azure DevOps](https://azure.microsoft.com/en-us/products/devops) pipelines. The CI and scripting side is PowerShell — the natural choice for a stack this deep in the Microsoft ecosystem.
-
 ## What I work on
 
 ### Observability consolidation
@@ -45,7 +50,7 @@ I'm on a long-term engagement with a very large multi-region Azure platform: 300
 When I joined, alerts and dashboards were scattered across environments, regions, and ownership models. I led the consolidation of all of it into one repository — a single source of truth — and a single release pipeline that deploys and reconciles every alert across NPD and PRD, every region, every alert type (metric, log), and every severity, with per-type handling rules baked in. Azure Alerts, Action Groups, and Grafana dashboards all flow through the same pipeline under GitOps practices. I'm one of two or three primary maintainers, and any drift gets reconciled on the next run.
 
 ```mermaid
-flowchart LR
+flowchart TB
   accTitle: Alerts-as-code flow — merge requests to the alerts repository run a what-if pipeline, and once approved a per-environment release pipeline deploys Azure alerts, action groups, and Grafana dashboards to NPD and PRD across all regions
   Repo[("alerts-as-code<br/>repository")] -->|MR| Whatif["What-if pipeline"]
   Whatif -->|approved| Deploy["Release pipeline<br/>(per-env stages)"]

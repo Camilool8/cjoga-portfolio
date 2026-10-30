@@ -10,15 +10,18 @@
    The portfolio's files: Mona Sans (variable weight and width) for
    everything readable, JetBrains Mono for real code. Latin covers the
    handbook; latin-ext is only fetched if a character from its range
-   appears. Latin is preloaded in docusaurus.config headTags, then
-   font-display: swap. Licenses are next to the files (SIL OFL). */
+   appears. Mona Sans latin is preloaded in docusaurus.config headTags,
+   then font-display: swap. The url()s are webpackIgnore so they stay
+   /fonts/… as written: the bundler would otherwise emit hashed copies
+   under /assets/fonts/, the preload would miss, and the font would load
+   twice. Licenses are next to the files (SIL OFL). */
 @font-face {
   font-family: "Mona Sans";
   font-style: normal;
   font-weight: 200 900;
   font-stretch: 75% 125%;
   font-display: swap;
-  src: url("/fonts/mona-sans-latin-ext.woff2") format("woff2");
+  src: /* webpackIgnore: true */ url("/fonts/mona-sans-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
     U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
     U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F,
@@ -30,17 +33,39 @@
   font-weight: 200 900;
   font-stretch: 75% 125%;
   font-display: swap;
-  src: url("/fonts/mona-sans-latin.woff2") format("woff2");
+  src: /* webpackIgnore: true */ url("/fonts/mona-sans-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
     U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
     U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Metric-matched fallback for Mona Sans: a local Arial-class face scaled
+   to Mona Sans's width and line box (measured in Chromium: +3.5% width at
+   regular, +1.7% at bold; ascent 1.09em, descent 0.32em), so text keeps
+   its line breaks when the web font swaps in — no layout shift. */
+@font-face {
+  font-family: "Mona Sans Fallback";
+  font-weight: 100 549;
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica Neue"), local("Helvetica");
+  size-adjust: 103.5%;
+  ascent-override: 105.3%;
+  descent-override: 30.9%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Mona Sans Fallback";
+  font-weight: 550 900;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Helvetica Neue Bold"), local("Helvetica Bold");
+  size-adjust: 101.7%;
+  ascent-override: 107.2%;
+  descent-override: 31.5%;
+  line-gap-override: 0%;
 }
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
   font-weight: 400 600;
   font-display: swap;
-  src: url("/fonts/jetbrains-mono-latin-var.woff2") format("woff2");
+  src: /* webpackIgnore: true */ url("/fonts/jetbrains-mono-latin-var.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
     U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
     U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -71,8 +96,8 @@
   --text-secondary: #94a3b8;
   --text-tertiary: #8794ab;
   --gradient-accent: linear-gradient(135deg, #64ffda, #38bdf8);
-  --font-display: "Mona Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: "Mona Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Mona Sans", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Mona Sans", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -150,12 +175,17 @@
   --ifm-footer-title-color: var(--text-primary);
 
   --ifm-code-font-size: 88%;
-  --ifm-code-background: var(--accent-dim);
-  --ifm-code-color: var(--accent-ink);
+  --ifm-code-background: var(--bg-elevated);
+  --ifm-code-color: var(--text-primary);
   --ifm-pre-background: var(--bg-surface);
   --ifm-pre-color: var(--text-primary);
 
   --docusaurus-highlighted-code-line-bg: rgba(100, 255, 218, 0.08);
+
+  /* The active breadcrumb sits on a 5% tint; accent-ink holds 4.5:1 on
+     it in daylight, where the plain accent measured 4.43:1. */
+  --ifm-breadcrumb-color-active: var(--accent-ink);
+  --ifm-breadcrumb-item-background-active: var(--accent-dim);
 }
 
 [data-theme="light"] {
@@ -170,8 +200,14 @@
 }
 
 /* ─── Body & global polish ─────────────────────────────────────────── */
-html {
-  scroll-behavior: smooth;
+/* No smooth scroll for the page as a whole: a hash arrival (a cold load,
+   a search hit from another page, a long jump within it) goes at once.
+   Only a short hop within the page glides, html[data-smooth-hop] for its
+   length (DocItem/TOC/Mobile), and never under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-smooth-hop] {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -249,10 +285,21 @@ main .container {
   letter-spacing: -0.02em;
 }
 
-.navbar__title::after {
-  content: "/handbook";
+/* "/handbook" is real text (src/theme/Navbar/Logo). The slash is
+   aria-hidden and a visually hidden space stands in for it, so the link
+   reads "cjoga.cloud handbook" to a screen reader and looks unchanged. */
+.navbar__title-suffix {
   color: var(--text-tertiary);
   font-weight: 600;
+}
+
+.navbar__title-gap {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* Nav links are the portfolio's pills: muted at rest, the dim accent
@@ -281,14 +328,33 @@ main .container {
     var(--ifm-navbar-item-padding-horizontal);
 }
 
+/* Hover is quieter than "you are here": a neutral ink tint and full ink,
+   so the dim-accent fill only ever marks the current section or page.
+   The tint is mixed from the ink, so it reads on the bar, the dropdown
+   panel and the drawer in both themes. */
+.navbar {
+  --shell-hover-bg: color-mix(in srgb, var(--text-primary) 7%, transparent);
+}
+
 .navbar__link:hover,
-.navbar__link--active,
 .navbar__item.dropdown--show > .navbar__link {
+  color: var(--text-primary);
+  background: var(--shell-hover-bg);
+}
+
+.navbar__link--active,
+.navbar__link--active:hover,
+.navbar__item.dropdown > .navbar__link.active,
+.navbar__item.dropdown > .navbar__link.active:hover {
   color: var(--accent-ink);
   background: var(--accent-dim);
 }
 
-@media (pointer: coarse) {
+/* Touch targets on touch screens wide enough to show the bar's links.
+   Below 997px Docusaurus hides the plain links (they live in the
+   drawer); forcing a display there would leak them into the phone bar
+   and crush the wordmark. */
+@media (pointer: coarse) and (min-width: 997px) {
   .navbar__link {
     min-height: 44px;
     display: inline-flex;
@@ -296,10 +362,19 @@ main .container {
   }
 }
 
-/* Portfolio link: the outline button, at nav size. */
+/* Portfolio link: the outline button, at nav size. The portfolio opens
+   in place (one product), so it drops the external-link mark — here and
+   in the footer, where the CV link (cjoga.cloud/#contact) drops it too. */
 .navbar-portfolio-link {
   border: 1px solid var(--border-medium);
   margin-right: 4px;
+}
+
+a[href^="mailto:"] svg,
+.navbar-portfolio-link svg,
+.footer__link-item[href^="https://cjoga.cloud"] svg,
+.menu__link[href^="https://cjoga.cloud"] svg {
+  display: none;
 }
 
 .navbar-portfolio-link:hover {
@@ -333,10 +408,23 @@ main .container {
     background-color 0.2s var(--ease-out);
 }
 
-.dropdown__link:hover,
-.dropdown__link--active {
+.dropdown__link:hover {
+  color: var(--text-primary);
+  background: var(--shell-hover-bg);
+}
+
+.dropdown__link--active,
+.dropdown__link--active:hover {
   color: var(--accent-ink);
   background: var(--accent-dim);
+}
+
+/* The section's index (labelled with its title) opens each dropdown; a
+   hairline sets it apart from the section's pages. */
+.navbar .dropdown__menu li:has(> .dropdown-overview-link) {
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 /* ─── Mobile drawer: fully opaque, no backdrop blur ────────────────── */
@@ -367,15 +455,111 @@ main .container {
   box-shadow: none;
 }
 
-/* The drawer is narrower than the bar: beside the theme toggle and the
-   close button the wordmark keeps only the domain, so it never ellipsizes. */
-.navbar-sidebar__brand .navbar__brand {
-  margin-right: 0.5rem;
-  min-width: 0;
+/* Drawer close: a 44px target on touch, with the 21px glyph centred. */
+.navbar-sidebar__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: -10px;
+  border-radius: 10px;
 }
 
-.navbar-sidebar__brand .navbar__title::after {
-  content: none;
+.navbar-sidebar__close {
+  color: var(--text-secondary);
+}
+
+.navbar-sidebar__close:hover {
+  color: var(--text-primary);
+  background: var(--shell-hover-bg);
+}
+
+/* The drawer is a column: header, the pinned Portfolio row, then the
+   sliding menu panels fill what is left (Infima sized the panels for a
+   header alone). */
+.navbar-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-sidebar__brand {
+  flex: none;
+}
+
+.navbar-sidebar__items {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+
+.navbar-sidebar__item {
+  overflow-y: auto;
+}
+
+/* The drawer header shows the full wordmark, "/handbook" included: the
+   theme toggle moved to the row below, so it fits at 360px. */
+.navbar-sidebar__brand .navbar__brand {
+  margin-right: 0;
+  min-width: 0;
+  min-height: 44px;
+}
+
+/* At 360px the drawer is 299px wide; a tighter inset keeps the whole
+   wordmark clear of the close button. */
+@media (max-width: 380px) {
+  .navbar-sidebar .navbar-sidebar__brand,
+  .navbar-sidebar .navbar-sidebar__utility {
+    padding-inline: 1.25rem;
+  }
+}
+
+/* Pinned under the header and above both panels, so it stays when the
+   drawer slides to the doc sidebar: the way back to the portfolio (the
+   bar's outline link, at drawer size) and the theme toggle. */
+.navbar-sidebar__utility {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem var(--ifm-navbar-padding-horizontal);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.navbar-sidebar__portfolio {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border-medium);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition:
+    color 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out);
+}
+
+.navbar-sidebar__portfolio:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+  background: var(--shell-hover-bg);
+  text-decoration: none;
+}
+
+.navbar-sidebar__theme button {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+/* Portfolio is pinned above, so its copy in the main menu goes. */
+.navbar-sidebar .menu__list-item:has(> .navbar-portfolio-link) {
+  display: none;
 }
 
 /* The dim overlay over the rest of the page when the drawer is open. */
@@ -393,7 +577,7 @@ main .container {
 }
 
 .navbar-sidebar .menu__link:hover {
-  background: var(--bg-surface);
+  background: var(--shell-hover-bg);
   color: var(--text-primary);
 }
 
@@ -403,18 +587,98 @@ main .container {
   color: var(--accent-ink);
 }
 
-/* "Back to main menu" link at the top of the drawer when a docSidebar
-   item is active. */
+/* "Back to main menu" at the top of the doc-sidebar panel: a full 44px
+   row in the menu's voice, its arrow drawn (SecondaryMenu swizzle). */
 .navbar-sidebar__back {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  top: 0;
+  width: 100%;
+  min-height: 44px;
+  margin: 0 0 0.5rem;
+  padding: 0 14px;
+  border-radius: 10px;
   font-family: var(--font-body);
-  font-size: 0.875rem;
-  color: var(--text-tertiary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-secondary);
   background: transparent;
-  margin: 0 0.5rem;
+  transition:
+    color 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out);
+}
+
+.navbar-sidebar__back svg {
+  flex: none;
 }
 
 .navbar-sidebar__back:hover {
-  color: var(--accent);
+  color: var(--text-primary);
+  background: var(--shell-hover-bg);
+}
+
+/* The drawer opens on the main menu (MobileSidebar/Layout). On a doc
+   page its first row names the section the reader is in and slides that
+   section's doc tree in: the back row's mirror, with the chevron at the
+   far end and a hairline frame, so it reads as a way in, not a link. */
+.navbar-sidebar__section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 48px;
+  margin: 0 0 0.75rem;
+  padding: 0.5rem 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--text-primary);
+  background: transparent;
+  transition:
+    background-color 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out);
+}
+
+.navbar-sidebar__section-prefix {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.navbar-sidebar__section svg {
+  flex: none;
+  color: var(--text-secondary);
+}
+
+.navbar-sidebar__section:hover {
+  border-color: var(--border-medium);
+  background: var(--shell-hover-bg);
+}
+
+/* The current section's own label in the main menu, in the accent ink
+   (its page, when listed, keeps the active fill below it). */
+.navbar-sidebar .menu__link--sublist.active,
+.navbar-sidebar .menu__link--sublist.active:hover {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* A section's label is the link to its index (MobileSidebar/Layout), so
+   the index's own row, which only the desktop dropdown needs, leaves the
+   drawer: the list no longer reads "Learn", then "Learn". On the index
+   itself the label takes the current page's fill. */
+.navbar-sidebar .menu__list-item:has(> .dropdown-overview-link) {
+  display: none;
+}
+
+.navbar-sidebar .menu__link--sublist[aria-current="page"],
+.navbar-sidebar .menu__link--sublist[aria-current="page"]:hover {
+  background: var(--accent-dim);
 }
 
 /* ─── Mobile drawer: motion polish (parity with portfolio nav) ─────── */
@@ -429,17 +693,31 @@ main .container {
     visibility 0.4s var(--ease-out);
 }
 
-.navbar-sidebar__items .menu__list-item {
+/* Opening flips visibility at once (closing still waits for the slide),
+   so the drawer can take focus on the frame it opens. */
+.navbar-sidebar--show .navbar-sidebar {
+  transition:
+    opacity 0.35s var(--ease-out),
+    transform 0.4s var(--ease-out),
+    visibility 0s;
+}
+
+.navbar-sidebar__items .menu__list-item,
+.navbar-sidebar__section {
   opacity: 0;
   transform: translateX(18px);
   transition:
     opacity 0.35s var(--ease-out),
-    transform 0.35s var(--ease-out);
+    transform 0.35s var(--ease-out),
+    background-color 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out);
 }
-.navbar-sidebar--show .navbar-sidebar__items .menu__list-item {
+.navbar-sidebar--show .navbar-sidebar__items .menu__list-item,
+.navbar-sidebar--show .navbar-sidebar__section {
   opacity: 1;
   transform: translateX(0);
 }
+.navbar-sidebar--show .navbar-sidebar__section { transition-delay: 0.08s; }
 .navbar-sidebar--show .navbar-sidebar__items .menu__list-item:nth-of-type(1) { transition-delay: 0.12s; }
 .navbar-sidebar--show .navbar-sidebar__items .menu__list-item:nth-of-type(2) { transition-delay: 0.17s; }
 .navbar-sidebar--show .navbar-sidebar__items .menu__list-item:nth-of-type(3) { transition-delay: 0.22s; }
@@ -454,9 +732,14 @@ main .container {
 .navbar-sidebar .menu__list-item {
   margin: 2px 0;
 }
+.navbar-sidebar .menu__caret {
+  min-height: 44px;
+}
 .navbar-sidebar .menu__link {
   border-radius: 10px;
   padding: 12px 14px;
+  /* 12px + a 0.9375rem line came to 43.92px: a hair under the target. */
+  min-height: 44px;
   transition:
     background 0.25s var(--ease-out),
     color 0.25s var(--ease-out);
@@ -468,15 +751,15 @@ main .container {
    we can animate to an X without swizzling the React component. */
 .navbar__toggle {
   position: relative;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
   transition: background 0.2s var(--ease-out);
 }
 .navbar__toggle:hover {
-  background: var(--accent-dim);
+  background: var(--shell-hover-bg);
 }
 .navbar__toggle > svg {
   display: none;
@@ -495,8 +778,8 @@ main .container {
   transform: translateX(-50%);
   transition: transform 0.35s var(--ease-out), opacity 0.25s var(--ease-out);
 }
-.navbar__toggle::before { top: 12px; }
-.navbar__toggle::after  { bottom: 12px; }
+.navbar__toggle::before { top: 15px; }
+.navbar__toggle::after  { bottom: 15px; }
 
 .navbar__toggle[aria-expanded="true"]::before {
   top: 50%;
@@ -517,7 +800,8 @@ main .container {
 
 /* Reduced-motion: collapse the choreography but keep states visible. */
 @media (prefers-reduced-motion: reduce) {
-  .navbar-sidebar__items .menu__list-item {
+  .navbar-sidebar__items .menu__list-item,
+  .navbar-sidebar__section {
     opacity: 1;
     transform: none;
     transition: none;
@@ -559,7 +843,11 @@ main .container {
 .footer__link-item {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 44px;
+  /* Padding, not a min-width: a short label like "Me" would otherwise sit
+     in a wider box than its neighbours and unbalance the separators. */
+  padding-inline: 6px;
   font-family: var(--font-body);
   font-size: 0.875rem;
   font-weight: 500;
@@ -602,37 +890,178 @@ main .container {
 }
 
 /* ─── Inline code ───────────────────────────────────────────────── */
-/* Real code, so it keeps JetBrains Mono; accent-ink on the dim accent
-   holds 4.5:1 in both themes. */
+/* Real code, so it keeps JetBrains Mono — in the ink on a raised step,
+   not the accent: in running text mint means "link", and a code chip
+   in the same colour read as one. */
 :not(pre) > code {
-  background: var(--accent-dim);
-  color: var(--accent-ink);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   border: 1px solid var(--border-subtle);
   padding: 0.1em 0.4em;
   border-radius: 6px;
   font-size: 0.86em;
   font-weight: 500;
+  /* A long one breaks where it allows (after a hyphen or a slash), and
+     mid-token only when a token alone is wider than the line. */
+  overflow-wrap: break-word;
+}
+
+/* Short inline code (24 characters or fewer, marked by DocItem/Content)
+   stays whole: "prox-k8s-master" never splits at a hyphen. 24 characters
+   fit the narrowest phone column, so this never overflows it. */
+:not(pre) > code.code-whole {
+  white-space: nowrap;
+}
+
+/* In the lede (an article's first paragraph) a name is part of the
+   sentence, not a token to copy: the mono face alone marks it, with no
+   fill or frame, so a lede holding several reads as one line of prose.
+   Body code keeps its chip. */
+article .markdown > p:first-of-type code {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.9em;
+  font-weight: 450;
 }
 
 /* ─── Article: the reading column ───────────────────────────────────── */
 /* One calm column between the sidebar and the TOC: Mona Sans at a
-   comfortable size, a ~70ch measure, hierarchy from weight and tone. */
+   comfortable size, a ~75-character measure, hierarchy from weight and
+   tone. */
+
+/* The frame (DocItem/Layout wraps the doc's row in .doc-frame). The
+   column is the measure, not a 75% share of the page. From 997px every
+   doc page lays out on the same tracks, so the text keeps one left edge
+   as the reader moves between pages: a lead margin, the measure, the
+   gap, and a track for "On this page" that is reserved even where a page
+   has no contents list (hubs, short opinions). The lead centres measure
+   and TOC as one unit. Nothing in an article widens its column (a
+   diagram stays on the measure and opens full size in the lightbox), so
+   both the text and "On this page" hold one x per viewport on every
+   page. Below 997px the measure is centred, so a tablet doesn't hug the
+   left edge. --doc-measure is 36em at the article's 1.0625rem. */
+.doc-frame {
+  --doc-measure: calc(36 * 1.0625rem);
+  --doc-gap: clamp(2rem, 3.5vw, 4rem);
+}
+
+.doc-frame > .row {
+  display: grid;
+  grid-template-columns: minmax(0, var(--doc-measure));
+  justify-content: center;
+  margin: 0;
+}
+
+/* The article's column box steps out of the way (the theme caps it at
+   75% with a layered !important that no rule here can outrank); its
+   children sit in the text track directly. The TOC spans every row they
+   make, so it stays sticky the whole way down. */
+.doc-frame > .row > .col:not(.col--3) {
+  display: contents;
+}
+
+.doc-frame > .row > .col:not(.col--3) > * {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.doc-frame > .row > .col--3 {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  max-width: none;
+  padding: 0;
+}
+
+@media (min-width: 997px) {
+  /* The track sizes, in the row's own width (100%): percentages here
+     resolve where they are used, in grid-template-columns.
+     The TOC takes 14rem where it fits and gives way to 13rem before the
+     measure gives anything: the longest entries ("v1 — three nodes on
+     WiFi, and a flannel cascade", nested) keep to two lines; at 11-12rem
+     they ran to three. Below that the measure narrows (about 55
+     characters at 1024px). */
+  .doc-frame > .row {
+    --toc-w: clamp(13rem, 100% - var(--doc-measure) - var(--doc-gap), 14rem);
+    --unit: calc(var(--doc-measure) + var(--doc-gap) + var(--toc-w));
+    --lead: max(0px, (100% - var(--unit)) / 2);
+    --text: min(var(--doc-measure), 100% - var(--doc-gap) - var(--toc-w));
+    grid-template-columns:
+      var(--lead) minmax(0, var(--text)) var(--doc-gap) var(--toc-w);
+    justify-content: start;
+  }
+
+  .doc-frame > .row > .col:not(.col--3) > * {
+    grid-column: 2;
+  }
+
+  .doc-frame > .row > .col--3 {
+    grid-column: 4;
+  }
+
+  /* No contents list: the lead stays the same, so the left edge
+     doesn't move, and the TOC's track is left empty; where the window is
+     too narrow for both, the measure takes that room back. */
+  .doc-frame > .row:not(:has(> .col--3)) {
+    --text: min(var(--doc-measure), 100% - var(--lead));
+    grid-template-columns: var(--lead) minmax(0, var(--text));
+  }
+}
+
+/* Wide screens: the reading column moves toward the middle of the space
+   beside the sidebar, and "On this page" hangs in the right margin. The
+   contents list is light and short, so centring measure and list as one
+   unit read as text pushed left with a wide empty band on its right,
+   and a page without a list (hubs, opinions) sat clearly off-centre.
+   The lead grows with the window from 1600px (no jump at the
+   breakpoint) until the text is centred or the list reaches the
+   frame's right edge, whichever comes first (past that the grid would
+   take the room from the measure). It depends on the window
+   and the frame only, never on the page, so every doc page keeps the
+   same left edge at a given width. (In --doc-measure, not --text: a
+   page without a list computes --text from --lead.) */
+@media (min-width: 1600px) {
+  .doc-frame > .row {
+    --lead: clamp(
+      (100% - var(--unit)) / 2,
+      (100% - var(--unit)) / 2 + (100vw - 1600px) * 0.4,
+      min((100% - var(--doc-measure)) / 2, 100% - var(--unit))
+    );
+  }
+}
+
 article .markdown {
   font-size: 1.0625rem;
   line-height: 1.75;
   color: var(--text-primary);
 }
 
-article .markdown > * {
-  max-width: 70ch;
+/* The measure: ~75 characters of prose per line. In em, not ch: ch is
+   the width of "0", which changes when the fallback font shows, and
+   prose runs narrower than a row of zeros. --prose-measure is a
+   registered length: it computes to px on .markdown, at the body size,
+   and every child inherits that px value, so a heading, a table at
+   0.9375rem or a component lands on the same right edge as the
+   paragraphs (a bare `36em` would resolve against each child's own
+   size). Browsers without @property fall back to per-element 36em. */
+@property --prose-measure {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
 }
 
-/* Wide blocks keep the full column: components, diagrams, code. */
-article .markdown > div,
-article .markdown > figure,
-article .markdown > aside,
-article .markdown > table {
-  max-width: none;
+article .markdown {
+  --prose-measure: 36em;
+}
+
+/* One right edge. Everything in the article sits on the measure:
+   prose, headings, code, tables, callouts, diagrams and components
+   (source row, credential grid, timeline, author sign-off), with no
+   exception: a diagram drawn wider than the measure fits its card and
+   opens at full size in the lightbox. The pagination below the article
+   matches it (see Pagination). */
+article .markdown > * {
+  max-width: var(--prose-measure);
 }
 
 article header h1,
@@ -654,12 +1083,27 @@ article .markdown > h4 {
   line-height: 1.2;
 }
 
-/* A section opens on a hairline, the page's own rule. */
+/* A section opens on a hairline, the page's own rule, with the
+   portfolio's section-divider dot (4px, Signal Mint) sitting on the rule
+   where the heading starts: the one mark the world puts inside an
+   article. The TOC's active entry wears the same dot on its rail. */
 article .markdown > h2 {
+  position: relative;
   font-size: var(--ifm-h2-font-size);
   font-weight: 700;
   padding-top: 2rem;
   border-top: 1px solid var(--border-subtle);
+}
+
+article .markdown > h2::before {
+  content: "";
+  position: absolute;
+  top: -2.5px;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 article .markdown > h3 {
@@ -687,6 +1131,13 @@ article .markdown li {
   margin-bottom: 0.4rem;
 }
 
+/* No one-word last lines in list items, cells and quotes either. */
+article .markdown li,
+article .markdown td,
+article .markdown blockquote {
+  text-wrap: pretty;
+}
+
 article .markdown li::marker {
   color: var(--text-tertiary);
 }
@@ -711,7 +1162,7 @@ article .markdown blockquote p:last-child {
   margin-bottom: 0;
 }
 
-article .markdown img {
+article .markdown img:not(.mermaid-diagram) {
   border-radius: 12px;
   border: 1px solid var(--border-subtle);
   margin: 1.5rem 0;
@@ -762,8 +1213,22 @@ article .markdown table td {
   vertical-align: top;
 }
 
+/* The header row is a tinted band (Infima's table-head fill). The outer
+   cells step in from its ends so the band frames the labels instead of
+   starting flush at the first one; body cells keep the same inset so
+   the columns stay aligned under it. */
+article .markdown table :is(th, td):first-child {
+  padding-left: 0.75rem;
+}
+
+article .markdown table :is(th, td):last-child {
+  padding-right: 0.75rem;
+}
+
+/* Body cells in full ink, headers in the secondary tone: the cells
+   are the content. */
 article .markdown table td {
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 /* ─── Table of contents ─────────────────────────────────────────────── */
@@ -789,6 +1254,682 @@ article .markdown table td {
   font-weight: 600;
 }
 
+/* Desktop: the list is a <nav> named by its visible label (theme/TOC),
+   as the phone's toggle is ("On this page"), and the section in view
+   wears the H2's dot on the rail. */
+.theme-doc-toc-desktop .toc-label {
+  margin: 0 0 0.125rem;
+  /* On the links' left edge: the list's margin, rail, padding and the
+     item's margin. */
+  padding-left: calc(2 * var(--ifm-toc-padding-horizontal) + 3px);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* 2px in from the scroll box, so the dot (wider than the rail) isn't
+   clipped by it. */
+.theme-doc-toc-desktop .table-of-contents {
+  position: relative;
+  margin-left: 2px;
+}
+
+/* The dot centres on the 1px rail: it sits in the list's padding box,
+   whose left edge is the rail's right edge. Vertically it keeps its
+   place in the line and centres on the first line of the label. */
+.theme-doc-toc-desktop .table-of-contents__link--active::before {
+  content: "";
+  position: absolute;
+  left: -2.5px;
+  width: 4px;
+  height: 4px;
+  margin-top: calc(0.725em - 2px);
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Inside a cert guide's sheet, a quiet line under "Key commands by
+   domain" names the domain being read (theme/TOCItems). It is a note,
+   not a row: it hangs under its entry and the entries after it slide
+   down by its height, a transform, so nothing in the layout moves. Every
+   top-level item keeps a transform, so the rail dot (positioned against
+   its item, the same for every level) never jumps mid-slide. */
+.theme-doc-toc-desktop {
+  --toc-note-h: 1.125rem;
+  /* The note's line plus a little air before the next entry. */
+  --toc-note-shift: calc(var(--toc-note-h) + 0.1875rem);
+}
+
+.theme-doc-toc-desktop .table-of-contents > li {
+  position: relative;
+  transform: translateY(0);
+  transition: transform 0.25s var(--ease-out);
+}
+
+.theme-doc-toc-desktop .table-of-contents > li[data-toc-note] ~ li {
+  transform: translateY(var(--toc-note-shift));
+}
+
+/* The rail runs on under the last, shifted entry. (The list is the last
+   thing in the box, so growing it moves nothing.) */
+.theme-doc-toc-desktop .table-of-contents:has(> li[data-toc-note]) {
+  padding-bottom: var(--toc-note-shift);
+}
+
+.theme-doc-toc-desktop .table-of-contents__link--active::before {
+  left: calc(-2 * var(--ifm-toc-padding-horizontal) - 2.5px);
+}
+
+.toc-note {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: var(--toc-note-h);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  animation: toc-note-in 0.25s var(--ease-out);
+}
+
+@keyframes toc-note-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-doc-toc-desktop .table-of-contents > li {
+    transition: none;
+  }
+
+  .toc-note {
+    animation: none;
+  }
+}
+
+/* Phone and tablet: "On this page" comes after the intro (DocItem/Content
+   swizzle), right before the first section, as one hairline row like the
+   repo row above it: no fill, a 44px toggle, the list under a rule. */
+.theme-doc-toc-mobile {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  margin: 1.5rem 0 0;
+}
+
+.theme-doc-toc-mobile > button {
+  min-height: 44px;
+  padding: 0 0.75rem 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-radius: inherit;
+}
+
+.theme-doc-toc-mobile > button:hover {
+  color: var(--text-primary);
+}
+
+/* The toggle names the section in view: "On this page · <section>", the
+   section in primary ink and cut with an ellipsis, the chevron kept
+   (DocItem/TOC/Mobile). */
+.toc-mobile__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+}
+
+.toc-mobile__label {
+  flex: none;
+}
+
+/* A drawn list glyph at the row's left, at every width: the band reads
+   as the page's contents, not as a heading that folds. */
+.toc-mobile__glyph {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--text-tertiary);
+}
+
+/* On an arrival from elsewhere the band names the page first ("RHCSA ·
+   Pass mark"); it stays whole and the rest gives way. In the sheet the
+   section gives way before the domain: the domain is what the reader
+   landed on. On a phone it steps back altogether ("RHCSA · SELinux"),
+   rather than leave "Key co…" on the line; it stays in the button's
+   name, as the label does. */
+.toc-mobile__page {
+  flex: none;
+  font-weight: 600;
+}
+
+.toc-mobile__page + .toc-mobile__sep {
+  margin-left: 0.5rem;
+}
+
+.toc-mobile__page ~ .toc-mobile__section:has(+ .toc-mobile__sep) {
+  flex: 0 1000 auto;
+  min-width: 3em;
+  max-width: none;
+}
+
+@container (max-width: 30rem) {
+  .toc-mobile__page ~ .toc-mobile__section:has(+ .toc-mobile__sep) {
+    position: absolute;
+    width: 1px;
+    min-width: 0;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .toc-mobile__page ~ .toc-mobile__section:has(+ .toc-mobile__sep) + .toc-mobile__sep {
+    display: none;
+  }
+}
+
+.toc-mobile__current {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* In a sheet the band names section and domain: "On this page · Key
+   commands · SELinux". The section ("by domain" dropped) keeps its
+   words up to half the line and the domain is cut after it, so the line
+   carries at most one ellipsis. On a phone the three don't fit, so
+   there the visible "On this page" steps back (it stays the button's
+   name, read as before) and the band reads "Key commands · SELinux";
+   the chevron still says it opens. Stuck as the band, a phone gives the
+   section the whole line everywhere ("The simulator as the final gate",
+   not "On this page · The simulator as the fi…"); the row in the flow,
+   where it is first met, keeps its label. */
+.toc-mobile__toggle {
+  container-type: inline-size;
+}
+
+/* Stuck under the bar, an outside ring would be cut off by it. */
+.toc-mobile__toggle:focus-visible {
+  outline-offset: -2px;
+}
+
+.toc-mobile__section,
+.toc-mobile__domain {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toc-mobile__section {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.toc-mobile__section:has(+ .toc-mobile__sep) {
+  flex-shrink: 0;
+  max-width: 50%;
+}
+
+.toc-mobile__domain {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+@container (max-width: 30rem) {
+  .toc-mobile__toggle:has(.toc-mobile__domain) .toc-mobile__label,
+  .toc-mobile--stuck .toc-mobile__toggle:has(.toc-mobile__current) .toc-mobile__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .toc-mobile__toggle:has(.toc-mobile__domain) .toc-mobile__current > .toc-mobile__sep:first-child,
+  .toc-mobile--stuck .toc-mobile__toggle:has(.toc-mobile__current) .toc-mobile__current > .toc-mobile__sep:first-child {
+    display: none;
+  }
+}
+
+.toc-mobile__sep {
+  flex: none;
+  margin-right: 0.5rem;
+  color: var(--text-tertiary);
+}
+
+.toc-mobile__section + .toc-mobile__sep {
+  margin-left: 0.5rem;
+}
+
+.toc-mobile__toggle::after {
+  content: "";
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  background: var(--ifm-menu-link-sublist-icon) 50% 50% / 2rem 2rem no-repeat;
+  filter: var(--ifm-menu-link-sublist-icon-filter);
+  transform: rotate(180deg);
+  transition: transform 0.25s var(--ease-out);
+}
+
+.toc-mobile__toggle[aria-expanded="true"]::after {
+  transform: none;
+}
+
+/* Spoken once, on opening; never seen. */
+.toc-mobile__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The section the toggle named, marked in the open list as on the
+   desktop rail. */
+.theme-doc-toc-mobile .table-of-contents__link.table-of-contents__link--active {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* Once the reader passes it, the row holds under the bar as a band the
+   width of the screen: the page's ground, a hairline under it, no frame,
+   so it reads as part of the bar rather than a card over the text.
+   Opened in place it lets go and scrolls away with its list; opened from
+   the band, the list hangs under it over the text, so nothing in the
+   flow moves, and scrolls inside itself. */
+@media (max-width: 996px) {
+  .toc-mobile {
+    position: sticky;
+    top: var(--ifm-navbar-height);
+    z-index: 3;
+    transition: border-color 0.2s var(--ease-out);
+  }
+
+  .toc-mobile--in-flow {
+    position: relative;
+    top: auto;
+  }
+
+  /* A fact arrival pins the band under the bar while its own place is
+     still below (DocItem/TOC/Mobile; left and width are its place's),
+     and .toc-mobile__hold keeps that place in the flow. */
+  .toc-mobile--pinned {
+    position: fixed;
+    top: var(--ifm-navbar-height);
+    margin: 0;
+  }
+
+  .toc-mobile--stuck {
+    border-color: transparent;
+    border-radius: 0;
+  }
+
+  /* Ground and hairline run past the column to the screen's edges as
+     shadows, which add nothing to the page's scroll width. */
+  .toc-mobile--stuck::before,
+  .toc-mobile--stuck::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    z-index: -1;
+    clip-path: inset(0 -100vmax);
+  }
+
+  .toc-mobile--stuck::before {
+    top: -1px;
+    bottom: -1px;
+    background: var(--bg-void);
+    box-shadow: 0 0 0 100vmax var(--bg-void);
+  }
+
+  .toc-mobile--stuck::after {
+    bottom: -1px;
+    height: 1px;
+    background: var(--border-subtle);
+    box-shadow: 0 0 0 100vmax var(--border-subtle);
+  }
+
+  .toc-mobile--from-band .toc-mobile__panel {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    right: 0;
+    max-height: calc(100dvh - var(--ifm-navbar-height) - 44px - 1.5rem);
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-top: 0;
+    border-radius: 0 0 12px 12px;
+  }
+
+  [data-theme="light"] .toc-mobile--from-band .toc-mobile__panel {
+    box-shadow: 0 14px 32px -18px rgba(15, 23, 42, 0.22);
+  }
+
+  /* A jump to a section lands below the band, and below the bar while
+     the bar shows. (On the headings, not as page scroll-padding: that
+     would also scroll the page whenever the stuck toggle takes focus.)
+     A jump down hides the bar, so a tap on a link further down clears
+     the band alone from the start (html[data-jump], DocItem/TOC/Mobile);
+     the check after it reads this margin for the bar as it then is.
+     --toc-band-clear is what a landing clears; the sheet's index and
+     its old anchors use it too (DomainSheet). */
+  html:has(.toc-mobile) {
+    --toc-band-clear: calc(var(--ifm-navbar-height) + 44px);
+  }
+
+  html[data-jump="down"]:has(.toc-mobile),
+  html:not([data-bar-hold]):has(.toc-mobile):has(.navbar[class*="navbarHidden_"]:not(:focus-within, .navbar-sidebar--show)) {
+    --toc-band-clear: 44px;
+  }
+
+  html:has(.toc-mobile) :is([class*="anchorTargetStickyNavbar_"], [class*="anchorTargetHideOnScrollNavbar_"]) {
+    scroll-margin-top: calc(var(--toc-band-clear) + 0.75rem);
+  }
+
+  /* The bar slides away on a scroll down and back on a scroll up
+     (navbar.hideOnScroll), and the stuck band follows it: up to the top
+     of the screen while the bar is away, back under it when it returns,
+     with the bar's own timing. A transform, as the bar's, so nothing in
+     the layout moves. Reading down a sheet the chrome is then the band
+     alone. The bar comes back whenever focus is in it (a Tab into it,
+     the search field, the drawer), so it never hides what has focus. */
+  .toc-mobile {
+    transition:
+      border-color 0.2s var(--ease-out),
+      transform var(--ifm-transition-fast) ease;
+  }
+
+  html:not([data-bar-hold]):has(.navbar[class*="navbarHidden_"]:not(:focus-within, .navbar-sidebar--show)) .toc-mobile--stuck {
+    transform: translateY(calc(-1 * var(--ifm-navbar-height)));
+  }
+
+  /* Arriving from elsewhere the bar stays until the reader scrolls
+     (html[data-bar-hold], DocItem/TOC/Mobile): the theme reads the jump
+     as a scroll down and hides it, which left nothing on screen naming
+     the site or the page. */
+  html[data-bar-hold] .navbar[class*="navbarHidden_"] {
+    transform: none;
+  }
+}
+
+/* Focus in the bar brings it back, at every width. */
+.navbar[class*="navbarHidden_"]:is(:focus-within, .navbar-sidebar--show) {
+  transform: none;
+}
+
+/* From 997px the bar stays: the desktop column has the height, and the
+   sidebar and the contents rail sit under it. hideOnScroll also gives
+   the desktop sidebar a logo of its own and moves it up to the top;
+   both undone here. Jumps land below the bar, as with a sticky one. */
+@media (min-width: 997px) {
+  .toc-mobile,
+  .toc-mobile__hold {
+    display: none;
+  }
+
+  .navbar[class*="navbarHidden_"] {
+    transform: none;
+  }
+
+  [class*="sidebarWithHideableNavbar_"] {
+    padding-top: var(--ifm-navbar-height);
+  }
+
+  /* Its display is the theme's !important, in a cascade layer, which
+     this can't outrank; so it folds to nothing instead. */
+  [class*="sidebarLogo_"] {
+    visibility: hidden;
+    min-height: 0;
+    max-height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  [class*="anchorTargetHideOnScrollNavbar_"] {
+    scroll-margin-top: calc(var(--ifm-navbar-height) + 0.5rem);
+  }
+}
+
+/* Phones without a contents list: below the bar, as before. */
+@media (max-width: 996px) {
+  html:not(:has(.toc-mobile)) [class*="anchorTargetHideOnScrollNavbar_"] {
+    scroll-margin-top: calc(var(--ifm-navbar-height) + 0.5rem);
+  }
+}
+
+/* Arriving on a #hash moves focus to the target (DocItem/TOC/Mobile).
+   The ring is for a reader who came by keyboard; a link, a tap or a
+   cold load focuses quietly (html[data-quiet-focus], until it moves). */
+html[data-quiet-focus] [tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
+@media print {
+  .toc-mobile,
+  .toc-mobile__hold {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc-mobile__toggle::after {
+    transition: none;
+  }
+}
+
+.theme-doc-toc-mobile .table-of-contents {
+  border-left: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: 0;
+  padding: 0.375rem 0;
+  font-size: 0.9375rem;
+}
+
+.theme-doc-toc-mobile .table-of-contents li {
+  margin: 0;
+}
+
+.theme-doc-toc-mobile .table-of-contents__link {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0.25rem 1rem;
+  color: var(--text-secondary);
+}
+
+.theme-doc-toc-mobile .table-of-contents ul {
+  padding-left: 1rem;
+}
+
+@media (pointer: coarse) {
+  .theme-doc-toc-mobile .table-of-contents__link {
+    min-height: 44px;
+  }
+}
+
+/* Read from inside a sheet, the band's list names the sheet's domains
+   under "Key commands by domain" (DocItem/TOC/Mobile): one step in, a
+   step smaller, 44px rows at every pointer. A long name wraps in full:
+   the end of "Application Environment, Configuration and Security" is
+   what tells it apart. */
+.theme-doc-toc-mobile .toc-domains .table-of-contents__link {
+  min-height: 44px;
+  padding-block: 0.375rem;
+  line-height: 1.35;
+  font-size: 0.875rem;
+}
+
+/* ─── Breadcrumbs ───────────────────────────────────────────────────── */
+/* Infima hangs each "›" on the crumb before it, so a wrap can leave one
+   dangling at a line end. The separator leads the crumb after it
+   instead, inside the same box, so the two always move together. */
+.breadcrumbs__item:not(:last-child)::after {
+  content: none;
+}
+
+.breadcrumbs__item + .breadcrumbs__item::before {
+  content: '';
+  display: inline-block;
+  width: calc(
+    var(--ifm-breadcrumb-separator-size) *
+      var(--ifm-breadcrumb-size-multiplier) *
+      var(--ifm-breadcrumb-separator-size-multiplier)
+  );
+  height: calc(
+    var(--ifm-breadcrumb-separator-size) *
+      var(--ifm-breadcrumb-size-multiplier) *
+      var(--ifm-breadcrumb-separator-size-multiplier)
+  );
+  margin: 0 var(--ifm-breadcrumb-spacing);
+  background: var(--ifm-breadcrumb-separator) center;
+  filter: var(--ifm-breadcrumb-separator-filter);
+  opacity: 0.5;
+}
+
+/* A running head, not a row of pills: the trail is a quiet line of
+   text links in the secondary tone, and the current page is plain
+   tertiary text with no fill (the stock pill made the trail the loudest
+   thing above the title). */
+.theme-doc-breadcrumbs .breadcrumbs__link {
+  padding: 0.25rem 0.25rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  transition: color 0.2s var(--ease-out);
+}
+
+/* The home icon sits flush with the column; it keeps a 24px target
+   (WCAG 2.5.8) by padding on its right instead. */
+.theme-doc-breadcrumbs .breadcrumbs__item:first-child .breadcrumbs__link {
+  padding-left: 0;
+  min-width: 24px;
+}
+
+.theme-doc-breadcrumbs a.breadcrumbs__link:hover {
+  color: var(--text-primary);
+  background: transparent;
+}
+
+/* The trail is the way up, not a second title: at every width the
+   current page goes (its full title is the heading right below; a long
+   one wrapped the desktop trail to two lines). Its separator rides on
+   it, so none dangles. The JSON-LD trail still names the page. */
+.theme-doc-breadcrumbs .breadcrumbs__item--active {
+  display: none;
+}
+
+/* A section index (/engineering, /learn, /me) has only home above it:
+   with the current page dropped, the trail would be a lone home icon
+   that says nothing the brand doesn't, so it goes. The title keeps the
+   height the trail would have taken (its line and margin), so it sits
+   where a deeper hub's title does (/engineering/lab), not against the
+   bar. */
+.theme-doc-breadcrumbs:not(:has(.breadcrumbs__item:nth-child(3))) {
+  display: none;
+}
+
+.theme-doc-breadcrumbs:not(:has(.breadcrumbs__item:nth-child(3))) ~ .theme-doc-markdown {
+  margin-top: 2.75rem;
+}
+
+/* Below the desktop layout the parents keep to one line with tighter
+   steps. If they still run out of room, the nearest parent truncates.
+   On phones a deep trail drops its section crumb (the navbar already
+   names the section). */
+@media (max-width: 996px) {
+  .breadcrumbs {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .breadcrumbs__item {
+    display: flex;
+    flex: none;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .breadcrumbs__item + .breadcrumbs__item::before {
+    flex: none;
+    margin: 0 0.25rem;
+  }
+
+  .breadcrumbs__link {
+    white-space: nowrap;
+  }
+
+  .breadcrumbs__item:nth-last-child(2) {
+    flex: 0 1 auto;
+  }
+
+  .breadcrumbs__item:nth-last-child(2) .breadcrumbs__link {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* 44px rows for the crumbs on touch; the trail's bottom margin gives
+   back what the taller row adds. */
+@media (max-width: 996px) and (pointer: coarse) {
+  .theme-doc-breadcrumbs {
+    margin-bottom: 0.25rem;
+  }
+
+  .breadcrumbs__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* The home crumb is an icon: its box is the icon, on the column's
+     edge, so it sits as close to its chevron as a word does to its own;
+     the 44px square target is drawn by ::after, centred on the icon and
+     reaching into the gutter. It ends short of the next crumb's box. */
+  .theme-doc-breadcrumbs .breadcrumbs__item:first-child .breadcrumbs__link {
+    position: relative;
+    min-width: 0;
+    padding: 0;
+    /* The text crumbs' inline padding, so the chevron sits midway. */
+    margin-right: 0.25rem;
+  }
+
+  .theme-doc-breadcrumbs .breadcrumbs__item:first-child .breadcrumbs__link::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (max-width: 479px) {
+  .breadcrumbs__item:nth-child(2):nth-last-child(n + 4) {
+    display: none;
+  }
+}
+
 /* ─── Docs sidebar ──────────────────────────────────────────────────── */
 /* The navbar's pills, in the sidebar: the current page gets the dim
    accent fill with accent-ink text. */
@@ -803,6 +1944,16 @@ article .markdown table td {
   background: var(--bg-surface);
 }
 
+/* Titles wrap in full; the theme clamps them at two lines with an
+   ellipsis, which cut "…right-sizing for a homelab" mid-word. */
+.theme-doc-sidebar-menu .menu__link [class*="linkLabel_"] {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  line-clamp: none;
+  text-wrap: pretty;
+}
+
 .theme-doc-sidebar-menu .menu__link--active:not(.menu__link--sublist),
 .theme-doc-sidebar-menu .menu__link--active:not(.menu__link--sublist):hover {
   color: var(--accent-ink);
@@ -814,25 +1965,101 @@ article .markdown table td {
   font-weight: 600;
 }
 
+/* A category whose own page is open (an index such as /engineering) is
+   the current page too: same pill as any other current page, instead
+   of Infima's neutral grey. */
+.theme-doc-sidebar-menu .menu__list-item-collapsible--active {
+  background: var(--accent-dim);
+}
+
+.theme-doc-sidebar-menu .menu__link--sublist[aria-current="page"],
+.theme-doc-sidebar-menu .menu__link--sublist[aria-current="page"]:hover {
+  color: var(--accent-ink);
+  background: transparent;
+}
+
+/* Below 1280px the sidebar gives way before the measure does: at the
+   theme's 300px the text was ~416px wide at 1024px. It runs 232px at
+   1024px up to 300px at 1280px, with the window, so nothing steps;
+   titles still wrap in full. html:root outranks the theme's own :root
+   whatever order the stylesheets load in. */
+@media (min-width: 997px) {
+  html:root {
+    --doc-sidebar-width: clamp(232px, 232px + (100vw - 1024px) * 0.2656, 300px);
+  }
+}
+
+/* 44px rows on touch screens wide enough for the desktop sidebar, the
+   caret of a linked category included. */
+@media (min-width: 997px) and (pointer: coarse) {
+  .theme-doc-sidebar-menu .menu__link,
+  .theme-doc-sidebar-menu .menu__caret {
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .theme-doc-sidebar-menu .menu__caret {
+    min-width: 44px;
+    justify-content: center;
+  }
+}
+
 /* ─── Pagination (prev / next) ──────────────────────────────────────── */
-/* Two hairline panels; on hover the rule strengthens, the surface
-   steps up and the arrow nudges outward. Arrows are drawn (an SVG
-   mask), not glyphs. */
+/* The reader-path rows (ReaderPaths/rows.module.css), not cards: one
+   band between two hairlines, previous on the left and next on the
+   right with a hairline between them, stacked under 600px. The label is
+   a Mona Sans title in full ink that turns accent on hover and focus;
+   the drawn arrow (an SVG mask, not a glyph) turns accent and nudges
+   outward. Like the rows, the links reach 12px past the measure on each
+   side so the focus ring has room, while the hairlines stay on the
+   measure. The hairlines are 1px pseudo-elements, not background
+   gradients, so nothing behind the labels reads as a fill. */
 .pagination-nav {
-  gap: 1rem;
+  --row-bleed: 12px;
+  position: relative;
+  gap: 0;
+  /* On the article's right edge: 36em at the article's 1.0625rem, the
+     same measure as --prose-measure (the nav sits outside .markdown). */
+  max-width: calc(36 * 1.0625rem + 2 * var(--row-bleed));
+  margin: 0 calc(var(--row-bleed) * -1);
+}
+
+.pagination-nav::before,
+.pagination-nav::after {
+  content: "";
+  position: absolute;
+  left: var(--row-bleed);
+  right: var(--row-bleed);
+  height: 1px;
+  background-color: var(--border-subtle);
+  pointer-events: none;
+}
+
+.pagination-nav::before {
+  top: 0;
+}
+
+.pagination-nav::after {
+  bottom: 0;
+}
+
+/* Section hubs set pagination_next: null (their list already starts
+   with that page); the theme still renders an empty landmark. */
+.pagination-nav:empty {
+  display: none;
 }
 
 .pagination-nav__link {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  background: transparent;
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  transition:
-    border-color 0.25s var(--ease-out),
-    background-color 0.25s var(--ease-out);
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: 56px;
+  padding: 1rem var(--row-bleed);
+  border: 0;
+  border-radius: 10px;
+  color: var(--text-primary);
+  transition: color 0.2s var(--ease-out);
 }
 
 .pagination-nav__link--prev {
@@ -844,10 +2071,30 @@ article .markdown table td {
   text-align: right;
 }
 
-.pagination-nav__link:hover {
-  background: var(--bg-surface);
-  border-color: var(--border-medium);
+/* Both present: a hairline between them, inset from the band's rules. */
+.pagination-nav__link--prev + .pagination-nav__link--next {
+  position: relative;
+}
+
+.pagination-nav__link--prev + .pagination-nav__link--next::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  bottom: 1rem;
+  left: 0;
+  width: 1px;
+  background-color: var(--border-subtle);
+  pointer-events: none;
+}
+
+.pagination-nav__link:hover,
+.pagination-nav__link:focus-visible {
+  color: var(--accent);
   text-decoration: none;
+}
+
+.pagination-nav__link:focus-visible {
+  outline-offset: -2px;
 }
 
 .pagination-nav__link--prev .pagination-nav__label::before,
@@ -859,14 +2106,10 @@ article .markdown table td {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  margin: 0;
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-tertiary);
-  transition: color 0.2s var(--ease-out);
-}
-
-.pagination-nav__link:hover .pagination-nav__sublabel {
-  color: var(--accent-ink);
 }
 
 .pagination-nav__link--prev .pagination-nav__sublabel::before,
@@ -877,18 +2120,25 @@ article .markdown table td {
   background: currentColor;
   -webkit-mask: var(--icon-arrow) center / contain no-repeat;
   mask: var(--icon-arrow) center / contain no-repeat;
-  transition: transform 0.25s var(--ease-out);
+  transition:
+    background-color 0.2s var(--ease-out),
+    transform 0.25s var(--ease-out);
+}
+
+.pagination-nav__link:is(:hover, :focus-visible) .pagination-nav__sublabel::before,
+.pagination-nav__link:is(:hover, :focus-visible) .pagination-nav__sublabel::after {
+  background: var(--accent);
 }
 
 .pagination-nav__link--prev .pagination-nav__sublabel::before {
   transform: scaleX(-1);
 }
 
-.pagination-nav__link--prev:hover .pagination-nav__sublabel::before {
+.pagination-nav__link--prev:is(:hover, :focus-visible) .pagination-nav__sublabel::before {
   transform: scaleX(-1) translateX(3px);
 }
 
-.pagination-nav__link--next:hover .pagination-nav__sublabel::after {
+.pagination-nav__link--next:is(:hover, :focus-visible) .pagination-nav__sublabel::after {
   transform: translateX(3px);
 }
 
@@ -896,8 +2146,32 @@ article .markdown table td {
   font-family: var(--font-display);
   font-size: 1.0625rem;
   font-weight: 600;
+  line-height: 1.4;
   letter-spacing: -0.01em;
-  color: var(--text-primary);
+  color: inherit;
+  text-wrap: balance;
+}
+
+/* Phones: one row each, both reading from the left. */
+@media (max-width: 599px) {
+  .pagination-nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pagination-nav__link--next {
+    grid-column: auto;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .pagination-nav__link--prev + .pagination-nav__link--next::before {
+    top: 0;
+    bottom: auto;
+    left: var(--row-bleed);
+    right: var(--row-bleed);
+    width: auto;
+    height: 1px;
+  }
 }
 
 /* ─── Skip-to-content (a11y) ───────────────────────────────────────── */
@@ -981,10 +2255,14 @@ button:focus-visible {
   background: var(--bg-surface);
 }
 
+/* No ligatures: JetBrains Mono draws ">=" as one "≥" glyph, so
+   "<key>=<value>" read as "<key≥<value>". Code shows the characters
+   you type. */
 .prism-code {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   line-height: 1.65;
+  font-variant-ligatures: none;
 }
 
 /* File / title bar: a caption, in the page's own voice. */
@@ -998,23 +2276,441 @@ button:focus-visible {
   border-bottom: 1px solid var(--border-subtle);
 }
 
-[class*="copyButton"] {
-  background: var(--bg-elevated) !important;
-  border: 1px solid var(--border-subtle) !important;
-  border-radius: 8px !important;
-  transition: all 0.2s var(--ease-out) !important;
+/* Copy and word-wrap: the same quiet framed square. (Scoped to the
+   buttons: a bare [class*="copyButton"] also caught the icons inside.) */
+.theme-code-block [class*="buttonGroup"] button {
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  transition:
+    opacity 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out);
 }
 
-[class*="copyButton"]:hover {
-  background: var(--accent-dim) !important;
-  border-color: var(--border-medium) !important;
-  color: var(--accent-ink) !important;
+.theme-code-block [class*="buttonGroup"] button:hover {
+  background: var(--accent-dim);
+  border-color: var(--border-medium);
+  color: var(--accent-ink);
+}
+
+.theme-code-block [class*="copyButtonSuccessIcon"] {
+  color: var(--accent-ink);
+}
+
+/* Copied: codeBlocks.js holds data-copied for two seconds once the copy
+   lands (three when the command still has placeholders to fill). The
+   button stays in view with its check, and the block draws a label from
+   its data-copied-label ("Copied", "Copied · fill in <ns>", "Copied ·
+   fill in 3 placeholders"). The label sits on the block's top edge, left
+   of the buttons: half over the gap above, half over the code's top
+   padding (or the title bar's), so it never covers a line of code,
+   wrapped or not. CSS-only text (empty alt), since the shared live
+   region already says it to screen readers. A long label (a sheet
+   command that needs its shorthand) is picked to fit: codeBlocks.js
+   tries each on .cb-copied-measure, a hidden twin with the same box. */
+.theme-code-block [class*="buttonGroup"] button[data-copied] {
+  opacity: 1 !important;
+  color: var(--accent-ink);
+  border-color: var(--border-medium);
+}
+
+.theme-code-block button[data-copied] svg[class*="copyButtonIcon_"] {
+  transform: scale(0.33);
+  opacity: 0;
+}
+
+.theme-code-block button[data-copied] svg[class*="copyButtonSuccessIcon"] {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.theme-code-block[data-copied-label]:has(button[data-copied])::after,
+.theme-code-block > .cb-copied-measure {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: calc(var(--cb-tools-w) + 0.25rem);
+  max-width: calc(100% - var(--cb-tools-w) - 1rem);
+  overflow: hidden;
+  transform: translateY(-50%);
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.theme-code-block[data-copied-label]:has(button[data-copied])::after {
+  content: attr(data-copied-label);
+  content: attr(data-copied-label) / "";
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface));
+  color: var(--accent-ink);
+  animation: code-copied-in 0.2s var(--ease-out);
+}
+
+.theme-code-block > .cb-copied-measure {
+  visibility: hidden;
+}
+
+@keyframes code-copied-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* A line longer than the block scrolls; the edge that hides code fades
+   (codeBlocks.js flags it), as the diagrams do. The mask sits on the
+   scroller, so it holds still while the code moves, and a second layer
+   keeps the scrollbar strip solid. */
+.theme-code-block pre[data-fade-start] {
+  --cb-fade-start: 2.5rem;
+}
+
+.theme-code-block pre[data-fade-end] {
+  --cb-fade-end: 2.5rem;
+}
+
+.theme-code-block pre[data-fade-start],
+.theme-code-block pre[data-fade-end] {
+  --cb-mask: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--cb-fade-start, 0px),
+    #000 calc(100% - var(--cb-fade-end, 0px)),
+    transparent 100%
+  );
+  -webkit-mask-image: var(--cb-mask), linear-gradient(#000 0 0);
+  mask-image: var(--cb-mask), linear-gradient(#000 0 0);
+  -webkit-mask-size: 100% 100%, 100% var(--cb-scrollbar, 0px);
+  mask-size: 100% 100%, 100% var(--cb-scrollbar, 0px);
+  -webkit-mask-position: 0 0, 0 100%;
+  mask-position: 0 0, 0 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Where the buttons sit. They never cover code, and they never get a
+   band of their own above it:
+   - A titled block carries them in its title bar, which is 44px tall
+     and keeps their room clear on its right. The block, not the code
+     area, places them.
+   - An untitled block floats them at its top right, and the code's
+     first line keeps clear of them: an empty float the size of the
+     buttons (less the code's own padding) at the start of the code,
+     one line tall. A wrapped first line breaks before it; a scrolling
+     one scrolls far enough to bring its end out from under them.
+   All of it is CSS, sized for two buttons whether or not the wrap
+   button turns up (it mounts after load), so nothing moves. */
+.theme-code-block {
+  --cb-btn: 2.125rem;
+  --cb-btn-gap: 0.2rem;
+  --cb-tools-inset: 0.5rem;
+  --cb-tools-w: calc(2 * var(--cb-btn) + var(--cb-btn-gap) + var(--cb-tools-inset));
+  position: relative;
+}
+
+.theme-code-block [class*="buttonGroup"] button {
+  justify-content: center;
+  min-width: var(--cb-btn);
+  min-height: var(--cb-btn);
+}
+
+[class*="codeBlockTitle"] {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-right: calc(var(--cb-tools-w) + 0.5rem);
+  overflow-wrap: anywhere;
+}
+
+.theme-code-block:has(> [class*="codeBlockTitle"]) > [class*="codeBlockContent"] {
+  position: static;
+}
+
+.theme-code-block:has(> [class*="codeBlockTitle"]) [class*="buttonGroup"] {
+  top: calc((2.75rem - var(--cb-btn)) / 2);
+  right: var(--cb-tools-inset);
+}
+
+.theme-code-block:not(:has(> [class*="codeBlockTitle"])) code::before {
+  content: "";
+  float: right;
+  width: calc(var(--cb-tools-w) - var(--ifm-pre-padding));
+  height: 1lh;
+}
+
+/* Untitled, the buttons centre on the first line. While that line
+   scrolls under them (an unwrapped block, more code to the right), a
+   plate of the block's own ground, one line tall and feathered on its
+   left, keeps the code from showing through the icons; scrolled to the
+   end, the line stops short of them and the plate goes. */
+.theme-code-block {
+  /* The code's line box: 0.85rem × 1.65 (.prism-code). */
+  --cb-line: calc(0.85rem * 1.65);
+}
+
+.theme-code-block:not(:has(> [class*="codeBlockTitle"])) [class*="buttonGroup"] {
+  top: calc(var(--ifm-pre-padding) + (var(--cb-line) - var(--cb-btn)) / 2);
+  right: var(--cb-tools-inset);
+  z-index: 1;
+}
+
+/* The room at the end: unwrapped, the first line runs on by the
+   buttons' width (an empty box after its last token; the float can't
+   push an unwrapped line), so scrolling to the end clears it. */
+html:not([data-code-wrap-prose="on"]) .theme-code-block:not(.domain-sheet *):not(:has(> [class*="codeBlockTitle"])) .token-line:first-child > span:last-of-type::after,
+html[data-code-wrap-sheet="off"] .domain-sheet .theme-code-block:not(:has(> [class*="codeBlockTitle"])) .token-line:first-child > span:last-of-type::after {
+  content: "";
+  display: inline-block;
+  width: calc(var(--cb-tools-w) - var(--ifm-pre-padding));
+}
+
+.theme-code-block pre[data-fade-end] ~ [class*="buttonGroup"]::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: calc((var(--cb-btn) - var(--cb-line)) / 2);
+  left: -1.5rem;
+  right: 0;
+  height: var(--cb-line);
+  background: linear-gradient(to right, transparent, var(--bg-surface) 1.5rem);
+  pointer-events: none;
+}
+
+/* Paper has no buttons to keep clear of. */
+@media print {
+  .theme-code-block code::before,
+  .theme-code-block .token-line > span::after {
+    display: none !important;
+  }
+
+  .theme-code-block .token-line:first-child:not(.theme-code-block-highlighted-line) {
+    padding-right: 0 !important;
+  }
+
+  [class*="codeBlockTitle"] {
+    min-height: 0;
+    padding-right: 1rem;
+  }
+}
+
+/* With a mouse the buttons rest in view on every block, quiet (the
+   tertiary ink, no frame), so copy and wrap are found without hunting
+   for them; over the block they take their frame, and the one under the
+   pointer or in focus the accent. (The theme hides them until hover.)
+   The code's first line already keeps clear of them. */
+@media (hover: hover) and (pointer: fine) {
+  .theme-code-block [class*="buttonGroup"] button {
+    opacity: 1 !important;
+    color: var(--text-tertiary);
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .theme-code-block:hover [class*="buttonGroup"] button {
+    color: var(--text-secondary);
+    background: var(--bg-elevated);
+    border-color: var(--border-subtle);
+  }
+
+  .theme-code-block [class*="buttonGroup"] button:is(:hover, :focus-visible) {
+    color: var(--accent-ink);
+    background: var(--accent-dim);
+    border-color: var(--border-medium);
+  }
+
+  .theme-code-block [class*="buttonGroup"] button:is([aria-pressed="true"], [data-copied]) {
+    color: var(--accent-ink);
+  }
+}
+
+/* Touch has no hover to reveal the buttons, so they stay in view at
+   44px, quiet: no frame until pressed. The icon centres on the first
+   line; the 44px target overhangs the line under it a little, which the
+   unframed button leaves readable. */
+@media (hover: none), (pointer: coarse) {
+  .theme-code-block {
+    --cb-btn: 44px;
+    --cb-btn-gap: 0px;
+    --cb-tools-inset: 0px;
+  }
+
+  .theme-code-block [class*="buttonGroup"] {
+    column-gap: 0;
+  }
+
+  .theme-code-block [class*="buttonGroup"] button {
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    /* Over Docusaurus's hover dimming (0.4), which a tap leaves on. */
+    opacity: 1 !important;
+    color: var(--text-tertiary);
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .theme-code-block [class*="buttonGroup"] button:active {
+    background: var(--accent-dim);
+    color: var(--accent-ink);
+  }
 }
 
 /* Highlighted lines: the dim accent across the line, no side tab. */
 .theme-code-block-highlighted-line,
 [class*="codeLineHighlighted"] {
   background-color: var(--accent-dim);
+}
+
+/* Word wrap is two remembered choices: one for the blocks in a cert
+   guide's sheet, one for every other block (codeBlocks.js sets
+   html[data-code-wrap-sheet] and html[data-code-wrap-prose] from the
+   reader's last toggle in each, before first paint). Until the reader
+   picks, other blocks scroll long lines and sheet blocks wrap them, at
+   every width: a sheet holds commands to read whole, and its column
+   has the room. A wrapped line hangs its continuation 1.2em (two
+   characters) in, so it reads as the same command, not the next one.
+   The CSS does the wrapping, so it is there at first paint; copy still
+   copies the command as typed. */
+html[data-code-wrap-prose="on"] .theme-code-block:not(.domain-sheet *) code,
+html:not([data-code-wrap-sheet="off"]) .domain-sheet .theme-code-block code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  /* The block's width, not its content's: the code is a shrink-to-fit
+     float, and the buttons' float would otherwise widen it. */
+  width: 100%;
+}
+
+html[data-code-wrap-prose="on"] .theme-code-block:not(.domain-sheet *) .token-line,
+html:not([data-code-wrap-sheet="off"]) .domain-sheet .theme-code-block .token-line {
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+
+html[data-code-wrap-prose="on"] .theme-code-block:not(.domain-sheet *) .theme-code-block-highlighted-line,
+html:not([data-code-wrap-sheet="off"]) .domain-sheet .theme-code-block .theme-code-block-highlighted-line {
+  padding-left: calc(var(--ifm-pre-padding) + 1.2em);
+}
+
+/* Wrapped, an untitled block's first line keeps clear of the buttons by
+   its own right padding, not by the float: a word or a kept-whole run
+   too wide to sit beside a float drops below it and leaves the first
+   line blank, so the buttons look like a row of their own. Padded, the
+   line starts beside them and wraps under its hanging indent. */
+html[data-code-wrap-prose="on"] .theme-code-block:not(.domain-sheet *):not(:has(> [class*="codeBlockTitle"])) code::before,
+html:not([data-code-wrap-sheet="off"]) .domain-sheet .theme-code-block:not(:has(> [class*="codeBlockTitle"])) code::before {
+  content: none;
+}
+
+html[data-code-wrap-prose="on"] .theme-code-block:not(.domain-sheet *):not(:has(> [class*="codeBlockTitle"])) .token-line:first-child,
+html:not([data-code-wrap-sheet="off"]) .domain-sheet .theme-code-block:not(:has(> [class*="codeBlockTitle"])) .token-line:first-child {
+  padding-right: calc(var(--cb-tools-w) - var(--ifm-pre-padding));
+}
+
+/* A highlighted line runs to the block's edge (its own padding is the
+   code's), so its clearance is the buttons' whole width. */
+html[data-code-wrap-prose="on"] .theme-code-block:not(.domain-sheet *):not(:has(> [class*="codeBlockTitle"])) .token-line.theme-code-block-highlighted-line:first-child,
+html:not([data-code-wrap-sheet="off"]) .domain-sheet .theme-code-block:not(:has(> [class*="codeBlockTitle"])) .token-line.theme-code-block-highlighted-line:first-child {
+  padding-right: var(--cb-tools-w);
+}
+
+/* Measuring whether a wrapped block would overflow unwrapped (so its
+   wrap button stays); set and cleared within one task, never painted. */
+.theme-code-block code[data-cb-measure] {
+  white-space: pre !important;
+  overflow-wrap: normal !important;
+}
+
+/* The wrap button is a toggle (aria-pressed); on, its icon takes the
+   accent ink. */
+.theme-code-block [class*="buttonGroup"] button[aria-pressed="true"] {
+  color: var(--accent-ink);
+}
+
+/* Heading anchors ("#"). Inline, not inline-block: an atomic box is a
+   line-break opportunity, so the "#" could wrap alone under a heading.
+   The hit area is a 44px box from the mark's left edge (its padding),
+   drawn by ::after, so the target never grows the heading's line box
+   or nudges its text. With a mouse the mark shows on hover and focus
+   (Infima). On touch there is no hover, and a mark after every heading
+   is noise: it shows, in the quiet tertiary tone, only on the heading
+   the band names (data-reading: the section being read and, in a
+   sheet, its domain; DocItem/TOC/Mobile), and takes the accent when
+   pressed. Elsewhere it rests transparent, never gone: still a tap
+   target and still in the Tab order, shown on keyboard focus. */
+.hash-link {
+  position: relative;
+  display: inline;
+  padding-left: 0.4em;
+}
+
+.hash-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: max(100%, 44px);
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+@media (pointer: coarse) {
+  .hash-link {
+    opacity: 0;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    transition:
+      opacity 0.3s var(--ease-out),
+      color 0.2s var(--ease-out);
+  }
+
+  [data-reading] > .hash-link,
+  .hash-link:is(:active, :focus-visible, [data-copied]) {
+    opacity: 1;
+  }
+
+  .hash-link:active,
+  .hash-link:focus-visible,
+  .hash-link[data-copied] {
+    color: var(--accent);
+  }
+}
+
+/* On touch a tap on "#" copies the heading's link (codeBlocks.js), and
+   this says so by the mark for two seconds: the code blocks' "Copied"
+   label, in the same tone and size. Placed by the script in the page's
+   coordinates, so it never takes room or moves a line. */
+.hash-copied {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface));
+  color: var(--accent-ink);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: code-copied-in 0.2s var(--ease-out);
+}
+
+@media print {
+  .hash-copied {
+    display: none;
+  }
 }
 
 /* ─── Article links ─────────────────────────────────────────────────── */
@@ -1039,17 +2735,19 @@ article .markdown a:is(:not([class]), [class=""]):hover {
   text-decoration-color: currentColor;
 }
 
+/* The arrow stays an inline box, not an inline-block: an atomic inline
+   is a line-break opportunity, which let it wrap alone onto the next
+   line ("IDAC" then "↗"). An empty inline with padding has no break
+   point before it, so it travels with the last word. Its width is the
+   padding; the mask draws the arrow at 0.7em inside it. */
 article .markdown a[href^="http"]:is(:not([class]), [class=""])::after {
-  content: "";
-  display: inline-block;
-  width: 0.7em;
-  height: 0.7em;
-  margin-left: 0.15em;
-  vertical-align: 0.05em;
+  /* The alt text after the slash names the new tab for screen readers. */
+  content: "" / " (opens in a new tab)";
+  padding-left: 0.85em;
   background: currentColor;
   opacity: 0.75;
-  -webkit-mask: var(--icon-arrow-up-right) center / contain no-repeat;
-  mask: var(--icon-arrow-up-right) center / contain no-repeat;
+  -webkit-mask: var(--icon-arrow-up-right) right 0 center / 0.7em 0.7em no-repeat;
+  mask: var(--icon-arrow-up-right) right 0 center / 0.7em 0.7em no-repeat;
 }
 
 /* ─── Tag chips on homepage tags page ─────────────────────────────── */
@@ -1059,45 +2757,18 @@ article .markdown a[href^="http"]:is(:not([class]), [class=""])::after {
 }
 
 /* ─── Phones: a slightly smaller reading size ───────────────────────── */
+/* At ~40 characters a line the eye's return is short, so the prose needs
+   less leading than the desktop's 1.75: 1.65 keeps paragraphs open and
+   shortens a long guide by a few screens. Headings, code and tables set
+   their own line heights and keep them. */
 @media (max-width: 600px) {
   article .markdown {
     font-size: 1rem;
+    line-height: 1.65;
   }
   article .markdown > h2 {
     margin-top: 2.25rem;
   }
-}
-
-/* ─── Mermaid diagrams: subtle light card, natural sizing ──────────── */
-.docusaurus-mermaid-container,
-.theme-doc-markdown .docusaurus-mermaid-container {
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1px solid rgba(15, 23, 42, 0.1);
-  padding: 1.25rem 1rem;
-  margin: 1.75rem 0;
-  text-align: center;
-  overflow-x: auto;
-  /* Let the diagram size itself naturally — no forced min-height */
-}
-
-.docusaurus-mermaid-container svg {
-  max-width: 100%;
-  height: auto !important;
-  display: inline-block;
-}
-
-/* Override the Mermaid theme's font weight for readability */
-.docusaurus-mermaid-container .nodeLabel,
-.docusaurus-mermaid-container text {
-  font-family: var(--font-mono) !important;
-  font-weight: 500 !important;
-}
-
-/* Light mode: blend the diagram card with the page */
-[data-theme="light"] .docusaurus-mermaid-container {
-  background: var(--bg-void);
-  border-color: rgba(15, 23, 42, 0.08);
 }
 
 /* ─── Tags ──────────────────────────────────────────────────────────── */
@@ -1123,81 +2794,175 @@ a[class*="tag_"]:hover,
   color: var(--text-primary) !important;
 }
 
-/* ─── Navbar dropdowns: section labels + dividers ─────────────────── */
-/* `<div class="navbar-dropdown-section">` items inside a dropdown name a
-   group of links (Opinions, Lab, Work) in the muted tone, with a
-   hairline above every group but the first. Not clickable. */
-.navbar-dropdown-section {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  padding: 0.6rem 10px 0.3rem;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.navbar-dropdown-section:not(:first-child) {
-  border-top: 1px solid var(--border-subtle);
-  margin-top: 6px;
-  padding-top: 0.75rem;
-}
-
-.navbar-dropdown-divider {
-  height: 1px;
-  background: var(--border-subtle);
-  margin: 0.3rem 0;
-  pointer-events: none;
-}
-
-/* Wide enough that most essay titles fit on one line; the longest wrap. */
+/* ─── Navbar dropdowns ──────────────────────────────────────────────── */
+/* Index-level items only, so the panel stays compact. */
 .navbar .dropdown__menu {
-  min-width: 280px;
-  max-width: 340px;
+  /* Sized to its longest label: an absolutely positioned menu otherwise
+     shrinks to its narrow parent and wraps labels at the min-width. */
+  width: max-content;
+  min-width: 220px;
+  max-width: 320px;
 }
 
 .navbar .dropdown__link {
   white-space: normal;
 }
 
-/* ─── Sidebar: default collapse / expand buttons ───────────────────── */
-/* Keep Docusaurus's native position, dimensions, and behavior. Only
-   recolor the controls so they feel native to the cjoga.cloud palette. */
+/* Esc closed this dropdown while the pointer rested on it: hover stays
+   off until the pointer leaves (src/clientModules/dropdownKeys.js), so
+   the menu actually goes. Opening it again by key or click still works. */
+.navbar .dropdown--hoverable[data-dismissed]:not(.dropdown--show) .dropdown__menu {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
 
-[class*="collapseSidebarButton_"],
-[class*="expandButton_"] {
+/* Closed from the keyboard (Esc, or Enter on the trigger), the menu goes
+   at once: during the stock fade it is still visible, so a Tab pressed
+   right after lands on a link that then hides, and focus drops to the
+   page. A pointer leaving with focus elsewhere keeps the fade. */
+.navbar .dropdown:focus-within:not(.dropdown--show):not(:hover) .dropdown__menu {
+  visibility: hidden;
+  transition: none;
+}
+
+/* ─── Sidebar: default collapse / expand buttons ───────────────────── */
+/* Docusaurus's controls and behavior (desktop only, from 997px), named
+   on screen: the stock buttons are a bare double chevron. The visible
+   words repeat each control's own aria-label ("Collapse sidebar",
+   "Expand sidebar"), so what a reader sees is what a voice user says.
+   Scoped to the sidebar container so these outrank the theme's own
+   module rules whatever order the stylesheets load in.
+   Same tone as the sidebar links: secondary at rest, full ink on a
+   surface tint on hover, the 2px accent ring on focus. */
+
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"],
+.theme-doc-sidebar-container [class*="expandButton_"] {
   background: var(--bg-void) !important;
   border-color: var(--border-subtle) !important;
   box-shadow: none;
   color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0;
   transition:
     background 0.2s var(--ease-out),
     border-color 0.2s var(--ease-out),
     color 0.2s var(--ease-out);
 }
 
-[class*="collapseSidebarButton_"]:hover,
-[class*="collapseSidebarButton_"]:focus,
-[class*="expandButton_"]:hover,
-[class*="expandButton_"]:focus {
-  background: var(--bg-primary) !important;
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"]:hover,
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"]:focus-visible,
+.theme-doc-sidebar-container [class*="expandButton_"]:hover,
+.theme-doc-sidebar-container [class*="expandButton_"]:focus-visible {
+  background: var(--bg-surface) !important;
   border-color: var(--border-medium) !important;
-  color: var(--accent);
+  color: var(--text-primary);
 }
 
-[class*="collapseSidebarButton_"] svg,
-[class*="expandButton_"] svg {
-  color: inherit;
+/* The ring sits inside: the collapse button spans the sidebar's full
+   width at its bottom edge, the expand strip fills its column. */
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"]:focus-visible,
+.theme-doc-sidebar-container [class*="expandButton_"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+  border-radius: 0;
+}
+
+/* The stock icon is a filled double chevron; it is swapped for the
+   stroked chevrons of the site's icon set (Feather, 1.5 stroke), drawn
+   as a mask so it takes the tone of its state, one drawing per
+   direction. */
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"] svg,
+.theme-doc-sidebar-container [class*="expandButton_"] svg {
+  display: none !important;
+}
+
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"]::before,
+.theme-doc-sidebar-container [class*="expandButton_"]::before {
+  content: "";
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: var(--text-tertiary);
+  -webkit-mask: var(--chevrons) center / contain no-repeat;
+  mask: var(--chevrons) center / contain no-repeat;
+  transition: background-color 0.2s var(--ease-out);
+}
+
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"] {
+  --chevrons: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 17l-5-5 5-5M18 17l-5-5 5-5'/%3E%3C/svg%3E");
+}
+
+.theme-doc-sidebar-container [class*="expandButton_"] {
+  --chevrons: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 17l5-5-5-5M6 17l5-5-5-5'/%3E%3C/svg%3E");
+}
+
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"]:hover::before,
+.theme-doc-sidebar-container [class*="collapseSidebarButton_"]:focus-visible::before,
+.theme-doc-sidebar-container [class*="expandButton_"]:hover::before,
+.theme-doc-sidebar-container [class*="expandButton_"]:focus-visible::before {
+  background: var(--accent);
+}
+
+@media (min-width: 997px) {
+  /* "Collapse sidebar" as a full-width 44px row at the sidebar's foot,
+     its chevron leading. The theme pins this button to display: block
+     with a layered !important, which no unlayered rule can outrank, so
+     chevron and label sit inline on one centred line instead of in a
+     flex row. */
+  .theme-doc-sidebar-container [class*="collapseSidebarButton_"] {
+    height: 44px;
+    padding: 0 16px;
+    border-width: 1px 0 0 !important;
+    line-height: 42px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .theme-doc-sidebar-container [class*="collapseSidebarButton_"]::after {
+    content: "Collapse sidebar";
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+
+  /* Collapsed: the strip shows its chevron with "Expand sidebar" set
+     vertically beneath it, in the middle of the screen. */
+  .theme-doc-sidebar-container [class*="expandButton_"] {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .theme-doc-sidebar-container [class*="expandButton_"]::after {
+    content: "Expand sidebar";
+    writing-mode: vertical-rl;
+    line-height: 1;
+  }
+}
+
+/* On touch screens the collapsed strip is a 44px target, not 30px. */
+@media (min-width: 997px) and (pointer: coarse) {
+  html:root {
+    --doc-sidebar-hidden-width: 44px;
+  }
 }
 
 /* ─── Reduced motion ───────────────────────────────────────────────── */
+/* Movement goes; feedback stays. Keyframe animations land on their end
+   state, and transitions keep only colour and opacity, so hover and
+   focus still fade in instead of snapping, while nothing slides, lifts
+   or nudges. (The landing's planet scene holds a still frame itself.) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-property: color, background-color, border-color,
+      text-decoration-color, outline-color, opacity !important;
   }
   html {
     scroll-behavior: auto;
@@ -1227,5 +2992,851 @@ a[class*="tag_"]:hover,
 .doc-dateline__date {
   color: var(--text-secondary);
   font-weight: 500;
-  font-variant-numeric: tabular-nums;
+}
+/* Phones: a date from the build's own year drops ", 2026" from view
+   (still read out), so both dates and "N min read" fit one line. */
+@media (max-width: 996px) {
+  .doc-dateline__year {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+/* A time-bound page past its threshold (DocItem/Content: "Updated 11
+   weeks ago; …"): a line of its own under the dates, in the label's
+   tone, free to wrap on a phone. */
+.doc-dateline__item.doc-dateline__stale {
+  flex-basis: 100%;
+  white-space: normal;
+  color: var(--text-tertiary);
+}
+
+/* Phone and tablet: one compact line, "May 12, 2026 · Updated Jul 5,
+   2026 · 6 min read". The first date needs no label to read as the
+   publish date, so "Published" stays for screen readers only. Middots
+   are silent (empty alt text). */
+@media (max-width: 996px) {
+  .doc-dateline {
+    gap: 0.25rem 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8125rem;
+  }
+  .doc-dateline__item + .doc-dateline__item::before {
+    content: '·' / '';
+    margin-right: 0.1rem;
+    color: var(--text-tertiary);
+  }
+  .doc-dateline__item.doc-dateline__stale::before {
+    content: none;
+  }
+  .doc-dateline__item:first-child > .doc-dateline__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* "6 min read" keeps "read" wherever it fits on the line. The reading
+   time takes the line's leftover room (it counts as only "6 min" when
+   the line decides where to break), and "read" is a second item that
+   wraps inside it, onto a clipped second row, only when that room runs
+   short (the narrowest phones with two dates). Clipped, not hidden: it
+   is still read out. */
+@media (max-width: 996px) {
+  .doc-dateline__item:has(> span > .doc-dateline__suffix) {
+    flex: 1 1 0;
+  }
+  .doc-dateline__item > span:has(> .doc-dateline__suffix) {
+    display: inline-flex;
+    flex-wrap: wrap;
+    min-width: min-content;
+    height: 1lh;
+    overflow: clip;
+  }
+  .doc-dateline__suffix {
+    margin-left: 0.25em;
+  }
+}
+
+/* ─── Back to top ───────────────────────────────────────────────────── */
+/* The theme's button, in the system: a 44px square with 12px corners
+   on the card surface behind a Rule hairline, the site's drawn arrow in
+   the secondary tone, accent on hover. Flat at night, the daylight lift
+   in light. It appears with a short rise rather than the stock zoom. On
+   phones and tablets it steps aside while a code block passes beneath
+   it, so it never sits over code or a block's copy and wrap buttons
+   (DocItem/Content sets html[data-top-over-code]). */
+[class*="backToTopButton_"] {
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  background-color: var(--bg-surface);
+  box-shadow: none;
+  transform: translateY(8px);
+  transition:
+    opacity 0.3s var(--ease-out),
+    transform 0.3s var(--ease-out),
+    visibility 0.3s,
+    border-color 0.2s var(--ease-out);
+}
+
+[data-theme="light"] [class*="backToTopButton_"] {
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 14px 32px -18px rgba(15, 23, 42, 0.22);
+}
+
+[class*="backToTopButton_"]::after {
+  display: block;
+  -webkit-mask: var(--icon-arrow) center / 18px 18px no-repeat;
+  mask: var(--icon-arrow) center / 18px 18px no-repeat;
+  background-color: var(--text-secondary);
+  transform: rotate(-90deg);
+  transition: background-color 0.2s var(--ease-out);
+}
+
+@media (hover: hover) {
+  [class*="backToTopButton_"]:hover {
+    background-color: var(--bg-surface);
+    border-color: var(--border-active);
+  }
+
+  [class*="backToTopButton_"]:hover::after {
+    background-color: var(--accent);
+  }
+}
+
+[class*="backToTopButtonShow_"] {
+  transform: none;
+}
+
+/* Phones and tablets: shown only after the reader, more than two screens
+   down, scrolls back up; a scroll down puts it away (DocItem/Content
+   sets html[data-top-wanted] under html[data-top-gate]). */
+@media (max-width: 996px) {
+  html[data-top-over-code] [class*="backToTopButtonShow_"],
+  html[data-top-gate]:not([data-top-wanted]) [class*="backToTopButtonShow_"] {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="backToTopButton_"],
+  html[data-top-over-code] [class*="backToTopButtonShow_"],
+  html[data-top-gate]:not([data-top-wanted]) [class*="backToTopButtonShow_"] {
+    transform: none;
+    transition: opacity 0.01s, visibility 0.01s;
+  }
+}
+
+/* ─── Print ─────────────────────────────────────────────────────────── */
+/* A printed guide is the article alone: no chrome, daylight ink on
+   white paper whatever the screen theme, the light diagram, and the URL
+   written after each external link. */
+@media print {
+  html[data-theme] {
+    color-scheme: light;
+    --bg-void: #ffffff;
+    --bg-primary: #ffffff;
+    --bg-surface: #ffffff;
+    --bg-elevated: #f1f5f9;
+    --border-subtle: #e2e8f0;
+    --border-medium: #cbd5e1;
+    --accent: #0e7490;
+    --accent-ink: #0b5d73;
+    --accent-dim: #ecfeff;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-tertiary: #475569;
+    --ifm-background-color: #ffffff;
+  }
+
+  .navbar,
+  .footer,
+  .theme-doc-sidebar-container,
+  .theme-doc-toc-desktop,
+  .theme-doc-toc-mobile,
+  .theme-doc-breadcrumbs,
+  .pagination-nav,
+  .mermaid-zoom-affordance,
+  [class*="skipToContent"],
+  [class*="backToTopButton"],
+  [class*="collapseSidebarButton"],
+  .theme-code-block [class*="buttonGroup"] {
+    display: none !important;
+  }
+
+  /* Paper can't scroll sideways: long lines wrap instead. */
+  .theme-code-block pre,
+  .theme-code-block code {
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere;
+  }
+
+  html[data-theme] img.mermaid-diagram--dark {
+    display: none;
+  }
+
+  html[data-theme] img.mermaid-diagram--light {
+    display: block;
+  }
+
+  /* A printed diagram is centred in its card (the screen's scroll offset
+     and left-aligned light image don't apply to paper) and at most 40%
+     of a page tall, so it and the heading kept with it still fit under
+     an intro on A4 and Letter: at full height the pair jumped to page 2
+     and left page 1 ~70% blank. Labels stay about 7pt or larger. */
+  .mermaid-zoom-wrap {
+    overflow: visible !important;
+  }
+
+  html[data-theme] .mermaid-zoom-wrap img.mermaid-diagram--light {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 40vh;
+    margin-inline: auto;
+  }
+
+  /* A dark-theme screen leaks its light note text onto white paper. */
+  .theme-admonition {
+    --ifm-alert-foreground-color: var(--text-primary);
+    color: var(--text-primary);
+  }
+
+  /* The section dot hangs from the rule instead of straddling it: half
+     a dot above a heading that starts a page printed at the foot of the
+     page before. */
+  article .markdown > h2::before {
+    top: -1px;
+  }
+
+  article .markdown > * {
+    max-width: none;
+  }
+
+  article .markdown a[href^="http"]:is(:not([class]), [class=""])::after {
+    content: " (" attr(href) ")";
+    width: auto;
+    height: auto;
+    background: none;
+    -webkit-mask: none;
+    mask: none;
+    opacity: 1;
+    font-size: 0.8em;
+    color: var(--text-tertiary);
+  }
+
+  article .markdown :is(h2, h3, h4) {
+    break-after: avoid;
+  }
+
+  /* A lead-in stays with what it leads into: "Stack." over its list,
+     "append to the linux line:" over its code. CSS can't see a
+     paragraph's text, so the test is what follows it: a paragraph
+     right before a list, a code block, a table or a diagram is the one
+     that introduces it, and it never ends a page. */
+  article .markdown p:has(+ :is(ul, ol, table, .theme-code-block, .mermaid-zoom-wrap, figure)) {
+    break-after: avoid;
+  }
+
+  .mermaid-zoom-wrap,
+  .theme-code-block,
+  figure {
+    break-inside: avoid;
+  }
+}
+
+/* ─── Search ──────────────────────────────────────────────────────────
+   @easyops-cn/docusaurus-search-local, restyled in the system. Its
+   classes are CSS-module names whose hash differs between dev and the
+   build, so they are matched as [class*="name_"]. "html" in front of a
+   selector lifts it over the plugin's own dark-theme rules.
+
+   Desktop: a hairline field in the bar with a quiet Ctrl K hint ("/" at
+   laptop widths; none on touch screens).
+   Below 997px: the field collapses to a 44px search control at the right
+   of the bar (still the same labelled combobox); focusing it opens a
+   full-width field over the bar, and blur or Esc folds it back.
+   The clear control is named in src/theme/SearchBar (wrapper swizzle);
+   the placeholder and empty-state copy live in i18n/en/code.json. */
+.search-shell {
+  display: contents;
+}
+
+/* autocomplete.js keeps a hidden <pre> beside the input to measure the
+   query for its inline hint (off here). It is laid out at the query's
+   width and pushed the page sideways on phones; nothing reads it now. */
+.navbar__search [class*="searchBar_"] > pre {
+  display: none;
+}
+
+.navbar__search {
+  --search-local-modal-background: var(--bg-surface);
+  --search-local-modal-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55);
+  --search-local-modal-width: 30rem;
+  --search-local-spacing: 0;
+  --search-local-hit-background: transparent;
+  --search-local-hit-shadow: none;
+  --search-local-hit-color: var(--text-primary);
+  --search-local-hit-height: 52px;
+  --search-local-highlight-color: var(--accent);
+  --search-local-hit-active-color: var(--text-primary);
+  --search-local-muted-color: var(--text-tertiary);
+  --search-local-icon-stroke-width: 1.5;
+  --search-local-input-active-border-color: var(--accent);
+  --search-local-loading-icon-opacity: 1;
+  --search-load-loading-icon-color: var(--text-tertiary);
+  --ifm-navbar-search-input-background-color: var(--bg-surface);
+  --ifm-navbar-search-input-color: var(--text-tertiary);
+  --ifm-navbar-search-input-placeholder-color: var(--text-tertiary);
+  font-family: var(--font-body);
+}
+
+[data-theme="light"] .navbar__search {
+  --search-local-modal-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+    0 18px 40px -18px rgba(15, 23, 42, 0.28);
+}
+
+html .navbar__search[class*="searchBarContainer_"] {
+  margin-left: 0;
+}
+
+/* The field. */
+html .navbar .navbar__search .navbar__search-input {
+  width: 15.5rem;
+  height: 36px;
+  padding: 0 4.25rem 0 2.25rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  caret-color: var(--accent);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: 10px;
+  text-overflow: ellipsis;
+  transition:
+    border-color 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out);
+}
+
+html .navbar .navbar__search .navbar__search-input::placeholder {
+  color: var(--text-tertiary);
+  opacity: 1;
+}
+
+html .navbar .navbar__search .navbar__search-input:hover {
+  border-color: var(--border-active);
+}
+
+html .navbar .navbar__search .navbar__search-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: var(--border-medium);
+}
+
+/* While the field holds a query the hint gives way to the clear control. */
+html .navbar .navbar__search .navbar__search-input:not(:placeholder-shown) {
+  padding-right: 2.75rem;
+}
+
+.navbar__search [class*="searchIcon_"] {
+  left: 0.75rem;
+  width: 15px;
+  height: 15px;
+  color: var(--text-tertiary);
+}
+
+/* First use: while the index loads, the plugin swaps the magnifier for
+   its loading ring. The ring takes the magnifier's slot (same centre,
+   16px), centred by inset and auto margins: the plugin's own `top: 6px`
+   outranked a top: 50% here, so the ring sat as a clipped arc on the
+   field's top edge. One arc on a hairline track turns slowly; without
+   motion it holds still. The wrapper (src/theme/SearchBar) announces
+   "Loading search…" once. */
+html .navbar__search [class*="searchBarLoadingRing_"] {
+  top: 0;
+  bottom: 0;
+  left: calc(0.75rem - 0.5px);
+  width: 16px;
+  height: 16px;
+  margin: auto 0;
+  pointer-events: none;
+}
+
+html .navbar__search [class*="searchBarLoadingRing_"] > div {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 1.5px solid var(--border-medium);
+  border-top-color: var(--text-secondary);
+  animation: search-ring 0.9s linear infinite;
+}
+
+html .navbar__search [class*="searchBarLoadingRing_"] > div + div {
+  display: none;
+}
+
+@keyframes search-ring {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Shortcut hint: two quiet keycaps in the body face. */
+.navbar__search [class*="searchHintContainer_"] {
+  right: 8px;
+  gap: 3px;
+}
+
+html .navbar__search [class*="searchHint_"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: capitalize;
+  color: var(--text-tertiary);
+  background: transparent;
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+/* Clear control: the plugin's "✕" text is hidden (the wrapper names the
+   button) and a drawn cross takes its place, on a 32px target. */
+html .navbar__search [class*="searchClearButton_"] {
+  right: 4px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  line-height: 0;
+  color: var(--text-tertiary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+html .navbar__search [class*="searchClearButton_"]::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M4 4l8 8M12 4l-8 8'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M4 4l8 8M12 4l-8 8'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+html .navbar__search [class*="searchClearButton_"]:hover {
+  color: var(--accent-ink);
+  background: var(--accent-dim);
+}
+
+html .navbar__search [class*="searchClearButton_"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Results panel: a raised surface (it answers the pointer, so it may
+   carry the navbar dropdown's soft shadow) of hairline rows. */
+html .navbar__search [class*="dropdownMenu_"] {
+  margin-top: 8px;
+  padding: 0;
+  max-height: min(34rem, calc(100vh - 96px));
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
+/* Each row: the plugin's suggestion element around the wrapper's own
+   content (src/theme/SearchBar, rowTemplate), which may run to three
+   lines, so the plugin's fixed height becomes a floor. */
+html .navbar__search [class*="dropdownMenu_"] [class*="suggestion_"] {
+  gap: 10px;
+  height: auto;
+  min-height: var(--search-local-hit-height);
+  margin: 0;
+  padding: 0 14px;
+  border-radius: 0;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-body);
+  transition: background-color 0.2s var(--ease-out);
+}
+
+html .navbar__search [class*="dropdownMenu_"] [class*="suggestion_"]:first-child {
+  border-top: 0;
+}
+
+html .navbar__search [class*="dropdownMenu_"] [class*="suggestion_"][class*="cursor_"] {
+  background-color: var(--accent-dim);
+}
+
+/* "See all results": the panel's last row, a link to /search. */
+html .navbar__search [class*="hitFooter_"] {
+  margin: 0;
+  text-align: left;
+  font-size: 0.8125rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+html .navbar__search [class*="hitFooter_"] a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  transition:
+    color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+html .navbar__search [class*="hitFooter_"] a::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8h10M8.5 3.5L13 8l-4.5 4.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8h10M8.5 3.5L13 8l-4.5 4.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.3s var(--ease-out);
+}
+
+html .navbar__search [class*="hitFooter_"] a:hover {
+  color: var(--accent-ink);
+  background: var(--accent-dim);
+}
+
+html .navbar__search [class*="hitFooter_"] a:hover::after {
+  transform: translateX(2px);
+}
+
+html .navbar__search [class*="hitFooter_"] a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 0 0 11px 11px;
+}
+
+/* No results. */
+html .navbar__search [class*="noResults_"] {
+  flex-direction: row;
+  gap: 10px;
+  padding: 16px 14px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+html .navbar__search [class*="noResultsIcon_"] {
+  flex: none;
+  margin: 0;
+  color: var(--text-tertiary);
+}
+
+html .navbar__search [class*="noResultsIcon_"] svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* Laptop widths: a shorter field, so the bar keeps the whole wordmark
+   and every item on one line. The keycaps would crowd the placeholder,
+   so they go; Ctrl K still works and is announced on the field. */
+@media (min-width: 997px) and (max-width: 1199px) {
+  [class*="navbarSearchContainer_"] {
+    padding: 0 6px;
+  }
+
+  html .navbar .navbar__search .navbar__search-input {
+    width: 12.25rem;
+    padding: 0 12px 0 34px;
+  }
+
+  html .navbar__search [class*="searchHintContainer_"] {
+    display: none;
+  }
+}
+
+/* Touch-first screens get no keycaps: there is no keyboard to press. */
+@media (hover: none) and (min-width: 997px), (pointer: coarse) and (min-width: 997px) {
+  .navbar__search [class*="searchHintContainer_"] {
+    display: none;
+  }
+
+  html .navbar .navbar__search .navbar__search-input {
+    padding-right: 10px;
+  }
+}
+
+@media (pointer: coarse) and (min-width: 997px) {
+  html .navbar .navbar__search .navbar__search-input {
+    height: 44px;
+  }
+}
+
+/* Below 997px: a 44px search control at the right of the bar. */
+@media (max-width: 996px) {
+  /* 16px from the edge, so the 44px target clears the full wordmark at
+     360px. */
+  [class*="navbarSearchContainer_"] {
+    right: max(16px, env(safe-area-inset-right));
+  }
+
+  html .navbar .navbar__search .navbar__search-input,
+  html .navbar .navbar__search .navbar__search-input:not(:placeholder-shown) {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: transparent;
+    background: transparent;
+    border-color: transparent;
+    cursor: pointer;
+  }
+
+  html .navbar .navbar__search .navbar__search-input::placeholder {
+    color: transparent;
+  }
+
+  html .navbar .navbar__search .navbar__search-input:hover {
+    border-color: transparent;
+    background: var(--accent-dim);
+  }
+
+  .navbar__search [class*="searchIcon_"] {
+    left: 14px;
+    width: 16px;
+    height: 16px;
+    color: var(--text-secondary);
+  }
+
+  html .navbar__search [class*="searchBarLoadingRing_"] {
+    left: 14px;
+  }
+
+  .navbar__search [class*="searchHintContainer_"],
+  .navbar__search:not(:focus-within) [class*="searchClearButton_"] {
+    display: none;
+  }
+
+  /* The clear control follows focus alone. Under 577px the plugin also
+     hides it the moment the field's React "focused" state drops, which
+     is mid-Tab, so Tab out of a filled field landed nowhere. And it is
+     a 44px target here, the field's full height. */
+  html .navbar__search[class*="searchBarContainer_"] [class*="searchClearButton_"] {
+    display: inline-flex;
+    right: 0;
+    width: 44px;
+    height: 44px;
+  }
+
+  html .navbar__search[class*="searchBarContainer_"]:not(:focus-within) [class*="searchClearButton_"] {
+    display: none;
+  }
+
+  /* Open: the field takes the whole bar, over the brand and the menu
+     button, and the results hang under it at full width. */
+  [class*="navbarSearchContainer_"]:focus-within:not([data-search-folded]) {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+    background: var(--bg-void);
+    animation: search-bar-open 0.4s var(--ease-out);
+  }
+
+  [class*="navbarSearchContainer_"]:focus-within:not([data-search-folded]) .navbar__search,
+  [class*="navbarSearchContainer_"]:focus-within:not([data-search-folded]) [class*="searchBar_"] {
+    display: block !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Cancel: the visible way out of the open field, beside it, a 44px
+     text button in the accent's ink (src/theme/SearchBar). */
+  [class*="navbarSearchContainer_"]:focus-within:not([data-search-folded]) .search-cancel {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    min-height: 44px;
+    margin-right: -8px;
+    padding: 0 8px 0 12px;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--accent-ink);
+    background: none;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* Folded by Cancel or Esc: the control keeps focus, so its ring shows
+     on the 44px square; the results stay shut until the reader types. */
+  [data-search-folded] [class*="dropdownMenu_"] {
+    display: none !important;
+  }
+
+  html .navbar [class*="navbarSearchContainer_"]:focus-within:not([data-search-folded]) .navbar__search-input {
+    width: 100%;
+    padding: 0 2.75rem 0 2.5rem;
+    color: var(--text-primary);
+    background: var(--bg-surface);
+    border-color: var(--border-medium);
+    cursor: text;
+  }
+
+  html .navbar [class*="navbarSearchContainer_"]:focus-within:not([data-search-folded]) .navbar__search-input::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  /* The results: a sheet of the page's own ground from edge to edge,
+     straight under the bar, ruled off by hairlines and scrolling inside
+     itself. Fixed, not absolute: the field's own box sits between the
+     gutter and Cancel, and the panel took that narrower width, so page
+     text showed at its right edge. The bar stays shown while the field
+     has focus (hideOnScroll yields to focus-within), so its height is
+     the offset. */
+  html .navbar__search [class*="dropdownMenu_"] {
+    position: fixed !important;
+    top: var(--ifm-navbar-height) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: auto;
+    max-width: none;
+    max-height: calc(100dvh - var(--ifm-navbar-height));
+    margin-top: 0;
+    border: 0;
+    border-bottom: 1px solid var(--border-subtle);
+    border-radius: 0;
+  }
+
+  /* Ground and shadow through the plugin's variables: its dark-theme
+     rule outranks a plain declaration ([data-theme] to outrank the
+     light theme's shadow above). The sheet's foot met live page text
+     with only a hairline between, so the page under it is dimmed: a
+     scrim drawn as the sheet's own spread shadow, clipped at its top
+     edge so the bar stays clear. Light adds a short soft shadow at the
+     foot, since a dimmed light page alone reads as grey, not "behind". */
+  [data-theme] .navbar__search {
+    --search-local-modal-background: var(--bg-void);
+    --search-local-modal-shadow: 0 0 0 100vmax rgba(2, 4, 8, 0.62);
+  }
+
+  [data-theme="light"] .navbar__search {
+    --search-local-modal-shadow: 0 10px 24px -10px rgba(15, 23, 42, 0.3),
+      0 0 0 100vmax rgba(15, 23, 42, 0.18);
+  }
+
+  html .navbar__search [class*="dropdownMenu_"] {
+    clip-path: inset(0 0 -100vmax 0);
+  }
+
+  html .navbar__search [class*="dropdownMenu_"] [class*="suggestion_"],
+  html .navbar__search [class*="hitFooter_"] a,
+  html .navbar__search [class*="noResults_"] {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  html .navbar__search [class*="hitFooter_"] a:focus-visible {
+    border-radius: 0;
+  }
+
+  html .navbar__search [class*="dropdownMenu_"] [class*="suggestion_"] {
+    --search-local-hit-height: 56px;
+  }
+}
+
+@keyframes search-bar-open {
+  from {
+    clip-path: inset(0 0 0 calc(100% - 64px));
+    opacity: 0.4;
+  }
+  to {
+    clip-path: inset(0 0 -100vh 0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="navbarSearchContainer_"]:focus-within:not([data-search-folded]),
+  html .navbar__search [class*="searchBarLoadingRing_"] > div {
+    animation: none;
+  }
+}
+
+/* The /search page (src/theme/SearchPage): the same field at page
+   size. The results are styled in that folder's CSS module. */
+.container:has(input[class*="searchQueryInput_"]) {
+  max-width: 48rem;
+  /* Results arrive after the index loads; holding a screen's height keeps
+     the footer below the fold so they don't push it (layout shift). */
+  min-height: calc(100vh - var(--ifm-navbar-height));
+}
+
+input[class*="searchQueryInput_"] {
+  height: 52px;
+  margin-bottom: 0.75rem;
+  padding: 0 1rem 0 2.75rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-primary);
+  caret-color: var(--accent);
+  background: var(--bg-surface)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%238794ab' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='7' cy='7' r='4.75'/%3E%3Cpath d='M10.5 10.5L14 14'/%3E%3C/svg%3E")
+    1rem center / 16px no-repeat;
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  transition: border-color 0.25s var(--ease-out);
+}
+
+[data-theme="light"] input[class*="searchQueryInput_"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%234f5b6e' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='7' cy='7' r='4.75'/%3E%3Cpath d='M10.5 10.5L14 14'/%3E%3C/svg%3E");
+}
+
+input[class*="searchQueryInput_"]:hover {
+  border-color: var(--border-active);
+}
+
+input[class*="searchQueryInput_"]:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+input[class*="searchQueryInput_"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--text-tertiary);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M4 4l8 8M12 4l-8 8'/%3E%3C/svg%3E") center / contain no-repeat;
+  cursor: pointer;
 }

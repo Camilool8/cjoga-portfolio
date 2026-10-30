@@ -3,6 +3,7 @@
 
 import React from "react";
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./styles.module.css";
 
 export default function AuthorCard() {
@@ -10,25 +11,34 @@ export default function AuthorCard() {
     <aside className={styles.card} aria-label="About the author">
       <img
         className={styles.avatar}
-        src="https://avatars.githubusercontent.com/u/73915896?v=4"
-        alt="Jose Camilo Joga Guerrero"
+        src={useBaseUrl("/img/camilo-avatar.webp")}
+        alt=""
         width="80"
         height="80"
-        loading="lazy"
+        decoding="async"
       />
       <div className={styles.body}>
         <p className={styles.name}>
-          <span className={styles.muted}>Written by</span> Jose Camilo Joga
+          <span className={styles.muted}>Written by</span> José Camilo Joga
           Guerrero
         </p>
         <p className={styles.bio}>
-          Platform &amp; DevOps Engineer, Dominican&ndash;US dual citizen. I run{" "}
+          Senior Platform &amp; DevOps Engineer, Dominican&ndash;US dual citizen. I run{" "}
           <code>cjoga.cloud</code> on a 6-node K3s cluster split across Proxmox
-          and bare metal, and write here when something&apos;s worth sharing.
+          and bare metal, and write here when something’s worth sharing.
         </p>
         <div className={styles.links}>
-          <Link to="https://cjoga.cloud" className={styles.link}>
+          <Link to="https://cjoga.cloud" target="_self" className={styles.link}>
             Portfolio
+          </Link>
+          {/* The CV is generated on the portfolio: this lands on the
+              section with its "Download CV" button, not on a file. */}
+          <Link
+            to="https://cjoga.cloud/#contact"
+            target="_self"
+            className={styles.link}
+          >
+            CV on cjoga.cloud
           </Link>
           <Link to="https://github.com/Camilool8" className={styles.link}>
             GitHub

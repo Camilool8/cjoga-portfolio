@@ -62,18 +62,24 @@
   font-weight: 500;
 }
 
+/* The article-end route back to the portfolio: these read as links,
+   like every other link in running text. */
 .link {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: var(--text-secondary);
-  text-decoration: none;
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
   transition: color 0.2s var(--ease-out);
 }
 
 .link:hover {
-  color: var(--accent);
-  text-decoration: none;
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 @media (max-width: 600px) {
@@ -84,5 +90,14 @@
   .avatar {
     width: 56px;
     height: 56px;
+  }
+}
+
+/* Not on paper: the printed page ends on its last section. The card
+   alone often spilled onto a page of its own, and the page's URL, which
+   the browser prints in the footer, already says whose page it is. */
+@media print {
+  .card {
+    display: none;
   }
 }
