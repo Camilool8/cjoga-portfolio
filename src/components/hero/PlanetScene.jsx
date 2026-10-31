@@ -475,11 +475,18 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
       }
     };
 
-    // Every frame, on every device: motion is time-based, and half-rate
+    // Every frame on a 60Hz display: motion is time-based, and half-rate
     // rendering read as stutter. Low-power devices draw fewer points
-    // instead (stars, globe dots, capped DPR).
+    // instead (stars, globe dots, capped DPR). High-refresh displays skip
+    // a frame when the last draw was under 10ms ago: 120Hz draws at 60,
+    // 144Hz at 72. Motion this slow gains nothing above that, and every
+    // draw is GPU-process work that every other tab shares.
+    let drawn = -Infinity;
     const loop = (now) => {
-      frame(now);
+      if (now - drawn >= 10) {
+        drawn = now;
+        frame(now);
+      }
       raf = visible && !document.hidden ? requestAnimationFrame(loop) : null;
     };
     const play = () => {

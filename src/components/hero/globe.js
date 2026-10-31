@@ -204,7 +204,8 @@ export function drawGlobeDots(ctx, globe, { R, cx, cy, lightX, lightY, W = Infin
     }
   }
 
-  // Pass 2: one fillStyle per bucket.
+  // Pass 2: one path and one fill per bucket. Thousands of fillRect calls
+  // were thousands of draw ops a frame; a bucket's rects in one path is one.
   const landSize = Math.max(1.3, Math.min(2.4, R / 230));
   let at = 0;
   for (let key = 0; key < BUCKETS * 2; key += 1) {
@@ -215,17 +216,19 @@ export function drawGlobeDots(ctx, globe, { R, cx, cy, lightX, lightY, W = Infin
     ctx.fillStyle = isLand
       ? rgba(accent, 0.12 + 0.78 * k)
       : rgba(ink, (light ? 0.1 : 0.08) * k + 0.03);
+    ctx.beginPath();
     for (; at < end; at += 1) {
       const i = sorted[at];
       const x = buf[i * 3];
       const y = buf[i * 3 + 1];
       if (isLand) {
         const s = landSize * (0.55 + 0.45 * buf[i * 3 + 2]);
-        ctx.fillRect(x - s / 2, y - s / 2, s, s);
+        ctx.rect(x - s / 2, y - s / 2, s, s);
       } else {
-        ctx.fillRect(x - 0.6, y - 0.6, 1.2, 1.2);
+        ctx.rect(x - 0.6, y - 0.6, 1.2, 1.2);
       }
     }
+    ctx.fill();
   }
 }
 
