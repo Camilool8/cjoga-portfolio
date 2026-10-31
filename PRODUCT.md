@@ -55,7 +55,7 @@ The site is itself the proof. It runs on KodePull's on-prem K3s cluster, which h
 - Photo: `public/images/camilo.webp`.
 - CV PDF: `src/components/ProfessionalPDFCV.jsx`.
 - Employer marks (Globant, KodePull, FL Betances, Arctiq) sit on the experience timeline as identification, the way LinkedIn shows them: `public/images/logos/`.
-- Education: Computer Science Engineering, PUCMM (2019–2024); Tech MBA (Máster Universitario en Dirección y Administración de Empresas), UNIR, October 2026 – October 2027.
+- Education: Computer Science Engineering, Pontificia Universidad Católica Madre y Maestra (PUCMM) (2019–2024); Master in Business Administration (Tech MBA), Universidad Internacional de La Rioja (UNIR), October 2026 – October 2027. English surfaces use the English degree name; the Spanish CV uses UNIR's official "Máster Universitario en Dirección y Administración de Empresas (Tech MBA)". Institutions read full name first, then the acronym.
 - **Absent, do not fabricate:** testimonials, employer or client logos used as endorsements, uptime figures, traffic numbers, and any metric not already in the copy.
 
 ## Product Principles

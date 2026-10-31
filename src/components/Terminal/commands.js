@@ -62,7 +62,7 @@ function buildResumeText(t) {
 
   ${t("terminal.messages.resumeEducation")}
   ---------
-  * Tech MBA (Máster Universitario en Dirección y Administración de Empresas), UNIR  // Oct 2026 - Oct 2027, in progress
+  * Master in Business Administration (Tech MBA), Universidad Internacional de La Rioja (UNIR)  // Oct 2026 - Oct 2027, in progress
   * Computer Science Engineering, PUCMM  // 2019 - 2024
 
   ${t("terminal.messages.resumeSkills")}
