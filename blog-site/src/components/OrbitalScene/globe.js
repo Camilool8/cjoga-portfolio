@@ -152,7 +152,9 @@ const BUCKETS = 6;
 
 // Surface dots. Clipped to the disc by the caller. Two passes over
 // preallocated buffers (count, then place) so a frame allocates nothing.
-export function drawGlobeDots(ctx, globe, { R, cx, cy, lightX, lightY }, t, accent, ink, light) {
+// W, H: the canvas in CSS px; dots outside it are dropped before they
+// are drawn (the horizon's sphere runs well past its frame).
+export function drawGlobeDots(ctx, globe, { R, cx, cy, lightX, lightY, W = Infinity, H = Infinity }, t, accent, ink, light) {
   const rot = rotator(t, globe.tilt);
   const v = [0, 0, 0];
   let lx = lightX;
@@ -173,14 +175,20 @@ export function drawGlobeDots(ctx, globe, { R, cx, cy, lightX, lightY }, t, acce
       order[i] = -1;
       continue;
     }
+    const x = cx + v[0] * R;
+    const y = cy - v[1] * R;
+    if (x < -3 || x > W + 3 || y < -3 || y > H + 3) {
+      order[i] = -1;
+      continue;
+    }
     const day = Math.max(0, v[0] * lx + v[1] * ly + v[2] * lz);
     const shade = 0.22 + 0.78 * day; // night side keeps a faint glow
     const b = Math.min(BUCKETS - 1, Math.floor(shade * Math.sqrt(v[2]) * BUCKETS));
     const key = (land[i] ? BUCKETS : 0) + b;
     order[i] = key;
     counts[key] += 1;
-    buf[i * 3] = cx + v[0] * R;
-    buf[i * 3 + 1] = cy - v[1] * R;
+    buf[i * 3] = x;
+    buf[i * 3 + 1] = y;
     buf[i * 3 + 2] = v[2];
   }
 

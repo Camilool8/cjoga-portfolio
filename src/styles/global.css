@@ -367,6 +367,15 @@ button:focus-visible {
   }
 }
 
+/* The language menu opens inside the glass nav pill, which is a
+   backdrop root: a backdrop-filter here could only blur the pill, not
+   the page, so at glass opacity the hero showed through it sharp. A
+   near-solid surface instead. */
+.lang-menu {
+  background: color-mix(in srgb, var(--bg-surface) 96%, transparent);
+  border: 1px solid var(--border-subtle);
+}
+
 /* ============================================================
    SCROLL REVEAL ANIMATIONS
    ============================================================ */
@@ -464,11 +473,18 @@ button:focus-visible {
   }
 }
 
+/* The scene fades in as the app mounts, when its canvases first draw:
+   no --hero-t, since the snapshot's canvases are blank. `scale` rather
+   than transform, which framer drives for the scroll parallax. */
 .hero-scene {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
+  animation: hScene 2.2s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+@keyframes hScene {
+  from { opacity: 0; scale: 0.96; }
 }
 
 .planet-scene {
