@@ -269,7 +269,7 @@ function NavigationBar({ theme, toggleTheme }) {
               <div
                 role="listbox"
                 aria-label={languageSelectorLabel}
-                className="absolute right-0 mt-2 glass rounded-xl overflow-hidden shadow-lg"
+                className="absolute right-0 mt-2 lang-menu rounded-xl overflow-hidden shadow-lg"
                 style={{ minWidth: "120px" }}
               >
                 {SUPPORTED_LANGUAGES.map((lang) => (
