@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { m } from "framer-motion";
-import { FaAws, FaMicrosoft, FaVuejs, FaServer } from "react-icons/fa";
+import { FaAws, FaVuejs, FaServer } from "react-icons/fa";
+import { VscAzure, VscAzureDevops } from "react-icons/vsc";
 import {
   SiGitlab,
   SiKubernetes,
@@ -54,12 +55,12 @@ const projects = [
   },
   {
     key: "iac",
-    link: "inspyr",
+    link: "flBetances",
     span: "",
-    color: "#7f4dff",
+    color: "#7b42bc",
     accent: "#b08aff",
-    icons: [SiTerraform, FaAws, FaMicrosoft],
-    caseStudy: `${HANDBOOK_URL}/engineering/work/inspyr-global-solutions`,
+    icons: [SiTerraform, VscAzure, VscAzureDevops],
+    caseStudy: `${HANDBOOK_URL}/engineering/work/fl-betances`,
   },
   {
     key: "monitoring",
@@ -72,21 +73,21 @@ const projects = [
   },
   {
     key: "infrastructure",
-    link: "inspyr",
+    link: "globant",
     span: "",
     color: "#0078d4",
     accent: "#5fb0ec",
-    icons: [FaMicrosoft, SiGrafana, SiArgo],
-    caseStudy: `${HANDBOOK_URL}/engineering/work/inspyr-global-solutions`,
+    icons: [VscAzure, SiGrafana, SiArgo],
+    caseStudy: `${HANDBOOK_URL}/engineering/work/globant`,
   },
   {
     key: "portal",
-    link: "inspyr",
+    link: "flBetances",
     span: "",
     color: "#41b883",
     accent: "#7ed4a6",
     icons: [FaVuejs, SiDotnet, SiArgo],
-    caseStudy: `${HANDBOOK_URL}/engineering/work/inspyr-global-solutions`,
+    caseStudy: `${HANDBOOK_URL}/engineering/work/fl-betances`,
   },
   {
     key: "containerization",

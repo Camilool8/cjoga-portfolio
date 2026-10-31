@@ -17,7 +17,7 @@ spec:
       labels:
         app: portfolio
     spec:
-      serviceAccountName: terminal-readonly
+      serviceAccountName: portfolio-terminal
       containers:
         - name: portfolio-container
           image: cjoga/portfolio:latest
@@ -67,18 +67,31 @@ spec:
       targetPort: http
   type: ClusterIP
 ---
-# 3. Traefik IngressRoute to expose the Service publicly via Cloudflare Tunnel
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+# 3. HTTPRoute on Envoy Gateway (Gateway API), as it runs in the cluster:
+# public through the Cloudflare Tunnel, internal on the VPN-only gateway.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
-  name: portfolio-public-ingress
+  name: portfolio
   namespace: web-development
 spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`cjoga.cloud`) || Host(`www.cjoga.cloud`)
-      kind: Rule
-      services:
-        - name: portfolio-svc
-          port: 80
+  hostnames:
+    - cjoga.cloud
+    - www.cjoga.cloud
+  parentRefs:
+    - { group: gateway.networking.k8s.io, kind: Gateway, name: cjoga-cloud-gateway, namespace: envoy-gateway-system, sectionName: https-apex }
+    - { group: gateway.networking.k8s.io, kind: Gateway, name: cjoga-cloud-gateway, namespace: envoy-gateway-system, sectionName: https }
+    - { group: gateway.networking.k8s.io, kind: Gateway, name: cjoga-cloud-internal-gateway, namespace: envoy-gateway-system, sectionName: https-apex }
+    - { group: gateway.networking.k8s.io, kind: Gateway, name: cjoga-cloud-internal-gateway, namespace: envoy-gateway-system, sectionName: https }
+  rules:
+    - matches:
+        - path: { type: PathPrefix, value: / }
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            set:
+              - { name: X-Frame-Options, value: DENY }
+              - { name: X-Content-Type-Options, value: nosniff }
+              - { name: Referrer-Policy, value: same-origin }
+      backendRefs:
+        - { kind: Service, name: portfolio-svc, port: 80 }

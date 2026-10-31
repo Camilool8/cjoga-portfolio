@@ -7,6 +7,7 @@ import AwardSparkleLive from "./AwardSparkleLive";
 import RedHatRadarLive from "./RedHatRadarLive";
 import GitLabPipelineLive from "./GitLabPipelineLive";
 import KubestronautRingLive from "./KubestronautRingLive";
+import SpectroProfileLive from "./SpectroProfileLive";
 
 // Mounts the heavy live-tile SVG only when the frame is on screen.
 // Every live tile (AWS, KCNA, Terraform, GitLab, etc.) ran multiple
@@ -53,6 +54,9 @@ function LiveTileFrame({ brandColor, liveTile, progress, rawColor }) {
       {inView && liveTile === "redhat" && <RedHatRadarLive color={brandColor} />}
       {inView && liveTile === "gitlab" && (
         <GitLabPipelineLive color={brandColor} />
+      )}
+      {inView && liveTile === "spectro" && (
+        <SpectroProfileLive color={brandColor} />
       )}
     </div>
   );

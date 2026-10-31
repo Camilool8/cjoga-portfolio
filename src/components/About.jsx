@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { m } from "framer-motion";
-import { FaAws, FaMicrosoft, FaDocker } from "react-icons/fa";
+import { FaAws } from "react-icons/fa";
 import {
   SiTerraform, SiAnsible, SiKubernetes, SiGitlab,
   SiJenkins, SiDynatrace, SiGithubactions,
   SiClaude, SiModelcontextprotocol, SiArgo, SiGrafana, SiOpentelemetry,
-  SiGnubash, SiAnthropic,
+  SiGnubash, SiAnthropic, SiNutanix, SiDocker,
 } from "react-icons/si";
 import SectionHeading from "./SectionHeading";
-import { VscTerminalPowershell } from "react-icons/vsc";
+import { VscTerminalPowershell, VscAzure, VscAzureDevops } from "react-icons/vsc";
 import {
   sectionVariants, itemVariants,
   useParallax, viewportConfig,
@@ -83,9 +83,9 @@ function About() {
   // stage: it runs alongside all of them.
   const stages = [
     { id: "scripting", items: [["Bash", SiGnubash, "#4eaa25"], ["PowerShell", VscTerminalPowershell, "#5391fe"]] },
-    { id: "delivery", items: [["ArgoCD", SiArgo, "#ef7b4d"], ["GitLab CI", SiGitlab, "#fc6d26"], ["GitHub Actions", SiGithubactions, "#2088ff"], ["Azure DevOps", FaMicrosoft, "#0078d4"], ["Jenkins", SiJenkins, "#d24939"]] },
-    { id: "platform", items: [["Kubernetes", SiKubernetes, "#326ce5"], ["Terraform", SiTerraform, "#7b42bc"], ["Ansible", SiAnsible, "#ee0000"], ["Docker", FaDocker, "#2496ed"]] },
-    { id: "cloud", items: [["AWS · EKS", FaAws, "#ff9900"], ["Azure · AKS", FaMicrosoft, "#0078d4"]] },
+    { id: "delivery", items: [["ArgoCD", SiArgo, "#ef7b4d"], ["GitLab CI", SiGitlab, "#fc6d26"], ["GitHub Actions", SiGithubactions, "#2088ff"], ["Azure DevOps", VscAzureDevops, "#0078d4"], ["Jenkins", SiJenkins, "#d24939"]] },
+    { id: "platform", items: [["Kubernetes", SiKubernetes, "#326ce5"], ["Terraform", SiTerraform, "#7b42bc"], ["Ansible", SiAnsible, "#ee0000"], ["Docker", SiDocker, "#2496ed"]] },
+    { id: "cloud", items: [["AWS · EKS", FaAws, "#ff9900"], ["Azure · AKS", VscAzure, "#0078d4"], ["Nutanix · NKP", SiNutanix, "#7855fa"]] },
     { id: "observability", items: [["OpenTelemetry", SiOpentelemetry, "#f5a800"], ["Grafana", SiGrafana, "#f46800"], ["Dynatrace", SiDynatrace, "#1496ff"]] },
   ];
   const agents = [["Claude Code", SiClaude, "#d97757"], ["MCP servers", SiModelcontextprotocol, "#8b8bf5"], ["Agent Skills", SiAnthropic, "#d97757"]];

@@ -1,4 +1,5 @@
 import { FaRedhat, FaAward, FaAws } from "react-icons/fa";
+import { SpectroMark } from "./liveTiles/SpectroProfileLive";
 import {
   SiDynatrace,
   SiGitlab,
@@ -7,10 +8,13 @@ import {
 } from "react-icons/si";
 
 // Bento — every tile gets a live animation. All tiles are 2 rows tall.
-//   lg (6 cols × 6 rows = 36 cells):
+//   lg (6 cols × 8 rows = 48 cells):
 //     [CNCF 3×2 — 2026]      [AWS 3×2 — 2025]
 //     [HCTA 2×2] [Dyna 2×2] [Partner 2×2]   ← 2023+
-//     [RedHat 2×2 — 2024]     [GitLab 4×2 — 2022]
+//     [RedHat 3×2 — 2024]    [Spectro 3×2 — 2026]
+//     [GitLab 6×2 — 2022]
+//   Palette has no public badge yet (Spectro Cloud's program has no
+//   verification page), so its row carries no link.
 //
 // Taglines and the Kubestronaut progress label are NOT stored here —
 // the section component translates them by `groupId`
@@ -64,7 +68,7 @@ export const CERT_GROUPS = [
     vendor: "HashiCorp",
     vendorShort: "HashiCorp",
     icon: SiTerraform,
-    color: "#7f4dff",
+    color: "#7b42bc",
     size: "standard",
     liveTile: "terraform",
     spanClasses: "md:col-span-1 md:row-span-2 lg:col-span-2",
@@ -80,7 +84,7 @@ export const CERT_GROUPS = [
     vendor: "Dynatrace",
     vendorShort: "Dynatrace",
     icon: SiDynatrace,
-    color: "#73be28",
+    color: "#1496ff",
     size: "standard",
     liveTile: "dynatrace",
     spanClasses: "md:col-span-1 md:row-span-2 lg:col-span-2",
@@ -115,7 +119,7 @@ export const CERT_GROUPS = [
     color: "#ee0000",
     size: "tall",
     liveTile: "redhat",
-    spanClasses: "md:col-span-2 md:row-span-2 lg:col-span-2",
+    spanClasses: "md:col-span-2 md:row-span-2 lg:col-span-3",
     certs: [
       {
         key: "rhcsa",
@@ -128,6 +132,19 @@ export const CERT_GROUPS = [
     ],
   },
   {
+    groupId: "spectro",
+    vendor: "Spectro Cloud",
+    vendorShort: "Spectro Cloud",
+    icon: SpectroMark,
+    // Spectro Cloud's teal (#1f7a78 in its artwork), lifted so the tile's
+    // linework reads on the dark screen.
+    color: "#2bb3a3",
+    size: "standard",
+    liveTile: "spectro",
+    spanClasses: "md:col-span-2 md:row-span-2 lg:col-span-3",
+    certs: [{ key: "spectro" }],
+  },
+  {
     groupId: "gitlab",
     vendor: "GitLab",
     vendorShort: "GitLab",
@@ -135,7 +152,7 @@ export const CERT_GROUPS = [
     color: "#fc6d26",
     size: "wide",
     liveTile: "gitlab",
-    spanClasses: "md:col-span-2 md:row-span-2 lg:col-span-4",
+    spanClasses: "md:col-span-4 md:row-span-2 lg:col-span-6",
     certs: [
       {
         key: "gitlabMigration",

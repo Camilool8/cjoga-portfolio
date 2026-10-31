@@ -25,7 +25,10 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    // Narrower top and bottom margins than the sides: the CV is two pages
+    // at its six-lines-per-role cut, with little to spare.
+    paddingHorizontal: 30,
+    paddingVertical: 22,
     fontFamily: "Roboto",
     fontSize: 10,
     lineHeight: 1.25,
@@ -134,7 +137,8 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   certItem: {
-    width: "50%",
+    width: "33.33%",
+    paddingRight: 6,
     marginBottom: 2,
     fontSize: 9,
   },
@@ -150,6 +154,29 @@ const styles = StyleSheet.create({
 // Accented spelling to match the site-wide unification; cvMetadata.name
 // (src/data.js) still carries the ASCII form used elsewhere.
 const CV_NAME = "José Camilo Joga Guerrero";
+
+// The CV prints each role's six strongest lines (the locale files order
+// them strongest first), so it stays at two pages; the site shows the
+// full record.
+const CV_LINES = 6;
+
+// Earned certifications, most recent first: the order of the handbook's
+// credentials page. CKA (in progress) prints after them with its target.
+const CV_CERTS = [
+  "spectro",
+  "ckad",
+  "kcna",
+  "hcta",
+  "awsSolutionsArchitect",
+  "rhce",
+  "rhcsa",
+  "dynatrace",
+  "partner",
+  "gitlabImplementation",
+  "gitlabServices",
+  "gitlabMigration",
+  "gitlabCicd",
+];
 
 const ProfessionalPDFCV = () => {
   const { t } = useTranslation();
@@ -191,6 +218,7 @@ const ProfessionalPDFCV = () => {
                 <Text style={styles.skillItem}>• {t("skills.azure")}</Text>
                 <Text style={styles.skillItem}>• {t("skills.eks")}</Text>
                 <Text style={styles.skillItem}>• {t("skills.aks")}</Text>
+                <Text style={styles.skillItem}>• {t("skills.nutanix")}</Text>
               </View>
             </View>
 
@@ -252,15 +280,15 @@ const ProfessionalPDFCV = () => {
 
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
-              {t("experience.inspyr.title")}, {t("experience.inspyr.company")}
+              {t("experience.globant.title")}, {t("experience.globant.company")}
             </Text>
             <Text style={styles.jobPeriod}>
-              {t("experience.inspyr.period")}
+              {t("experience.globant.period")}
             </Text>
             <View style={styles.jobResponsibilities}>
-              {t("experience.inspyr.responsibilities", {
+              {t("experience.globant.responsibilities", {
                 returnObjects: true,
-              }).map((item, index) => (
+              }).slice(0, CV_LINES).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
                   • {item}
                 </Text>
@@ -279,7 +307,7 @@ const ProfessionalPDFCV = () => {
             <View style={styles.jobResponsibilities}>
               {t("experience.kodepull.responsibilities", {
                 returnObjects: true,
-              }).map((item, index) => (
+              }).slice(0, CV_LINES).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
                   • {item}
                 </Text>
@@ -298,7 +326,7 @@ const ProfessionalPDFCV = () => {
             <View style={styles.jobResponsibilities}>
               {t("experience.flBetances.responsibilities", {
                 returnObjects: true,
-              }).map((item, index) => (
+              }).slice(0, CV_LINES).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
                   • {item}
                 </Text>
@@ -316,13 +344,27 @@ const ProfessionalPDFCV = () => {
             <View style={styles.jobResponsibilities}>
               {t("experience.arctiq.responsibilities", {
                 returnObjects: true,
-              }).map((item, index) => (
+              }).slice(0, CV_LINES).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
                   • {item}
                 </Text>
               ))}
             </View>
           </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>
+            {t("cv.education", "EDUCATION")}
+          </Text>
+          {["mbaTech", "pucmm"].map((key) => (
+            <View key={key} style={styles.jobEntry}>
+              <Text style={styles.jobTitle}>
+                {t(`education.${key}.degree`)}, {t(`education.${key}.school`)}
+              </Text>
+              <Text style={styles.jobPeriod}>{t(`education.${key}.period`)}</Text>
+            </View>
+          ))}
         </View>
 
         <View style={styles.section}>
@@ -384,120 +426,24 @@ const ProfessionalPDFCV = () => {
             {t("cv.certifications", "CERTIFICATIONS")}
           </Text>
           <View style={styles.certGrid}>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.awsSolutionsArchitect.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.awsSolutionsArchitect.issuer")},{" "}
-                {t("certifications.awsSolutionsArchitect.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.hcta.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.hcta.issuer")},{" "}
-                {t("certifications.hcta.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.kcna.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.kcna.issuer")},{" "}
-                {t("certifications.kcna.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.ckad.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.ckad.issuer")},{" "}
-                {t("certifications.ckad.date")}
-              </Text>
-            </View>
+            {CV_CERTS.map((key) => (
+              <View key={key} style={styles.certItem}>
+                <Text style={styles.certName}>
+                  {t(`certifications.${key}.name`)}
+                </Text>
+                <Text style={styles.certIssuer}>
+                  {t(`certifications.${key}.issuer`)},{" "}
+                  {t(`certifications.${key}.date`)}
+                </Text>
+              </View>
+            ))}
             <View style={styles.certItem}>
               <Text style={styles.certName}>
                 {t("certifications.cka.name")}
               </Text>
               <Text style={styles.certIssuer}>
-                {t("certifications.cka.issuer")} ({t("certifications.inProgress")})
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.rhcsa.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.rhcsa.issuer")},{" "}
-                {t("certifications.rhcsa.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.rhce.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.rhce.issuer")},{" "}
-                {t("certifications.rhce.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.dynatrace.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.dynatrace.issuer")},{" "}
-                {t("certifications.dynatrace.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.gitlabCicd.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.gitlabCicd.issuer")},{" "}
-                {t("certifications.gitlabCicd.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.gitlabServices.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.gitlabServices.issuer")},{" "}
-                {t("certifications.gitlabServices.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.gitlabMigration.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.gitlabMigration.issuer")},{" "}
-                {t("certifications.gitlabMigration.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.gitlabImplementation.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.gitlabImplementation.issuer")},{" "}
-                {t("certifications.gitlabImplementation.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.partner.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.partner.issuer")},{" "}
-                {t("certifications.partner.date")}
+                {t("certifications.cka.issuer")} ({t("certifications.inProgress")}) ·{" "}
+                {t("certifications.cka.date")}
               </Text>
             </View>
           </View>

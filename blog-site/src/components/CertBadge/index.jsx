@@ -8,20 +8,25 @@ import {
   SiKubernetes,
 } from 'react-icons/si';
 import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
 // Issuer → react-icon + brand color. Mirrors the portfolio's
-// src/components/Certifications.jsx so the blog stays brand-consistent.
+// src/components/certifications/certData.js so the blog stays brand-consistent.
 const VENDOR_ICONS = {
   'The Linux Foundation': { Icon: SiKubernetes, color: '#326ce5' },
   'Amazon Web Services': { Icon: FaAws, color: '#ff9900' },
-  HashiCorp: { Icon: SiTerraform, color: '#7f4dff' },
+  HashiCorp: { Icon: SiTerraform, color: '#7b42bc' },
   'Red Hat': { Icon: FaRedhat, color: '#ee0000' },
-  Dynatrace: { Icon: SiDynatrace, color: '#73be28' },
+  Dynatrace: { Icon: SiDynatrace, color: '#1496ff' },
   GitLab: { Icon: SiGitlab, color: '#fc6d26' },
   'Technology Partners': { Icon: FaAward, color: null },
+  // No react-icon: Spectro Cloud's official mark, in its own colours.
+  'Spectro Cloud': { image: '/img/logos/spectrocloud-mark.svg' },
 };
 
+// `logo` overrides the issuer's mark with a product's own (Palette for a
+// Spectro Cloud credential): the badge names the product, so it shows it.
 export default function CertBadge({
   name,
   issuer,
@@ -30,8 +35,11 @@ export default function CertBadge({
   status,
   note,
   noteHref,
+  logo,
 }) {
   const vendor = VENDOR_ICONS[issuer];
+  const image = logo || vendor?.image;
+  const imageUrl = useBaseUrl(image || '/');
   const Icon = vendor?.Icon;
   const iconColor = vendor?.color || 'var(--accent)';
 
@@ -39,7 +47,9 @@ export default function CertBadge({
   return (
     <div className={styles.badge}>
       <div className={styles.logoWrap}>
-        {Icon ? (
+        {image ? (
+          <img className={styles.logo} src={imageUrl} alt="" />
+        ) : Icon ? (
           <Icon
             className={styles.logo}
             style={{ color: iconColor }}

@@ -49,9 +49,10 @@ const sidebars = {
       items: [
         {
           type: "category",
-          // "Homelab", not "Lab": the Learn guides have exam labs too.
-          // The slug stays /engineering/lab, so links don't move.
-          label: "Homelab",
+          // "KodePull cluster", not "Lab": the Learn guides have exam labs
+          // too. It was "Homelab" until the cluster became KodePull's; the
+          // slug stays /engineering/lab, so links don't move.
+          label: "KodePull cluster",
           link: { type: "doc", id: "engineering/lab/index" },
           collapsible: true,
           collapsed: false,
@@ -81,7 +82,7 @@ const sidebars = {
           collapsed: false,
           items: [
             "engineering/work/arctiq",
-            "engineering/work/inspyr-global-solutions",
+            "engineering/work/globant",
             "engineering/work/fl-betances",
             "engineering/work/kodepull",
           ],

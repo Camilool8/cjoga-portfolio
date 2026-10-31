@@ -35,30 +35,39 @@ function buildResumeText(t) {
  |     ${t("terminal.messages.resumeTitle")}                      |
  +-------------------------------------------------+
 
-  ${t("terminal.messages.resumeLocation").padEnd(8)} : Santo Domingo, Dominican Republic
+  ${t("terminal.messages.resumeLocation").padEnd(8)} : Remote, global · based in Santo Domingo
   Email    : josejoga.opx@gmail.com
   LinkedIn : linkedin.com/in/cjoga
   Web      : cjoga.cloud
 
   ${t("terminal.messages.resumeExperience")}
   ----------
-  INSPYR Global Solutions    DevOps Engineer       2025 - Present
+  Globant                    DevOps Engineer       2025 - Present
+  KodePull SRL               Co-founder & CTO      2025 - Present
+  FL Betances & Asociados    DevOps Engineer       2024 - 2025
   Arctiq                     DevOps Consultant     2022 - Present
 
   ${t("terminal.messages.resumeCertifications")}
   --------------
-  * AWS Certified Solutions Architect
-  * HashiCorp Certified Terraform Associate
+  * Spectro Cloud Certified – Palette Associate
   * Certified Kubernetes Application Developer (CKAD)  // kubestronaut path: 2 of 5
-  * Kubernetes & Cloud Native Associate (KCNA)
-  * Certified Kubernetes Administrator (CKA)  // in progress
-  * RHCSA & RHCE
+  * Kubernetes and Cloud Native Associate (KCNA)
+  * HashiCorp Certified Terraform Associate (004)
+  * AWS Certified Solutions Architect
+  * RHCE & RHCSA  // renewing on RHEL 10, Q1 2027
   * Dynatrace Associate
+  * Accredited Partner Technical Engineer (Technology Partners)
   * GitLab Certified (4x)
+  * Certified Kubernetes Administrator (CKA)  // in progress, target Nov 30, 2026
+
+  ${t("terminal.messages.resumeEducation")}
+  ---------
+  * Master in Business Administration (Tech MBA), Universidad Internacional de La Rioja (UNIR)  // Oct 2026 - Oct 2027, in progress
+  * Computer Science Engineering, PUCMM  // 2019 - 2024
 
   ${t("terminal.messages.resumeSkills")}
   ------
-  AWS | Azure | Terraform | Ansible | Kubernetes
+  AWS | Azure | Nutanix NKP | Terraform | Ansible | Kubernetes
   Docker | GitLab CI | ArgoCD | Prometheus | Grafana
   Linux | Python | Bash | Git | Helm
   Claude Code | MCP | GitHub Actions | GitOps
@@ -70,14 +79,14 @@ function buildResumeText(t) {
 const NEOFETCH_OUTPUT = `
         ######                visitor@cjoga.cloud
        ##    ##               ---------------------
-      ##      ##              OS: K3s on Debian GNU/Linux 12
-     ##   ##   ##             Host: Homelab Cluster (ARM64)
-     ##   ##   ##             Kernel: 6.1.0-k3s1
+      ##      ##              OS: K3s v1.33 on Ubuntu 24.04 LTS
+     ##   ##   ##             Host: KodePull cluster (6 nodes, amd64)
+     ##   ##   ##             Kernel: 6.8.0-generic
       ##      ##              Shell: cjoga-terminal 1.0
        ##    ##               Uptime: since 2022
         ######                Packages: AWS, K8s, Terraform, Ansible
                               Resolution: Full-Stack
-    c j o g a . c l o u d     WM: Kubernetes + ArgoCD
+    c j o g a . c l o u d     WM: Kubernetes + Envoy Gateway
                               Theme: DevOps [Dark]
                               Terminal: JetBrains Mono
                               CPU: Passion x Dedication @ 100%
@@ -130,7 +139,7 @@ const CLIENT_COMMANDS = {
   pwd: () => ({ output: "/home/visitor", type: "success" }),
   "uname -a": () => ({
     output:
-      "Linux cjoga.cloud 6.1.0-k3s1 #1 SMP PREEMPT_DYNAMIC K3s aarch64 GNU/Linux",
+      "Linux cjoga.cloud 6.8.0-generic #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux",
     type: "success",
   }),
   ls: () => ({ output: LS_OUTPUT, type: "success" }),

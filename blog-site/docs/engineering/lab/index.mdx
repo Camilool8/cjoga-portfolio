@@ -1,27 +1,27 @@
 ---
 sidebar_position: 0
-title: Homelab
+title: KodePull cluster
 image: img/og/engineering-lab.png
-description: The K3s cluster behind cjoga.cloud — the tour, and the things that broke.
+description: KodePull's K3s cluster behind cjoga.cloud — the tour, and the things that broke.
 slug: /engineering/lab
-keywords: [homelab, kubernetes, k3s, lab, gotchas]
+keywords: [kodepull, cluster, homelab, kubernetes, k3s, lab, gotchas]
 ---
 
 import SectionCardGrid, { SectionCard } from '@site/src/components/SectionCardGrid';
 
-# Homelab
+# KodePull cluster
 
-The homelab is a six-node K3s cluster on a mix of Proxmox and bare metal. It runs `cjoga.cloud`, `kodepull.com`, a few client sites, and the small fleet of services I host for myself. The architecture took three iterations to settle.
+KodePull's on-prem cluster is six nodes of K3s on a mix of Proxmox and bare metal. It runs the workloads of KodePull clients who want their data kept on local hardware, relays to and backs up KodePull's production clusters in the cloud and in datacenters, and hosts `cjoga.cloud` and `kodepull.com`. It started as my homelab, and the architecture took three iterations to settle.
 
 <SectionCardGrid>
   <SectionCard
     href="/engineering/lab/overview"
-    title="Homelab overview"
-    description="The full tour — six nodes, three iterations, the stack, and what runs on it now."
+    title="Cluster overview"
+    description="The full tour — six nodes, three iterations, the move to KodePull, and what runs on it now."
   />
   <SectionCard
     href="/engineering/lab/tips-and-gotchas"
     title="Tips and gotchas"
-    description="Notes from the homelab on things that broke or took too long to debug."
+    description="Notes from the cluster on things that broke or took too long to debug."
   />
 </SectionCardGrid>

@@ -57,13 +57,17 @@ function extractRoles(labels) {
   return roles.length > 0 ? roles.join(",") : "<none>";
 }
 
+// Dev-only stand-ins (no kubeconfig outside production). They mirror the
+// real cluster's allowlisted namespaces and node names, so a local run
+// never shows a cluster that doesn't exist.
 const MOCK_NAMESPACES = [
-  { name: "default", status: "Active", age: "365d" },
-  { name: "kube-system", status: "Active", age: "365d" },
-  { name: "web-development", status: "Active", age: "180d" },
-  { name: "monitoring", status: "Active", age: "120d" },
-  { name: "argocd", status: "Active", age: "90d" },
-  { name: "traefik", status: "Active", age: "180d" },
+  { name: "web-development", status: "Active", age: "348d" },
+  { name: "kube-system", status: "Active", age: "349d" },
+  { name: "envoy-gateway-system", status: "Active", age: "182d" },
+  { name: "cert-manager", status: "Active", age: "348d" },
+  { name: "external-secrets", status: "Active", age: "200d" },
+  { name: "openbao", status: "Active", age: "200d" },
+  { name: "kubestronaut-sim", status: "Active", age: "88d" },
 ];
 
 const MOCK_PODS = {
@@ -76,19 +80,20 @@ const MOCK_PODS = {
     { name: "local-path-provisioner-6795b5f9d8-w2f7n", namespace: "kube-system", status: "Running", ready: "1/1", restarts: 2, age: "90d" },
     { name: "metrics-server-cdcc87586-r4j6l", namespace: "kube-system", status: "Running", ready: "1/1", restarts: 0, age: "90d" },
   ],
-  "monitoring": [
-    { name: "prometheus-server-0", namespace: "monitoring", status: "Running", ready: "1/1", restarts: 0, age: "30d" },
-    { name: "grafana-5d4f8c7b9-kx2mt", namespace: "monitoring", status: "Running", ready: "1/1", restarts: 0, age: "30d" },
-    { name: "loki-0", namespace: "monitoring", status: "Running", ready: "1/1", restarts: 1, age: "30d" },
+  "envoy-gateway-system": [
+    { name: "envoy-gateway-f684c96f8-22tqf", namespace: "envoy-gateway-system", status: "Running", ready: "1/1", restarts: 0, age: "23d" },
+    { name: "envoy-eg-d8c59e83-7647ccfcc6-4r6v6", namespace: "envoy-gateway-system", status: "Running", ready: "2/2", restarts: 2, age: "44d" },
+    { name: "envoy-eg-internal-7f4ff7e4-56c75d7c98-tqbkz", namespace: "envoy-gateway-system", status: "Running", ready: "2/2", restarts: 0, age: "4d" },
   ],
 };
 
 const MOCK_DEPLOYMENTS = {
   "web-development": [
     { name: "portfolio-deploy", namespace: "web-development", ready: "2/2", upToDate: 2, available: 2, age: "30d" },
+    { name: "blog-deploy", namespace: "web-development", ready: "2/2", upToDate: 2, available: 2, age: "30d" },
   ],
-  "monitoring": [
-    { name: "grafana", namespace: "monitoring", ready: "1/1", upToDate: 1, available: 1, age: "30d" },
+  "envoy-gateway-system": [
+    { name: "envoy-gateway", namespace: "envoy-gateway-system", ready: "1/1", upToDate: 1, available: 1, age: "182d" },
   ],
 };
 
@@ -100,16 +105,15 @@ const MOCK_SERVICES = {
     { name: "kube-dns", namespace: "kube-system", type: "ClusterIP", clusterIp: "10.43.0.10", ports: "53/UDP,53/TCP,9153/TCP", age: "365d" },
     { name: "metrics-server", namespace: "kube-system", type: "ClusterIP", clusterIp: "10.43.0.2", ports: "443/TCP", age: "90d" },
   ],
-  "monitoring": [
-    { name: "prometheus-server", namespace: "monitoring", type: "ClusterIP", clusterIp: "10.43.8.21", ports: "9090/TCP", age: "30d" },
-    { name: "grafana", namespace: "monitoring", type: "ClusterIP", clusterIp: "10.43.8.33", ports: "3000/TCP", age: "30d" },
-  ],
 };
 
 const MOCK_NODES = [
-  { name: "k3s-master-01", status: "Ready", roles: "control-plane,master", age: "180d" },
-  { name: "k3s-worker-01", status: "Ready", roles: "worker", age: "180d" },
-  { name: "k3s-worker-02", status: "Ready", roles: "worker", age: "90d" },
+  { name: "prox-k8s-master", status: "Ready", roles: "control-plane,master", age: "349d" },
+  { name: "lab.vmworker1.cjoga.cloud-51cc33eb", status: "Ready", roles: "<none>", age: "346d" },
+  { name: "lab.worker1.cjoga.cloud-10c6ee21", status: "Ready", roles: "<none>", age: "348d" },
+  { name: "lab.worker2.cjoga.cloud", status: "Ready", roles: "<none>", age: "321d" },
+  { name: "lab.worker3.cjoga.cloud", status: "Ready", roles: "<none>", age: "321d" },
+  { name: "lab.worker4.cjoga.cloud", status: "Ready", roles: "<none>", age: "71d" },
 ];
 
 function getMockData(resource, namespace) {
@@ -119,15 +123,26 @@ function getMockData(resource, namespace) {
   return data[namespace] || [];
 }
 
-export async function getNamespaces() {
+// Reads the named namespaces one by one rather than listing the cluster:
+// the terminal's RBAC grants `get` on exactly those names and no `list`.
+// A name that is missing or not granted is skipped, not an error.
+export async function getNamespaces(names = []) {
   if (!coreApi) {
     logger.info("Returning mock namespace data (no K8s client)");
     return MOCK_NAMESPACES;
   }
 
   try {
-    const res = await coreApi.listNamespace({});
-    return res.items.map((ns) => ({
+    const results = await Promise.allSettled(
+      names.map((name) => coreApi.readNamespace({ name })),
+    );
+    const found = results
+      .filter((r) => r.status === "fulfilled")
+      .map((r) => r.value);
+    if (names.length > 0 && found.length === 0) {
+      throw new Error("no namespace could be read");
+    }
+    return found.map((ns) => ({
       name: ns.metadata.name,
       status: ns.status?.phase || "Unknown",
       age: humanizeAge(ns.metadata.creationTimestamp),
