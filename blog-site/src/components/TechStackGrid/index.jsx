@@ -160,7 +160,7 @@ const TECH = {
   'Key Vault': { Icon: VscAzure, color: '#0078D4' },
   Synapse: { Icon: VscAzure, color: '#0078D4' },
   Proxmox: { Icon: SiProxmox, color: '#E57000' },
-  Nutanix: { Icon: SiNutanix, color: '#024DA1' },
+  Nutanix: { Icon: SiNutanix, color: '#7855FA' },
   // Spectro Cloud's mark and Palette's, from their official artwork
   // (spectrocloud/librarium, spectrocloud.com); the Palette file keeps
   // only the mark, without the wordmark.
