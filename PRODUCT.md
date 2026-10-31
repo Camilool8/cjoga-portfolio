@@ -10,7 +10,7 @@ web
 
 Primary: hiring managers and engineering leaders filling **Senior or Lead Platform/DevOps** roles, especially teams moving platform work toward AI automation and agentic workflows. They arrive from a CV, LinkedIn or a referral, usually with several candidates open in tabs. They give the page a short first look to decide whether this person operates at enterprise grade, then return to check specifics before an interview.
 
-Secondary audiences (served, not designed for): engineers studying for the same certifications, and peers curious about the homelab. The handbook at blog.cjoga.cloud serves them in depth.
+Secondary audiences (served, not designed for): engineers studying for the same certifications, and peers curious about the K3s cluster (KodePull's on-prem cluster, which grew out of his homelab). The handbook at blog.cjoga.cloud serves them in depth.
 
 ## Product Purpose
 
@@ -20,7 +20,7 @@ Availability: open to roles that fit the Senior/Lead Platform/DevOps + AI automa
 
 ## Positioning
 
-The site is itself the proof. It runs on a multi-node K3s cluster he built and operates (GitOps, observability, OpenBao secrets, Envoy Gateway, Cloudflare Tunnel), and visitors can inspect that cluster live through a read-only terminal. His enterprise work pairs platform scale (300+ services on multi-region AKS; 60+ applications migrated from Rancher to EKS) with agentic automation already in production: Claude agents embedded in CI/CD, and MCP servers exposing internal tooling.
+The site is itself the proof. It runs on KodePull's on-prem K3s cluster, which he built as a homelab and operates (OpenBao secrets, Envoy Gateway, Cloudflare Tunnel, in-cluster CI runners). It also carries KodePull client workloads, so visitors inspect it through a read-only terminal scoped to the site's namespace and the platform layer. His enterprise work pairs platform scale (300+ services on multi-region AKS; 60+ applications migrated from Rancher to EKS) with agentic automation already in production: Claude agents embedded in CI/CD, and MCP servers exposing internal tooling.
 
 ## Operating Context
 
@@ -39,7 +39,8 @@ The site is itself the proof. It runs on a multi-node K3s cluster he built and o
 ## Brand Commitments
 
 - Writing follows `STYLE.md`: declarative, active and concrete, with no filler, cliché framing ("explore", "dive in") or hedges.
-- Never name end clients. Employers can be named: Arctiq, INSPYR Global Solutions, FL Betances & Asociados, KodePull.
+- Never name end clients. Employers can be named: Arctiq, Globant, FL Betances & Asociados, KodePull.
+- No nationality or citizenship anywhere in the work-facing pages, CV or author bio. Location is "remote, global; based in Santo Domingo". Only `/me/who-i-am` keeps where he was born.
 - Vendor visuals use the real product's logo, CLI output or dashboard, never abstract metaphors.
 - Red Hat's official courses are always presented as complements to the lab, never dismissed.
 - Name: José Camilo Joga Guerrero, who goes by "Camilo".
@@ -48,12 +49,14 @@ The site is itself the proof. It runs on a multi-node K3s cluster he built and o
 ## Evidence on Hand
 
 - Live K3s cluster hosting the site, plus the read-only terminal (`src/components/Terminal/`, `server/routes/terminal.js`).
-- 12 certifications earned, matching the handbook's credentials page: CKAD and KCNA (The Linux Foundation, Kubestronaut path), Terraform Associate (004), AWS Certified Solutions Architect, RHCE, RHCSA, Dynatrace Associate, Accredited Partner Technical Engineer (Technology Partners) and four from GitLab (Implementation Services Specialist, Services Engineer Professional, Migration Specialist, CI/CD Associate). CKA is in progress, not earned: step three on the Kubestronaut path. The vendor-idiom live tiles are in `src/components/certifications/liveTiles/`.
-- Experience with real numbers is in `public/locales/*/translation.json`: INSPYR (300+ services, alerts-as-code, Claude agents in CI/CD), Arctiq (60+ apps to EKS, 5–8× less redundant surface, observability from zero, SOC2 gating), FL Betances (50+ teams), and KodePull (co-founder & CTO).
+- 13 certifications earned, matching the handbook's credentials page: CKAD and KCNA (The Linux Foundation, Kubestronaut path), Spectro Cloud Certified – Palette Associate (2026; the program has no public badge, so no Credly link), Terraform Associate (004), AWS Certified Solutions Architect, RHCE, RHCSA, Dynatrace Associate, Accredited Partner Technical Engineer (Technology Partners) and four from GitLab (Implementation Services Specialist, Services Engineer Professional, Migration Specialist, CI/CD Associate). CKA is in progress, not earned: step three on the Kubestronaut path. The vendor-idiom live tiles are in `src/components/certifications/liveTiles/`.
+- Experience with real numbers is in `public/locales/*/translation.json`: Globant (300+ services, Databricks and Unity Catalog as code, alerts-as-code, Claude agents in CI/CD), Arctiq (60+ apps to EKS, 5–8× less redundant surface, observability from zero, SOC2 gating), FL Betances (50+ teams), and KodePull (co-founder & CTO).
 - Projects: the open-source Kubestronaut exam simulator, plus platform work written up in the handbook.
 - Photo: `public/images/camilo.webp`.
 - CV PDF: `src/components/ProfessionalPDFCV.jsx`.
-- **Absent, do not fabricate:** testimonials, employer logos used as endorsements, uptime figures, traffic numbers, and any metric not already in the copy.
+- Employer marks (Globant, KodePull, FL Betances, Arctiq) sit on the experience timeline as identification, the way LinkedIn shows them: `public/images/logos/`.
+- Education: Computer Science Engineering, PUCMM (2019–2024); Tech MBA (Máster Universitario en Dirección y Administración de Empresas), UNIR, October 2026 – October 2027.
+- **Absent, do not fabricate:** testimonials, employer or client logos used as endorsements, uptime figures, traffic numbers, and any metric not already in the copy.
 
 ## Product Principles
 
