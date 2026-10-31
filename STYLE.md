@@ -49,7 +49,7 @@ adjectives.
 ### Publishing
 
 - **Never name end clients in public content.** Employers are fine
-  (Arctiq, Globant, FL Betances, KODEPULL). The
+  (Arctiq, Globant, FL Betances, KodePull). The
   actual clients those employers placed me with are not named on
   the site. Banking, retail, etc. — anonymized.
 

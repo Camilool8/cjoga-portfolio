@@ -157,6 +157,24 @@ const CV_NAME = "José Camilo Joga Guerrero";
 // full record.
 const CV_LINES = 6;
 
+// Earned certifications, most recent first: the order of the handbook's
+// credentials page. CKA (in progress) prints after them with its target.
+const CV_CERTS = [
+  "spectro",
+  "ckad",
+  "kcna",
+  "hcta",
+  "awsSolutionsArchitect",
+  "rhce",
+  "rhcsa",
+  "dynatrace",
+  "partner",
+  "gitlabImplementation",
+  "gitlabServices",
+  "gitlabMigration",
+  "gitlabCicd",
+];
+
 const ProfessionalPDFCV = () => {
   const { t } = useTranslation();
 
@@ -405,129 +423,24 @@ const ProfessionalPDFCV = () => {
             {t("cv.certifications", "CERTIFICATIONS")}
           </Text>
           <View style={styles.certGrid}>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.awsSolutionsArchitect.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.awsSolutionsArchitect.issuer")},{" "}
-                {t("certifications.awsSolutionsArchitect.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.hcta.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.hcta.issuer")},{" "}
-                {t("certifications.hcta.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.kcna.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.kcna.issuer")},{" "}
-                {t("certifications.kcna.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.ckad.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.ckad.issuer")},{" "}
-                {t("certifications.ckad.date")}
-              </Text>
-            </View>
+            {CV_CERTS.map((key) => (
+              <View key={key} style={styles.certItem}>
+                <Text style={styles.certName}>
+                  {t(`certifications.${key}.name`)}
+                </Text>
+                <Text style={styles.certIssuer}>
+                  {t(`certifications.${key}.issuer`)},{" "}
+                  {t(`certifications.${key}.date`)}
+                </Text>
+              </View>
+            ))}
             <View style={styles.certItem}>
               <Text style={styles.certName}>
                 {t("certifications.cka.name")}
               </Text>
               <Text style={styles.certIssuer}>
-                {t("certifications.cka.issuer")} ({t("certifications.inProgress")})
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.rhcsa.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.rhcsa.issuer")},{" "}
-                {t("certifications.rhcsa.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.rhce.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.rhce.issuer")},{" "}
-                {t("certifications.rhce.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.dynatrace.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.dynatrace.issuer")},{" "}
-                {t("certifications.dynatrace.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.gitlabCicd.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.gitlabCicd.issuer")},{" "}
-                {t("certifications.gitlabCicd.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.gitlabServices.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.gitlabServices.issuer")},{" "}
-                {t("certifications.gitlabServices.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.gitlabMigration.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.gitlabMigration.issuer")},{" "}
-                {t("certifications.gitlabMigration.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.gitlabImplementation.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.gitlabImplementation.issuer")},{" "}
-                {t("certifications.gitlabImplementation.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.spectro.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.spectro.issuer")},{" "}
-                {t("certifications.spectro.date")}
-              </Text>
-            </View>
-            <View style={styles.certItem}>
-              <Text style={styles.certName}>
-                {t("certifications.partner.name")}
-              </Text>
-              <Text style={styles.certIssuer}>
-                {t("certifications.partner.issuer")},{" "}
-                {t("certifications.partner.date")}
+                {t("certifications.cka.issuer")} ({t("certifications.inProgress")}) ·{" "}
+                {t("certifications.cka.date")}
               </Text>
             </View>
           </View>

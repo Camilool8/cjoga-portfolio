@@ -8,7 +8,7 @@ one source of truth.
 | **Portfolio** | React + Vite + Express | [cjoga.cloud](https://cjoga.cloud) |
 | **Handbook** | Docusaurus (static) | [blog.cjoga.cloud](https://blog.cjoga.cloud) |
 
-Both run on a self-hosted K3s cluster behind Envoy Gateway and a
+Both run on KodePull's on-prem K3s cluster behind Envoy Gateway and a
 Cloudflare Tunnel. See the lab overview at
 [blog.cjoga.cloud/engineering/lab/overview](https://blog.cjoga.cloud/engineering/lab/overview).
 
@@ -134,7 +134,7 @@ the Actions UI as `workflow_dispatch`.
 |---|---|
 | `/` | Audience-paths landing |
 | `/me/*` | Personal — who I am, opinions, learning + tools, credentials |
-| `/engineering/lab/*` | The K3s lab — overview + tips and gotchas |
+| `/engineering/lab/*` | The KodePull cluster — overview + tips and gotchas |
 | `/engineering/work/*` | Work engagements |
 | `/learn/*` | Cert guides |
 

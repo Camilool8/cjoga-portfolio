@@ -68,7 +68,7 @@ export const CERT_GROUPS = [
     vendor: "HashiCorp",
     vendorShort: "HashiCorp",
     icon: SiTerraform,
-    color: "#7f4dff",
+    color: "#7b42bc",
     size: "standard",
     liveTile: "terraform",
     spanClasses: "md:col-span-1 md:row-span-2 lg:col-span-2",
@@ -84,7 +84,7 @@ export const CERT_GROUPS = [
     vendor: "Dynatrace",
     vendorShort: "Dynatrace",
     icon: SiDynatrace,
-    color: "#73be28",
+    color: "#1496ff",
     size: "standard",
     liveTile: "dynatrace",
     spanClasses: "md:col-span-1 md:row-span-2 lg:col-span-2",
@@ -136,6 +136,8 @@ export const CERT_GROUPS = [
     vendor: "Spectro Cloud",
     vendorShort: "Spectro Cloud",
     icon: SpectroMark,
+    // Spectro Cloud's teal (#1f7a78 in its artwork), lifted so the tile's
+    // linework reads on the dark screen.
     color: "#2bb3a3",
     size: "standard",
     liveTile: "spectro",

@@ -56,7 +56,7 @@ const projects = [
     key: "iac",
     link: "globant",
     span: "",
-    color: "#7f4dff",
+    color: "#7b42bc",
     accent: "#b08aff",
     icons: [SiTerraform, FaAws, FaMicrosoft],
     caseStudy: `${HANDBOOK_URL}/engineering/work/globant`,

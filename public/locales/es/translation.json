@@ -13,10 +13,10 @@
     "greeting": "Hola, mi nombre es",
     "title": "José Camilo Joga Guerrero.",
     "roles": [
+      "Ingeniero de Plataformas y DevOps",
       "Ingeniero Cloud",
-      "Arquitecto de Infraestructura",
       "Ingeniero de Automatización",
-      "Especialista en Kubernetes"
+      "Ingeniero de Kubernetes"
     ],
     "description": "Soy ingeniero de plataformas y DevOps con base en ingeniería cloud: construyo y opero plataformas de Kubernetes sobre AWS y Azure. Mi trabajo se centra en la infraestructura como código, la entrega GitOps, la observabilidad y los agentes de IA integrados en CI/CD — convirtiendo entornos dispersos y gestionados a mano en plataformas autogestionadas que los equipos operan por sí mismos.",
     "cta": {
@@ -115,7 +115,7 @@
     },
     "kodepull": {
       "title": "Cofundador y CTO",
-      "company": "KODEPULL SRL",
+      "company": "KodePull SRL",
       "period": "2025 – presente",
       "responsibilities": [
         "Cofundé la empresa en 2025 para ofrecer ingeniería de nivel empresarial a negocios sin presupuesto de gran empresa",
@@ -166,7 +166,7 @@
     "mbaTech": {
       "degree": "Máster Universitario en Dirección y Administración de Empresas (Tech MBA)",
       "school": "UNIR — Universidad Internacional de La Rioja",
-      "period": "octubre de 2026 – octubre de 2027 (previsto)"
+      "period": "octubre de 2026 – octubre de 2027 (en curso)"
     },
     "pucmm": {
       "degree": "Ingeniería en Ciencias de la Computación",
@@ -248,10 +248,10 @@
         "Tailscale"
       ]
     },
-    "headingMuted": "Código abierto, el clúster que opero y trabajo de plataformas.",
+    "headingMuted": "Código abierto, el clúster que opero y trabajo de plataformas en mis empleos.",
     "links": {
       "sim": "Guía del simulador",
-      "lab": "Resumen del laboratorio",
+      "lab": "Resumen del clúster",
       "arctiq": "Relato de Arctiq",
       "globant": "Relato de Globant"
     },
@@ -265,7 +265,7 @@
     "heading": "Certificaciones.",
     "opensInNewTab": "(se abre en una pestaña nueva)",
     "chipLabel": "certificaciones obtenidas",
-    "inProgress": "En progreso",
+    "inProgress": "En curso",
     "countInProgress": "{{count}} en curso",
     "groups": {
       "kubestronaut": {
@@ -317,7 +317,7 @@
     "cka": {
       "name": "Certified Kubernetes Administrator (CKA)",
       "issuer": "The Linux Foundation",
-      "date": "2026"
+      "date": "Fecha objetivo: 30 de noviembre de 2026"
     },
     "rhcsa": {
       "name": "Red Hat Certified System Administrator (RHCSA)",
@@ -371,7 +371,7 @@
     "text": "Busco roles sénior o de liderazgo en plataformas y DevOps, donde la ingeniería de plataformas se cruza con la automatización con IA. Escríbeme por correo o por LinkedIn; respondo en ambos.",
     "terms": {
       "workLabel": "Modalidad",
-      "work": "Remoto preferido · abierto a reubicación"
+      "work": "Remoto, alcance global · abierto a reubicación"
     }
   },
   "cv": {
@@ -390,7 +390,7 @@
   "handbook": {
     "label": "Manual",
     "heading": "Un sitio aparte para la escritura.",
-    "subheading": "Opiniones, el laboratorio K3s y guías de certificación — separados del portafolio para que puedan crecer por su cuenta en blog.cjoga.cloud.",
+    "subheading": "Opiniones, el clúster de KodePull y guías de certificación — separados del portafolio para que puedan crecer por su cuenta en blog.cjoga.cloud.",
     "paths": {
       "hiring": {
         "whoIAm": "Quién soy",
@@ -400,7 +400,7 @@
         "rhcsa": "Guía RHCSA (EX200)"
       },
       "lab": {
-        "k3s": "El setup de K3s"
+        "k3s": "Resumen del clúster"
       }
     }
   },
@@ -429,7 +429,7 @@
       "echo": "Repetir texto",
       "clear": "Limpiar terminal",
       "exit": "Salir de la terminal",
-      "ns": "Listar todos los namespaces",
+      "ns": "Listar los namespaces que puedes inspeccionar",
       "pods": "Listar pods",
       "deploy": "Listar deployments",
       "svc": "Listar servicios",

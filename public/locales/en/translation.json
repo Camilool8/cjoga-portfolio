@@ -13,10 +13,10 @@
     "greeting": "Hi, my name is",
     "title": "José Camilo Joga Guerrero.",
     "roles": [
+      "Platform & DevOps Engineer",
       "Cloud Engineer",
-      "Infrastructure Architect",
       "Automation Engineer",
-      "Kubernetes Specialist"
+      "Kubernetes Engineer"
     ],
     "description": "I'm a Platform & DevOps Engineer with a cloud engineering foundation: I build and run Kubernetes platforms on AWS and Azure. My work centers on Infrastructure as Code, GitOps delivery, observability, and AI agents wired into CI/CD — turning sprawling, manually-managed environments into self-service platforms teams run themselves.",
     "cta": {
@@ -115,7 +115,7 @@
     },
     "kodepull": {
       "title": "Co-founder & CTO",
-      "company": "KODEPULL SRL",
+      "company": "KodePull SRL",
       "period": "2025 – Present",
       "responsibilities": [
         "Co-founded the company in 2025 to deliver enterprise-grade engineering to businesses without enterprise budgets",
@@ -164,9 +164,9 @@
   },
   "education": {
     "mbaTech": {
-      "degree": "Master in Business Administration (MBA), Tech MBA",
+      "degree": "Máster Universitario en Dirección y Administración de Empresas (Tech MBA)",
       "school": "UNIR — Universidad Internacional de La Rioja",
-      "period": "October 2026 – October 2027 (expected)"
+      "period": "October 2026 – October 2027 (in progress)"
     },
     "pucmm": {
       "degree": "Computer Science Engineering",
@@ -251,7 +251,7 @@
     "headingMuted": "Open source, the cluster I run, and platform work on the job.",
     "links": {
       "sim": "Simulator guide",
-      "lab": "Lab overview",
+      "lab": "Cluster overview",
       "arctiq": "Arctiq write-up",
       "globant": "Globant write-up"
     },
@@ -317,7 +317,7 @@
     "cka": {
       "name": "Certified Kubernetes Administrator (CKA)",
       "issuer": "The Linux Foundation",
-      "date": "2026"
+      "date": "Target: November 30, 2026"
     },
     "rhcsa": {
       "name": "Red Hat Certified System Administrator (RHCSA)",
@@ -371,7 +371,7 @@
     "text": "I'm looking for Senior or Lead Platform & DevOps roles where platform engineering meets AI automation. Write by email or on LinkedIn; I answer both.",
     "terms": {
       "workLabel": "Arrangement",
-      "work": "Remote preferred · open to relocation"
+      "work": "Remote, global scope · open to relocation"
     }
   },
   "cv": {
@@ -390,7 +390,7 @@
   "handbook": {
     "label": "Handbook",
     "heading": "A separate site for the writing.",
-    "subheading": "Opinions, the K3s lab, and cert guides — kept off the portfolio so they can grow on their own at blog.cjoga.cloud.",
+    "subheading": "Opinions, the KodePull cluster, and cert guides — kept off the portfolio so they can grow on their own at blog.cjoga.cloud.",
     "paths": {
       "hiring": {
         "whoIAm": "Who I am",
@@ -400,7 +400,7 @@
         "rhcsa": "RHCSA (EX200) guide"
       },
       "lab": {
-        "k3s": "The K3s setup"
+        "k3s": "Cluster overview"
       }
     }
   },
@@ -429,7 +429,7 @@
       "echo": "Echo text back",
       "clear": "Clear terminal",
       "exit": "Exit terminal",
-      "ns": "List all namespaces",
+      "ns": "List the namespaces you can inspect",
       "pods": "List pods",
       "deploy": "List deployments",
       "svc": "List services",

@@ -108,12 +108,12 @@ async function build() {
     {
       wordmark: WORDMARK.portfolio,
       titleHtml: 'José Camilo <span class="muted">Joga Guerrero.</span>',
-      description: "DevOps & Cloud Engineer",
+      description: "Platform & DevOps Engineer",
       domain: "cjoga.cloud",
     },
     {
       wordmark: WORDMARK.handbook,
-      titleHtml: 'Opinions, the lab, <span class="muted">and cert guides.</span>',
+      titleHtml: 'Opinions, the cluster, <span class="muted">and cert guides.</span>',
       domain: "blog.cjoga.cloud",
     },
   ]);

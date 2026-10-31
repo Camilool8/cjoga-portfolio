@@ -10,13 +10,14 @@ import {
   viewportConfig,
 } from "../hooks/useMotion";
 
-// Each employer's square mark, as on LinkedIn; the colour tints the
-// pulse ring on current roles.
+// Each employer's square mark, as on LinkedIn; the colour (each brand's
+// own accent: Globant's lime, KodePull's orange, FL Betances' navy,
+// Arctiq's cyan from arctiq.com) tints the pulse ring on current roles.
 const COMPANY_META = {
-  globant: { logo: "/images/logos/globant.svg", color: "#8dc63f" },
+  globant: { logo: "/images/logos/globant.svg", color: "#bfd732" },
   kodepull: { logo: "/images/logos/kodepull.svg", color: "#fe5502" },
   flBetances: { logo: "/images/logos/fl-betances.png", color: "#1a2a9c" },
-  arctiq: { logo: "/images/logos/arctiq.svg", color: "#10b981" },
+  arctiq: { logo: "/images/logos/arctiq.svg", color: "#42d4ff" },
 };
 
 // Each role leads with its three strongest lines; the rest open on
