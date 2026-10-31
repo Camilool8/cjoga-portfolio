@@ -101,7 +101,14 @@ v3 is still the shape. Four changes in 2026 reworked it from inside.
 
 ## What runs on it now
 
-Workloads include this portfolio and the handbook (`cjoga.cloud`), the KodePull marketing site and internal tooling (`kodepull.com`, an Outline docs instance, an invoice generator, a leads tool), the workloads of KodePull clients who keep their data local, a Discord and WhatsApp bot stack, a private n8n environment, and a handful of personal projects (`pucmm-band`, a Minecraft server). CI runs in the cluster too: GitHub Actions self-hosted runners from [Actions Runner Controller](https://github.com/actions/actions-runner-controller), scaling from one to four runners, build images with [BuildKit](https://github.com/moby/buildkit). [Prometheus](https://prometheus.io/), kube-state-metrics and node-exporter collect the cluster's metrics. `elcriollo` used to be on that list; its namespace was gone by August 29, 2026, and I removed its manifests from the lab repo that day. The Ansible health playbook runs from [Semaphore](https://semaphoreui.com/) as a scheduled job, so the cluster heals itself overnight without me logging in.
+As of October 30, 2026, read off the cluster:
+
+- **This site.** The portfolio and the handbook (`cjoga.cloud`, `blog.cjoga.cloud`), two replicas each, plus the [kubestronaut-sim](/learn/kubestronaut-sim) hub.
+- **KodePull's own tooling.** The marketing site (`kodepull.com`), the docs site, an [Outline](https://www.getoutline.com/) wiki, an invoice generator with a [Gotenberg](https://gotenberg.dev/) PDF service, a leads tool, a document-branding service, and a real-estate showcase. Most of them run a `-dev` deployment beside production, so work in progress ships to the VPN first.
+- **Client workloads.** KodePull clients who keep their data on local hardware: a landing page with its API, an invoice generator, and a WordPress site, each with its own PostgreSQL, Redis or MariaDB inside the cluster.
+- **CI.** GitHub Actions self-hosted runners from [Actions Runner Controller](https://github.com/actions/actions-runner-controller) in two scale sets (one to four general runners, zero to two for end-to-end tests), building images with [BuildKit](https://github.com/moby/buildkit).
+- **Operations.** [Semaphore](https://semaphoreui.com/) for the Ansible playbooks, a private n8n, the [Headlamp](https://headlamp.dev/) dashboard, and Prometheus with kube-state-metrics and node-exporter for metrics.
+- **Personal projects.** Two Discord bots for job postings, `pucmm-band` (web, API and PostgreSQL), and a Minecraft server with a Cloudflare DDNS job.
 
 For the failure modes that taught me what the playbook actually has to cover, see [Tips and gotchas](/engineering/lab/tips-and-gotchas).
 
