@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
@@ -12,6 +12,7 @@ import { FiArrowRight, FiDownload } from "react-icons/fi";
 import { EASE_SMOOTH } from "../hooks/useMotion";
 import PlanetScene from "./hero/PlanetScene";
 import useCvDownload from "../hooks/useCvDownload";
+import { resumeHeroEntrance } from "../utils/heroEntrance";
 
 const ROLE_PERIOD = 4000;
 
@@ -37,6 +38,8 @@ function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
 
   const heroRef = useRef(null);
+
+  useLayoutEffect(resumeHeroEntrance, []);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -78,13 +81,10 @@ function Hero() {
       className="hero-grain min-h-[100dvh] flex flex-col justify-center relative overflow-hidden"
       style={{ background: "var(--gradient-hero)", padding: "var(--hero-pt, clamp(108px, 15vh, 128px)) 0 60px" }}
     >
-      <m.div
-        className="hero-scene"
-        initial={reduced ? false : { opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: reduced ? 0 : 2.2, ease: EASE_SMOOTH }}
-        style={{ y: gridY }}
-      >
+      {/* Fades in from CSS (.hero-scene), not framer: its opacity tween
+          showed the inline opacity:0 for one frame as it finished, and
+          the whole planet blinked. */}
+      <m.div className="hero-scene" style={{ y: gridY }}>
         <PlanetScene avoid="#hero .hero-telemetry, #hero h1, #hero .hero-actions" />
       </m.div>
 
