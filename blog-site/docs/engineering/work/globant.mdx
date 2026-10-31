@@ -95,7 +95,7 @@ Another build grew out of a data-access problem. Developers needed to read from 
 
 The replacement is an internal web app. Developers run their queries directly and safely: production data comes back with PII masked, and anything hitting PRD waits on a dynamic approval queue where an admin is notified and can approve with a single click from their panel. The same app exposes gated Kubernetes operations — restart a workload, or change its resource requests, limits, or replica counts — so load-testing teams can drive their own performance runs. Every action is audited and gated by people accountable for it.
 
-I led the build and brought leadership and other DevOps engineers onto it for the features that make it easier to manage and nicer to use. It's the strongest improvement we've shipped in this area, and the bet is that it becomes the standard that moves the group from DevOps toward a platform team.
+I lead the build, and brought leadership and other DevOps engineers onto it for the features that make it easier to manage and nicer to use. The feature set is live on many environments, and developers, data analysts, QA and the load-performance teams use it every day; DevOps likes it as much, because it takes most of the request overhead off the team. The global production rollout across every region is still in progress, and the features keep growing with the platform. The bet is that it becomes the standard that moves the group from DevOps toward a platform team.
 
 ### AKS to Cilium migration (in flight)
 

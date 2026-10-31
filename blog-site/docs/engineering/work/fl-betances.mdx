@@ -30,6 +30,9 @@ FL Betances placed me inside a banking institution's main DevOps team for eighte
     'ArgoCD',
     'AKS',
     'Terraform',
+    'Azure',
+    'Vue.js',
+    '.NET',
     'Power Automate',
   ]}
 />
@@ -57,9 +60,13 @@ Deployments at the bank ran at night — that was the deployment window across a
 
 A few things lived alongside the framework. **[Power Automate](https://www.microsoft.com/en-us/power-platform/products/power-automate)** flows for the business-process automation that happens around DevOps work in a bank: approvals, notifications, ticket lifecycles. **ArgoCD and AKS debugging** when deployments failed in ways the framework couldn't catch on its own.
 
+### A self-service infrastructure portal
+
+Tickets were the slow path for anything a team needed from DevOps, so we built a portal in [Vue.js](https://vuejs.org/) and [.NET](https://dotnet.microsoft.com/) that let developers do it themselves: create repositories, manage permissions, and request infrastructure through approved templates and guardrails. The guardrails lived in the templates, so self-service never meant skipping a control.
+
 ### The Terraform handoff
 
-The last thing I worked on was an internal Terraform implementation: a library of pre-built modules teams could use to deploy cloud resources themselves. Modules and not raw resources, because that was the only way to enforce the variables and behaviour the bank's internal policies required. I led the implementation through most of the build, finished the modules and the patterns around them, and handed it off to the team almost complete. The handoff happened when my contract ended.
+The last thing I worked on was an internal Terraform implementation on Azure: a library of pre-built modules teams could use to deploy cloud resources themselves. Modules and not raw resources, because that was the only way to enforce the variables and behaviour the bank's internal policies required. I led the implementation through most of the build, finished the modules and the patterns around them, and handed it off to the team almost complete. The handoff happened when my contract ended.
 
 import AuthorCard from '@site/src/components/AuthorCard';
 
