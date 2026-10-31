@@ -504,12 +504,12 @@ export default async function createConfigAsync() {
         {
           name: "description",
           content:
-            "Camilo's handbook — opinions, K3s cluster notes, and cert guides from a working Senior Platform & DevOps Engineer.",
+            "Camilo's handbook — opinions, K3s cluster notes, and cert guides from a working Platform & DevOps Engineer.",
         },
         {
           name: "keywords",
           content:
-            "DevOps, Kubernetes, K3s, Terraform, AWS, RHCSA, RHCE, homelab, KodePull, GitOps, OpenBao, Vault",
+            "DevOps, Kubernetes, K3s, CKAD, CKA, Kubestronaut, Terraform, AWS, RHCSA, RHCE, homelab, KodePull, GitOps, OpenBao, Vault",
         },
         { name: "robots", content: "index, follow, max-image-preview:large" },
         { name: "twitter:card", content: "summary_large_image" },

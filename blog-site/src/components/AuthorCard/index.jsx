@@ -23,7 +23,7 @@ export default function AuthorCard() {
           Guerrero
         </p>
         <p className={styles.bio}>
-          Senior Platform &amp; DevOps Engineer and co-founder of KodePull.{" "}
+          Platform &amp; DevOps Engineer and co-founder of KodePull.{" "}
           <code>cjoga.cloud</code> runs on KodePull’s 6-node K3s cluster, split
           across Proxmox and bare metal; I write here when something’s worth
           sharing.

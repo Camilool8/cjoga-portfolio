@@ -72,7 +72,7 @@ The platform is moving from Azure DevOps to GitHub Enterprise. I was among the f
 
 Most of my recent hours go to [Databricks](https://www.databricks.com/). It started as an enablement engagement for one developer team and grew into the platform's data layer, deployed entirely as code:
 
-- **Workspaces through Bicep.** Multiple Databricks workspaces, one per environment, deployed through the same Bicep platform and pipelines as every other service. Nothing created in the portal.
+- **Workspaces through Bicep.** Multiple Databricks workspaces, deployed through the same Bicep platform and pipelines as every other service. Nothing created in the portal.
 - **[Unity Catalog](https://www.databricks.com/product/unity-catalog) per region.** One metastore per region, the Databricks model, with the permissions and compute settings each workspace needs defined alongside it.
 - **Dedicated compute per environment.** Each workspace gets its own general-purpose clusters per environment, so a heavy job in one environment never queues behind another's.
 - **Pipelines for jobs.** Azure DevOps pipelines deploy the jobs and install their dependencies on the clusters, with notebooks pulled from Git as the source of truth. Promoting a job is a merge, not a click-through in the workspace UI.
@@ -91,11 +91,11 @@ Two PoCs are lined up behind the Databricks work.
 
 ### Self-service data and operations portal
 
-The biggest thing I'm leading right now grew out of that data-access problem. Developers needed to read from Azure SQL and MongoDB across environments, and the old path ran every query through an Azure DevOps pipeline — easy to get a parameter wrong, and before the pipeline existed it was a manual DevOps hand-off that burned hours on both sides.
+Another build grew out of a data-access problem. Developers needed to read from Azure SQL and MongoDB across environments, and the old path ran every query through an Azure DevOps pipeline — easy to get a parameter wrong, and before the pipeline existed it was a manual DevOps hand-off that burned hours on both sides.
 
 The replacement is an internal web app. Developers run their queries directly and safely: production data comes back with PII masked, and anything hitting PRD waits on a dynamic approval queue where an admin is notified and can approve with a single click from their panel. The same app exposes gated Kubernetes operations — restart a workload, or change its resource requests, limits, or replica counts — so load-testing teams can drive their own performance runs. Every action is audited and gated by people accountable for it.
 
-I'm leading the build and bringing leadership and other DevOps engineers onto it for the features that make it easier to manage and nicer to use. It's the strongest improvement we've shipped in this area, and the bet is that it becomes the standard that moves the group from DevOps toward a platform team.
+I led the build and brought leadership and other DevOps engineers onto it for the features that make it easier to manage and nicer to use. It's the strongest improvement we've shipped in this area, and the bet is that it becomes the standard that moves the group from DevOps toward a platform team.
 
 ### AKS to Cilium migration (in flight)
 
