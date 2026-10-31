@@ -27,193 +27,277 @@ export function SpectroMark({ style }) {
   );
 }
 
-// Palette: a cluster profile builds layer by layer — OS, Kubernetes,
-// network, storage, add-ons — then the same profile lands on a cloud, a
-// datacenter and an edge cluster. One profile, many clusters: the idea
-// the certification is about.
-const LAYERS = ["os", "k8s", "cni", "csi", "add-ons"];
-const TARGETS = [
-  { y: 15, label: "cloud" },
-  { y: 30, label: "datacenter" },
-  { y: 45, label: "edge" },
+// Palette, in its own idiom (the cluster-animation on spectrocloud.com's
+// Palette page): a cluster profile as a stack of hexagonal layers, OS at
+// the bottom to system apps on top, each layer pinned to a pack and
+// version; then the same profile deploys to every target, and the step
+// rail walks build → deploy → operate → scale. Layer colours follow
+// Palette's ramp: deep teal for the infrastructure layers, green for
+// observability, gold and orange for the app layers.
+const LAYERS = [
+  { name: "OS", pack: "ubuntu 24.04", top: "#0f4544", side: "#0a3130" },
+  { name: "KUBERNETES", pack: "pxk 1.33", top: "#12504f", side: "#0c3a39" },
+  { name: "NETWORK", pack: "cilium 1.17", top: "#176160", side: "#104746" },
+  { name: "STORAGE", pack: "portworx 3.2", top: "#21807c", side: "#185f5c" },
+  { name: "MONITORING", pack: "prometheus 3.2", top: "#7d9a58", side: "#5f7a40" },
+  { name: "SERVICE MESH", pack: "istio 1.24", top: "#f0c776", side: "#d2a656" },
+  { name: "SYSTEM APP", pack: "argo cd 2.14", top: "#f2915a", side: "#d47340" },
 ];
-const CYCLE = 7;
+const CLUSTERS = [
+  { y: 21, cloud: "aws", name: "eks-prod" },
+  { y: 28, cloud: "azure", name: "aks-west" },
+  { y: 35, cloud: "edge", name: "edge-store" },
+];
+const STEPS = [1, 2, 3, 4];
+const CYCLE = 10;
+
+// Stack geometry, in viewBox units (150 × 50).
+const CX = 33;
+const HW = 12; // half width of a hexagon
+const D = 2.6; // half depth of the top face
+const T = 2.2; // thickness of a layer's front band
+const BASE = 42; // top-face centre of the bottom layer
+const STEP = 4.4;
+
+const topFace = (y) =>
+  `${CX - HW},${y} ${CX - HW / 2},${y - D} ${CX + HW / 2},${y - D} ${CX + HW},${y} ${CX + HW / 2},${y + D} ${CX - HW / 2},${y + D}`;
+const band = (y) =>
+  `${CX - HW},${y} ${CX - HW / 2},${y + D} ${CX + HW / 2},${y + D} ${CX + HW},${y} ${CX + HW},${y + T} ${CX + HW / 2},${y + D + T} ${CX - HW / 2},${y + D + T} ${CX - HW},${y + T}`;
+const hexBadge = (cx, cy, r) =>
+  [0, 1, 2, 3, 4, 5]
+    .map((i) => {
+      const a = (Math.PI / 3) * i - Math.PI / 2;
+      return `${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`;
+    })
+    .join(" ");
+
+// Each step owns a slice of the cycle; the rail's active badge moves with it.
+const STEP_WINDOWS = [
+  [0, 0.42],
+  [0.42, 0.6],
+  [0.6, 0.78],
+  [0.78, 0.96],
+];
+
+function stepKeyframes([from, to]) {
+  const e = 0.01;
+  return {
+    opacity: [0, 0, 1, 1, 0, 0],
+    times: [0, Math.max(from - e, 0), from + e, to - e, to + e, 1].map((t) =>
+      Math.min(Math.max(t, 0), 1),
+    ),
+  };
+}
 
 function SpectroProfileLive({ color }) {
   const reduced = useReducedMotion();
-  const layerY = (i) => 46 - i * 7.2;
+  const layerY = (i) => BASE - i * STEP;
+  const loop = (delay = 0) => ({
+    duration: CYCLE,
+    delay,
+    repeat: Infinity,
+    ease: "easeOut",
+  });
   return (
     <div className="relative w-full h-full overflow-hidden rounded-xl flex items-center justify-center">
       <svg
-        viewBox="0 0 100 60"
+        viewBox="0 0 150 50"
         className="w-full h-full"
         preserveAspectRatio="xMidYMid meet"
-        style={{ maxWidth: "380px" }}
         aria-hidden="true"
       >
-        <text
-          x="27"
-          y="9"
+        {/* Step rail: build, deploy, operate, scale */}
+        <line x1="7" y1="9" x2="7" y2="42" stroke="var(--border-medium)" strokeWidth="0.25" />
+        {STEPS.map((n, i) => {
+          const cy = 9 + i * 11;
+          return (
+            <g key={n}>
+              <polygon
+                points={hexBadge(7, cy, 2.9)}
+                fill="var(--bg-elevated)"
+                stroke="var(--border-medium)"
+                strokeWidth="0.25"
+              />
+              <m.polygon
+                points={hexBadge(7, cy, 2.9)}
+                fill="#1f7a78"
+                initial={{ opacity: reduced && i === 0 ? 1 : 0 }}
+                animate={reduced ? {} : { opacity: stepKeyframes(STEP_WINDOWS[i]).opacity }}
+                transition={{ ...loop(), ease: "linear", times: stepKeyframes(STEP_WINDOWS[i]).times }}
+              />
+              <text
+                x="7"
+                y={cy + 0.9}
+                fill="var(--text-primary)"
+                fontSize="2.6"
+                fontWeight="700"
+                textAnchor="middle"
+                fontFamily="var(--font-display), sans-serif"
+              >
+                {n}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* The cluster profile: hexagonal layers settling bottom-up */}
+        {LAYERS.map((layer, i) => {
+          const y = layerY(i);
+          return (
+            <m.g
+              key={layer.name}
+              initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 }}
+              animate={reduced ? {} : { opacity: [0, 1, 1, 0], y: [-5, 0, 0, 0] }}
+              transition={{ ...loop(i * 0.22), times: [0, 0.05, 0.9, 1] }}
+            >
+              <polygon points={band(y)} fill={layer.side} />
+              <polygon
+                points={topFace(y)}
+                fill={layer.top}
+                stroke="rgba(255,255,255,0.18)"
+                strokeWidth="0.15"
+              />
+              <text
+                x={CX}
+                y={y + D + T - 0.55}
+                fill={i < 5 ? "rgba(255,255,255,0.88)" : "rgba(20,20,20,0.82)"}
+                fontSize="1.35"
+                fontWeight="700"
+                textAnchor="middle"
+                fontFamily="var(--font-body), sans-serif"
+              >
+                {layer.name}
+              </text>
+            </m.g>
+          );
+        })}
+
+        {/* Pack per layer, joined to its layer like Palette's profile view */}
+        {LAYERS.map((layer, i) => {
+          const y = layerY(i) + D * 0.4;
+          return (
+            <m.g
+              key={layer.pack}
+              initial={reduced ? { opacity: 1, x: 0 } : { opacity: 0, x: 3 }}
+              animate={reduced ? {} : { opacity: [0, 0, 1, 1, 0], x: [3, 3, 0, 0, 0] }}
+              transition={{ ...loop(i * 0.22), times: [0, 0.04, 0.09, 0.9, 1] }}
+            >
+              <line
+                x1={CX + HW + 0.4}
+                y1={y}
+                x2="52.5"
+                y2={y}
+                stroke={layer.top}
+                strokeWidth="0.3"
+                opacity="0.9"
+              />
+              <circle cx="52.5" cy={y} r="0.45" fill="none" stroke={layer.top} strokeWidth="0.3" />
+              <rect
+                x="53.4"
+                y={y - 1.75}
+                width="30"
+                height="3.5"
+                rx="0.5"
+                fill="var(--bg-surface)"
+                stroke="var(--border-subtle)"
+                strokeWidth="0.2"
+              />
+              <rect x="54.4" y={y - 0.75} width="1.5" height="1.5" rx="0.3" fill={layer.top} />
+              <text
+                x="57"
+                y={y + 0.8}
+                fill="var(--text-primary)"
+                fontSize="2.1"
+                fontFamily="var(--font-mono), monospace"
+              >
+                {layer.pack}
+              </text>
+            </m.g>
+          );
+        })}
+
+        {/* Deploy anywhere: the same profile running on every target */}
+        <m.text
+          x="92"
+          y="16"
           fill={color}
-          fontSize="2.4"
-          textAnchor="middle"
-          fontFamily="monospace"
+          fontSize="1.8"
+          fontWeight="700"
           letterSpacing="0.12em"
-          opacity="0.7"
+          fontFamily="var(--font-body), sans-serif"
+          initial={{ opacity: reduced ? 0.85 : 0 }}
+          animate={reduced ? {} : { opacity: [0, 0, 0.85, 0.85, 0] }}
+          transition={{ ...loop(), times: [0, 0.42, 0.46, 0.9, 1] }}
         >
-          cluster profile
-        </text>
-
-        {/* Layer slots, always visible */}
-        {LAYERS.map((label, i) => (
-          <rect
-            key={`slot-${label}`}
-            x="12"
-            y={layerY(i)}
-            width="30"
-            height="5.4"
-            rx="1"
-            fill="none"
-            stroke={color}
-            strokeWidth="0.3"
-            strokeDasharray="0.8 0.8"
-            opacity="0.3"
-          />
-        ))}
-
-        {/* Layers settling in, bottom up */}
-        {LAYERS.map((label, i) => (
+          CLUSTERS
+        </m.text>
+        {CLUSTERS.map((c, i) => (
           <m.g
-            key={label}
-            initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: -6 }}
-            animate={
-              reduced
-                ? {}
-                : { opacity: [0, 1, 1, 0], y: [-6, 0, 0, 0] }
-            }
-            transition={{
-              duration: CYCLE,
-              delay: i * 0.35,
-              repeat: Infinity,
-              ease: "easeOut",
-              times: [0, 0.08, 0.86, 1],
-            }}
+            key={c.name}
+            initial={{ opacity: reduced ? 1 : 0 }}
+            animate={reduced ? {} : { opacity: [0, 0, 1, 1, 0] }}
+            transition={{ ...loop(i * 0.15), times: [0, 0.44, 0.48, 0.9, 1] }}
           >
             <rect
-              x="12"
-              y={layerY(i)}
-              width="30"
-              height="5.4"
-              rx="1"
-              fill={`color-mix(in srgb, ${color} ${18 + i * 6}%, transparent)`}
-              stroke={color}
-              strokeWidth="0.4"
+              x="91"
+              y={c.y - 2}
+              width="53"
+              height="4"
+              rx="0.5"
+              fill="var(--bg-surface)"
+              stroke="var(--border-subtle)"
+              strokeWidth="0.2"
             />
-            <text
-              x="27"
-              y={layerY(i) + 3.6}
-              fill={color}
-              fontSize="2.5"
-              textAnchor="middle"
-              fontFamily="monospace"
-              letterSpacing="0.08em"
-            >
-              {label}
+            <text x="92.4" y={c.y + 0.8} fill="var(--text-tertiary)" fontSize="1.9" fontFamily="var(--font-mono), monospace">
+              {c.cloud}
             </text>
+            <text x="100.5" y={c.y + 0.8} fill={color} fontSize="2.1" fontFamily="var(--font-mono), monospace">
+              {c.name}
+            </text>
+            {/* Provisioning, then Running */}
+            <m.g
+              initial={{ opacity: reduced ? 0 : 1 }}
+              animate={reduced ? {} : { opacity: [1, 1, 0, 0] }}
+              transition={{ ...loop(i * 0.15), ease: "linear", times: [0, 0.56 + i * 0.03, 0.58 + i * 0.03, 1] }}
+            >
+              <circle cx="128.6" cy={c.y} r="0.6" fill="#e3a43a" />
+              <text x="130" y={c.y + 0.7} fill="#e3a43a" fontSize="1.85" fontFamily="var(--font-body), sans-serif">
+                Provisioning
+              </text>
+            </m.g>
+            <m.g
+              initial={{ opacity: reduced ? 1 : 0 }}
+              animate={reduced ? {} : { opacity: [0, 0, 1, 1] }}
+              transition={{ ...loop(i * 0.15), ease: "linear", times: [0, 0.56 + i * 0.03, 0.58 + i * 0.03, 1] }}
+            >
+              <circle cx="128.6" cy={c.y} r="0.6" fill="#3fbf8a" />
+              <text x="130" y={c.y + 0.7} fill="#3fbf8a" fontSize="1.85" fontFamily="var(--font-body), sans-serif">
+                Running
+              </text>
+            </m.g>
           </m.g>
         ))}
-
-        {/* One profile out to three clusters */}
-        {TARGETS.map((target, i) => (
-          <g key={target.label}>
-            <path
-              d={`M 43,30 C 54,30 56,${target.y} 66,${target.y}`}
-              stroke={color}
-              strokeWidth="0.3"
-              fill="none"
-              opacity="0.3"
-              strokeDasharray="0.8 0.8"
-            />
-            {!reduced && (
-              <m.path
-                d={`M 43,30 C 54,30 56,${target.y} 66,${target.y}`}
-                stroke={color}
-                strokeWidth="0.6"
-                fill="none"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{
-                  pathLength: [0, 0, 1, 1, 1],
-                  opacity: [0, 0, 1, 1, 0],
-                }}
-                transition={{
-                  duration: CYCLE,
-                  delay: i * 0.25,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  times: [0, 0.3, 0.45, 0.86, 1],
-                }}
-              />
-            )}
-            <rect
-              x="66"
-              y={target.y - 3.2}
-              width="6.4"
-              height="6.4"
-              rx="1"
-              transform={`rotate(45 69.2 ${target.y})`}
-              fill="var(--bg-surface)"
-              stroke={color}
-              strokeWidth="0.45"
-              opacity="0.7"
-            />
-            <m.rect
-              x="67.4"
-              y={target.y - 1.8}
-              width="3.6"
-              height="3.6"
-              rx="0.6"
-              transform={`rotate(45 69.2 ${target.y})`}
-              fill={color}
-              initial={{ opacity: reduced ? 1 : 0 }}
-              animate={reduced ? {} : { opacity: [0, 0, 1, 1, 0] }}
-              transition={{
-                duration: CYCLE,
-                delay: i * 0.25,
-                repeat: Infinity,
-                ease: "easeInOut",
-                times: [0, 0.42, 0.5, 0.86, 1],
-              }}
-            />
-            <text
-              x="76"
-              y={target.y + 0.9}
-              fill={color}
-              fontSize="2.5"
-              fontFamily="monospace"
-              letterSpacing="0.08em"
-              opacity="0.85"
-            >
-              {target.label}
-            </text>
-          </g>
-        ))}
       </svg>
-      {/* Spectro Cloud mark, top-right */}
-      <div className="absolute top-2 right-2 pointer-events-none">
-        <m.div
-          initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.6 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            color,
-            display: "flex",
-            filter: `drop-shadow(0 4px 12px ${color}66)`,
-          }}
-        >
-          <SpectroMark style={{ width: "1.25rem", height: "1.5rem" }} />
-        </m.div>
-      </div>
+
+      {/* Palette by Spectro Cloud: the product's mark top-right, the
+          company's wordmark bottom-right, both their dark-background
+          artwork. */}
+      <img
+        src="/images/logos/palette.svg"
+        alt=""
+        width="60"
+        height="20"
+        className="absolute top-2.5 right-3 pointer-events-none"
+        style={{ height: "18px", width: "auto" }}
+      />
+      <img
+        src="/images/logos/spectrocloud.svg"
+        alt=""
+        width="47"
+        height="18"
+        className="absolute bottom-2.5 right-3 pointer-events-none opacity-90"
+        style={{ height: "16px", width: "auto" }}
+      />
     </div>
   );
 }

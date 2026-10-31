@@ -191,6 +191,7 @@ const ProfessionalPDFCV = () => {
                 <Text style={styles.skillItem}>• {t("skills.azure")}</Text>
                 <Text style={styles.skillItem}>• {t("skills.eks")}</Text>
                 <Text style={styles.skillItem}>• {t("skills.aks")}</Text>
+                <Text style={styles.skillItem}>• {t("skills.nutanix")}</Text>
               </View>
             </View>
 

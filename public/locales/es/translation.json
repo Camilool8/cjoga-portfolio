@@ -80,6 +80,7 @@
     "kubernetes": "Kubernetes",
     "eks": "Amazon EKS",
     "aks": "Azure AKS",
+    "nutanix": "Nutanix Kubernetes Platform (NKP)",
     "docker": "Docker",
     "gitlab": "GitLab CI",
     "azureDevops": "Azure DevOps",
@@ -290,7 +291,7 @@
         "tagline": "DevSecOps y CI/CD"
       },
       "spectro": {
-        "tagline": "Kubernetes, repetible"
+        "tagline": "Palette · Kubernetes, repetible"
       }
     },
     "awsSolutionsArchitect": {

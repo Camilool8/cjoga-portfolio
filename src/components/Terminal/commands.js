@@ -65,7 +65,7 @@ function buildResumeText(t) {
 
   ${t("terminal.messages.resumeSkills")}
   ------
-  AWS | Azure | Terraform | Ansible | Kubernetes
+  AWS | Azure | Nutanix NKP | Terraform | Ansible | Kubernetes
   Docker | GitLab CI | ArgoCD | Prometheus | Grafana
   Linux | Python | Bash | Git | Helm
   Claude Code | MCP | GitHub Actions | GitOps
