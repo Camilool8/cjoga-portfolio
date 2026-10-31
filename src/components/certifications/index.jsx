@@ -28,6 +28,7 @@ const TAGLINE_DEFAULTS = {
   partner: "Accredited engineer",
   redhat: "Linux & system administration",
   gitlab: "DevSecOps & CI/CD",
+  spectro: "Kubernetes made repeatable",
 };
 
 function CountUp({ value, duration = 1.1 }) {

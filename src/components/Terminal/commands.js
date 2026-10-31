@@ -35,14 +35,15 @@ function buildResumeText(t) {
  |     ${t("terminal.messages.resumeTitle")}                      |
  +-------------------------------------------------+
 
-  ${t("terminal.messages.resumeLocation").padEnd(8)} : Santo Domingo, Dominican Republic
+  ${t("terminal.messages.resumeLocation").padEnd(8)} : Remote, global · based in Santo Domingo
   Email    : josejoga.opx@gmail.com
   LinkedIn : linkedin.com/in/cjoga
   Web      : cjoga.cloud
 
   ${t("terminal.messages.resumeExperience")}
   ----------
-  INSPYR Global Solutions    DevOps Engineer       2025 - Present
+  Globant                    DevOps Engineer       2025 - Present
+  KodePull SRL               Co-founder & CTO      2025 - Present
   Arctiq                     DevOps Consultant     2022 - Present
 
   ${t("terminal.messages.resumeCertifications")}
@@ -54,7 +55,13 @@ function buildResumeText(t) {
   * Certified Kubernetes Administrator (CKA)  // in progress
   * RHCSA & RHCE
   * Dynatrace Associate
+  * Spectro Cloud Certified – Palette Associate
   * GitLab Certified (4x)
+
+  ${t("terminal.messages.resumeEducation")}
+  ---------
+  * MBA Tech (Máster en Dirección y Administración de Empresas), UNIR  // 2026 - 2027
+  * Computer Science Engineering, PUCMM  // 2019 - 2024
 
   ${t("terminal.messages.resumeSkills")}
   ------
@@ -70,14 +77,14 @@ function buildResumeText(t) {
 const NEOFETCH_OUTPUT = `
         ######                visitor@cjoga.cloud
        ##    ##               ---------------------
-      ##      ##              OS: K3s on Debian GNU/Linux 12
-     ##   ##   ##             Host: Homelab Cluster (ARM64)
-     ##   ##   ##             Kernel: 6.1.0-k3s1
+      ##      ##              OS: K3s v1.33 on Ubuntu 24.04 LTS
+     ##   ##   ##             Host: KodePull cluster (6 nodes, amd64)
+     ##   ##   ##             Kernel: 6.8.0-generic
       ##      ##              Shell: cjoga-terminal 1.0
        ##    ##               Uptime: since 2022
         ######                Packages: AWS, K8s, Terraform, Ansible
                               Resolution: Full-Stack
-    c j o g a . c l o u d     WM: Kubernetes + ArgoCD
+    c j o g a . c l o u d     WM: Kubernetes + Envoy Gateway
                               Theme: DevOps [Dark]
                               Terminal: JetBrains Mono
                               CPU: Passion x Dedication @ 100%

@@ -10,11 +10,13 @@ import {
   viewportConfig,
 } from "../hooks/useMotion";
 
+// Each employer's square mark, as on LinkedIn; the colour tints the
+// pulse ring on current roles.
 const COMPANY_META = {
-  inspyr: { initial: "I", color: "#2563eb" },
-  kodepull: { initial: "K", color: "#7c3aed" },
-  flBetances: { initial: "F", color: "#d97706" },
-  arctiq: { initial: "A", color: "#10b981" },
+  globant: { logo: "/images/logos/globant.svg", color: "#8dc63f" },
+  kodepull: { logo: "/images/logos/kodepull.svg", color: "#fe5502" },
+  flBetances: { logo: "/images/logos/fl-betances.png", color: "#1a2a9c" },
+  arctiq: { logo: "/images/logos/arctiq.svg", color: "#10b981" },
 };
 
 // Each role leads with its three strongest lines; the rest open on
@@ -34,7 +36,7 @@ function Experience() {
   // wasting frames on what is ultimately just a thin vertical line.
   const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  const companyKeys = ["inspyr", "kodepull", "flBetances", "arctiq"];
+  const companyKeys = ["globant", "kodepull", "flBetances", "arctiq"];
   const isActive = (key) => {
     const period = t(`experience.${key}.period`);
     return /present|presente/i.test(period);
@@ -88,7 +90,7 @@ function Experience() {
 
           {companyKeys.map((key, index) => {
             const active = isActive(key);
-            const meta = COMPANY_META[key] || { initial: "•", color: "var(--accent)" };
+            const meta = COMPANY_META[key] || { logo: null, color: "var(--accent)" };
             const lines = t(`experience.${key}.responsibilities`, { returnObjects: true });
             const list = Array.isArray(lines) ? lines : [];
             const isOpen = Boolean(expanded[key]);
@@ -140,26 +142,31 @@ function Experience() {
                     ...SPRING_CONFIG,
                     delay: index * 0.15,
                   }}
-                  className="absolute top-6 left-0 md:left-[16px] w-8 h-8 rounded-full flex items-center justify-center z-[2]"
+                  className="absolute top-6 left-0 md:left-[16px] w-8 h-8 rounded-lg overflow-hidden z-[2]"
                   style={{
                     background: "var(--bg-surface)",
-                    border: `2px solid ${meta.color}`,
-                    boxShadow: `0 0 0 4px var(--bg-void), 0 4px 14px ${meta.color}40`,
-                    // The brand colour carries the ring; the letter stays in
-                    // ink so it reads on either theme.
-                    color: "var(--text-primary)",
-                    fontFamily: "var(--font-display)",
-                    fontWeight: 700,
-                    fontSize: "0.85rem",
+                    // The void ring cuts the timeline line around the mark;
+                    // the hairline keeps a white mark's edge on a light page.
+                    boxShadow: `0 0 0 4px var(--bg-void), 0 0 0 5px var(--border-subtle), 0 4px 14px ${meta.color}40`,
                   }}
                   aria-hidden="true"
                 >
-                  {meta.initial}
+                  {meta.logo && (
+                    <img
+                      src={meta.logo}
+                      alt=""
+                      width="32"
+                      height="32"
+                      loading="lazy"
+                      decoding="async"
+                      className="block w-full h-full"
+                    />
+                  )}
                 </m.div>
 
                 {active && (
                   <div
-                    className="absolute top-[20px] left-[-4px] md:left-[12px] w-10 h-10 rounded-full z-[1]"
+                    className="absolute top-[20px] left-[-4px] md:left-[12px] w-10 h-10 rounded-xl z-[1]"
                     style={{
                       border: `1px solid ${meta.color}`,
                       animation: "ring-pulse 2.4s ease-out infinite",

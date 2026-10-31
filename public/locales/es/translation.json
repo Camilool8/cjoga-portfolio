@@ -94,19 +94,21 @@
   "experience": {
     "title": "Experiencia",
     "heading": "Dónde he trabajado.",
-    "inspyr": {
+    "globant": {
       "title": "Ingeniero DevOps",
-      "company": "INSPYR Global Solutions",
+      "company": "Globant",
       "period": "marzo de 2025 – presente",
       "responsibilities": [
         "Opero una plataforma Azure multi-región — más de 300 servicios sobre AKS, desplegados mediante pipelines de Azure DevOps y PowerShell",
-        "Lideré la consolidación de todas las alertas y dashboards en un único repositorio de alertas como código y un pipeline GitOps que cubre todos los entornos y regiones",
-        "Mantengo y extiendo la plataforma de infraestructura en Bicep, desplegando nuevos servicios mediante pipelines de what-if y de release",
-        "Habilité infraestructura de datos gestionada para equipos de desarrollo — Azure Synapse y Databricks con gobernanza vía Unity Catalog, desplegados íntegramente como código",
-        "Impulso la migración en curso de clústeres de AKS hacia Cilium, y reemplazo la remediación manual de incidentes con automatización de auto-recuperación",
-        "Lideré una aplicación web de autoservicio para acceso auditado y con PII enmascarada a Azure SQL y MongoDB tras una cola de aprobación con un clic, además de operaciones de Kubernetes controladas — reinicios, cambios de recursos y réplicas — para los equipos de pruebas de carga",
+        "Opero la plataforma de Databricks como código — múltiples workspaces desplegados con Bicep, un metastore de Unity Catalog por región con sus permisos y configuración de cómputo, y clústeres de propósito general dedicados por entorno en cada workspace",
         "Integré agentes de Claude en la plataforma de CI/CD — un agente de seguridad autónomo escanea repositorios, abre issues en GitHub bajo su propia identidad y luego bloquea cualquier PR posterior que toque ese código hasta resolver el issue que levantó",
+        "Construí pipelines de Azure DevOps que despliegan los jobs de Databricks e instalan sus dependencias en los clústeres a partir de notebooks versionados en Git; una PoC con Declarative Automation Bundles (antes Databricks Asset Bundles) los extiende para desplegar también los parámetros más recientes de cada job",
+        "Lideré la consolidación de todas las alertas y dashboards en un único repositorio de alertas como código y un pipeline GitOps que cubre todos los entornos y regiones",
+        "Preparo dos PoC: una rearquitectura de los despliegues de Bicep orientada a entornos, para que un entorno nuevo sea un solo despliegue, y un plugin de agente SRE sobre los estándares abiertos de Anthropic (Agent Skills, MCP) para distribuirlo a equipos de toda la organización",
         "Construí el tooling de los agentes — skills, hooks y sub-agentes con personas propias que convierten la salida de Snyk en un comentario legible en el PR, y servidores MCP que exponen herramientas internas — corriendo sobre AKS como GitHub Apps con tokens de alcance limitado y corta duración y Workload Identity hacia Key Vault",
+        "Lideré una aplicación web de autoservicio para acceso auditado y con PII enmascarada a Azure SQL y MongoDB tras una cola de aprobación con un clic, además de operaciones de Kubernetes controladas — reinicios, cambios de recursos y réplicas — para los equipos de pruebas de carga",
+        "Mantengo y extiendo la plataforma de infraestructura en Bicep, y habilité Azure Synapse para un equipo de desarrollo con un modelo de promoción controlado, desplegado íntegramente como código",
+        "Impulso la migración en curso de clústeres de AKS hacia Cilium, y reemplazo la remediación manual de incidentes con automatización de auto-recuperación",
         "Automaticé la habilitación de GitHub Copilot en múltiples organizaciones bajo una misma instancia enterprise — licencias, accesos y presupuesto por organización — más orquestación de workflow dispatch y variables que mantiene consistente la estructura de los pipelines entre equipos"
       ]
     },
@@ -118,6 +120,8 @@
         "Cofundé la empresa en 2025 para ofrecer ingeniería de nivel empresarial a negocios sin presupuesto de gran empresa",
         "Dirijo el lado técnico como CTO: arquitectura, diseño de infraestructura, decisiones de plataforma y proveedores, y el estándar de calidad con el que se entrega cada proyecto",
         "Lidero la ingeniería y la entrega técnica en web, software a medida, nube y móvil",
+        "Entregas recientes: trabajo en aplicaciones móviles y proyectos de diseño y despliegue web, además del trabajo recurrente de mantenimiento, renovación de dominios y hosting",
+        "Opero el clúster K3s on-prem de KodePull — cargas de clientes que mantienen sus datos en hardware local, y el sitio de relevo y respaldo de los clústeres de producción en la nube y en centros de datos",
         "Incorporo ingenieros, diseñadores y socios especialistas a cada proyecto según lo que el trabajo requiere",
         "Colaboro con el CEO en la estrategia técnica, manteniendo la entrega alineada con resultados de negocio"
       ]
@@ -125,7 +129,7 @@
     "flBetances": {
       "title": "Ingeniero DevOps",
       "company": "FL Betances & Asociados",
-      "period": "junio de 2024 – diciembre de 2025",
+      "period": "junio de 2024 – noviembre de 2025",
       "responsibilities": [
         "Me integré al equipo central de DevOps de una institución bancaria, dando soporte a más de 50 equipos de ingeniería y a un backlog continuo de automatización",
         "Mantuve y extendí un framework de despliegue interno sobre Azure DevOps — plantillas YAML que detectan el tipo de proyecto, el entorno destino y las verificaciones de política requeridas",
@@ -137,23 +141,37 @@
     "arctiq": {
       "title": "Consultor DevOps",
       "company": "Arctiq",
-      "period": "julio de 2022 – presente",
+      "period": "agosto de 2022 – presente",
       "responsibilities": [
         "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS — FluxCD, GitLab CI y Terraform",
+        "Lidero la preparación para SOC 2 de la expansión regional del cliente, con seguimiento en Secureframe, mientras la plataforma EKS pasa de una sola región de AWS a varias",
+        "Entregué un despliegue de Nutanix Kubernetes Platform (NKP) Ultimate para un cliente que migra de OpenShift a Nutanix — arquitectura, despliegue y la documentación que su equipo necesitaba para asumir la operación",
         "Consolidé la dispersión de “una rama por equipo” en namespaces por equipo, recortando entre 5 y 8 veces la superficie desplegada redundante",
         "Implementé el acceso SSO con AWS Identity Center y Entra ID, retirando los usuarios IAM en favor de roles asumidos y OIDC para los pipelines",
         "Construí observabilidad desde cero — instrumentación con OpenTelemetry y Grafana, Loki y trazas distribuidas en cada aplicación",
-        "Impartí talleres de Terraform para llevar a los equipos de desarrollo a la infraestructura autogestionada; ascendido a mentor del equipo local",
-        "Integré el cumplimiento de SOC2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en entornos inferiores y de producción",
+        "Integré controles de SOC 2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en entornos inferiores y de producción",
+        "Mentor del equipo local: superviso la salud de los proyectos de mis compañeros y los guío en nube, Kubernetes y seguridad; impartí talleres de Terraform que llevaron a los equipos de desarrollo a la infraestructura autogestionada",
         "Estandaricé la gobernanza de recursos con Kubernetes LimitRanges en todos los entornos, y documenté la arquitectura de EKS como código en D2",
         "Opero cargas de agentes en contenedores sobre EKS y Fargate aprovisionados con Terraform — IRSA para el acceso a AWS a nivel de pod, entrega GitOps con auditoría de CI en el repositorio gestionado",
         "Impartí un taller de habilitación en Azure de una semana para el equipo de un cliente — desde fundamentos de la nube y gobernanza hasta redes, cómputo, datos e IA, y operaciones"
       ]
     },
     "headingMuted": "Trabajo de plataformas sobre Azure y AWS.",
-    "lede": "Arctiq, INSPYR y KodePull corren en paralelo: consultoría, un rol de plataforma y la empresa que cofundé.",
+    "lede": "Arctiq, Globant y KodePull corren en paralelo: consultoría, un rol de plataforma y la empresa que cofundé.",
     "showMore": "Mostrar {{count}} más",
     "showLess": "Mostrar menos"
+  },
+  "education": {
+    "mbaTech": {
+      "degree": "Máster Universitario en Dirección y Administración de Empresas (Tech MBA)",
+      "school": "UNIR — Universidad Internacional de La Rioja",
+      "period": "octubre de 2026 – octubre de 2027 (previsto)"
+    },
+    "pucmm": {
+      "degree": "Ingeniería en Ciencias de la Computación",
+      "school": "Pontificia Universidad Católica Madre y Maestra (PUCMM)",
+      "period": "2019 – 2024"
+    }
   },
   "projects": {
     "title": "Proyectos",
@@ -220,21 +238,21 @@
       ]
     },
     "containerization": {
-      "title": "Homelab distribuido de Kubernetes",
-      "description": "Un clúster K3s multinodo sobre hardware propio que ejecuta entrega GitOps, observabilidad y gestión de secretos detrás de un Envoy Gateway y un Cloudflare Tunnel — aloja este mismo sitio.",
+      "title": "Clúster Kubernetes on-prem de KodePull",
+      "description": "El clúster K3s de seis nodos que construí como homelab, hoy de KodePull: ejecuta cargas de clientes que mantienen sus datos en hardware local y respalda los clústeres de producción, con secretos en OpenBao, Envoy Gateway, un Cloudflare Tunnel y runners de CI dentro del clúster. Aloja este mismo sitio.",
       "tech": [
         "K3s",
-        "Longhorn",
         "OpenBao",
-        "Envoy"
+        "Envoy",
+        "Tailscale"
       ]
     },
-    "headingMuted": "Código abierto, mi laboratorio y trabajo de plataformas.",
+    "headingMuted": "Código abierto, el clúster que opero y trabajo de plataformas.",
     "links": {
       "sim": "Guía del simulador",
       "lab": "Resumen del laboratorio",
       "arctiq": "Relato de Arctiq",
-      "inspyr": "Relato de INSPYR"
+      "globant": "Relato de Globant"
     },
     "shots": {
       "sim": "El simulador Kubestronaut en pleno examen: una tarea de CKAD a la izquierda y el escritorio del examen con una sesión de kubectl en vivo a la derecha.",
@@ -270,6 +288,9 @@
       },
       "gitlab": {
         "tagline": "DevSecOps y CI/CD"
+      },
+      "spectro": {
+        "tagline": "Kubernetes, repetible"
       }
     },
     "awsSolutionsArchitect": {
@@ -337,6 +358,11 @@
       "issuer": "Technology Partners",
       "date": "2023"
     },
+    "spectro": {
+      "name": "Spectro Cloud Certified – Palette Associate",
+      "issuer": "Spectro Cloud",
+      "date": "2026"
+    },
     "headingMuted": "Los fundamentos detrás del trabajo."
   },
   "contact": {
@@ -356,6 +382,7 @@
     "monitoring": "Monitoreo y Scripting",
     "ai": "IA y Agentes",
     "experience": "EXPERIENCIA PROFESIONAL",
+    "education": "EDUCACIÓN",
     "projects": "PROYECTOS CLAVE",
     "certifications": "CERTIFICACIONES"
   },
@@ -379,7 +406,7 @@
   "terminal": {
     "label": "Terminal",
     "heading": "El clúster detrás de esta página.",
-    "description": "Este sitio corre en un clúster K3s multinodo que construí y opero: entrega GitOps, observabilidad y secretos con OpenBao, detrás de Envoy Gateway y un Cloudflare Tunnel. La terminal se conecta en modo de solo lectura, así que puedes listar namespaces, inspeccionar pods y ver cómo está armado.",
+    "description": "Este sitio corre en el clúster K3s on-prem de KodePull, que construí y opero: secretos en OpenBao, runners de CI dentro del clúster y métricas con Prometheus, detrás de Envoy Gateway y un Cloudflare Tunnel. La terminal se conecta en modo de solo lectura y muestra el namespace del sitio y la capa de plataforma, así que puedes inspeccionar pods y ver cómo está armado.",
     "cta": "Abrir la terminal en vivo",
     "loading": "consultando el clúster…",
     "inputLabel": "Comando de la terminal",
@@ -434,6 +461,7 @@
       "resumeLocation": "Ubicación",
       "resumeExperience": "EXPERIENCIA",
       "resumeCertifications": "CERTIFICACIONES",
+      "resumeEducation": "EDUCACIÓN",
       "resumeSkills": "HABILIDADES",
       "resumeHireTip": "Escribe 'sudo hire-me' para el siguiente paso ;)",
       "fileNotFound": "No existe el fichero o el directorio",
@@ -447,7 +475,7 @@
     "page": {
       "title": "Terminal del clúster en vivo.",
       "titleMuted": "De solo lectura y abierta para ti.",
-      "lede": "Escribe un comando o elige uno abajo. Se ejecuta contra el clúster K3s que sirve este sitio, con acceso de solo lectura: lista namespaces, inspecciona pods y nodos, o muestra el CV.",
+      "lede": "Escribe un comando o elige uno abajo. Se ejecuta contra el clúster K3s que sirve este sitio, con acceso de solo lectura al namespace del sitio y a la capa de plataforma: lístalos, inspecciona pods y nodos, o muestra el CV.",
       "try": "Comandos sugeridos",
       "readOnly": "Solo lectura"
     }

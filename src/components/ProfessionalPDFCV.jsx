@@ -252,13 +252,13 @@ const ProfessionalPDFCV = () => {
 
           <View style={styles.jobEntry}>
             <Text style={styles.jobTitle}>
-              {t("experience.inspyr.title")}, {t("experience.inspyr.company")}
+              {t("experience.globant.title")}, {t("experience.globant.company")}
             </Text>
             <Text style={styles.jobPeriod}>
-              {t("experience.inspyr.period")}
+              {t("experience.globant.period")}
             </Text>
             <View style={styles.jobResponsibilities}>
-              {t("experience.inspyr.responsibilities", {
+              {t("experience.globant.responsibilities", {
                 returnObjects: true,
               }).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
@@ -323,6 +323,20 @@ const ProfessionalPDFCV = () => {
               ))}
             </View>
           </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>
+            {t("cv.education", "EDUCATION")}
+          </Text>
+          {["mbaTech", "pucmm"].map((key) => (
+            <View key={key} style={styles.jobEntry}>
+              <Text style={styles.jobTitle}>
+                {t(`education.${key}.degree`)}, {t(`education.${key}.school`)}
+              </Text>
+              <Text style={styles.jobPeriod}>{t(`education.${key}.period`)}</Text>
+            </View>
+          ))}
         </View>
 
         <View style={styles.section}>
@@ -489,6 +503,15 @@ const ProfessionalPDFCV = () => {
               <Text style={styles.certIssuer}>
                 {t("certifications.gitlabImplementation.issuer")},{" "}
                 {t("certifications.gitlabImplementation.date")}
+              </Text>
+            </View>
+            <View style={styles.certItem}>
+              <Text style={styles.certName}>
+                {t("certifications.spectro.name")}
+              </Text>
+              <Text style={styles.certIssuer}>
+                {t("certifications.spectro.issuer")},{" "}
+                {t("certifications.spectro.date")}
               </Text>
             </View>
             <View style={styles.certItem}>

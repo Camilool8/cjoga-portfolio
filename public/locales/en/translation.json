@@ -94,19 +94,21 @@
   "experience": {
     "title": "Experience",
     "heading": "Where I've worked.",
-    "inspyr": {
+    "globant": {
       "title": "DevOps Engineer",
-      "company": "INSPYR Global Solutions",
+      "company": "Globant",
       "period": "March 2025 – Present",
       "responsibilities": [
         "Operate a multi-region Azure platform — 300+ services on AKS, released through Azure DevOps pipelines and PowerShell",
-        "Led the consolidation of every alert and dashboard into one alerts-as-code repository and GitOps release pipeline covering all environments and regions",
-        "Maintain and extend the Bicep infrastructure platform, shipping new services through what-if and release pipelines",
-        "Enabled managed data infrastructure for developer teams — Azure Synapse and Databricks with Unity Catalog governance, deployed entirely as code",
-        "Drive an in-flight migration of AKS clusters onto Cilium, and replace manual incident remediation with self-healing automation",
-        "Led a self-service web app for audited, PII-masked access to Azure SQL and MongoDB behind a one-click admin approval queue, plus gated Kubernetes operations — restarts, resource and replica changes — for load-testing teams",
+        "Run the Databricks platform as code — multiple workspaces deployed through Bicep, a Unity Catalog metastore per region with its permissions and compute settings, and dedicated general-purpose clusters per environment in every workspace",
         "Embedded Claude agents into the CI/CD platform — an autonomous security agent scans repositories, files GitHub issues under its own identity, then blocks any later PR touching that code until the issue it raised is resolved",
+        "Built Azure DevOps pipelines that deploy Databricks jobs and install their dependencies on the clusters from Git-sourced notebooks; a Declarative Automation Bundles PoC (formerly Databricks Asset Bundles) now extends them to deploy each job's latest parameters",
+        "Led the consolidation of every alert and dashboard into one alerts-as-code repository and GitOps release pipeline covering all environments and regions",
+        "Lined up two PoCs: an environment-oriented re-architecture of the Bicep deployments so a greenfield environment is one deployment, and an SRE agent plugin on Anthropic's open standards (Agent Skills, MCP) for distribution to teams across the organization",
         "Built the agent tooling — skills, hooks, and sub-agent personas that turn Snyk output into a readable PR comment, and MCP servers exposing internal tooling — running on AKS as GitHub Apps with short-lived scoped tokens and Workload Identity into Key Vault",
+        "Led a self-service web app for audited, PII-masked access to Azure SQL and MongoDB behind a one-click admin approval queue, plus gated Kubernetes operations — restarts, resource and replica changes — for load-testing teams",
+        "Maintain and extend the Bicep infrastructure platform, and enabled Azure Synapse for a developer team with a gated promotion model, deployed entirely as code",
+        "Drive an in-flight migration of AKS clusters onto Cilium, and replace manual incident remediation with self-healing automation",
         "Automated GitHub Copilot enablement across multiple orgs under one enterprise — seats, access, per-org budget — plus workflow-dispatch and variable orchestration that keeps pipeline structure consistent across teams"
       ]
     },
@@ -118,6 +120,8 @@
         "Co-founded the company in 2025 to deliver enterprise-grade engineering to businesses without enterprise budgets",
         "Own the technical side as CTO: architecture, infrastructure design, platform and vendor decisions, and the quality bar every project ships under",
         "Lead hands-on engineering and delivery across web, custom software, cloud, and mobile",
+        "Recent deliveries: mobile app work and web design and deployment projects, on top of recurring maintenance, domain renewals, and hosting",
+        "Run KodePull's on-prem K3s cluster — workloads for clients who keep their data on local hardware, and the relay and backup site for the production clusters in the cloud and in datacenters",
         "Scale specialist engineers, designers, and partners onto each engagement as the work needs them",
         "Partner with the CEO on technical strategy, keeping delivery mapped to business outcomes"
       ]
@@ -125,7 +129,7 @@
     "flBetances": {
       "title": "DevOps Engineer",
       "company": "FL Betances & Asociados",
-      "period": "June 2024 – December 2025",
+      "period": "June 2024 – November 2025",
       "responsibilities": [
         "Embedded in a banking institution's core DevOps team, supporting 50+ engineering teams and a continuous automation backlog",
         "Maintained and extended an in-house Azure DevOps deployment framework — YAML templates that detect project type, target environment, and required policy checks",
@@ -137,23 +141,37 @@
     "arctiq": {
       "title": "DevOps Consultant",
       "company": "Arctiq",
-      "period": "July 2022 – Present",
+      "period": "August 2022 – Present",
       "responsibilities": [
         "Designed and led the migration of 60+ applications from a hand-built Rancher setup to a managed AWS EKS platform — FluxCD, GitLab CI, and Terraform",
+        "Lead SOC 2 readiness for the client's regional expansion, tracked in Secureframe, while the EKS platform grows from a single AWS region to multi-region",
+        "Delivered a Nutanix Kubernetes Platform (NKP) Ultimate deployment for a customer moving from OpenShift to Nutanix — architecture, deployment, and the documentation their team needed to take ownership",
         "Consolidated branch-per-team sprawl into per-team namespaces, cutting 5–8× of redundant deployed surface",
         "Rolled out SSO with AWS Identity Center and Entra ID, retiring IAM users for assumed roles and pipeline OIDC",
         "Built observability from zero — OpenTelemetry instrumentation with Grafana, Loki, and distributed traces across every application",
-        "Led Terraform workshops moving dev teams to self-service infrastructure; promoted to local team mentor",
-        "Embedded SOC2 compliance into delivery — automated CI/CD checks, IaC policy, and GitLab merge-request gating across lower and production environments",
+        "Embedded SOC 2 controls into delivery — automated CI/CD checks, IaC policy, and GitLab merge-request gating across lower and production environments",
+        "Local team mentor: oversee the health of peers' projects and guide them on cloud, Kubernetes, and security; led Terraform workshops that moved dev teams to self-service infrastructure",
         "Standardized resource governance with Kubernetes LimitRanges across every environment, and documented the EKS architecture as code in D2",
         "Run containerized agent workloads on Terraform-provisioned EKS and Fargate — IRSA for pod-level AWS access, GitOps delivery with CI audit on the managed repo",
         "Led a week-long Azure enablement workshop for a client team — cloud fundamentals and governance through networking, compute, data and AI, and operations"
       ]
     },
     "headingMuted": "Platform work across Azure and AWS.",
-    "lede": "Arctiq, INSPYR and KodePull run in parallel: consulting, a platform role, and the company I co-founded.",
+    "lede": "Arctiq, Globant and KodePull run in parallel: consulting, a platform role, and the company I co-founded.",
     "showMore": "Show {{count}} more",
     "showLess": "Show less"
+  },
+  "education": {
+    "mbaTech": {
+      "degree": "Master in Business Administration (MBA), Tech MBA",
+      "school": "UNIR — Universidad Internacional de La Rioja",
+      "period": "October 2026 – October 2027 (expected)"
+    },
+    "pucmm": {
+      "degree": "Computer Science Engineering",
+      "school": "Pontificia Universidad Católica Madre y Maestra (PUCMM)",
+      "period": "2019 – 2024"
+    }
   },
   "projects": {
     "title": "Projects",
@@ -220,21 +238,21 @@
       ]
     },
     "containerization": {
-      "title": "Distributed Kubernetes Homelab",
-      "description": "A multi-node K3s cluster on personal hardware running GitOps delivery, observability, and secrets management behind an Envoy Gateway and Cloudflare Tunnel — it hosts this very site.",
+      "title": "KodePull's On-Prem Kubernetes Cluster",
+      "description": "The six-node K3s cluster I built as a homelab, now KodePull's: it runs workloads for clients who keep their data on local hardware and backs up the production clusters, with OpenBao secrets, Envoy Gateway, a Cloudflare Tunnel and in-cluster CI runners. It hosts this very site.",
       "tech": [
         "K3s",
-        "Longhorn",
         "OpenBao",
-        "Envoy"
+        "Envoy",
+        "Tailscale"
       ]
     },
-    "headingMuted": "Open source, my lab, and platform work on the job.",
+    "headingMuted": "Open source, the cluster I run, and platform work on the job.",
     "links": {
       "sim": "Simulator guide",
       "lab": "Lab overview",
       "arctiq": "Arctiq write-up",
-      "inspyr": "INSPYR write-up"
+      "globant": "Globant write-up"
     },
     "shots": {
       "sim": "The Kubestronaut simulator mid-exam: a CKAD task on the left, the exam desktop with a live kubectl session on the right.",
@@ -270,6 +288,9 @@
       },
       "gitlab": {
         "tagline": "DevSecOps & CI/CD"
+      },
+      "spectro": {
+        "tagline": "Kubernetes made repeatable"
       }
     },
     "awsSolutionsArchitect": {
@@ -337,6 +358,11 @@
       "issuer": "Technology Partners",
       "date": "2023"
     },
+    "spectro": {
+      "name": "Spectro Cloud Certified – Palette Associate",
+      "issuer": "Spectro Cloud",
+      "date": "2026"
+    },
     "headingMuted": "The fundamentals behind the work."
   },
   "contact": {
@@ -356,6 +382,7 @@
     "monitoring": "Monitoring & Scripting",
     "ai": "AI & Agents",
     "experience": "PROFESSIONAL EXPERIENCE",
+    "education": "EDUCATION",
     "projects": "KEY PROJECTS",
     "certifications": "CERTIFICATIONS"
   },
@@ -379,7 +406,7 @@
   "terminal": {
     "label": "Terminal",
     "heading": "The cluster behind this page.",
-    "description": "This site runs on a multi-node K3s cluster I built and operate: GitOps delivery, observability and OpenBao secrets, behind Envoy Gateway and a Cloudflare Tunnel. The terminal connects to it read-only, so you can list namespaces, inspect pods and see how it is put together.",
+    "description": "This site runs on KodePull's on-prem K3s cluster, which I built and operate: OpenBao secrets, in-cluster CI runners and Prometheus metrics, behind Envoy Gateway and a Cloudflare Tunnel. The terminal connects to it read-only and shows the site's namespace and the platform layer, so you can inspect pods and see how it is put together.",
     "cta": "Open the live terminal",
     "loading": "querying cluster…",
     "inputLabel": "Terminal command",
@@ -434,6 +461,7 @@
       "resumeLocation": "Location",
       "resumeExperience": "EXPERIENCE",
       "resumeCertifications": "CERTIFICATIONS",
+      "resumeEducation": "EDUCATION",
       "resumeSkills": "SKILLS",
       "resumeHireTip": "Type 'sudo hire-me' for the next step ;)",
       "fileNotFound": "No such file or directory",
@@ -447,7 +475,7 @@
     "page": {
       "title": "Live cluster terminal.",
       "titleMuted": "Read-only, and open to you.",
-      "lede": "Type a command or pick one below. It runs against the K3s cluster that serves this site, with read-only access: list namespaces, inspect pods and nodes, or print the CV.",
+      "lede": "Type a command or pick one below. It runs against the K3s cluster that serves this site, with read-only access to the site's namespace and the platform layer: list them, inspect pods and nodes, or print the CV.",
       "try": "Suggested commands",
       "readOnly": "Read-only"
     }
