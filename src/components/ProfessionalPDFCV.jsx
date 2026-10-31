@@ -25,7 +25,10 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    // Narrower top and bottom margins than the sides: the CV is two pages
+    // at its six-lines-per-role cut, with little to spare.
+    paddingHorizontal: 30,
+    paddingVertical: 22,
     fontFamily: "Roboto",
     fontSize: 10,
     lineHeight: 1.25,

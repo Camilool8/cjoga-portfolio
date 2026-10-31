@@ -105,7 +105,7 @@
         "Embedded Claude agents into the CI/CD platform — an autonomous security agent scans repositories, files GitHub issues under its own identity, then blocks any later PR touching that code until the issue it raised is resolved",
         "Built Azure DevOps pipelines that deploy Databricks jobs and install their dependencies on the clusters from Git-sourced notebooks; a Declarative Automation Bundles PoC (formerly Databricks Asset Bundles) now extends them to deploy each job's latest parameters",
         "Built the agent tooling — skills, hooks, and sub-agent personas that turn Snyk output into a readable PR comment, and MCP servers exposing internal tooling — running on AKS as GitHub Apps with short-lived scoped tokens and Workload Identity into Key Vault",
-        "Led a self-service web app for audited, PII-masked access to Azure SQL and MongoDB behind a one-click admin approval queue, plus gated Kubernetes operations — restarts, resource and replica changes — for load-testing teams",
+        "Lead a self-service portal for audited, PII-masked access to Azure SQL and MongoDB behind a one-click approval queue, plus gated Kubernetes operations — live on many environments for developers, data analysts, QA and load-testing teams, with the global production rollout in progress",
         "Led the consolidation of every alert and dashboard into one alerts-as-code repository and GitOps release pipeline covering all environments and regions",
         "Lined up two PoCs: an environment-oriented re-architecture of the Bicep deployments so a greenfield environment is one deployment, and an SRE agent plugin on Anthropic's open standards (Agent Skills, MCP) for distribution to teams across the organization",
         "Maintain and extend the Bicep infrastructure platform, and enabled Azure Synapse for a developer team with a gated promotion model, deployed entirely as code",
@@ -136,6 +136,7 @@
         "Maintained and extended an in-house Azure DevOps deployment framework — YAML templates that detect project type, target environment, and required policy checks",
         "Ran nightly deployment operations across all teams, tracing failed deploys through ArgoCD and AKS to the policy or template at fault",
         "Built Power Automate flows for the approval, notification, and ticket-lifecycle processes around DevOps work",
+        "Built a Vue.js and .NET self-service portal: repositories, permissions and infrastructure through approved templates, not tickets",
         "Led an internal Terraform module library letting teams self-provision cloud resources within bank policy; handed off near-complete at contract end"
       ]
     },
@@ -199,13 +200,12 @@
       ]
     },
     "iac": {
-      "title": "Multi-Cloud Infrastructure as Code",
-      "description": "Modular Terraform and Bicep platforms for AWS and Azure — networking, compute, storage, and security — with a plan or what-if check on every change.",
+      "title": "Self-Service Terraform on Azure",
+      "description": "An internal library of Terraform modules that let a bank's teams deploy Azure resources themselves, with the variables and behaviour its policies require built into every module.",
       "tech": [
         "Terraform",
-        "Bicep",
-        "AWS",
-        "Azure"
+        "Azure",
+        "Azure DevOps"
       ]
     },
     "monitoring": {
@@ -253,7 +253,8 @@
       "sim": "Simulator guide",
       "lab": "Cluster overview",
       "arctiq": "Arctiq write-up",
-      "globant": "Globant write-up"
+      "globant": "Globant write-up",
+      "flBetances": "FL Betances write-up"
     },
     "shots": {
       "sim": "The Kubestronaut simulator mid-exam: a CKAD task on the left, the exam desktop with a live kubectl session on the right.",
@@ -317,7 +318,7 @@
     "cka": {
       "name": "Certified Kubernetes Administrator (CKA)",
       "issuer": "The Linux Foundation",
-      "date": "Target: November 30, 2026"
+      "date": "Target: Nov 30, 2026"
     },
     "rhcsa": {
       "name": "Red Hat Certified System Administrator (RHCSA)",
