@@ -75,9 +75,26 @@ const hexBadge = (cx, cy, r) =>
 const STEP_WINDOWS = [
   [0, 0.42],
   [0.42, 0.6],
-  [0.6, 0.78],
-  [0.78, 0.96],
+  [0.6, 0.76],
+  [0.76, 0.88],
 ];
+
+// One clock for the whole tile. Every element keys its keyframes off the
+// same cycle (no per-element delays, which drifted out of phase and let
+// a new stack start building under the last one): the stack builds
+// bottom-up, the clusters come up, everything is gone by HIDE, and the
+// tile stays empty until the cycle restarts.
+const SHOW_END = 0.84;
+const HIDE = 0.88;
+const layerAt = (i) => 0.02 + i * 0.03;
+
+// Opacity keyframes for "visible from `from` until the shared fade-out".
+function visibleFrom(from, fadeIn = 0.03) {
+  return {
+    opacity: [0, 0, 1, 1, 0, 0],
+    times: [0, from, from + fadeIn, SHOW_END, HIDE, 1],
+  };
+}
 
 function stepKeyframes([from, to]) {
   const e = 0.01;
@@ -92,11 +109,11 @@ function stepKeyframes([from, to]) {
 function SpectroProfileLive({ color }) {
   const reduced = useReducedMotion();
   const layerY = (i) => BASE - i * STEP;
-  const loop = (delay = 0) => ({
+  const loop = (times) => ({
     duration: CYCLE,
-    delay,
     repeat: Infinity,
     ease: "easeOut",
+    times,
   });
   return (
     <div className="relative w-full h-full overflow-hidden rounded-xl flex items-center justify-center">
@@ -123,7 +140,7 @@ function SpectroProfileLive({ color }) {
                 fill="#1f7a78"
                 initial={{ opacity: reduced && i === 0 ? 1 : 0 }}
                 animate={reduced ? {} : { opacity: stepKeyframes(STEP_WINDOWS[i]).opacity }}
-                transition={{ ...loop(), ease: "linear", times: stepKeyframes(STEP_WINDOWS[i]).times }}
+                transition={{ ...loop(stepKeyframes(STEP_WINDOWS[i]).times), ease: "linear" }}
               />
               <text
                 x="7"
@@ -143,12 +160,13 @@ function SpectroProfileLive({ color }) {
         {/* The cluster profile: hexagonal layers settling bottom-up */}
         {LAYERS.map((layer, i) => {
           const y = layerY(i);
+          const kf = visibleFrom(layerAt(i));
           return (
             <m.g
               key={layer.name}
               initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 }}
-              animate={reduced ? {} : { opacity: [0, 1, 1, 0], y: [-5, 0, 0, 0] }}
-              transition={{ ...loop(i * 0.22), times: [0, 0.05, 0.9, 1] }}
+              animate={reduced ? {} : { opacity: kf.opacity, y: [-5, -5, 0, 0, 0, -5] }}
+              transition={loop(kf.times)}
             >
               <polygon points={band(y)} fill={layer.side} />
               <polygon
@@ -175,12 +193,13 @@ function SpectroProfileLive({ color }) {
         {/* Pack per layer, joined to its layer like Palette's profile view */}
         {LAYERS.map((layer, i) => {
           const y = layerY(i) + D * 0.4;
+          const kf = visibleFrom(layerAt(i) + 0.02);
           return (
             <m.g
               key={layer.pack}
               initial={reduced ? { opacity: 1, x: 0 } : { opacity: 0, x: 3 }}
-              animate={reduced ? {} : { opacity: [0, 0, 1, 1, 0], x: [3, 3, 0, 0, 0] }}
-              transition={{ ...loop(i * 0.22), times: [0, 0.04, 0.09, 0.9, 1] }}
+              animate={reduced ? {} : { opacity: kf.opacity, x: [3, 3, 0, 0, 0, 3] }}
+              transition={loop(kf.times)}
             >
               <line
                 x1={CX + HW + 0.4}
@@ -226,17 +245,21 @@ function SpectroProfileLive({ color }) {
           letterSpacing="0.12em"
           fontFamily="var(--font-body), sans-serif"
           initial={{ opacity: reduced ? 0.85 : 0 }}
-          animate={reduced ? {} : { opacity: [0, 0, 0.85, 0.85, 0] }}
-          transition={{ ...loop(), times: [0, 0.42, 0.46, 0.9, 1] }}
+          animate={reduced ? {} : { opacity: visibleFrom(0.42).opacity.map((o) => o * 0.85) }}
+          transition={loop(visibleFrom(0.42).times)}
         >
           CLUSTERS
         </m.text>
-        {CLUSTERS.map((c, i) => (
+        {CLUSTERS.map((c, i) => {
+          const row = visibleFrom(0.44 + i * 0.02);
+          // Provisioning, then Running, a beat apart per cluster.
+          const flip = [0, 0.56 + i * 0.03, 0.57 + i * 0.03, 1];
+          return (
           <m.g
             key={c.name}
             initial={{ opacity: reduced ? 1 : 0 }}
-            animate={reduced ? {} : { opacity: [0, 0, 1, 1, 0] }}
-            transition={{ ...loop(i * 0.15), times: [0, 0.44, 0.48, 0.9, 1] }}
+            animate={reduced ? {} : { opacity: row.opacity }}
+            transition={loop(row.times)}
           >
             <rect
               x="91"
@@ -254,11 +277,10 @@ function SpectroProfileLive({ color }) {
             <text x="100.5" y={c.y + 0.8} fill={color} fontSize="2.1" fontFamily="var(--font-mono), monospace">
               {c.name}
             </text>
-            {/* Provisioning, then Running */}
             <m.g
               initial={{ opacity: reduced ? 0 : 1 }}
               animate={reduced ? {} : { opacity: [1, 1, 0, 0] }}
-              transition={{ ...loop(i * 0.15), ease: "linear", times: [0, 0.56 + i * 0.03, 0.58 + i * 0.03, 1] }}
+              transition={{ ...loop(flip), ease: "linear" }}
             >
               <circle cx="128.6" cy={c.y} r="0.6" fill="#e3a43a" />
               <text x="130" y={c.y + 0.7} fill="#e3a43a" fontSize="1.85" fontFamily="var(--font-body), sans-serif">
@@ -268,7 +290,7 @@ function SpectroProfileLive({ color }) {
             <m.g
               initial={{ opacity: reduced ? 1 : 0 }}
               animate={reduced ? {} : { opacity: [0, 0, 1, 1] }}
-              transition={{ ...loop(i * 0.15), ease: "linear", times: [0, 0.56 + i * 0.03, 0.58 + i * 0.03, 1] }}
+              transition={{ ...loop(flip), ease: "linear" }}
             >
               <circle cx="128.6" cy={c.y} r="0.6" fill="#3fbf8a" />
               <text x="130" y={c.y + 0.7} fill="#3fbf8a" fontSize="1.85" fontFamily="var(--font-body), sans-serif">
@@ -276,7 +298,8 @@ function SpectroProfileLive({ color }) {
               </text>
             </m.g>
           </m.g>
-        ))}
+          );
+        })}
       </svg>
 
       {/* Palette by Spectro Cloud: the product's mark top-right, the
