@@ -47,6 +47,30 @@ const NS_REGEX = /^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]?$/;
 const defaultNamespace = () =>
   process.env.TERMINAL_DEFAULT_NAMESPACE || "web-development";
 
+// The cluster also runs KodePull client workloads, so the public terminal
+// shows only these namespaces: the site itself, the platform layer and the
+// simulator. Everything else is refused before the cluster is asked, and the
+// RBAC in kubernetes/terminal-rbac.yaml grants no more than this list. TERMINAL_NAMESPACES
+// (comma-separated) overrides it; the default namespace is always included.
+const DEFAULT_ALLOWED_NAMESPACES = [
+  "web-development",
+  "kube-system",
+  "envoy-gateway-system",
+  "cert-manager",
+  "external-secrets",
+  "openbao",
+  "kubestronaut-sim",
+];
+
+function allowedNamespaces() {
+  const fromEnv = (process.env.TERMINAL_NAMESPACES || "")
+    .split(",")
+    .map((ns) => ns.trim())
+    .filter((ns) => NS_REGEX.test(ns));
+  const list = fromEnv.length > 0 ? fromEnv : DEFAULT_ALLOWED_NAMESPACES;
+  return [...new Set([defaultNamespace(), ...list])];
+}
+
 function formatAsTable(headers, rows) {
   if (rows.length === 0) return "No resources found.";
 
@@ -196,11 +220,29 @@ router.post("/execute", async (req, res) => {
     const formatter = FORMATTERS[resource];
 
     const effectiveNs = namespace || defaultNamespace();
+    const allowed = allowedNamespaces();
+
+    if (!CLUSTER_SCOPED.has(resource) && !allowed.includes(effectiveNs)) {
+      return res.json({
+        output: `Error: namespace '${effectiveNs}' is not available from this terminal.\nRun 'kubectl get namespaces' to see the ones that are.`,
+        type: "error",
+      });
+    }
+
     logger.info(`Terminal kubectl: get ${resource}${!CLUSTER_SCOPED.has(resource) ? ` -n ${effectiveNs}` : ""}`);
 
-    const data = CLUSTER_SCOPED.has(resource)
-      ? await handler()
-      : await handler(effectiveNs);
+    let data;
+    if (resource === "namespaces") {
+      // Ask for the allowlist by name, and filter again: the client never
+      // lists the cluster's namespaces, and a mock or a future client
+      // change still can't widen what the terminal prints.
+      const rows = await handler(allowed);
+      data = rows.filter((row) => allowed.includes(row.name));
+    } else {
+      data = CLUSTER_SCOPED.has(resource)
+        ? await handler()
+        : await handler(effectiveNs);
+    }
 
     const output = formatter(data);
 

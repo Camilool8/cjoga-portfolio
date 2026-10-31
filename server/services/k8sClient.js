@@ -119,15 +119,26 @@ function getMockData(resource, namespace) {
   return data[namespace] || [];
 }
 
-export async function getNamespaces() {
+// Reads the named namespaces one by one rather than listing the cluster:
+// the terminal's RBAC grants `get` on exactly those names and no `list`.
+// A name that is missing or not granted is skipped, not an error.
+export async function getNamespaces(names = []) {
   if (!coreApi) {
     logger.info("Returning mock namespace data (no K8s client)");
     return MOCK_NAMESPACES;
   }
 
   try {
-    const res = await coreApi.listNamespace({});
-    return res.items.map((ns) => ({
+    const results = await Promise.allSettled(
+      names.map((name) => coreApi.readNamespace({ name })),
+    );
+    const found = results
+      .filter((r) => r.status === "fulfilled")
+      .map((r) => r.value);
+    if (names.length > 0 && found.length === 0) {
+      throw new Error("no namespace could be read");
+    }
+    return found.map((ns) => ({
       name: ns.metadata.name,
       status: ns.status?.phase || "Unknown",
       age: humanizeAge(ns.metadata.creationTimestamp),

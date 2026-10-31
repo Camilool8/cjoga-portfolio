@@ -1,36 +1,172 @@
----
-# 1. ServiceAccount for terminal readonly access
+# RBAC for the portfolio's live terminal. This file is the source of truth
+# (it moved here from k8s-lab in Oct 2026).
+#
+# The Express server runs read-only `kubectl get` (get/list only) against
+# pods, services, deployments, namespaces and nodes. The cluster also runs
+# KodePull client workloads, so the public terminal is scoped to an
+# allowlist of namespaces: the site itself, the platform layer and the
+# simulator. The server refuses everything else (TERMINAL_NAMESPACES in
+# server/routes/terminal.js); this RBAC makes sure a bug there still
+# can't read more.
+#
+#   - nodes: cluster-wide get/list (no client data on a Node object).
+#   - namespaces: `get` on the allowlisted names only, and no `list`, so
+#     the namespace list itself can't be enumerated.
+#   - pods, services, deployments: granted per namespace by a RoleBinding
+#     in each allowlisted namespace, never cluster-wide.
+#
+# Adding a namespace to the terminal: add it to resourceNames below, add a
+# RoleBinding for it, and add it to TERMINAL_NAMESPACES (or the server's
+# default list).
+#
+# Roll out after the server that reads namespaces by name is deployed: the
+# older server lists namespaces, which this role no longer allows.
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: terminal-readonly
+  name: portfolio-terminal
   namespace: web-development
 ---
-# 2. ClusterRole granting read-only access to specific resources ONLY
-# Allowed: pods, deployments, services, nodes, namespaces
-# Denied: configmaps, secrets, CRDs, and everything else
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: terminal-viewer
+  name: portfolio-terminal-read
 rules:
   - apiGroups: [""]
-    resources: ["pods", "nodes", "namespaces", "services"]
+    resources: ["nodes"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get"]
+    resourceNames:
+      - web-development
+      - kube-system
+      - envoy-gateway-system
+      - cert-manager
+      - external-secrets
+      - openbao
+      - kubestronaut-sim
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: portfolio-terminal-read
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: portfolio-terminal-read
+subjects:
+  - kind: ServiceAccount
+    name: portfolio-terminal
+    namespace: web-development
+---
+# Namespaced read, bound only where the terminal may look.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: portfolio-terminal-ns-read
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services"]
     verbs: ["get", "list"]
   - apiGroups: ["apps"]
     resources: ["deployments"]
     verbs: ["get", "list"]
 ---
-# 3. ClusterRoleBinding (needed for cluster-scoped resources: nodes, namespaces)
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: terminal-viewer-binding
+  name: portfolio-terminal-read
+  namespace: web-development
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: portfolio-terminal-ns-read
 subjects:
   - kind: ServiceAccount
-    name: terminal-readonly
+    name: portfolio-terminal
     namespace: web-development
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: portfolio-terminal-read
+  namespace: kube-system
 roleRef:
-  kind: ClusterRole
-  name: terminal-viewer
   apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: portfolio-terminal-ns-read
+subjects:
+  - kind: ServiceAccount
+    name: portfolio-terminal
+    namespace: web-development
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: portfolio-terminal-read
+  namespace: envoy-gateway-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: portfolio-terminal-ns-read
+subjects:
+  - kind: ServiceAccount
+    name: portfolio-terminal
+    namespace: web-development
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: portfolio-terminal-read
+  namespace: cert-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: portfolio-terminal-ns-read
+subjects:
+  - kind: ServiceAccount
+    name: portfolio-terminal
+    namespace: web-development
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: portfolio-terminal-read
+  namespace: external-secrets
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: portfolio-terminal-ns-read
+subjects:
+  - kind: ServiceAccount
+    name: portfolio-terminal
+    namespace: web-development
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: portfolio-terminal-read
+  namespace: openbao
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: portfolio-terminal-ns-read
+subjects:
+  - kind: ServiceAccount
+    name: portfolio-terminal
+    namespace: web-development
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: portfolio-terminal-read
+  namespace: kubestronaut-sim
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: portfolio-terminal-ns-read
+subjects:
+  - kind: ServiceAccount
+    name: portfolio-terminal
+    namespace: web-development

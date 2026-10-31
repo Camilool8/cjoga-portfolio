@@ -78,14 +78,31 @@ afterEach(() => {
 });
 
 describe("terminal namespace access", () => {
-  it("reads pods from any namespace passed with -n", async () => {
-    for (const ns of ["monitoring", "kube-system", "argocd"]) {
+  // The cluster hosts KodePull client workloads: the public terminal shows
+  // an allowlist of platform namespaces and nothing else.
+  it("reads pods from an allowlisted namespace passed with -n", async () => {
+    for (const ns of ["kube-system", "envoy-gateway-system", "openbao"]) {
       const res = await exec(`kubectl get pods -n ${ns}`);
       expect(res.status).toBe(200);
       expect(res.body.type).toBe("success");
       expect(res.body.output).toContain(`pod-in-${ns}`);
       expect(k8sClient.getPods).toHaveBeenCalledWith(ns);
     }
+  });
+
+  it("refuses a namespace outside the allowlist without querying the cluster", async () => {
+    for (const cmd of [
+      "kubectl get pods -n some-client",
+      "kubectl get deployments -n monitoring",
+      "kubectl get svc --namespace argocd",
+    ]) {
+      const res = await exec(cmd);
+      expect(res.body.type).toBe("error");
+      expect(res.body.output).toMatch(/not available from this terminal/i);
+    }
+    expect(k8sClient.getPods).not.toHaveBeenCalled();
+    expect(k8sClient.getDeployments).not.toHaveBeenCalled();
+    expect(k8sClient.getServices).not.toHaveBeenCalled();
   });
 
   it("defaults to web-development when no -n is given", async () => {
@@ -101,12 +118,28 @@ describe("terminal namespace access", () => {
     expect(k8sClient.getPods).toHaveBeenCalledWith("kube-system");
   });
 
-  it("lists every namespace in the cluster", async () => {
+  it("lists only allowlisted namespaces, asking the client for exactly those", async () => {
     const res = await exec("kubectl get namespaces");
     expect(res.body.type).toBe("success");
     expect(res.body.output).toContain("web-development");
-    expect(res.body.output).toContain("monitoring");
     expect(res.body.output).toContain("kube-system");
+    // The mock returns these too; the route must still drop them.
+    expect(res.body.output).not.toContain("monitoring");
+    expect(res.body.output).not.toContain("argocd");
+    const [asked] = k8sClient.getNamespaces.mock.calls[0];
+    expect(asked).toContain("web-development");
+    expect(asked).not.toContain("monitoring");
+  });
+
+  it("takes the allowlist from TERMINAL_NAMESPACES", async () => {
+    vi.stubEnv("TERMINAL_NAMESPACES", "web-development, monitoring");
+    const ok = await exec("kubectl get pods -n monitoring");
+    expect(ok.body.type).toBe("success");
+    const denied = await exec("kubectl get pods -n kube-system");
+    expect(denied.body.type).toBe("error");
+    const list = await exec("kubectl get ns");
+    expect(list.body.output).toContain("monitoring");
+    expect(list.body.output).not.toContain("kube-system");
   });
 
   it("still rejects a syntactically invalid namespace name", async () => {
