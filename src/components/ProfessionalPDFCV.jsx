@@ -134,7 +134,8 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   certItem: {
-    width: "50%",
+    width: "33.33%",
+    paddingRight: 6,
     marginBottom: 2,
     fontSize: 9,
   },
