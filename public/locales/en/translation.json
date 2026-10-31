@@ -121,10 +121,10 @@
         "Co-founded the company in 2025 to deliver enterprise-grade engineering to businesses without enterprise budgets",
         "Own the technical side as CTO: architecture, infrastructure design, platform and vendor decisions, and the quality bar every project ships under",
         "Lead hands-on engineering and delivery across web, custom software, cloud, and mobile",
-        "Recent deliveries: mobile app work and web design and deployment projects, on top of recurring maintenance, domain renewals, and hosting",
         "Run KodePull's on-prem K3s cluster — workloads for clients who keep their data on local hardware, and the relay and backup site for the production clusters in the cloud and in datacenters",
         "Scale specialist engineers, designers, and partners onto each engagement as the work needs them",
-        "Partner with the CEO on technical strategy, keeping delivery mapped to business outcomes"
+        "Partner with the CEO on technical strategy, keeping delivery mapped to business outcomes",
+        "Recent deliveries: mobile app work and web design and deployment projects, on top of recurring maintenance, domain renewals, and hosting"
       ]
     },
     "flBetances": {
@@ -146,13 +146,13 @@
       "period": "August 2022 – Present",
       "responsibilities": [
         "Designed and led the migration of 60+ applications from a hand-built Rancher setup to a managed AWS EKS platform — FluxCD, GitLab CI, and Terraform",
-        "Lead SOC 2 readiness for the client's regional expansion, tracked in Secureframe, while the EKS platform grows from a single AWS region to multi-region",
+        "Embedded SOC 2 controls into delivery — automated CI/CD checks, IaC policy, and GitLab merge-request gating across lower and production environments",
         "Delivered a Nutanix Kubernetes Platform (NKP) Ultimate deployment for a customer moving from OpenShift to Nutanix — architecture, deployment, and the documentation their team needed to take ownership",
         "Consolidated branch-per-team sprawl into per-team namespaces, cutting 5–8× of redundant deployed surface",
         "Built observability from zero — OpenTelemetry instrumentation with Grafana, Loki, and distributed traces across every application",
         "Local team mentor: oversee the health of peers' projects and guide them on cloud, Kubernetes, and security; led Terraform workshops that moved dev teams to self-service infrastructure",
+        "Lead SOC 2 readiness for the client's regional expansion, tracked in Secureframe, while the EKS platform grows from a single AWS region to multi-region",
         "Rolled out SSO with AWS Identity Center and Entra ID, retiring IAM users for assumed roles and pipeline OIDC",
-        "Embedded SOC 2 controls into delivery — automated CI/CD checks, IaC policy, and GitLab merge-request gating across lower and production environments",
         "Standardized resource governance with Kubernetes LimitRanges across every environment, and documented the EKS architecture as code in D2",
         "Run containerized agent workloads on Terraform-provisioned EKS and Fargate — IRSA for pod-level AWS access, GitOps delivery with CI audit on the managed repo",
         "Led a week-long Azure enablement workshop for a client team — cloud fundamentals and governance through networking, compute, data and AI, and operations"

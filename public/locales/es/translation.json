@@ -121,10 +121,10 @@
         "Cofundé la empresa en 2025 para ofrecer ingeniería de nivel empresarial a negocios sin presupuesto de gran empresa",
         "Dirijo el lado técnico como CTO: arquitectura, diseño de infraestructura, decisiones de plataforma y proveedores, y el estándar de calidad con el que se entrega cada proyecto",
         "Lidero la ingeniería y la entrega técnica en web, software a medida, nube y móvil",
-        "Entregas recientes: trabajo en aplicaciones móviles y proyectos de diseño y despliegue web, además del trabajo recurrente de mantenimiento, renovación de dominios y hosting",
         "Opero el clúster K3s on-prem de KodePull — cargas de clientes que mantienen sus datos en hardware local, y el sitio de relevo y respaldo de los clústeres de producción en la nube y en centros de datos",
         "Incorporo ingenieros, diseñadores y socios especialistas a cada proyecto según lo que el trabajo requiere",
-        "Colaboro con el CEO en la estrategia técnica, manteniendo la entrega alineada con resultados de negocio"
+        "Colaboro con el CEO en la estrategia técnica, manteniendo la entrega alineada con resultados de negocio",
+        "Entregas recientes: trabajo en aplicaciones móviles y proyectos de diseño y despliegue web, además del trabajo recurrente de mantenimiento, renovación de dominios y hosting"
       ]
     },
     "flBetances": {
@@ -146,13 +146,13 @@
       "period": "agosto de 2022 – presente",
       "responsibilities": [
         "Diseñé y lideré la migración de más de 60 aplicaciones desde una instalación de Rancher hecha a mano hacia una plataforma gestionada de AWS EKS — FluxCD, GitLab CI y Terraform",
-        "Lidero la preparación para SOC 2 de la expansión regional del cliente, con seguimiento en Secureframe, mientras la plataforma EKS pasa de una sola región de AWS a varias",
+        "Integré controles de SOC 2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en entornos inferiores y de producción",
         "Entregué un despliegue de Nutanix Kubernetes Platform (NKP) Ultimate para un cliente que migra de OpenShift a Nutanix — arquitectura, despliegue y la documentación que su equipo necesitaba para asumir la operación",
         "Consolidé la dispersión de “una rama por equipo” en namespaces por equipo, recortando entre 5 y 8 veces la superficie desplegada redundante",
         "Construí observabilidad desde cero — instrumentación con OpenTelemetry y Grafana, Loki y trazas distribuidas en cada aplicación",
         "Mentor del equipo local: superviso la salud de los proyectos de mis compañeros y los guío en nube, Kubernetes y seguridad; impartí talleres de Terraform que llevaron a los equipos de desarrollo a la infraestructura autogestionada",
+        "Lidero la preparación para SOC 2 de la expansión regional del cliente, con seguimiento en Secureframe, mientras la plataforma EKS pasa de una sola región de AWS a varias",
         "Implementé el acceso SSO con AWS Identity Center y Entra ID, retirando los usuarios IAM en favor de roles asumidos y OIDC para los pipelines",
-        "Integré controles de SOC 2 en la entrega — verificaciones automáticas de CI/CD, política de IaC y gating de merge requests en GitLab en entornos inferiores y de producción",
         "Estandaricé la gobernanza de recursos con Kubernetes LimitRanges en todos los entornos, y documenté la arquitectura de EKS como código en D2",
         "Opero cargas de agentes en contenedores sobre EKS y Fargate aprovisionados con Terraform — IRSA para el acceso a AWS a nivel de pod, entrega GitOps con auditoría de CI en el repositorio gestionado",
         "Impartí un taller de habilitación en Azure de una semana para el equipo de un cliente — desde fundamentos de la nube y gobernanza hasta redes, cómputo, datos e IA, y operaciones"
