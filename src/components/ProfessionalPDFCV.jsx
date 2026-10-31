@@ -152,6 +152,11 @@ const styles = StyleSheet.create({
 // (src/data.js) still carries the ASCII form used elsewhere.
 const CV_NAME = "José Camilo Joga Guerrero";
 
+// The CV prints each role's six strongest lines (the locale files order
+// them strongest first), so it stays at two pages; the site shows the
+// full record.
+const CV_LINES = 6;
+
 const ProfessionalPDFCV = () => {
   const { t } = useTranslation();
 
@@ -262,7 +267,7 @@ const ProfessionalPDFCV = () => {
             <View style={styles.jobResponsibilities}>
               {t("experience.globant.responsibilities", {
                 returnObjects: true,
-              }).map((item, index) => (
+              }).slice(0, CV_LINES).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
                   • {item}
                 </Text>
@@ -281,7 +286,7 @@ const ProfessionalPDFCV = () => {
             <View style={styles.jobResponsibilities}>
               {t("experience.kodepull.responsibilities", {
                 returnObjects: true,
-              }).map((item, index) => (
+              }).slice(0, CV_LINES).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
                   • {item}
                 </Text>
@@ -300,7 +305,7 @@ const ProfessionalPDFCV = () => {
             <View style={styles.jobResponsibilities}>
               {t("experience.flBetances.responsibilities", {
                 returnObjects: true,
-              }).map((item, index) => (
+              }).slice(0, CV_LINES).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
                   • {item}
                 </Text>
@@ -318,7 +323,7 @@ const ProfessionalPDFCV = () => {
             <View style={styles.jobResponsibilities}>
               {t("experience.arctiq.responsibilities", {
                 returnObjects: true,
-              }).map((item, index) => (
+              }).slice(0, CV_LINES).map((item, index) => (
                 <Text key={index} style={styles.jobResponsibility}>
                   • {item}
                 </Text>
