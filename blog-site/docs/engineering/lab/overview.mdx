@@ -1,10 +1,10 @@
 ---
 sidebar_position: 1
-title: Homelab overview
+title: Cluster overview
 image: img/og/engineering-lab-overview.png
-description: The tour — six nodes of K3s behind cjoga.cloud, the three iterations that got it there, and what runs on it today.
+description: The tour — KodePull's six-node K3s cluster behind cjoga.cloud, the homelab it grew out of, and what runs on it today.
 slug: /engineering/lab/overview
-keywords: [homelab, kubernetes, k3s, cluster, envoy, cloudflared, tailscale, proxmox]
+keywords: [kodepull, cluster, homelab, kubernetes, k3s, envoy, cloudflared, tailscale, proxmox]
 date: "2026-05-12"
 last_update:
   date: "2026-10-30"
@@ -13,20 +13,22 @@ last_update:
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
 
-# Homelab overview
+# Cluster overview
 
-The site you're reading runs on a [K3s](https://k3s.io/) cluster I run myself — six nodes split between a [Proxmox](https://www.proxmox.com/) host and a handful of bare-metal machines, meshed over [Tailscale](https://tailscale.com/), with [Envoy Gateway](https://gateway.envoyproxy.io/) in front and a [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/) handling the public edge. It hosts `cjoga.cloud`, `blog.cjoga.cloud`, `kodepull.com`, and roughly a dozen other projects I run for myself or for [KodePull](/engineering/work/kodepull).
+The site you're reading runs on [KodePull](/engineering/work/kodepull)'s on-prem [K3s](https://k3s.io/) cluster — six nodes split between a [Proxmox](https://www.proxmox.com/) host and a handful of bare-metal machines, meshed over [Tailscale](https://tailscale.com/), with [Envoy Gateway](https://gateway.envoyproxy.io/) in front and a [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/) handling the public edge.
+
+It started as my homelab. Today it has two jobs at KodePull: it runs the workloads of clients who want their data kept on local hardware, and it is the relay and backup site for KodePull's production clusters, which run in the cloud and on bare metal in datacenters. It still hosts `cjoga.cloud` and `blog.cjoga.cloud`, next to `kodepull.com` and KodePull's own tooling.
 
 ## How it's wired today
 
 ```mermaid
 flowchart TB
-  accTitle: Homelab ingress flow — public traffic comes through Cloudflare and cloudflared into Envoy Gateway's public data plane, devices on the Tailscale VPN reach a separate internal data plane, and both fan out through HTTPRoutes to app namespaces on the K3s cluster of Proxmox VMs and bare-metal workers
+  accTitle: Cluster ingress flow — public traffic comes through Cloudflare and cloudflared into Envoy Gateway's public data plane, devices on the Tailscale VPN reach a separate internal data plane, and both fan out through HTTPRoutes to app namespaces on the K3s cluster of Proxmox VMs and bare-metal workers
   Internet([Internet]) --> CF[Cloudflare]
   CF -->|cloudflared| Envoy["Envoy Gateway · public<br/>cjoga.cloud · kodepull.com · client sites"]
   Envoy --> Routes["HTTPRoutes →<br/>app namespaces"]
 
-  subgraph Cluster["K3s cluster · Tailscale-meshed"]
+  subgraph Cluster["KodePull K3s cluster · Tailscale-meshed"]
     direction TB
     Master["prox-k8s-master<br/>(Proxmox VM)"]
     VMWorker["vmworker1<br/>(Proxmox VM)"]
@@ -43,6 +45,8 @@ Ingress is Envoy Gateway via the [Gateway API](https://gateway-api.sigs.k8s.io/)
 
 The platform layer — Envoy Gateway, that CoreDNS, cert-manager's issuer, the Cloudflare tunnel, the Tailscale subnet router — is managed from KodePull's cluster repository. My lab repo keeps the personal workloads and the `cjoga.cloud` gateways.
 
+Read off the cluster on October 30, 2026: K3s v1.33, Envoy Gateway v1.9 running two Envoy replicas per data plane, cert-manager v1.19, OpenBao v2.5 and External Secrets v2.3; 117 pods across 38 namespaces, behind 44 `HTTPRoute`s.
+
 <TechStackGrid
   caption="The stack"
   items={[
@@ -56,6 +60,8 @@ The platform layer — Envoy Gateway, that CoreDNS, cert-manager's issuer, the C
     'External Secrets',
     'cert-manager',
     "Let's Encrypt",
+    'GitHub',
+    'Prometheus',
   ]}
 />
 
@@ -83,7 +89,7 @@ Two more changes locked the architecture down. **Public ingress moved from Traef
 
 ### After v3 — local storage, internal ingress, a handover
 
-v3 is still the shape. Three changes in 2026 reworked it from inside.
+v3 is still the shape. Four changes in 2026 reworked it from inside.
 
 **Longhorn went away.** Through v3, storage was [Longhorn](https://longhorn.io/), and it cost more memory than the lab had to spare: by late May the control-plane VM and one bare-metal worker were both above 90% memory. On May 27, 2026 I wrote a runbook to move all nineteen Longhorn volumes onto `local-path` and uninstall Longhorn, which I expected to free about 25 GB of RAM across the cluster. By August 29 the `longhorn-system` namespace no longer existed, and wherever the lab repo's manifests name a storage class, it's `local-path`. The [replica notes](/engineering/lab/tips-and-gotchas/longhorn-replicas) are from the Longhorn era.
 
@@ -91,9 +97,11 @@ v3 is still the shape. Three changes in 2026 reworked it from inside.
 
 **The platform moved to KodePull.** On September 6, 2026 I handed the platform layer — Envoy Gateway, the internal CoreDNS, cert-manager's issuer, the Cloudflare tunnel, the Tailscale subnet router and the Headlamp dashboard — to KodePull's cluster repository, which is now its only source of truth. I deleted the copies from my lab repo instead of keeping them in sync: two authoritative sources for one cluster object is how a fix gets silently reverted.
 
+**The cluster became KodePull's.** The platform handover was the first half. The second was the cluster's job: KodePull's production now runs on clusters in the cloud and on bare metal in datacenters, and this one stopped being a homelab that also hosted client sites. It runs the workloads of clients who want their data on local hardware, and it relays to and backs up those production clusters. The Proxmox host and the bare-metal workers stayed where they were; what changed is who depends on them.
+
 ## What runs on it now
 
-Production workloads include this portfolio and the handbook (`cjoga.cloud`), the KodePull marketing site and internal tooling (`kodepull.com`, an Outline docs instance, an invoice generator, a leads tool), KodePull client sites, a Discord and WhatsApp bot stack, a private n8n environment, Azure DevOps self-hosted agents, and a handful of personal projects (`pucmm-band`, a Minecraft server). `elcriollo` used to be on that list; its namespace was gone by August 29, 2026, and I removed its manifests from the lab repo that day. The Ansible health playbook runs from [Semaphore](https://semaphoreui.com/) as a scheduled job, so the cluster heals itself overnight without me logging in.
+Workloads include this portfolio and the handbook (`cjoga.cloud`), the KodePull marketing site and internal tooling (`kodepull.com`, an Outline docs instance, an invoice generator, a leads tool), the workloads of KodePull clients who keep their data local, a Discord and WhatsApp bot stack, a private n8n environment, and a handful of personal projects (`pucmm-band`, a Minecraft server). CI runs in the cluster too: GitHub Actions self-hosted runners from [Actions Runner Controller](https://github.com/actions/actions-runner-controller), scaling from one to four runners, build images with [BuildKit](https://github.com/moby/buildkit). [Prometheus](https://prometheus.io/), kube-state-metrics and node-exporter collect the cluster's metrics. `elcriollo` used to be on that list; its namespace was gone by August 29, 2026, and I removed its manifests from the lab repo that day. The Ansible health playbook runs from [Semaphore](https://semaphoreui.com/) as a scheduled job, so the cluster heals itself overnight without me logging in.
 
 For the failure modes that taught me what the playbook actually has to cover, see [Tips and gotchas](/engineering/lab/tips-and-gotchas).
 

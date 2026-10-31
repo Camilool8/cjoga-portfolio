@@ -7,7 +7,7 @@ slug: /me/now
 keywords: [now, current, learning, building]
 date: "2026-05-12"
 last_update:
-  date: "2026-08-10"
+  date: "2026-10-30"
   author: José Camilo Joga Guerrero
 # Goes stale fast ("this month"): the dateline says so once the latest
 # date is more than 45 days old.
@@ -22,35 +22,40 @@ This is a [/now page](https://nownownow.com/about) — a snapshot of where my ho
 
 ## Right now
 
-Across my Arctiq and INSPYR engagements, a few threads carry most of the week:
+Between [Globant](/engineering/work/globant) and [Arctiq](/engineering/work/arctiq), a few threads carry most of the week:
 
-- **A self-service data and operations portal.** Leading the build of an internal web app that lets developers query Azure SQL and MongoDB across environments without routing every request through a pipeline or the DevOps team — PII masked in production, gated by a one-click admin approval queue. The same app hands load-testing teams self-service Kubernetes operations: restart a workload, or change its requests, limits, or replica count, every action audited. The aim is to push the team from DevOps toward a real platform team.
-- **SOC2 compliance and guardrails.** Building compliance into delivery on the EKS platform — automated CI/CD checks, IaC policy, and merge-request gating in GitLab — plus Kubernetes LimitRanges to standardize resource governance across lower and production, with the architecture documented as code in D2.
-- **AKS → Cilium migration.** Still moving one of our environment clusters off the default CNI to Cilium. Eyes on policy parity, eBPF-side observability, and the cut-over plan.
-- **Just wrapped.** A week-long Azure enablement workshop I instructed for a client team — cloud fundamentals through governance, networking, compute, data and AI, and operations. I'd take another one.
+- **Databricks as code.** Multiple workspaces deployed through Bicep, a Unity Catalog metastore per region with its permissions and compute settings, and dedicated general-purpose clusters per environment in each workspace. Azure DevOps pipelines deploy the jobs and install their dependencies, with notebooks pulled from Git. The PoC in flight moves job parameters into [Declarative Automation Bundles](https://docs.databricks.com/aws/en/dev-tools/bundles/) (formerly Databricks Asset Bundles), so the latest configuration deploys with the job.
+- **Two PoCs lined up behind it.** Re-architecting the Bicep deployments around environments instead of resource types, so a greenfield environment is one deployment; and an SRE agent plugin built on Anthropic's open standards, [Agent Skills](https://agentskills.io/) and [MCP](https://modelcontextprotocol.io/), to ship to other teams across the organization.
+- **SOC 2 and multi-region EKS.** The Arctiq client is expanding into new regions, so the platform is going from a single AWS region to multi-region EKS while SOC 2 readiness lands with it. Readiness is tracked in [Secureframe](https://secureframe.com/), which turns the audit into goals with owners and dates.
+- **Just wrapped.** A Nutanix Kubernetes Platform (NKP) Ultimate deployment for a customer moving off OpenShift: architecture, deployment, and the documentation their team needed to own it.
+- **Mentoring.** Keeping an eye on the health of my peers' projects at Arctiq, and pointing them the right way when they hit cloud, Kubernetes or security questions. I'm liking it.
 
-Outside the day job, KodePull is closing its biggest engagement yet — a long-term build for a psychology-testing platform for athletes, with an integrated shop and results analysis. While that lands, the steady work is maintaining a handful of clients' personal-brand sites and their hosting.
+Outside the day job, [KodePull](/engineering/work/kodepull) recently delivered mobile app work and a run of web design and deployment projects, on top of the steady base of maintenance, domain renewals and hosting. The cluster this site runs on is now KodePull's [on-prem cluster](/engineering/lab/overview): the home for clients who keep their data on local hardware, and the relay and backup site for the production clusters in the cloud and in datacenters.
 
 <TechStackGrid
   caption="This month"
   compact
-  items={['AKS', 'Cilium', 'Azure', 'D2', 'GitLab CI', 'WordPress', 'Cloudflare']}
+  items={['Databricks', 'Bicep', 'Azure DevOps', 'EKS', 'Claude', 'K3s']}
 />
 
 ## Learning
 
-**CKAD is done** — passed in August at 98%, submitted with 48 minutes left. The prep that got me there — [Mumshad Mannambeth's course](https://www.udemy.com/course/certified-kubernetes-application-developer/), killer.sh, and my own simulator — is written up in the [CKAD guide](/learn/ckad).
+**CKA by November 30, 2026.** Step 3 on the [Kubestronaut](https://www.cncf.io/training/kubestronaut/) path, after KCNA and CKAD, which I passed in August at 98% (the prep is in the [CKAD guide](/learn/ckad)). The administrator lens this time: cluster lifecycle, scheduling, storage, networking, troubleshooting. After it: KCSA and CKS.
 
-Next is **CKA** — step 3 on the [Kubestronaut](https://www.cncf.io/training/kubestronaut/) path. The administrator lens this time: cluster lifecycle, scheduling, storage, networking, troubleshooting — the surfaces CKAD treats as given. Two exams down, three to go: CKA, KCSA, CKS.
+**Passed: Spectro Cloud Certified – Palette Associate.** [Palette](/engineering/work/arctiq#spectro-cloud-palette) is an Arctiq partner platform, and the closest thing I've used to Kubernetes made easy. I also took the NKP courses on Nutanix University for the OpenShift migration; no NKP certification yet.
+
+**An MBA.** In October 2026 I started the Máster Universitario en Dirección y Administración de Empresas (Tech MBA) at [UNIR](https://www.unir.net/), finishing October 2027.
+
+**RHEL 10 next.** RHCSA and RHCE get renewed on Red Hat Enterprise Linux 10 in Q1 2027.
 
 <TechStackGrid
   caption="In progress"
   compact
-  items={['Kubernetes', 'Docker']}
+  items={['Kubernetes', 'RHEL']}
 />
 
 ## Building
 
-**Shipped: [kubestronaut-sim](https://github.com/Camilool8/kubestronaut-sim).** An open-source exam simulator for the Kubestronaut certifications — one command boots a real Kubernetes cluster on your machine, draws an exam from a pool of original questions, and grades on behavior: a NetworkPolicy that actually denies, an Ingress the controller really routes. KCNA and CKAD banks are live; CKA, KCSA, and CKS are scaffolded. It was my final gate before the real CKAD — the sim is deliberately harder, and the score gap proved it. The [project page](/learn/kubestronaut-sim) has the full story, and the bank format is documented so anyone can contribute questions.
+**[kubestronaut-sim](https://github.com/Camilool8/kubestronaut-sim), CKA edition.** The open-source exam simulator — one command boots a real Kubernetes cluster, draws an exam from a pool of original questions, and grades on behavior. It was my final gate before CKAD, and I'm upgrading its CKA bank now as my own prep. No write-up on it until I've passed CKA. The [project page](/learn/kubestronaut-sim) has the story so far.
 
-Earlier this year: the RHCE lab and its guide — [the guide](/learn/rhce) and [the lab](https://github.com/Camilool8/RHCE-LAB): seven VMs, eighteen exam-style tasks, and a 300-point grader that scores you the way the real EX294 does.
+**The Red Hat labs move to RHEL 10.** The [RHCE lab](https://github.com/Camilool8/RHCE-LAB) and the [RHCSA lab](https://github.com/Camilool8/RHCSA-LAB) get rebuilt on RHEL 10 in Q1 2027, alongside the renewals.

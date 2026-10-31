@@ -1,5 +1,5 @@
 // Landing for blog.cjoga.cloud. Audience-first "start here" index:
-// learners, hiring managers, and homelab-curious readers each see the
+// learners, hiring managers, and cluster-curious readers each see the
 // path that's actually useful to them; the lede names the sections in
 // the same order as the reader paths below it. The intro sits over a quiet
 // orbital band: the portfolio's planet scene seen as a horizon, masked
@@ -27,7 +27,7 @@ export default function Home() {
       // Docusaurus appends " | Camilo's handbook" (siteConfig.title)
       // automatically, so no site name here: a descriptive homepage title
       // instead of the bare domain, which collided with the portfolio in SERPs.
-      title="Cert Guides, K3s Homelab & DevOps Opinions"
+      title="Cert Guides, K3s Cluster & DevOps Opinions"
       description={siteConfig.tagline}
     >
       <main className={styles.main}>
@@ -46,7 +46,7 @@ export default function Home() {
             </h1>
             <p className={styles.lede}>
               Cert guides for the certs I think are worth your time, the
-              consulting work that pays the bills, the K3s homelab that runs{" "}
+              consulting work that pays the bills, the K3s cluster that runs{" "}
               <code>cjoga.cloud</code>, and opinions. Nothing here is for sale.
               Read whatever’s useful.
             </p>

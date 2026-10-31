@@ -1,23 +1,23 @@
 ---
 sidebar_position: 2
-title: INSPYR Global Solutions
-image: img/og/engineering-work-inspyr-global-solutions.png
-description: DevOps engineer on a multi-region Azure platform — observability, IaC, data platform enablement, and a Cilium migration in flight.
-slug: /engineering/work/inspyr-global-solutions
-keywords: [work, devops, azure, aks, bicep, inspyr, arroyo]
+title: Globant
+image: img/og/engineering-work-globant.png
+description: DevOps engineer on a multi-region Azure platform — Databricks and Unity Catalog as code, observability, IaC, and a Cilium migration in flight.
+slug: /engineering/work/globant
+keywords: [work, devops, azure, aks, bicep, databricks, unity catalog, globant]
 date: "2026-05-12"
 last_update:
-  date: "2026-07-04"
+  date: "2026-10-30"
   author: José Camilo Joga Guerrero
 ---
 
 import TechStackGrid from '@site/src/components/TechStackGrid';
 
-# INSPYR Global Solutions
+# Globant
 
 <FactSheet>
   <Fact label="Role">DevOps Engineer</Fact>
-  <Fact label="Employer">[INSPYR Global Solutions](https://www.inspyrsolutions.com/) (formerly Arroyo Consulting)</Fact>
+  <Fact label="Employer">[Globant](https://www.globant.com/)</Fact>
   <Fact label="Since">March 2025</Fact>
   <Fact label="Scale">300+ services and microservices on AKS, multi-region</Fact>
   <Fact label="Outcome">Alerts and dashboards consolidated into one repository and a single release pipeline</Fact>
@@ -68,13 +68,26 @@ The platform runs on [Bicep](https://learn.microsoft.com/en-us/azure/azure-resou
 
 The platform is moving from Azure DevOps to GitHub Enterprise. I was among the first engineers to develop CI pipelines and deploy new services on the GitHub side, which means a meaningful share of "what does a service's pipeline look like here" was settled in code I wrote.
 
-### Data platform enablement
+### Databricks platform
 
-I've led two enablement engagements for developer teams that needed managed data infrastructure.
+Most of my recent hours go to [Databricks](https://www.databricks.com/). It started as an enablement engagement for one developer team and grew into the platform's data layer, deployed entirely as code:
 
-The first was [**Azure Synapse**](https://azure.microsoft.com/en-us/products/synapse-analytics/): workspace deployment plus a promotion model where notebooks and pipelines move from DEV through approval gates without the team having to touch infrastructure. All third-party credentials live in Azure Key Vault and connect over private endpoints.
+- **Workspaces through Bicep.** Multiple Databricks workspaces, one per environment, deployed through the same Bicep platform and pipelines as every other service. Nothing created in the portal.
+- **[Unity Catalog](https://www.databricks.com/product/unity-catalog) per region.** One metastore per region, the Databricks model, with the permissions and compute settings each workspace needs defined alongside it.
+- **Dedicated compute per environment.** Each workspace gets its own general-purpose clusters per environment, so a heavy job in one environment never queues behind another's.
+- **Pipelines for jobs.** Azure DevOps pipelines deploy the jobs and install their dependencies on the clusters, with notebooks pulled from Git as the source of truth. Promoting a job is a merge, not a click-through in the workspace UI.
+- **[Declarative Automation Bundles](https://docs.databricks.com/aws/en/dev-tools/bundles/) (PoC, in progress).** Formerly Databricks Asset Bundles. Today the pipelines deploy the job definitions; job parameters still drift. The PoC moves job configuration into bundles, so the latest parameters deploy with the job automatically.
 
-The second was [**Databricks**](https://www.databricks.com/), with [Unity Catalog](https://www.databricks.com/product/unity-catalog) as the governance layer for permissions and connectivity into other Azure resources — the Databricks-recommended pattern. Both stacks are deployed entirely through Bicep, nothing manual, and I still own day-to-day support for both teams.
+### Azure Synapse
+
+Before Databricks, I led an enablement engagement on [**Azure Synapse**](https://azure.microsoft.com/en-us/products/synapse-analytics/): workspace deployment plus a promotion model where notebooks and pipelines move from DEV through approval gates without the team having to touch infrastructure. All third-party credentials live in Azure Key Vault and connect over private endpoints. Like Databricks, it is deployed entirely through Bicep, and I still own day-to-day support for the team.
+
+### Next: two proofs of concept
+
+Two PoCs are lined up behind the Databricks work.
+
+- **Environment-oriented Bicep.** The Bicep platform is organized by resource type: one module tree for networking, one for AKS, one for data, and so on. A request for a new environment means touching all of them. The PoC re-architects the deployments around environments instead, so a greenfield environment is one deployment, not a checklist.
+- **An SRE agent plugin.** An SRE agent packaged as a plugin on Anthropic's open standards — [Agent Skills](https://agentskills.io/) and the [Model Context Protocol](https://modelcontextprotocol.io/) — so the same agent ships to other teams across the organization instead of being rebuilt by each one. Ours is one of the largest practices in the company, which makes it the right place to build it first.
 
 ### Self-service data and operations portal
 

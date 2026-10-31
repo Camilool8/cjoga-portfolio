@@ -247,7 +247,7 @@ export default async function createConfigAsync() {
   // shares a tab or search-result suffix with the portfolio (cjoga.cloud).
   // The bar's wordmark is themeConfig.navbar.title, below.
   title: "Camilo's handbook",
-  tagline: "Camilo's handbook — opinions, the homelab, and cert guides.",
+  tagline: "Camilo's handbook — opinions, the K3s cluster, and cert guides.",
   // The build's date, for notes that depend on a page's age (DocItem/
   // Content: a time-bound page over a quarter old). Fixed once per build,
   // so server HTML and client agree; BUILD_DATE pins it (tests, reruns).
@@ -504,12 +504,12 @@ export default async function createConfigAsync() {
         {
           name: "description",
           content:
-            "Camilo's handbook — opinions, homelab notes, and cert guides from a working Senior Platform & DevOps Engineer.",
+            "Camilo's handbook — opinions, K3s cluster notes, and cert guides from a working Senior Platform & DevOps Engineer.",
         },
         {
           name: "keywords",
           content:
-            "DevOps, Kubernetes, K3s, Terraform, AWS, RHCSA, RHCE, homelab, GitOps, OpenBao, Vault",
+            "DevOps, Kubernetes, K3s, Terraform, AWS, RHCSA, RHCE, homelab, KodePull, GitOps, OpenBao, Vault",
         },
         { name: "robots", content: "index, follow, max-image-preview:large" },
         { name: "twitter:card", content: "summary_large_image" },
@@ -549,7 +549,7 @@ export default async function createConfigAsync() {
           //
           // Each dropdown opens with the section's index page, labelled with
           // its title like every other item ("Engineering", not "Overview",
-          // which read as a twin of "Homelab overview" right below it).
+          // which read as a twin of "Cluster overview" right below it).
           // The parent label links there too, but Enter on it only toggles
           // the menu and on touch screens the caret reads as "open a menu",
           // so keyboard and touch readers need this item to reach the index. Its regex keeps it active on the index
@@ -591,7 +591,7 @@ export default async function createConfigAsync() {
                 activeBaseRegex: "^/engineering/?$",
                 className: "dropdown-overview-link",
               },
-              { to: "/engineering/lab/overview", label: "Homelab overview" },
+              { to: "/engineering/lab/overview", label: "Cluster overview" },
               { to: "/engineering/lab/tips-and-gotchas", label: "Tips and gotchas" },
               { to: "/engineering/work", label: "Work" },
             ],

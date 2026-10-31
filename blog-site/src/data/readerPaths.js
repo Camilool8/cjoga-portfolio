@@ -36,13 +36,14 @@ const READER_PATHS = [
     ],
   },
   {
-    // "Homelab": the exam guides above have labs of their own.
+    // "Cluster", not "lab": the exam guides above have labs of their own.
+    // The id stays "homelab" so existing anchors keep working.
     id: "homelab",
-    title: "If you’re curious about the homelab",
+    title: "If you’re curious about the cluster",
     intro:
-      "The six-node K3s cluster behind cjoga.cloud, and short posts about what broke and what I’d do differently.",
+      "KodePull’s six-node K3s cluster behind cjoga.cloud, the homelab it grew out of, and short posts about what broke and what I’d do differently.",
     rows: [
-      { to: "/engineering/lab/overview", label: "Homelab overview" },
+      { to: "/engineering/lab/overview", label: "Cluster overview" },
       { to: "/engineering/lab/tips-and-gotchas", label: "Tips and gotchas" },
     ],
   },

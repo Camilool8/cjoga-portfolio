@@ -2,9 +2,9 @@
 sidebar_position: 1
 title: Arctiq
 image: img/og/engineering-work-arctiq.png
-description: DevOps consultant at Arctiq (formerly Shadow-Soft) — a four-year engagement that took 60+ apps from manual Rancher into a self-service EKS platform.
+description: DevOps consultant at Arctiq (formerly Shadow-Soft) — a four-year engagement that took 60+ apps from manual Rancher into a self-service EKS platform, now going multi-region under SOC 2.
 slug: /engineering/work/arctiq
-keywords: [work, devops, aws, eks, terraform, fluxcd, gitlab, arctiq, shadow-soft]
+keywords: [work, devops, aws, eks, terraform, fluxcd, gitlab, soc2, secureframe, nutanix, nkp, spectro cloud, palette, arctiq, shadow-soft]
 date: "2026-05-12"
 last_update:
   date: "2026-10-30"
@@ -18,9 +18,10 @@ import TechStackGrid from '@site/src/components/TechStackGrid';
 <FactSheet>
   <Fact label="Role">DevOps Consultant</Fact>
   <Fact label="Employer">[Arctiq](https://www.arctiq.com/) (formerly Shadow-Soft, rebranded March 2026)</Fact>
-  <Fact label="Since">April 2022, hired by Shadow-Soft</Fact>
+  <Fact label="Since">August 2022, hired by Shadow-Soft</Fact>
   <Fact label="Scale">60+ applications and 15+ teams</Fact>
-  <Fact label="Outcome">From manual Rancher to managed EKS, removing most of the 5–8x sprawl; SOC2 controls embedded directly into delivery</Fact>
+  <Fact label="Outcome">From manual Rancher to managed EKS, removing most of the 5–8x sprawl; SOC 2 controls embedded directly into delivery</Fact>
+  <Fact label="Now">SOC 2 readiness and a multi-region EKS expansion</Fact>
 </FactSheet>
 
 Arctiq is where I learned this work. They found my CV at PUCMM in April 2022, interviewed me out of Atlanta, decided I was worth investing in, and trained me on the DevOps side from the ground up — CI/CD, IaC, security, cloud, Linux — while paying for the certifications along the way. They put me on an engagement that is still my main one more than four years later, and I've taken on plenty of smaller work in parallel.
@@ -94,17 +95,29 @@ Once the IaC repos were in place, the next bottleneck was that the dev teams sti
 
 ### Compliance and guardrails
 
-Security and audit pressure turned into platform work. I embedded SOC2 controls directly into delivery — automated CI/CD checks, IaC policy, and merge-request gating in GitLab — so the evidence is produced by the pipeline instead of reconstructed after the fact, across both lower and production environments. Alongside that, Kubernetes [LimitRanges](https://kubernetes.io/docs/concepts/policy/limit-range/) set sane resource defaults and ceilings per namespace, so a missing request or an oversized limit can't quietly starve a node.
+Security and audit pressure turned into platform work. I embedded SOC 2 controls directly into delivery — automated CI/CD checks, IaC policy, and merge-request gating in GitLab — so the evidence is produced by the pipeline instead of reconstructed after the fact, across both lower and production environments. Alongside that, Kubernetes [LimitRanges](https://kubernetes.io/docs/concepts/policy/limit-range/) set sane resource defaults and ceilings per namespace, so a missing request or an oversized limit can't quietly starve a node.
 
-### Where it's at now
+### Where it's at now: multi-region, under SOC 2
 
-The work today is consolidating what we built into something the client can run as a proper internal platform. We're formalizing the platform team, documenting the self-service tools and the expected developer workflow, and writing down our internal definitions for things that vary too much team to team. The architecture itself is documented as code with [D2](https://d2lang.com/), so the diagrams live beside the platform and change with it. Cost and security are the two big themes of 2026 — [**KubeCost**](https://www.kubecost.com/) for cluster-level cost visibility, [**GuardDuty**](https://aws.amazon.com/guardduty/) and [**WAF**](https://aws.amazon.com/waf/) for the security perimeter, and [**Karpenter**](https://karpenter.sh/) coming up next for smarter node autoscaling.
+The client is expanding into new regions, and that set the agenda for late 2026: SOC 2 readiness and a move from a single AWS region to multi-region EKS, run as one piece of work. The security work lands with each region, not after it.
+
+The SOC 2 side runs on [Secureframe](https://secureframe.com/). It connects read-only to the cloud accounts and to the identity, HR and code tools, collects evidence and tests controls continuously, and flags a control as soon as it drifts. The reporting is where it earns its place: readiness becomes goals with owners and dates, so "are we ready for the audit" gets a number instead of an opinion. It sits on top of the controls already built into delivery: the pipeline produces the evidence, and Secureframe tracks it.
+
+Underneath the expansion, the platform work continues: consolidating what we built into something the client can run as a proper internal platform. We're formalizing the platform team, documenting the self-service tools and the expected developer workflow, and writing down our internal definitions for things that vary too much team to team. The architecture itself is documented as code with [D2](https://d2lang.com/), so the diagrams live beside the platform and change with it. Cost and security are the two big themes of 2026 — [**KubeCost**](https://www.kubecost.com/) for cluster-level cost visibility, [**GuardDuty**](https://aws.amazon.com/guardduty/) and [**WAF**](https://aws.amazon.com/waf/) for the security perimeter, and [**Karpenter**](https://karpenter.sh/) coming up next for smarter node autoscaling.
 
 ## Teaching Azure to a client team
 
 Arctiq places me on more than the main engagement, and one of the most rewarding pieces of 2026 was a week-long Azure enablement workshop I instructed for another client's team — full days, start to finish, on the cloud they were committing to.
 
 The arc ran from the ground up: cloud computing fundamentals and the IaaS / PaaS / SaaS models against on-premise, then Azure governance end to end — management groups, subscriptions, resource groups, and resources, with policy and RBAC across Entra ID and IAM. From there into networking and security, compute and storage, data and AI, and finally operations: monitoring, alerting, and backups. Each session closed with a Kahoot to check what landed, and the questions coming back were sharp. If another one comes up, the answer is yes.
+
+## Nutanix: from OpenShift to NKP
+
+Another 2026 engagement was a showcase for a customer moving from OpenShift to Nutanix. I deployed [Nutanix Kubernetes Platform](https://www.nutanix.com/products/kubernetes-management-platform) (NKP) under the Ultimate license, the tier with fleet management, multi-tenancy, GitOps and centralized observability, and delivered three things: the architecture, the deployment, and the documentation the customer's team needed to take ownership of it. To prepare, I took the NKP courses on Nutanix University. I'm not certified on NKP yet.
+
+## Spectro Cloud Palette
+
+[Spectro Cloud](https://www.spectrocloud.com/) is an Arctiq partner, and in 2026 I passed its Palette Associate assessment, done live in the Palette UI with an assessor watching. Palette is the closest thing I've used to Kubernetes made easy. A cluster profile stacks the layers a cluster needs: the OS, the Kubernetes distribution, the network and storage, then add-ons. Palette builds every cluster to its profile and corrects drift, so one profile gives you the same cluster on AWS, on Azure, in a datacenter or at the edge. Developers get [Palette Dev Engine](https://docs.spectrocloud.com/devx): App Mode and virtual clusters inside a host cluster, without being handed the infrastructure under them. The UI and the support are both good. Spectro Cloud's certification program doesn't issue public badges yet, so this one has no Credly link.
 
 ## Other work at Shadow-Soft (now Arctiq)
 
@@ -114,7 +127,9 @@ The main engagement is the one I've been on the longest, but it's not the only t
 - [**Ansible**](https://www.ansible.com/), delivering automated OS-level solutions for clients whose work didn't need a full platform — just consistent, scripted server configuration.
 - **Internal project and lab documentation** before the Arctiq acquisition — owning the central record of what the local team was building and how.
 
-Around the same time, I got promoted internally to **local team mentor**. Not client-facing — a recognition of the help I'd been giving teammates on their own projects and certification exams: jumping on calls, sharing screens, drawing diagrams, explaining the same concept three different ways until it landed. I still spend time on that side of the work.
+Around the same time, I got promoted internally to **local team mentor**. Not client-facing — a recognition of the help I'd been giving teammates on their own projects and certification exams: jumping on calls, sharing screens, drawing diagrams, explaining the same concept three different ways until it landed.
+
+The role has grown since. I oversee the health of my peers' projects, make sure they have the tools they need, and step in with guidance when they hit cloud, Kubernetes or security questions. It's the part of the work I'm enjoying most right now.
 
 import AuthorCard from '@site/src/components/AuthorCard';
 

@@ -1,7 +1,7 @@
 {
   "name": "Camilo's handbook — blog.cjoga.cloud",
   "short_name": "cjoga handbook",
-  "description": "Opinions, homelab notes, and cert guides from a working Senior Platform & DevOps Engineer.",
+  "description": "Opinions, K3s cluster notes, and cert guides from a working Senior Platform & DevOps Engineer.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -23,9 +23,10 @@ export default function AuthorCard() {
           Guerrero
         </p>
         <p className={styles.bio}>
-          Senior Platform &amp; DevOps Engineer, Dominican&ndash;US dual citizen. I run{" "}
-          <code>cjoga.cloud</code> on a 6-node K3s cluster split across Proxmox
-          and bare metal, and write here when something’s worth sharing.
+          Senior Platform &amp; DevOps Engineer and co-founder of KodePull.{" "}
+          <code>cjoga.cloud</code> runs on KodePull’s 6-node K3s cluster, split
+          across Proxmox and bare metal; I write here when something’s worth
+          sharing.
         </p>
         <div className={styles.links}>
           <Link to="https://cjoga.cloud" target="_self" className={styles.link}>
