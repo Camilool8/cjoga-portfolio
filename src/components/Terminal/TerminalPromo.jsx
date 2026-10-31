@@ -38,19 +38,26 @@ export default function TerminalPromo() {
 
   const demoSequence = useMemo(
     () => [
+      // Recorded from the live terminal (Oct 30, 2026), in its own columns:
+      // nodes without VERSION, pods from a namespace visitors can query.
       {
         command: "kubectl get nodes",
-        output: `NAME            STATUS   ROLES           AGE    VERSION
-k3s-master-01   Ready    control-plane   180d   v1.33.5+k3s1
-k3s-worker-01   Ready    worker          180d   v1.33.5+k3s1
-k3s-worker-02   Ready    worker          90d    v1.33.5+k3s1`,
+        output: `NAME                                 STATUS   ROLES                  AGE
+lab.vmworker1.cjoga.cloud-51cc33eb   Ready    <none>                 346d
+lab.worker1.cjoga.cloud-10c6ee21     Ready    <none>                 348d
+lab.worker2.cjoga.cloud              Ready    <none>                 321d
+lab.worker3.cjoga.cloud              Ready    <none>                 321d
+lab.worker4.cjoga.cloud              Ready    <none>                 71d
+prox-k8s-master                      Ready    control-plane,master   349d`,
       },
       {
-        command: "kubectl get pods -n monitoring",
-        output: `NAME                        READY   STATUS    RESTARTS   AGE
-prometheus-server-0         1/1     Running   0          30d
-grafana-5d4f8c7b9-kx2mt     1/1     Running   0          30d
-loki-0                      1/1     Running   1          30d`,
+        command: "kubectl get pods -n envoy-gateway-system",
+        output: `NAME                                          READY   STATUS    RESTARTS   AGE
+envoy-eg-d8c59e83-7647ccfcc6-4r6v6            2/2     Running   2          44d
+envoy-eg-d8c59e83-7647ccfcc6-bjsks            2/2     Running   0          23d
+envoy-eg-internal-7f4ff7e4-56c75d7c98-qnhst   2/2     Running   0          23h
+envoy-eg-internal-7f4ff7e4-56c75d7c98-tqbkz   2/2     Running   0          4d
+envoy-gateway-f684c96f8-22tqf                 1/1     Running   0          23d`,
       },
       {
         command: "sudo hire-me",

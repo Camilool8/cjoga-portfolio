@@ -44,23 +44,25 @@ function buildResumeText(t) {
   ----------
   Globant                    DevOps Engineer       2025 - Present
   KodePull SRL               Co-founder & CTO      2025 - Present
+  FL Betances & Asociados    DevOps Engineer       2024 - 2025
   Arctiq                     DevOps Consultant     2022 - Present
 
   ${t("terminal.messages.resumeCertifications")}
   --------------
-  * AWS Certified Solutions Architect
-  * HashiCorp Certified Terraform Associate
-  * Certified Kubernetes Application Developer (CKAD)  // kubestronaut path: 2 of 5
-  * Kubernetes & Cloud Native Associate (KCNA)
-  * Certified Kubernetes Administrator (CKA)  // in progress
-  * RHCSA & RHCE
-  * Dynatrace Associate
   * Spectro Cloud Certified – Palette Associate
+  * Certified Kubernetes Application Developer (CKAD)  // kubestronaut path: 2 of 5
+  * Kubernetes and Cloud Native Associate (KCNA)
+  * HashiCorp Certified Terraform Associate (004)
+  * AWS Certified Solutions Architect
+  * RHCE & RHCSA  // renewing on RHEL 10, Q1 2027
+  * Dynatrace Associate
+  * Accredited Partner Technical Engineer (Technology Partners)
   * GitLab Certified (4x)
+  * Certified Kubernetes Administrator (CKA)  // in progress, target Nov 30, 2026
 
   ${t("terminal.messages.resumeEducation")}
   ---------
-  * MBA Tech (Máster en Dirección y Administración de Empresas), UNIR  // 2026 - 2027
+  * Tech MBA (Máster Universitario en Dirección y Administración de Empresas), UNIR  // Oct 2026 - Oct 2027, in progress
   * Computer Science Engineering, PUCMM  // 2019 - 2024
 
   ${t("terminal.messages.resumeSkills")}
@@ -137,7 +139,7 @@ const CLIENT_COMMANDS = {
   pwd: () => ({ output: "/home/visitor", type: "success" }),
   "uname -a": () => ({
     output:
-      "Linux cjoga.cloud 6.1.0-k3s1 #1 SMP PREEMPT_DYNAMIC K3s aarch64 GNU/Linux",
+      "Linux cjoga.cloud 6.8.0-generic #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux",
     type: "success",
   }),
   ls: () => ({ output: LS_OUTPUT, type: "success" }),
