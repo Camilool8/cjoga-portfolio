@@ -114,6 +114,10 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
     let ink = hexToRgb(colors.ink);
     let W = 0;
     let H = 0;
+    // The frame the scene is composed in: the host's height. A canvas
+    // bottom-aligned in a taller host (the handbook's band, where a mask
+    // hides everything above) draws only its own strip of that frame.
+    let frameH = 0;
     let globeT = 0;
     // On the light theme the planet stays dark, so its dots use the bright
     // mint rather than the darker teal text accent.
@@ -135,6 +139,7 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
       const dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1.5 : 2);
       W = canvas.clientWidth;
       H = canvas.clientHeight;
+      frameH = Math.max(H, host.clientHeight);
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -167,7 +172,7 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
 
     const geometry = () => {
       if (variant === "horizon") {
-        const R = Math.max(W * 0.8, H * 0.9);
+        const R = Math.max(W * 0.8, frameH * 0.9);
         // Quiet pages keep the limb low, below the page's own content.
         return { R, cx: W * 0.62, cy: H + R * sink, narrow: false, horizon: true, lightX: 0, lightY: -0.95 };
       }
@@ -223,10 +228,13 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
       sctx.clearRect(0, 0, W, H);
       // Daylight washes most stars out; only the nearest survive, faintly.
       const daylight = colors.light ? 0.28 : 1;
+      const offY = frameH - H;
       for (const s of stars) {
+        const y = s.y * frameH - offY;
+        if (y < -2) continue;
         const d = 2 * s.r * (0.6 + s.depth);
         sctx.fillStyle = rgba(ink, (0.12 + s.depth * 0.55) * daylight);
-        sctx.fillRect(s.x * W - d / 2, s.y * H - d / 2, d, d);
+        sctx.fillRect(s.x * W - d / 2, y - d / 2, d, d);
       }
     }
 
@@ -369,7 +377,7 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
         ctx.beginPath();
         ctx.arc(cx, cy, R, 0, TAU);
         ctx.clip();
-        drawGlobeDots(ctx, globe, { R, cx, cy, lightX, lightY }, globeT, globeAccent(), seaInk(), colors.light);
+        drawGlobeDots(ctx, globe, { R, cx, cy, lightX, lightY, W, H }, globeT, globeAccent(), seaInk(), colors.light);
         ctx.restore();
       }
 
@@ -383,6 +391,9 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
         for (let i = 0; i < steps; i += 1) {
           const p = project(o, R, cx, cy, (i / steps) * TAU, drift);
           if ((p.z >= 0) !== front || hidden(p, R, cx, cy)) continue;
+          // The horizon's orbits run far past the frame; skip what can't
+          // show before paying for a colour string.
+          if (p.x < -1 || p.x > W + 1 || p.y < -1 || p.y > H + 1) continue;
           const f = fadeX(p.x, narrow, g.horizon, p.y);
           if (f <= 0.01) continue;
           const depth = 0.5 + 0.5 * (p.z / (o.k * R));
@@ -505,6 +516,7 @@ export default function PlanetScene({ variant = "hero", quiet = false, still = f
         frame(performance.now());
       });
       ro.observe(canvas);
+      ro.observe(host);
     };
     const idle = window.requestIdleCallback
       ? window.requestIdleCallback(begin, { timeout: 700 })

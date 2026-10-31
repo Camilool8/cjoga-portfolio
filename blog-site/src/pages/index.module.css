@@ -128,12 +128,18 @@
   opacity: 0;
 }
 
+/* The canvases cover only the band the mask shows (plus the daylight
+   sink), not the whole intro: everything above it was drawn and
+   composited every frame and never seen. The scene still composes the
+   planet against the full intro (PlanetScene's frame), so it is unchanged. */
 .scene :global(.planet-scene) {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: block;
   width: 100%;
-  height: 100%;
+  height: min(100%, calc(var(--band) * 1.25 + 16px));
 }
 
 .scene :global(.planet-scene--stars) {
